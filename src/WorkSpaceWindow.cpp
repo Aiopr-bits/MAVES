@@ -19,6 +19,7 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
     QPalette palette = ui->label_2->palette();
     palette.setColor(QPalette::WindowText, Qt::gray);
     ui->label_2->setPalette(palette);
+    ui->label_6->setPalette(palette);
 
     //treeview
     QStandardItemModel* model = new QStandardItemModel(this);
