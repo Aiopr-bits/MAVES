@@ -1,0 +1,34 @@
+# -*- sh -*-
+# Preferences for system clang-xxx, label-size=32
+export WM_COMPILER_TYPE=system
+
+export WM_COMPILER=Clang150
+export WM_COMPILE_CONTROL="version=15.0 +lld +strict"
+
+export WM_COMPILER=Clang170
+export WM_COMPILE_CONTROL="version=17.0 +lld +strict"
+
+# export WM_COMPILER=Clang140
+# export WM_COMPILE_CONTROL="version=14.0 +lld"
+
+# export WM_COMPILER=Clang130
+# export WM_COMPILE_CONTROL="version=13.0 +lld"
+
+export WM_LABEL_SIZE=32
+
+# export WM_COMPILER=Gcc
+# unset WM_COMPILE_CONTROL
+# export WM_COMPILE_OPTION=Dbg
+
+## Use ThirdParty openmpi
+## export WM_MPLIB=OPENMPI
+
+## Use system openmpi
+export WM_MPLIB=SYSTEMOPENMPI
+
+# export WM_MPLIB=dummy
+
+## Use system openmpi4
+# export WM_MPLIB=SYSTEMOPENMPI4
+
+# ----------------------------------------------------------------------------

@@ -1,0 +1,95 @@
+#----------------------------------*-sh-*--------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2020 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# File
+#     etc/bashrc
+#
+# Description
+#     The OpenFOAM environment for POSIX shell (eg, bash,dash,zsh,...).
+#     Source manually or from the ~/.bashrc or ~/.profile files.
+#
+#     Most settings can be overridden with a <prefs.sh> file:
+#
+#       - Base values (eg, from system admin):
+#         -  $WM_PROJECT_DIR/etc/prefs.sh
+#
+#       - User or group values (first file found):
+#         -  ~/.OpenFOAM/$FOAM_API/prefs.sh
+#         -  ~/.OpenFOAM/prefs.sh
+#         -  $WM_PROJECT_SITE/$FOAM_API/etc/prefs.sh
+#         -  $WM_PROJECT_SITE/etc/prefs.sh
+#
+#     Some settings can also be overridden on the command-line when
+#     sourcing this file. For example,
+#
+#       . /path/etc/bashrc WM_COMPILER=Clang WM_LABEL_SIZE=64
+#
+# Environment
+#     FOAM_CONFIG_MODE (search mode for etc config files - see foamEtcFile)
+#         - eg, FOAM_CONFIG_MODE="o" to only use OpenFOAM config files
+#         - no influence on OpenFOAM applications, just the config files
+#
+#     FOAM_VERBOSE (set/unset)
+#         - add extra verbosity when sourcing files
+#
+#     WM_PROJECT_SITE (optional directory)
+#         - local site-specific directory, uses WM_PROJECT_DIR/site if unset
+#
+# Note
+#     Changes made to this file will be lost with the next upgrade.
+#
+#------------------------------------------------------------------------------
+
+projectDir="${BASH_SOURCE:-${ZSH_NAME:+$0}}";
+[ -n "$projectDir" ] && projectDir="$(\cd $(dirname $projectDir)/.. && \pwd -L)" ||\
+projectDir="$HOME/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"
+
+
+. $FOAM/etc/config.sh/pre-setup
+
+
+# [WM_MPLIB] - MPI implementation:
+# = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |
+#   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
+# Also possible to use INTELMPI-xyz etc and define your own wmake rule
+export WM_MPLIB=INTELMPI
+
+
+#------------------------------------------------------------------------------
+# (advanced / legacy)
+
+# [WM_PROJECT] - This project is "OpenFOAM" - do not change
+export WM_PROJECT=OpenFOAM
+
+# [projectDir] - directory containing this OpenFOAM version.
+# \- When this file is located as $WM_PROJECT_DIR/etc/bashrc, the next lines
+#    should work when sourced by BASH or ZSH shells. If this however fails,
+#    set one of the fallback values to an appropriate path.
+#
+#    This can be removed if an absolute path is provided for WM_PROJECT_DIR
+#    later on in this file
+# --
+projectDir="${BASH_SOURCE:-${ZSH_NAME:+$0}}";
+[ -n "$projectDir" ] && projectDir="$(\cd $(dirname $projectDir)/.. && \pwd -L)" ||\
+projectDir="$HOME/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"
+# projectDir="/opt/openfoam/OpenFOAM-$WM_PROJECT_VERSION"
+# projectDir="/usr/local/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"
+################################################################################
+# Or optionally hard-coded (eg, with autoconfig)
+# projectDir="@PROJECT_DIR@"
+: # Safety statement (if the user removed all fallback values)
+
+
+# Cleanup variables (done as final statement for a clean exit code)
+unset foamOldDirs projectDir
+
+#------------------------------------------------------------------------------
