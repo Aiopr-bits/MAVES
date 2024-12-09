@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindowClass())
 {
+	//х╚фа
+	this->setWindowState(Qt::WindowMaximized);
 	ui->setupUi(this);
 
     renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
