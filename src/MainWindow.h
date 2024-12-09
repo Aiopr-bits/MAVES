@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QMainWindow>
 #include "ui_MainWindow.h"
 #include <QMessageBox>
@@ -29,6 +28,8 @@
 #include <vtkOrientationMarkerWidget.h>
 #include <QPushButton>
 
+#pragma execution_character_set("utf-8")
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };
 QT_END_NAMESPACE
@@ -51,6 +52,8 @@ public slots:
 	void handleAction6Triggered();								    //z正向
 	void handleAction7Triggered();								    //z负向
 	void handleAction8Triggered();								    //适应窗口
+
+	void on_pushButton_clicked();								    //几何导入
 
 
 private:

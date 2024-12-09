@@ -1,3 +1,4 @@
+#pragma once
 #include "MainWindow.h"
 #include <vtkSTLReader.h>
 #include <vtkGenericDataObjectReader.h>
@@ -22,6 +23,32 @@
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <QPushButton>
+#include <QVTKOpenGLNativeWidget.h>
+#include <vtkActor.h>
+#include <vtkCaptionActor2D.h>
+#include <vtkEventQtSlotConnect.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkTextProperty.h>
+#include <vtkWorldPointPicker.h>
+#include <IGESControl_Reader.hxx>
+#include <IVtkOCC_Shape.hxx>
+#include <IVtkTools_DisplayModeFilter.hxx>
+#include <IVtkTools_ShapeDataSource.hxx>
+#include <QBoxLayout>
+#include <QDockWidget>
+#include <QLineEdit>
+#include <QMenuBar>
+#include <QTextBrowser>
+#include <QToolBar>
+#include <QTreeWidget>
+#include <STEPControl_Reader.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepTools.hxx>
+#include <vtkSmartPointer.h>
+#include <QMetaType>
+#include <QMainWindow>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -90,6 +117,84 @@ void MainWindow::handleAction8Triggered()
 {
 
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
+		tr("所有类型 (*.stp *.step *.igs *.iges *.brep);;"
+			"STP 文件 (*.stp *.step);;"
+			"IGS 文件 (*.igs *.iges);;"
+			"BREP 文件 (*.brep)"));
+	QFileInfo fileInfo(filePath);
+
+	if (fileInfo.exists())
+	{
+		QString type = fileInfo.suffix().toLower();
+		vtkNew<vtkPolyDataMapper> mapper;
+
+		renderer->RemoveAllViewProps();
+
+		if (type == "step" || type == "stp")
+		{
+			STEPControl_Reader Reader;
+			Reader.ReadFile(filePath.toStdString().c_str());
+			Reader.TransferRoots();
+			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
+			vtkNew<IVtkTools_ShapeDataSource> DS;
+			DS->SetShape(aShapeImpl);
+			DS->Update();
+			vtkNew<IVtkTools_DisplayModeFilter> filter;
+			filter->SetInputData(DS->GetOutput());
+			filter->SetDisplayMode(DM_Shading);
+			filter->SetSmoothShading(1);
+			filter->Update();
+			mapper->SetInputData(filter->GetOutput());
+		}
+		else if (type == "iges" || type == "igs")
+		{
+			IGESControl_Reader Reader;
+			Reader.ReadFile(filePath.toStdString().c_str());
+			Reader.TransferRoots();
+			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
+			vtkNew<IVtkTools_ShapeDataSource> DS;
+			DS->SetShape(aShapeImpl);
+			DS->Update();
+			vtkNew<IVtkTools_DisplayModeFilter> filter;
+			filter->SetInputData(DS->GetOutput());
+			filter->SetDisplayMode(DM_Shading);
+			filter->SetSmoothShading(1);
+			filter->Update();
+			mapper->SetInputData(filter->GetOutput());
+		}
+		else if (type == "brep")
+		{
+			BRep_Builder builder;
+			TopoDS_Shape shape;
+			BRepTools::Read(shape, filePath.toStdString().c_str(), builder);
+			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(shape);
+			vtkNew<IVtkTools_ShapeDataSource> DS;
+			DS->SetShape(aShapeImpl);
+			DS->Update();
+			vtkNew<IVtkTools_DisplayModeFilter> filter;
+			filter->SetInputData(DS->GetOutput());
+			filter->SetDisplayMode(DM_Shading);
+			filter->SetSmoothShading(1);
+			filter->Update();
+			mapper->SetInputData(filter->GetOutput());
+		}
+		else
+		{
+			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+		}
+
+		vtkNew<vtkActor> actor;
+		actor->SetMapper(mapper);
+		renderer->AddActor(actor);
+		renderer->ResetCamera();
+		ui->openGLWidget->renderWindow()->Render();
+	}
+}
+
 
 void MainWindow::handleAction1Triggered()
 {
