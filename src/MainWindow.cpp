@@ -72,7 +72,14 @@ MainWindow::MainWindow(QWidget *parent)
     addCoordinateAxes();
 
     // 连接信号和槽
-    connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);
+	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
+	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);			//x正向
+	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);			//x负向
+	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);			//y正向
+	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);			//y负向
+	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);			//z正向
+	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
+	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
 }
 
 MainWindow::~MainWindow()
@@ -95,31 +102,70 @@ void MainWindow::addCoordinateAxes()
 
 void MainWindow::handleAction2Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(1, 0, 0); // 设置相机位置到 x 方向正方向
+	camera->SetFocalPoint(0, 0, 0); // 设置相机焦点到原点
+	camera->SetViewUp(0, 0, 1); // 设置相机的上方向为 z 方向正方向
+	render->ResetCamera();
+	renderWindow->Render();
 }
 
 void MainWindow::handleAction3Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(-1, 0, 0);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 0, 1);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::handleAction4Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(0, 1, 0);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 0, 1);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::handleAction5Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(0, -1, 0);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 0, 1);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::handleAction6Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(0, 0, 1);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 1, 0);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::handleAction7Triggered()
 {
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	camera->SetPosition(0, 0, -1);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 1, 0);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::handleAction8Triggered()
 {
-
+	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	render->ResetCamera();
+	camera->Zoom(1.5); // 调整缩放比例，可以根据需要调整
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_clicked()
