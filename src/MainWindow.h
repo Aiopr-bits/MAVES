@@ -54,13 +54,14 @@ public slots:
 	void handleAction8Triggered();								    //适应窗口
 
 	void on_pushButton_clicked();								    //几何导入
+	void on_pushButton_4_clicked();								    //网格导入
 
 
 private:
 	Ui::MainWindowClass *ui;
 
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
-	vtkSmartPointer<vtkRenderer> renderer;
+	vtkSmartPointer<vtkRenderer> render;
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
 
 };

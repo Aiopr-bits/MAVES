@@ -49,6 +49,8 @@
 #include <vtkSmartPointer.h>
 #include <QMetaType>
 #include <QMainWindow>
+#include <QMessageBox.h>
+#include <vtkOpenFOAMReader.h>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -59,13 +61,13 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->setupUi(this);
 
     renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
-    renderer = vtkSmartPointer<vtkRenderer>::New();
+    render = vtkSmartPointer<vtkRenderer>::New();
     ui->openGLWidget->setRenderWindow(renderWindow);
-    renderWindow->AddRenderer(renderer);
+    renderWindow->AddRenderer(render);
 
-    renderer->SetBackground(1.0, 1.0, 1.0);
-    renderer->SetBackground2(0.0, 0.8039, 1.0); 
-    renderer->GradientBackgroundOn();
+    render->SetBackground(1.0, 1.0, 1.0);
+    render->SetBackground2(0.0, 0.8039, 1.0); 
+    render->GradientBackgroundOn();
 
     addCoordinateAxes();
 
@@ -88,7 +90,7 @@ void MainWindow::addCoordinateAxes()
     axesWidget->InteractiveOn();
     axesWidget->SetInteractive(false);
 
-    axesWidget->SetViewport(0.0, 0.0, 0.2, 0.2);
+    axesWidget->SetViewport(0.0, 0.0, 0.14, 0.2);
 }
 
 void MainWindow::handleAction2Triggered()
@@ -134,7 +136,7 @@ void MainWindow::on_pushButton_clicked()
 		QString type = fileInfo.suffix().toLower();
 		vtkNew<vtkPolyDataMapper> mapper;
 
-		renderer->RemoveAllViewProps();
+		render->RemoveAllViewProps();
 
 		if (type == "step" || type == "stp")
 		{
@@ -191,9 +193,59 @@ void MainWindow::on_pushButton_clicked()
 
 		vtkNew<vtkActor> actor;
 		actor->SetMapper(mapper);
-		renderer->AddActor(actor);
-		renderer->ResetCamera();
+		render->AddActor(actor);
+		render->ResetCamera();
 		ui->openGLWidget->renderWindow()->Render();
+	}
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
+		tr("VTK 文件 (*.vtk);;"));
+	QFileInfo fileInfo(filePath);
+	if (fileInfo.exists())
+	{
+		QString type = fileInfo.suffix().toLower();
+		render->RemoveAllViewProps();
+
+		if (type == "vtk")
+		{
+			vtkSmartPointer<vtkUnstructuredGridReader> reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
+			reader->SetFileName(filePath.toStdString().c_str());
+			reader->Update();
+
+			vtkSmartPointer<vtkDataSetMapper> surfaceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+			surfaceMapper->SetInputConnection(reader->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> surfaceActor = vtkSmartPointer<vtkActor>::New();
+			surfaceActor->SetMapper(surfaceMapper);
+
+			vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
+			geometryFilter->SetInputConnection(reader->GetOutputPort());
+			geometryFilter->Update();
+
+			vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
+			extractEdges->SetInputConnection(geometryFilter->GetOutputPort());
+			extractEdges->Update();
+
+			vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
+			edgeActor->SetMapper(edgeMapper);
+			edgeActor->GetProperty()->SetColor(0, 0, 0);
+
+			render->AddActor(surfaceActor);
+			render->AddActor(edgeActor);
+
+			render->ResetCamera();
+			renderWindow->Render();
+		}
+		else
+		{
+			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+		}
 	}
 }
 
