@@ -103,9 +103,9 @@ void MainWindow::addCoordinateAxes()
 void MainWindow::handleAction2Triggered()
 {
 	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(1, 0, 0); // 设置相机位置到 x 方向正方向
-	camera->SetFocalPoint(0, 0, 0); // 设置相机焦点到原点
-	camera->SetViewUp(0, 0, 1); // 设置相机的上方向为 z 方向正方向
+	camera->SetPosition(1, 0, 0); 
+	camera->SetFocalPoint(0, 0, 0); 
+	camera->SetViewUp(0, 0, 1);
 	render->ResetCamera();
 	renderWindow->Render();
 }
@@ -164,7 +164,7 @@ void MainWindow::handleAction8Triggered()
 {
 	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
 	render->ResetCamera();
-	camera->Zoom(1.5); // 调整缩放比例，可以根据需要调整
+	camera->Zoom(1); 
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -248,7 +248,9 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-		tr("VTK 文件 (*.vtk);;"));
+		tr(/*"所有类型 (*.vtk *.foam);;"
+			"VTK 文件 (*.vtk);;"*/
+			"OpenFOAM 文件 (*.foam)"));
 	QFileInfo fileInfo(filePath);
 	if (fileInfo.exists())
 	{
@@ -288,13 +290,58 @@ void MainWindow::on_pushButton_4_clicked()
 			render->ResetCamera();
 			renderWindow->Render();
 		}
+		else if (type == "foam")
+		{
+			QString casePath = fileInfo.path();
+			std::string command = "foamToVTK -case " + casePath.toStdString();
+			std::system(command.c_str());
+
+			QString folderName = casePath.split("/").last();
+			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
+
+			//获取vtpPath文件夹下的所有.vtp文件路径
+			QDir dir(vtpPath);
+			QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
+
+			foreach(QString vtpFile, vtpFiles)
+			{
+				QString fullPath = dir.absoluteFilePath(vtpFile);
+				vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+				reader->SetFileName(fullPath.toStdString().c_str());
+				reader->Update();
+
+				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				mapper->SetInputConnection(reader->GetOutputPort());
+
+				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+				actor->SetMapper(mapper);
+
+				render->AddActor(actor);
+
+				// 提取网格线
+				vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
+				extractEdges->SetInputConnection(reader->GetOutputPort());
+				extractEdges->Update();
+
+				vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
+
+				vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
+				edgeActor->SetMapper(edgeMapper);
+				edgeActor->GetProperty()->SetColor(0, 0, 0);
+
+				render->AddActor(edgeActor);
+			}
+
+			render->ResetCamera();
+			renderWindow->Render();
+		}
 		else
 		{
 			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
 		}
 	}
 }
-
 
 void MainWindow::handleAction1Triggered()
 {

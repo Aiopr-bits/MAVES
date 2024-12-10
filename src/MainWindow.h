@@ -63,5 +63,4 @@ private:
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
 	vtkSmartPointer<vtkRenderer> render;
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//×óÏÂ½ÇÈıÎ¬×ø±êÖá
-
 };
