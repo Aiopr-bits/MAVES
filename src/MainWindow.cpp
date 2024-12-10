@@ -257,7 +257,52 @@ void MainWindow::on_pushButton_4_clicked()
 		QString type = fileInfo.suffix().toLower();
 		render->RemoveAllViewProps();
 
-		if (type == "vtk")
+		if (type == "foam")
+		{
+			QString casePath = fileInfo.path();
+			std::string command = "foamToVTK -case " + casePath.toStdString();
+			std::system(command.c_str());
+
+			QString folderName = casePath.split("/").last();
+			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
+
+			//获取vtpPath文件夹下的所有.vtp文件路径
+			QDir dir(vtpPath);
+			QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
+
+			foreach(QString vtpFile, vtpFiles)
+			{
+				QString fullPath = dir.absoluteFilePath(vtpFile);
+				vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+				reader->SetFileName(fullPath.toStdString().c_str());
+				reader->Update();
+
+				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				mapper->SetInputConnection(reader->GetOutputPort());
+
+				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+				actor->SetMapper(mapper);
+
+				render->AddActor(actor);
+
+				vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
+				extractEdges->SetInputConnection(reader->GetOutputPort());
+				extractEdges->Update();
+
+				vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
+
+				vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
+				edgeActor->SetMapper(edgeMapper);
+				edgeActor->GetProperty()->SetColor(0, 0, 0);
+
+				render->AddActor(edgeActor);
+			}
+
+			render->ResetCamera();
+			renderWindow->Render();
+		}
+		else if (type == "vtk")
 		{
 			vtkSmartPointer<vtkUnstructuredGridReader> reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
 			reader->SetFileName(filePath.toStdString().c_str());
@@ -286,52 +331,6 @@ void MainWindow::on_pushButton_4_clicked()
 
 			render->AddActor(surfaceActor);
 			render->AddActor(edgeActor);
-
-			render->ResetCamera();
-			renderWindow->Render();
-		}
-		else if (type == "foam")
-		{
-			QString casePath = fileInfo.path();
-			std::string command = "foamToVTK -case " + casePath.toStdString();
-			std::system(command.c_str());
-
-			QString folderName = casePath.split("/").last();
-			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
-
-			//获取vtpPath文件夹下的所有.vtp文件路径
-			QDir dir(vtpPath);
-			QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
-
-			foreach(QString vtpFile, vtpFiles)
-			{
-				QString fullPath = dir.absoluteFilePath(vtpFile);
-				vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-				reader->SetFileName(fullPath.toStdString().c_str());
-				reader->Update();
-
-				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-				mapper->SetInputConnection(reader->GetOutputPort());
-
-				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-				actor->SetMapper(mapper);
-
-				render->AddActor(actor);
-
-				// 提取网格线
-				vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
-				extractEdges->SetInputConnection(reader->GetOutputPort());
-				extractEdges->Update();
-
-				vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-				edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
-
-				vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
-				edgeActor->SetMapper(edgeMapper);
-				edgeActor->GetProperty()->SetColor(0, 0, 0);
-
-				render->AddActor(edgeActor);
-			}
 
 			render->ResetCamera();
 			renderWindow->Render();

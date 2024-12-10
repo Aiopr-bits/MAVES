@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1291</width>
-    <height>880</height>
+    <height>884</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1012,6 +1012,25 @@ QPushButton:pressed {
           </layout>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_2" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>400</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget { background-color: white;}</string>
+        </property>
        </widget>
       </item>
       <item>
