@@ -71,6 +71,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     addCoordinateAxes();
 
+	formMesh = new FormMesh();
+	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
+	//formMesh->hide();
+
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);			//x正向
@@ -297,7 +301,13 @@ void MainWindow::on_pushButton_4_clicked()
 				edgeActor->GetProperty()->SetColor(0, 0, 0);
 
 				render->AddActor(edgeActor);
+
+				// 去除文件后缀
+				QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
+				GlobalData::getInstance().getCaseData()->meshBoundaryActors->insert(std::make_pair(baseName, actor));
 			}
+			
+			formMesh->updateForm();
 
 			render->ResetCamera();
 			renderWindow->Render();
@@ -334,6 +344,7 @@ void MainWindow::on_pushButton_4_clicked()
 
 			render->ResetCamera();
 			renderWindow->Render();
+
 		}
 		else
 		{

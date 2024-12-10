@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1291</width>
+    <width>1563</width>
     <height>884</height>
    </rect>
   </property>
@@ -1031,6 +1031,11 @@ QPushButton:pressed {
         <property name="styleSheet">
          <string notr="true">QWidget { background-color: white;}</string>
         </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_3"/>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -1099,7 +1104,7 @@ QTextBrowser {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1291</width>
+     <width>1563</width>
      <height>23</height>
     </rect>
    </property>

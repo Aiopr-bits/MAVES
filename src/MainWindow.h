@@ -27,6 +27,8 @@
 #include <QStandardItemModel.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <QPushButton>
+#include "FormMesh.h"
+#include "GlobalData.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -41,6 +43,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
+
 	void addCoordinateAxes();									    //添加左下角三维坐标轴
 
 public slots:
@@ -63,4 +66,6 @@ private:
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
 	vtkSmartPointer<vtkRenderer> render;
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
+
+	FormMesh* formMesh;
 };
