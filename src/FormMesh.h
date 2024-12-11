@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_FormMesh.h"
 #include "GlobalData.h"
+#include <QStandardItemModel.h>
 
 #pragma execution_character_set("utf-8")
 
@@ -19,7 +20,9 @@ public:
 	~FormMesh();
 
 	void updateForm();
+	void on_pushButton_clicked();
 
 private:
 	Ui::FormMeshClass *ui;
+	QStandardItemModel* treeViewModel;
 };

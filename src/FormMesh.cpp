@@ -8,22 +8,15 @@
 FormMesh::FormMesh(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::FormMeshClass())
+    , treeViewModel(new QStandardItemModel(this))
 {
     ui->setupUi(this);
+    ui->pushButton->hide();
 
-    //// 创建复选框并将其居中
-    //QCheckBox* checkBox = new QCheckBox(this);
-    //QWidget* checkBoxWidget = new QWidget(this);
-    //QHBoxLayout* layout = new QHBoxLayout(checkBoxWidget);
-    //layout->addWidget(checkBox);
-    //layout->setAlignment(checkBox, Qt::AlignCenter);
-    //layout->setContentsMargins(0, 0, 0, 0);
-    //checkBoxWidget->setLayout(layout);
+    ui->treeView->setModel(treeViewModel);
+    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    //// 插入行并设置复选框小部件
-    //ui->tableWidget->insertRow(0);
-    //ui->tableWidget->setCellWidget(0, 0, checkBoxWidget);
-
+    connect(ui->pushButton, &QPushButton::clicked, this, &FormMesh::on_pushButton_clicked);
 }
 
 FormMesh::~FormMesh()
@@ -34,34 +27,41 @@ FormMesh::~FormMesh()
 void FormMesh::updateForm()
 {
     // 获取全局数据实例
-    const auto& meshBoundaryActors = GlobalData::getInstance().getCaseData()->meshBoundaryActors;
+    const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
 
     // 清空现有的行
-    ui->tableWidget->setRowCount(0);
+    treeViewModel->clear();
 
-    // 遍历 meshBoundaryActors 并添加到 tableWidget 中
-    int row = 0;
-    for (const auto& actor : *meshBoundaryActors)
+    // 遍历 meshFaceActors 并添加到 treeView 中
+    for (const auto& actor : *meshFaceActors)
     {
-        // 插入新行
-        ui->tableWidget->insertRow(row);
+        QStandardItem* item = new QStandardItem(actor.first);
+		item->setCheckable(true);
+        item->setCheckState(Qt::Checked);
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+		item->setSizeHint(QSize(0, 40));
+		treeViewModel->appendRow(item);
+    }
+    ui->pushButton->show();
+}
 
-        // 创建复选框并设置为选中状态
-        QCheckBox* checkBox = new QCheckBox(this);
-        checkBox->setChecked(true);
-        QWidget* checkBoxWidget = new QWidget(this);
-        QHBoxLayout* layout = new QHBoxLayout(checkBoxWidget);
-        layout->addWidget(checkBox);
-        layout->setAlignment(checkBox, Qt::AlignCenter);
-        layout->setContentsMargins(0, 0, 0, 0);
-        checkBoxWidget->setLayout(layout);
-        ui->tableWidget->setCellWidget(row, 0, checkBoxWidget);
-
-        // 创建标签并设置文本
-        QLabel* label = new QLabel(actor.first, this);
-        ui->tableWidget->setCellWidget(row, 1, label);
-
-        ++row;
+void FormMesh::on_pushButton_clicked()
+{
+    // 获取全局数据实例
+    const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+    // 遍历 treeView 并更新 actor 和网格线的可见性
+    for (int i = 0; i < treeViewModel->rowCount(); ++i)
+    {
+        QStandardItem* item = treeViewModel->item(i);
+        const auto& actor = meshFaceActors->find(item->text());
+        if (actor != meshFaceActors->end())
+        {
+            bool isVisible = (item->checkState() == Qt::Checked);
+            actor->second->SetVisibility(isVisible);
+            //actor->second->SetGridVisibility(isVisible); // 更新网格线的可见性
+        }
     }
 }
+
+
 

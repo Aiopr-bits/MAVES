@@ -60,7 +60,7 @@ public slots:
 	void on_pushButton_4_clicked();								    //Íø¸ñµ¼Èë
 
 
-private:
+public:
 	Ui::MainWindowClass *ui;
 
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;

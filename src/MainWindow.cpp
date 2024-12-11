@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     addCoordinateAxes();
 
-	formMesh = new FormMesh();
+	formMesh = new FormMesh(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	//formMesh->hide();
 
@@ -304,7 +304,7 @@ void MainWindow::on_pushButton_4_clicked()
 				render->AddActor(edgeActor);
 
 				QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
-				GlobalData::getInstance().getCaseData()->meshBoundaryActors->insert(std::make_pair(baseName, actor));
+				GlobalData::getInstance().getCaseData()->meshFaceActors->insert(std::make_pair(baseName, actor));
 			}
 			GlobalData::getInstance().getCaseData()->meshPath = &fileInfo.path().toStdString();
 			
@@ -312,7 +312,7 @@ void MainWindow::on_pushButton_4_clicked()
 
 			render->ResetCamera();
 			renderWindow->Render();
-		}		
+		}
 		else
 		{
 			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));

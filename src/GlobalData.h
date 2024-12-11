@@ -13,7 +13,8 @@ struct caseData
 {
     std::string* geometryPath;
     std::string* meshPath;
-    std::map<QString, vtkSmartPointer<vtkActor>>* meshBoundaryActors;
+	std::map<QString, vtkSmartPointer<vtkActor>>* meshEdgeActors;
+	std::map<QString, vtkSmartPointer<vtkActor>>* meshFaceActors;
 };
 
 class GlobalData
