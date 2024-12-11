@@ -51,6 +51,7 @@
 #include <QMainWindow>
 #include <QMessageBox.h>
 #include <vtkOpenFOAMReader.h>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -302,10 +303,10 @@ void MainWindow::on_pushButton_4_clicked()
 
 				render->AddActor(edgeActor);
 
-				// 去除文件后缀
 				QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
 				GlobalData::getInstance().getCaseData()->meshBoundaryActors->insert(std::make_pair(baseName, actor));
 			}
+			GlobalData::getInstance().getCaseData()->meshPath = &fileInfo.path().toStdString();
 			
 			formMesh->updateForm();
 
