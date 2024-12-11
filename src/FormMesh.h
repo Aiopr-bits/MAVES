@@ -19,8 +19,14 @@ public:
 	FormMesh(QWidget *parent = nullptr);
 	~FormMesh();
 
+	void on_treeView_itemClicked(const QModelIndex& index);
+
+public slots:
 	void updateForm();
 	void on_pushButton_clicked();
+
+signals:
+	void meshVisibilityChanged();
 
 private:
 	Ui::FormMeshClass *ui;

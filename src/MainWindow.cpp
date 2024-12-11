@@ -91,6 +91,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);			//z正向
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
+
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::updateRenderWindow);
 }
 
 MainWindow::~MainWindow()
@@ -347,6 +349,11 @@ void MainWindow::on_pushButton_17_clicked()
 {
 	hideAllSubForm();
 	formPostprocessing->show();
+}
+
+void MainWindow::updateRenderWindow()
+{
+	renderWindow->Render();
 }
 
 void MainWindow::handleAction1Triggered()

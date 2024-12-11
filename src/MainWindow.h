@@ -63,8 +63,8 @@ public slots:
 	void on_pushButton_2_clicked();								    //网格
 	void on_pushButton_17_clicked();								//后处理
 
-
-
+	void updateRenderWindow(); 										//更新渲染窗口
+	
 
 public:
 	Ui::MainWindowClass *ui;

@@ -17,11 +17,23 @@ FormMesh::FormMesh(QWidget* parent)
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &FormMesh::on_pushButton_clicked);
+    connect(ui->treeView, &QTreeView::clicked, this, &FormMesh::on_treeView_itemClicked);
+
 }
 
 FormMesh::~FormMesh()
 {
 	delete ui;
+}
+
+void FormMesh::on_treeView_itemClicked(const QModelIndex& index)
+{
+    QStandardItem* item = treeViewModel->itemFromIndex(index);
+    if (item)
+    {
+        Qt::CheckState newState = (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
+        item->setCheckState(newState);
+    }
 }
 
 void FormMesh::updateForm()
@@ -69,6 +81,8 @@ void FormMesh::on_pushButton_clicked()
             edgeActor->second->SetVisibility(isVisible);
         }	
     }
+
+	emit meshVisibilityChanged();
 }
 
 
