@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	formMesh = new FormMesh(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
-	//formMesh->hide();
+	formMesh->hide();
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -287,6 +287,7 @@ void MainWindow::on_pushButton_4_clicked()
 
 				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 				actor->SetMapper(mapper);
+				actor->GetProperty()->SetColor(0,221,221);
 
 				render->AddActor(actor);
 
