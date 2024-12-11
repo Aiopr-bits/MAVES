@@ -98,10 +98,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtUic Include="FormMesh.ui" />
+    <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
     <ClCompile Include="FormMesh.cpp" />
+    <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="WorkSpaceWindow.cpp" />
@@ -119,6 +121,7 @@
     <QtMoc Include="FormMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="FormPostprocessing.h" />
     <ClInclude Include="GlobalData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

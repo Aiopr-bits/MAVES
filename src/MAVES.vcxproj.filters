@@ -35,6 +35,9 @@
     <QtUic Include="FormMesh.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="FormPostprocessing.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -49,12 +52,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FormPostprocessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormMesh.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormPostprocessing.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

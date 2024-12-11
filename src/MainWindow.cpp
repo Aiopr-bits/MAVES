@@ -240,15 +240,18 @@ void MainWindow::on_pushButton_clicked()
 		else
 		{
 			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+			return;
 		}
 
 		vtkNew<vtkActor> actor;
 		actor->SetMapper(mapper);
+		actor->GetProperty()->SetColor(97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0); // 设置颜色为RGB(86, 98, 110)
 		render->AddActor(actor);
 		render->ResetCamera();
 		ui->openGLWidget->renderWindow()->Render();
 	}
 }
+
 
 void MainWindow::on_pushButton_4_clicked()
 {
