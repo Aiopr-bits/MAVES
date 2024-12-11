@@ -2,6 +2,9 @@
 
 #include <QWidget>
 #include "ui_FormPostprocessing.h"
+#include <QSvgRenderer>
+#include <QPixmap>
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };

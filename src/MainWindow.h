@@ -28,6 +28,7 @@
 #include <vtkOrientationMarkerWidget.h>
 #include <QPushButton>
 #include "FormMesh.h"
+#include "FormPostprocessing.h"
 #include "GlobalData.h"
 
 #pragma execution_character_set("utf-8")
@@ -45,6 +46,7 @@ public:
 	~MainWindow();
 
 	void addCoordinateAxes();									    //添加左下角三维坐标轴
+	void hideAllSubForm();										    //隐藏所有子窗口
 
 public slots:
 	void handleAction1Triggered();								    //信息框
@@ -58,6 +60,10 @@ public slots:
 
 	void on_pushButton_clicked();								    //几何导入
 	void on_pushButton_4_clicked();								    //网格导入
+	void on_pushButton_2_clicked();								    //网格
+	void on_pushButton_17_clicked();								//后处理
+
+
 
 
 public:
@@ -68,4 +74,5 @@ public:
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
 
 	FormMesh* formMesh;
+	FormPostprocessing* formPostprocessing;
 };

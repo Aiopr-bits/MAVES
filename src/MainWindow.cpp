@@ -73,8 +73,14 @@ MainWindow::MainWindow(QWidget *parent)
     addCoordinateAxes();
 
 	formMesh = new FormMesh(this);
+	formPostprocessing = new FormPostprocessing(this);
+
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
+
 	formMesh->hide();
+	formPostprocessing->hide();
+
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -103,6 +109,12 @@ void MainWindow::addCoordinateAxes()
     axesWidget->SetInteractive(false);
 
     axesWidget->SetViewport(0.0, 0.0, 0.14, 0.2);
+}
+
+void MainWindow::hideAllSubForm()
+{
+	formMesh->hide();
+	formPostprocessing->hide();
 }
 
 void MainWindow::handleAction2Triggered()
@@ -245,7 +257,7 @@ void MainWindow::on_pushButton_clicked()
 
 		vtkNew<vtkActor> actor;
 		actor->SetMapper(mapper);
-		actor->GetProperty()->SetColor(97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0); // 设置颜色为RGB(86, 98, 110)
+		actor->GetProperty()->SetColor(97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0); 
 		render->AddActor(actor);
 		render->ResetCamera();
 		ui->openGLWidget->renderWindow()->Render();
@@ -323,6 +335,18 @@ void MainWindow::on_pushButton_4_clicked()
 			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
 		}
 	}
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+	hideAllSubForm();
+	formMesh->show();
+}
+
+void MainWindow::on_pushButton_17_clicked()
+{
+	hideAllSubForm();
+	formPostprocessing->show();
 }
 
 void MainWindow::handleAction1Triggered()
