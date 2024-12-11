@@ -305,6 +305,7 @@ void MainWindow::on_pushButton_4_clicked()
 
 				QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
 				GlobalData::getInstance().getCaseData()->meshFaceActors->insert(std::make_pair(baseName, actor));
+				GlobalData::getInstance().getCaseData()->meshEdgeActors->insert(std::make_pair(baseName, edgeActor));
 			}
 			GlobalData::getInstance().getCaseData()->meshPath = &fileInfo.path().toStdString();
 			

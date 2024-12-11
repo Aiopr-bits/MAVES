@@ -49,6 +49,8 @@ void FormMesh::on_pushButton_clicked()
 {
     // 获取全局数据实例
     const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
+
     // 遍历 treeView 并更新 actor 和网格线的可见性
     for (int i = 0; i < treeViewModel->rowCount(); ++i)
     {
@@ -58,8 +60,14 @@ void FormMesh::on_pushButton_clicked()
         {
             bool isVisible = (item->checkState() == Qt::Checked);
             actor->second->SetVisibility(isVisible);
-            //actor->second->SetGridVisibility(isVisible); // 更新网格线的可见性
         }
+
+		const auto& edgeActor = GlobalData::getInstance().getCaseData()->meshEdgeActors->find(item->text());
+        if (edgeActor != meshEdgeActors->end())
+        {
+            bool isVisible = (item->checkState() == Qt::Checked);
+            edgeActor->second->SetVisibility(isVisible);
+        }	
     }
 }
 
