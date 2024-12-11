@@ -311,41 +311,7 @@ void MainWindow::on_pushButton_4_clicked()
 
 			render->ResetCamera();
 			renderWindow->Render();
-		}
-		else if (type == "vtk")
-		{
-			vtkSmartPointer<vtkUnstructuredGridReader> reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
-			reader->SetFileName(filePath.toStdString().c_str());
-			reader->Update();
-
-			vtkSmartPointer<vtkDataSetMapper> surfaceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
-			surfaceMapper->SetInputConnection(reader->GetOutputPort());
-
-			vtkSmartPointer<vtkActor> surfaceActor = vtkSmartPointer<vtkActor>::New();
-			surfaceActor->SetMapper(surfaceMapper);
-
-			vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
-			geometryFilter->SetInputConnection(reader->GetOutputPort());
-			geometryFilter->Update();
-
-			vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
-			extractEdges->SetInputConnection(geometryFilter->GetOutputPort());
-			extractEdges->Update();
-
-			vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
-
-			vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
-			edgeActor->SetMapper(edgeMapper);
-			edgeActor->GetProperty()->SetColor(0, 0, 0);
-
-			render->AddActor(surfaceActor);
-			render->AddActor(edgeActor);
-
-			render->ResetCamera();
-			renderWindow->Render();
-
-		}
+		}		
 		else
 		{
 			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
