@@ -264,7 +264,7 @@ void MainWindow::on_pushButton_4_clicked()
 		if (type == "foam")
 		{
 			QString casePath = fileInfo.path();
-			std::string command = "foamToVTK -case " + casePath.toStdString();
+			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
 			std::system(command.c_str());
 
 			QString folderName = casePath.split("/").last();
