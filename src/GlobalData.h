@@ -11,10 +11,13 @@ using namespace std;
 
 struct caseData
 {
-    std::string* geometryPath;
-    std::string* meshPath;
-	std::map<QString, vtkSmartPointer<vtkActor>>* meshEdgeActors;
-	std::map<QString, vtkSmartPointer<vtkActor>>* meshFaceActors;
+	std::string geometryPath;                                                                          //导入的几何文件路径
+	std::string meshPath;														                        //导入的网格文件路径
+	std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    // 网格边界actor
+	std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    // 网格面actor
+
+    std::string casePath; 														                        // case路径
+	std::map<double, std::map<QString, std::map<QString, vtkSmartPointer<vtkActor>>>> boundaryActors;  // 边界actor
 };
 
 class GlobalData

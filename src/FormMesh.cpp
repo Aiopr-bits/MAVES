@@ -45,7 +45,7 @@ void FormMesh::updateForm()
     treeViewModel->clear();
 
     // 遍历 meshFaceActors 并添加到 treeView 中
-    for (const auto& actor : *meshFaceActors)
+    for (const auto& actor : meshFaceActors)
     {
         QStandardItem* item = new QStandardItem(actor.first);
 		item->setCheckable(true);
@@ -67,15 +67,15 @@ void FormMesh::on_pushButton_clicked()
     for (int i = 0; i < treeViewModel->rowCount(); ++i)
     {
         QStandardItem* item = treeViewModel->item(i);
-        const auto& actor = meshFaceActors->find(item->text());
-        if (actor != meshFaceActors->end())
+        const auto& actor = meshFaceActors.find(item->text());
+        if (actor != meshFaceActors.end())
         {
             bool isVisible = (item->checkState() == Qt::Checked);
             actor->second->SetVisibility(isVisible);
         }
 
-		const auto& edgeActor = GlobalData::getInstance().getCaseData()->meshEdgeActors->find(item->text());
-        if (edgeActor != meshEdgeActors->end())
+		const auto& edgeActor = GlobalData::getInstance().getCaseData()->meshEdgeActors.find(item->text());
+        if (edgeActor != meshEdgeActors.end())
         {
             bool isVisible = (item->checkState() == Qt::Checked);
             edgeActor->second->SetVisibility(isVisible);

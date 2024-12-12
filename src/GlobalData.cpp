@@ -10,19 +10,17 @@ GlobalData& GlobalData::getInstance()
 // 私有构造函数
 GlobalData::GlobalData() {
     m_caseData = new caseData();
-    m_caseData->geometryPath = new std::string();
-    m_caseData->meshPath = new std::string();
-    m_caseData->meshFaceActors = new std::map<QString, vtkSmartPointer<vtkActor>>();
-	m_caseData->meshEdgeActors = new std::map<QString, vtkSmartPointer<vtkActor>>();
 }
 
 // 设置全局数据
 void GlobalData::setCaseData(const caseData& data)
 {
-    *m_caseData->geometryPath = *data.geometryPath;
-    *m_caseData->meshPath = *data.meshPath;
-    *m_caseData->meshFaceActors = *data.meshFaceActors;
-	*m_caseData->meshEdgeActors = *data.meshEdgeActors;
+    m_caseData->geometryPath = data.geometryPath;
+    m_caseData->meshPath = data.meshPath;
+    m_caseData->meshFaceActors = data.meshFaceActors;
+	m_caseData->meshEdgeActors = data.meshEdgeActors;
+	m_caseData->casePath = data.casePath;
+	m_caseData->boundaryActors = data.boundaryActors;
 }
 
 // 获取全局数据
