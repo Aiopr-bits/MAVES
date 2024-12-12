@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
-    <height>584</height>
+    <width>583</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="10,5,10,5,30,10,30">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,2,5">
        <item>
@@ -125,150 +125,256 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
-        <widget class="QLabel" name="label_10">
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>第一帧</string>
+         </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
 }
 
-</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrFirst.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="toolTip">
-          <string>上一帧】</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrBack.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrFirst.png</normaloff>../res/pqVcrFirst.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_12">
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>上一帧</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrBack.png</normaloff>../res/pqVcrBack.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>重新播放</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrReverse.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrReverse.png</normaloff>../res/pqVcrReverse.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_13">
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>播放</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrPlay.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrPlay.png</normaloff>../res/pqVcrPlay.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_14">
+        <widget class="QPushButton" name="pushButton_7">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>下一帧</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrForward.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrForward.png</normaloff>../res/pqVcrForward.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_15">
+        <widget class="QPushButton" name="pushButton_8">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>最后一帧</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrLast.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrLast.png</normaloff>../res/pqVcrLast.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_16">
+        <widget class="QPushButton" name="pushButton_9">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>循环播放</string>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel:hover {
-    background-color: rgb(242, 242, 242);
+          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
 }</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>../res/pqVcrLoop.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/pqVcrLoop.png</normaloff>../res/pqVcrLoop.png</iconset>
          </property>
         </widget>
        </item>
@@ -343,14 +449,24 @@ QTreeView::item:selected {
          <property name="minimumSize">
           <size>
            <width>100</width>
-           <height>25</height>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
-           <height>25</height>
+           <width>100</width>
+           <height>30</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgb(237, 237, 237);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
+}</string>
          </property>
          <property name="text">
           <string>加载数据</string>
@@ -375,14 +491,24 @@ QTreeView::item:selected {
          <property name="minimumSize">
           <size>
            <width>100</width>
-           <height>25</height>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>25</height>
+           <height>30</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgb(237, 237, 237);
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: rgb(204, 204, 204);
+}</string>
          </property>
          <property name="text">
           <string>应用</string>

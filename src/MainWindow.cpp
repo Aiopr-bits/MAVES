@@ -57,6 +57,9 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindowClass())
+	, playTimer(new QTimer(this))
+	, reverseTimer(new QTimer(this))
+	, loopPlayTimer(new QTimer(this))
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -93,9 +96,19 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
 
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::updateRenderWindow);					//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::renderResultData);	//渲染结果数据
-	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::updateResultData);				//更新渲染窗口
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//渲染结果数据
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);			//第一帧
+	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);	//上一帧
+	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);				//重新播放
+	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);						//播放
+	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);			//下一帧
+	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);			//最后一帧
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);				//循环播放
+	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);
+	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);
+	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);
 }
 
 MainWindow::~MainWindow()
@@ -354,7 +367,7 @@ void MainWindow::on_pushButton_17_clicked()
 	formPostprocessing->show();
 }
 
-void MainWindow::updateRenderWindow()
+void MainWindow::formMesh_apply()
 {
 	renderWindow->Render();
 }
@@ -508,7 +521,7 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 }
 
 
-void MainWindow::renderResultData()
+void MainWindow::formPostprocessing_loadData()
 {
 	double time = GlobalData::getInstance().getCaseData()->times.back();
 	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
@@ -568,7 +581,7 @@ void MainWindow::renderResultData()
 	}
 }
 
-void MainWindow::updateResultData()
+void MainWindow::formPostprocessing_apply()
 {
 	double time = formPostprocessing->ui->comboBox->currentText().toDouble();
 	QString variableName = formPostprocessing->ui->comboBox_2->currentText();
@@ -644,6 +657,87 @@ void MainWindow::updateResultData()
 
 	// 渲染
 	renderWindow->Render();
+}
+
+void MainWindow::formPostprocessing_firstFrame()
+{
+	formPostprocessing->ui->comboBox->setCurrentIndex(0);
+	formPostprocessing_apply();
+}
+
+void MainWindow::formPostprocessing_previousFrame()
+{
+	int index = formPostprocessing->ui->comboBox->currentIndex();
+	if (index > 0) {
+		formPostprocessing->ui->comboBox->setCurrentIndex(index - 1);
+		formPostprocessing_apply();
+	}
+}
+
+void MainWindow::formPostprocessing_reverse()
+{
+	reverseTimer->start(100);
+}
+
+void MainWindow::formPostprocessing_play()
+{
+	playTimer->start(100);
+}
+
+void MainWindow::formPostprocessing_nextFrame()
+{
+	int index = formPostprocessing->ui->comboBox->currentIndex();
+	if (index < formPostprocessing->ui->comboBox->count() - 1) {
+		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
+		formPostprocessing_apply();
+	}
+}
+
+void MainWindow::formPostprocessing_lastFrame()
+{
+	formPostprocessing->ui->comboBox->setCurrentIndex(formPostprocessing->ui->comboBox->count() - 1);
+	formPostprocessing_apply();
+}
+
+void MainWindow::formPostprocessing_loopPlay()
+{
+	loopPlayTimer->start(100);
+}
+
+void MainWindow::onPlayTimerTimeout()
+{
+	int index = formPostprocessing->ui->comboBox->currentIndex();
+	if (index < formPostprocessing->ui->comboBox->count() - 1) {
+		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
+		formPostprocessing_apply();
+	}
+	else {
+		playTimer->stop();
+	}
+}
+
+void MainWindow::onReverseTimerTimeout()
+{
+	int index = formPostprocessing->ui->comboBox->currentIndex();
+	if (index > 0) {
+		formPostprocessing->ui->comboBox->setCurrentIndex(index - 1);
+		formPostprocessing_apply();
+	}
+	else {
+		reverseTimer->stop();
+	}
+}
+
+void MainWindow::onLoopPlayTimerTimeout()
+{
+	int index = formPostprocessing->ui->comboBox->currentIndex();
+	if (index < formPostprocessing->ui->comboBox->count() - 1) {
+		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
+	}
+	else {
+		formPostprocessing->ui->comboBox->setCurrentIndex(0);
+	}
+	formPostprocessing_apply();
 }
 
 void MainWindow::handleAction1Triggered()

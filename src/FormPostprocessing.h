@@ -49,13 +49,28 @@ public:
 	void loadResultData();
 
 public slots:
-	void on_pushButton_clicked();									//加载数据
-	void on_pushButton_2_clicked();									//应用
-	void on_treeView_itemClicked(const QModelIndex& index);
+	void on_pushButton_clicked();									//加载数据按钮
+	void on_pushButton_2_clicked();									//应用按钮
+	void on_treeView_itemClicked(const QModelIndex& index);			//treeView点击事件
+	void on_pushButton_3_clicked();									//第一帧
+	void on_pushButton_4_clicked();									//上一帧
+	void on_pushButton_5_clicked();									//重新播放
+	void on_pushButton_6_clicked();									//播放
+	void on_pushButton_7_clicked();									//下一帧
+	void on_pushButton_8_clicked();									//最后一帧
+	void on_pushButton_9_clicked();									//循环播放
+
 
 signals:
 	void resultDataLoaded();
 	void apply();
+	void firstFrame();
+	void previousFrame();
+	void reverse();
+	void play();
+	void nextFrame();
+	void lastFrame();
+	void loopPlay();
 
 public:
 	Ui::FormPostprocessingClass *ui;

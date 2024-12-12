@@ -22,6 +22,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 
     connect(ui->pushButton, &QPushButton::clicked, this, &FormPostprocessing::on_pushButton_clicked);
     connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
+	//connect(ui->label_10, &QLabel::clicked, this, &FormPostprocessing::on_label_10_clicked);
 }
 
 FormPostprocessing::~FormPostprocessing()
@@ -130,4 +131,39 @@ void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
         Qt::CheckState newState = (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
         item->setCheckState(newState);
     }
+}
+
+void FormPostprocessing::on_pushButton_3_clicked()
+{
+	emit firstFrame();
+}
+
+void FormPostprocessing::on_pushButton_4_clicked()
+{
+	emit previousFrame();
+}
+
+void FormPostprocessing::on_pushButton_5_clicked()
+{
+	emit reverse();
+}
+
+void FormPostprocessing::on_pushButton_6_clicked()
+{
+	emit play();
+}
+
+void FormPostprocessing::on_pushButton_7_clicked()
+{
+	emit nextFrame();
+}
+
+void FormPostprocessing::on_pushButton_8_clicked()
+{
+	emit lastFrame();
+}
+
+void FormPostprocessing::on_pushButton_9_clicked()
+{
+	emit loopPlay();
 }

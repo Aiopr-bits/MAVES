@@ -65,9 +65,19 @@ public slots:
 	void on_pushButton_2_clicked();								    //网格
 	void on_pushButton_17_clicked();								//后处理
 
-	void updateRenderWindow(); 										//更新渲染窗口		相应网格导入后三维窗口刷新
-	void renderResultData();										//渲染结果数据		相应后处理数据加载后三维窗口刷新
-	void updateResultData();										//更新渲染窗口		相应网格导入后三维窗口刷新
+	void formMesh_apply(); 											//更新渲染窗口		相应网格导入后三维窗口刷新
+	void formPostprocessing_loadData();								//渲染结果数据		相应后处理数据加载后三维窗口刷新
+	void formPostprocessing_apply();								//更新渲染窗口		相应网格导入后三维窗口刷新
+	void formPostprocessing_firstFrame();							//第一帧
+	void formPostprocessing_previousFrame();						//上一帧
+	void formPostprocessing_reverse();								//重新播放
+	void formPostprocessing_play();									//播放
+	void formPostprocessing_nextFrame();							//下一帧
+	void formPostprocessing_lastFrame();							//最后一帧
+	void formPostprocessing_loopPlay();								//循环播放
+	void onPlayTimerTimeout();
+	void onReverseTimerTimeout();
+	void onLoopPlayTimerTimeout();
 
 public:
 	Ui::MainWindowClass *ui;
@@ -78,4 +88,8 @@ public:
 
 	FormMesh* formMesh;
 	FormPostprocessing* formPostprocessing;
+
+	QTimer* playTimer;
+	QTimer* reverseTimer;
+	QTimer* loopPlayTimer;
 };
