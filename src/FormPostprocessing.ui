@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>FormPostprocessing</string>
   </property>
+  <property name="toolTip">
+   <string>第一帧</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
@@ -145,6 +148,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_11">
+         <property name="toolTip">
+          <string>上一帧】</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
@@ -163,6 +169,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_12">
+         <property name="toolTip">
+          <string>重新播放</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
@@ -181,6 +190,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_13">
+         <property name="toolTip">
+          <string>播放</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
@@ -199,6 +211,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_14">
+         <property name="toolTip">
+          <string>下一帧</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
@@ -217,6 +232,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_15">
+         <property name="toolTip">
+          <string>最后一帧</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
@@ -235,6 +253,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_16">
+         <property name="toolTip">
+          <string>循环播放</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel:hover {
     background-color: rgb(242, 242, 242);
