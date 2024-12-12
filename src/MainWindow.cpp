@@ -52,6 +52,7 @@
 #include <QMessageBox.h>
 #include <vtkOpenFOAMReader.h>
 #include <QString>
+#include <vtkColorTransferFunction.h>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -92,7 +93,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
 
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::updateRenderWindow);
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::updateRenderWindow);					//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::RenderResultData);	//渲染结果数据
 }
 
 MainWindow::~MainWindow()
@@ -355,6 +357,147 @@ void MainWindow::updateRenderWindow()
 {
 	renderWindow->Render();
 }
+
+std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createActorFromFile(const QString& filePath, const QString& variableName)
+{
+	vtkSmartPointer<vtkAlgorithm> reader;
+
+	// 根据文件扩展名选择合适的读取器
+	if (filePath.endsWith(".vtk", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
+	}
+	else if (filePath.endsWith(".vtu", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
+	}
+	else if (filePath.endsWith(".vtp", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	}
+	else {
+		return std::make_tuple(nullptr, nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 设置文件名并更新读取器
+	if (auto unstructuredGridReader = vtkUnstructuredGridReader::SafeDownCast(reader)) {
+		unstructuredGridReader->SetFileName(filePath.toStdString().c_str());
+	}
+	else if (auto xmlUnstructuredGridReader = vtkXMLUnstructuredGridReader::SafeDownCast(reader)) {
+		xmlUnstructuredGridReader->SetFileName(filePath.toStdString().c_str());
+	}
+	else if (auto xmlPolyDataReader = vtkXMLPolyDataReader::SafeDownCast(reader)) {
+		xmlPolyDataReader->SetFileName(filePath.toStdString().c_str());
+	}
+	reader->Update();
+
+	// 获取数据集
+	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkUnstructuredGrid::SafeDownCast(reader->GetOutputDataObject(0));
+	vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(reader->GetOutputDataObject(0));
+
+	vtkSmartPointer<vtkDataSet> dataSet;
+	if (unstructuredGrid) {
+		dataSet = unstructuredGrid;
+	}
+	else if (polyData) {
+		dataSet = polyData;
+	}
+	else {
+		return std::make_tuple(nullptr, nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 检查是否包含指定的物理量
+	if (!dataSet->GetPointData()->HasArray(variableName.toStdString().c_str())) {
+		return std::make_tuple(nullptr, nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 创建颜色传输函数
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	colorTransferFunction->SetColorSpaceToRGB();
+
+	// 设置颜色映射范围
+	double range[2];
+	dataSet->GetPointData()->GetArray(variableName.toStdString().c_str())->GetRange(range);
+
+	// 添加颜色点
+	colorTransferFunction->AddRGBPoint(range[0], 0 / 255.0, 127 / 255.0, 255/ 255.0); // 蓝色
+	colorTransferFunction->AddRGBPoint((range[0] + range[1]) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
+	colorTransferFunction->AddRGBPoint(range[1], 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
+
+	// 设置标量数据为指定的物理量
+	dataSet->GetPointData()->SetScalars(dataSet->GetPointData()->GetArray(variableName.toStdString().c_str()));
+
+	// 创建面映射器
+	vtkSmartPointer<vtkDataSetMapper> surfaceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+	surfaceMapper->SetInputData(dataSet);
+	surfaceMapper->SetLookupTable(colorTransferFunction);
+	surfaceMapper->SetScalarRange(range);
+
+	// 创建面演员
+	vtkSmartPointer<vtkActor> surfaceActor = vtkSmartPointer<vtkActor>::New();
+	surfaceActor->SetMapper(surfaceMapper);
+
+	return std::make_tuple(surfaceActor, colorTransferFunction, std::array<double, 2>{range[0], range[1]});
+}
+
+
+void MainWindow::RenderResultData()
+{
+	double time = GlobalData::getInstance().getCaseData()->times.back();
+	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
+	QString meshPartName = GlobalData::getInstance().getCaseData()->meshPartName[0];
+
+	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
+	QFileInfo fileInfo(caseFilePath);
+	QString caseDirPath = fileInfo.absolutePath();
+	QString caseDirName = fileInfo.dir().dirName();
+	QString  internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/internal.vtu";
+
+	auto result = createActorFromFile(internalPath, variableName);
+	vtkSmartPointer<vtkActor> actor = std::get<0>(result);
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
+	GlobalData::getInstance().getCaseData()->range = std::get<2>(result);
+
+	if (actor) {
+		// 清除以前的演员
+		render->RemoveAllViewProps();
+
+		// 添加新的演员
+		render->AddActor(actor);
+
+		// 创建图例
+		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+		scalarBar->SetLookupTable(colorTransferFunction);
+		//scalarBar->SetTitle(variableName.toStdString().c_str());
+		scalarBar->SetNumberOfLabels(4);
+		scalarBar->SetOrientationToVertical();
+		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
+		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
+		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
+		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
+
+		// 设置图例标题的文本属性
+		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		titleTextProperty->SetFontSize(24); // 设置标题字体大小
+		titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
+		titleTextProperty->SetBold(1); // 设置标题为粗体
+		titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
+		scalarBar->SetTitleTextProperty(titleTextProperty);
+
+		// 设置图例标签的文本属性
+		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		labelTextProperty->SetFontSize(18); // 设置标签字体大小
+		labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为白色
+		scalarBar->SetLabelTextProperty(labelTextProperty);
+
+		// 添加图例
+		render->AddActor2D(scalarBar);
+
+		// 调整视角到合适的大小
+		render->ResetCamera();
+
+		// 渲染
+		renderWindow->Render();
+	}
+}
+
 
 void MainWindow::handleAction1Triggered()
 {

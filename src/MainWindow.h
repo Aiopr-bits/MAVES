@@ -30,6 +30,7 @@
 #include "FormMesh.h"
 #include "FormPostprocessing.h"
 #include "GlobalData.h"
+#include <tuple>
 
 #pragma execution_character_set("utf-8")
 
@@ -63,7 +64,8 @@ public slots:
 	void on_pushButton_2_clicked();								    //网格
 	void on_pushButton_17_clicked();								//后处理
 
-	void updateRenderWindow(); 										//更新渲染窗口
+	void updateRenderWindow(); 										//更新渲染窗口		相应网格导入后三维窗口刷新
+	void RenderResultData();										//渲染结果数据		相应后处理数据加载后三维窗口刷新
 	
 
 public:

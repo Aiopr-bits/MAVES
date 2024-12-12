@@ -10,17 +10,19 @@ GlobalData& GlobalData::getInstance()
 // 私有构造函数
 GlobalData::GlobalData() {
     m_caseData = new caseData();
+	m_caseData->geometryPath = "";
+	m_caseData->meshPath = "";
+	m_caseData->casePath = "";
+	m_caseData->range = { 0.0, 1.0 };
+	m_caseData->times = {};
+	m_caseData->variableNames = {};
+	m_caseData->meshPartName = {};
 }
 
 // 设置全局数据
 void GlobalData::setCaseData(const caseData& data)
 {
-    m_caseData->geometryPath = data.geometryPath;
-    m_caseData->meshPath = data.meshPath;
-    m_caseData->meshFaceActors = data.meshFaceActors;
-	m_caseData->meshEdgeActors = data.meshEdgeActors;
-	m_caseData->casePath = data.casePath;
-	m_caseData->boundaryActors = data.boundaryActors;
+
 }
 
 // 获取全局数据
