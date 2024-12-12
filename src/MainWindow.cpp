@@ -437,7 +437,6 @@ std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>,
 	return std::make_tuple(surfaceActor, colorTransferFunction, std::array<double, 2>{range[0], range[1]});
 }
 
-
 void MainWindow::RenderResultData()
 {
 	double time = GlobalData::getInstance().getCaseData()->times.back();

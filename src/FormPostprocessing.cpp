@@ -57,6 +57,7 @@ void FormPostprocessing::loadResultData()
     {
         ui->comboBox->addItem(QString::number(time));
     }
+	ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
 
     //更新comboBox_2
     QString vtuFilePath = caseDirPath + "/VTK/" + caseDirName + "_0/internal.vtu";
@@ -98,32 +99,12 @@ void FormPostprocessing::loadResultData()
     {
         QStandardItem* item = new QStandardItem(vtpFileName);
         item->setCheckable(true);
-        item->setCheckState(Qt::Checked);
+		if (vtpFileName == "internal")item->setCheckState(Qt::Checked);
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         item->setSizeHint(QSize(0, 40));
         treeViewModel->appendRow(item);
     }
 
-    // 初始化三维容器
-    //GlobalData::getInstance().getCaseData()->boundaryActors.clear();
-    //for (double time : times)
-    //{
-    //    GlobalData::getInstance().getCaseData()->boundaryActors[time] = std::map<QString, std::map<QString, vtkSmartPointer<vtkActor>>>();
-    //    for (const QString& variableName : variableNames)
-    //    {
-    //        GlobalData::getInstance().getCaseData()->boundaryActors[time][variableName] = std::map<QString, vtkSmartPointer<vtkActor>>();
-    //        foreach(const QString & vtpFileName, vtpFileNames)
-    //        {
-    //            QString vtpFilePath;
-    //            if (vtpFileName == "internal") {
-    //                vtpFilePath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/internal.vtu";
-    //            }
-    //            else {
-    //                vtpFilePath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/boundary/" + vtpFileName + ".vtp";
-    //            }
-    //        }
-    //    }
-    //}
     GlobalData::getInstance().getCaseData()->times = times;
     GlobalData::getInstance().getCaseData()->variableNames = variableNames;
     GlobalData::getInstance().getCaseData()->meshPartName = vtpFileNames;
