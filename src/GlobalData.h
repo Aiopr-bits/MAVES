@@ -22,9 +22,6 @@ struct caseData
     std::vector<double> times;                                                                          // 时间步
     std::vector<QString> variableNames;                                                                 // 物理量名称
     std::vector<QString> meshPartName;																	// 网格部件名称
-
-    vtkSmartPointer<vtkLookupTable> lookupTable;														// 颜色映射表
-    std::array<double, 2> range;                                                                        // 颜色映射范围
 };
 
 class GlobalData

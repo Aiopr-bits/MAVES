@@ -94,7 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
 
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::updateRenderWindow);					//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::RenderResultData);	//渲染结果数据
+	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::renderResultData);	//渲染结果数据
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::updateResultData);				//更新渲染窗口
 }
 
 MainWindow::~MainWindow()
@@ -437,7 +438,77 @@ std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>,
 	return std::make_tuple(surfaceActor, colorTransferFunction, std::array<double, 2>{range[0], range[1]});
 }
 
-void MainWindow::RenderResultData()
+std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createLengendFromFile(const QString& filePath, const QString& variableName)
+{
+	vtkSmartPointer<vtkAlgorithm> reader;
+
+	// 根据文件扩展名选择合适的读取器
+	if (filePath.endsWith(".vtk", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
+	}
+	else if (filePath.endsWith(".vtu", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
+	}
+	else if (filePath.endsWith(".vtp", Qt::CaseInsensitive)) {
+		reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	}
+	else {
+		return std::make_tuple( nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 设置文件名并更新读取器
+	if (auto unstructuredGridReader = vtkUnstructuredGridReader::SafeDownCast(reader)) {
+		unstructuredGridReader->SetFileName(filePath.toStdString().c_str());
+	}
+	else if (auto xmlUnstructuredGridReader = vtkXMLUnstructuredGridReader::SafeDownCast(reader)) {
+		xmlUnstructuredGridReader->SetFileName(filePath.toStdString().c_str());
+	}
+	else if (auto xmlPolyDataReader = vtkXMLPolyDataReader::SafeDownCast(reader)) {
+		xmlPolyDataReader->SetFileName(filePath.toStdString().c_str());
+	}
+	reader->Update();
+
+	// 获取数据集
+	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkUnstructuredGrid::SafeDownCast(reader->GetOutputDataObject(0));
+	vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(reader->GetOutputDataObject(0));
+
+	vtkSmartPointer<vtkDataSet> dataSet;
+	if (unstructuredGrid) {
+		dataSet = unstructuredGrid;
+	}
+	else if (polyData) {
+		dataSet = polyData;
+	}
+	else {
+		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 检查是否包含指定的物理量
+	if (!dataSet->GetPointData()->HasArray(variableName.toStdString().c_str())) {
+		return std::make_tuple( nullptr, std::array<double, 2>{0.0, 1.0});
+	}
+
+	// 创建颜色传输函数
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	colorTransferFunction->SetColorSpaceToRGB();
+
+	// 设置颜色映射范围
+	double range[2];
+	dataSet->GetPointData()->GetArray(variableName.toStdString().c_str())->GetRange(range);
+
+	// 添加颜色点
+	colorTransferFunction->AddRGBPoint(range[0], 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
+	colorTransferFunction->AddRGBPoint((range[0] + range[1]) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
+	colorTransferFunction->AddRGBPoint(range[1], 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
+
+	// 设置标量数据为指定的物理量
+	dataSet->GetPointData()->SetScalars(dataSet->GetPointData()->GetArray(variableName.toStdString().c_str()));
+
+	return std::make_tuple(colorTransferFunction, std::array<double, 2>{range[0], range[1]});
+}
+
+
+void MainWindow::renderResultData()
 {
 	double time = GlobalData::getInstance().getCaseData()->times.back();
 	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
@@ -452,7 +523,7 @@ void MainWindow::RenderResultData()
 	auto result = createActorFromFile(internalPath, variableName);
 	vtkSmartPointer<vtkActor> actor = std::get<0>(result);
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
-	GlobalData::getInstance().getCaseData()->range = std::get<2>(result);
+	std::array<double, 2> range = std::get<2>(result);
 
 	if (actor) {
 		// 清除以前的演员
@@ -497,6 +568,83 @@ void MainWindow::RenderResultData()
 	}
 }
 
+void MainWindow::updateResultData()
+{
+	double time = formPostprocessing->ui->comboBox->currentText().toDouble();
+	QString variableName = formPostprocessing->ui->comboBox_2->currentText();
+
+	// 获取 QTreeView 的模型
+	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formPostprocessing->ui->treeView->model());
+	if (!model) {
+		return;
+	}
+
+	// 遍历模型中的所有项
+	render->RemoveAllViewProps();
+	QString internalPath;
+	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
+	QFileInfo fileInfo(caseFilePath);
+	QString caseDirPath = fileInfo.absolutePath();
+	QString caseDirName = fileInfo.dir().dirName();
+	for (int row = 0; row < model->rowCount(); ++row) {
+		QStandardItem* item = model->item(row);
+		if (item->checkState() == Qt::Checked) {
+			QString meshPartName = item->text();
+			if (meshPartName == "internal") {
+				internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/" + meshPartName + ".vtu";
+			}
+			else {
+				internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/boundary/" + meshPartName + ".vtp";
+			}
+
+			auto result = createActorFromFile(internalPath, variableName);
+			vtkSmartPointer<vtkActor> actor = std::get<0>(result);
+			vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
+			std::array<double, 2> range = std::get<2>(result);
+			render->AddActor(actor);
+		}
+	}
+
+	//创建图例
+	internalPath = caseDirPath + "/VTK/" + caseDirName + "_1000/internal.vtu";
+	auto result = createLengendFromFile(internalPath, variableName);
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<0>(result);
+	std::array<double, 2> range = std::get<1>(result);
+
+	// 创建图例
+	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+	scalarBar->SetLookupTable(colorTransferFunction);
+	//scalarBar->SetTitle(variableName.toStdString().c_str());
+	scalarBar->SetNumberOfLabels(4);
+	scalarBar->SetOrientationToVertical();
+	scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
+	scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
+	scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
+	scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
+
+	// 设置图例标题的文本属性
+	vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+	titleTextProperty->SetFontSize(24); // 设置标题字体大小
+	titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
+	titleTextProperty->SetBold(1); // 设置标题为粗体
+	titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
+	scalarBar->SetTitleTextProperty(titleTextProperty);
+
+	// 设置图例标签的文本属性
+	vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+	labelTextProperty->SetFontSize(18); // 设置标签字体大小
+	labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为白色
+	scalarBar->SetLabelTextProperty(labelTextProperty);
+
+	// 添加图例
+	render->AddActor2D(scalarBar);
+
+	// 调整视角到合适的大小
+	render->ResetCamera();
+
+	// 渲染
+	renderWindow->Render();
+}
 
 void MainWindow::handleAction1Triggered()
 {

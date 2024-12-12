@@ -13,7 +13,6 @@ GlobalData::GlobalData() {
 	m_caseData->geometryPath = "";
 	m_caseData->meshPath = "";
 	m_caseData->casePath = "";
-	m_caseData->range = { 0.0, 1.0 };
 	m_caseData->times = {};
 	m_caseData->variableNames = {};
 	m_caseData->meshPartName = {};

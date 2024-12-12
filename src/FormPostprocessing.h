@@ -49,13 +49,15 @@ public:
 	void loadResultData();
 
 public slots:
-	void on_pushButton_clicked();
+	void on_pushButton_clicked();									//加载数据
+	void on_pushButton_2_clicked();									//应用
 	void on_treeView_itemClicked(const QModelIndex& index);
 
 signals:
 	void resultDataLoaded();
+	void apply();
 
-private:
+public:
 	Ui::FormPostprocessingClass *ui;
 	QStandardItemModel* treeViewModel;
 };

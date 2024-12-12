@@ -21,7 +21,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &FormPostprocessing::on_pushButton_clicked);
-    //connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
+    connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
 }
 
 FormPostprocessing::~FormPostprocessing()
@@ -115,6 +115,11 @@ void FormPostprocessing::loadResultData()
 void FormPostprocessing::on_pushButton_clicked()
 {
     loadResultData();
+}
+
+void FormPostprocessing::on_pushButton_2_clicked()
+{
+	emit apply();
 }
 
 void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
