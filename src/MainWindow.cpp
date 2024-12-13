@@ -651,9 +651,6 @@ void MainWindow::formPostprocessing_apply()
 	// 添加图例
 	render->AddActor2D(scalarBar);
 
-	// 调整视角到合适的大小
-	render->ResetCamera();
-
 	// 渲染
 	renderWindow->Render();
 }
