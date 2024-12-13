@@ -520,7 +520,6 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 	return std::make_tuple(colorTransferFunction, std::array<double, 2>{range[0], range[1]});
 }
 
-
 void MainWindow::formPostprocessing_loadData()
 {
 	double time = GlobalData::getInstance().getCaseData()->times.back();
@@ -619,7 +618,7 @@ void MainWindow::formPostprocessing_apply()
 	}
 
 	//´´½¨Í¼Àı
-	internalPath = caseDirPath + "/VTK/" + caseDirName + "_1000/internal.vtu";
+	internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + formPostprocessing->ui->comboBox->itemText(formPostprocessing->ui->comboBox->count() - 1) + "/internal.vtu";
 	auto result = createLengendFromFile(internalPath, variableName);
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<0>(result);
 	std::array<double, 2> range = std::get<1>(result);

@@ -14,7 +14,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     , ui(new Ui::FormPostprocessingClass())
 {
     ui->setupUi(this);
-    GlobalData::getInstance().getCaseData()->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20-u=680\\case.foam";
+    GlobalData::getInstance().getCaseData()->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20-s\\case.foam";
 
     treeViewModel = new QStandardItemModel(this);
     ui->treeView->setModel(treeViewModel);
@@ -22,7 +22,6 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 
     connect(ui->pushButton, &QPushButton::clicked, this, &FormPostprocessing::on_pushButton_clicked);
     connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
-	//connect(ui->label_10, &QLabel::clicked, this, &FormPostprocessing::on_label_10_clicked);
 }
 
 FormPostprocessing::~FormPostprocessing()
