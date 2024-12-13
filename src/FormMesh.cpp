@@ -11,7 +11,6 @@ FormMesh::FormMesh(QWidget* parent)
     , treeViewModel(new QStandardItemModel(this))
 {
     ui->setupUi(this);
-    ui->pushButton->hide();
 
     ui->treeView->setModel(treeViewModel);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -54,7 +53,6 @@ void FormMesh::updateForm()
 		item->setSizeHint(QSize(0, 40));
 		treeViewModel->appendRow(item);
     }
-    ui->pushButton->show();
 }
 
 void FormMesh::on_pushButton_clicked()
