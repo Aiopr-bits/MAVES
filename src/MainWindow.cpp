@@ -298,7 +298,6 @@ void MainWindow::on_pushButton_clicked()
 	}
 }
 
-
 void MainWindow::on_pushButton_4_clicked()
 {
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
