@@ -91,12 +91,18 @@ MainWindow::MainWindow(QWidget *parent)
 	formMesh = new FormMesh(this);
 	formPostprocessing = new FormPostprocessing(this);
 	formRun = new FormRun(this);
+	formGeometry = new FormGeometry(this);
+	formMeshImport = new FormMeshImport(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
 	formMesh->hide();
 	formPostprocessing->hide();
 	formRun->hide();
+	formGeometry->hide();
+	formMeshImport->hide();
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -149,6 +155,8 @@ void MainWindow::hideAllSubForm()
 	formMesh->hide();
 	formPostprocessing->hide();
 	formRun->hide();
+	formGeometry->hide();
+	formMeshImport->hide();
 }
 
 void MainWindow::handleAction2Triggered()
@@ -221,6 +229,9 @@ void MainWindow::handleAction8Triggered()
 
 void MainWindow::on_pushButton_clicked()
 {
+	hideAllSubForm();
+	formGeometry->show();
+
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
 		tr("所有类型 (*.stp *.step *.igs *.iges *.brep);;"
 			"STP 文件 (*.stp *.step);;"
@@ -300,6 +311,9 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
+	hideAllSubForm();
+	formMeshImport->show();
+
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
 		tr(/*"所有类型 (*.vtk *.foam);;"
 			"VTK 文件 (*.vtk);;"*/

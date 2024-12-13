@@ -27,12 +27,14 @@
 #include <QStandardItemModel.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <QPushButton>
+#include <tuple>
+#include "ui_FormPostprocessing.h"
+#include "GlobalData.h"
 #include "FormMesh.h"
 #include "FormPostprocessing.h"
 #include "FormRun.h"
-#include "GlobalData.h"
-#include <tuple>
-#include "ui_FormPostprocessing.h"
+#include "FormGeometry.h"
+#include "FormMeshImport.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -103,4 +105,6 @@ public:
 	FormMesh* formMesh;
 	FormPostprocessing* formPostprocessing;
 	FormRun* formRun;
+	FormGeometry* formGeometry;
+	FormMeshImport* formMeshImport;
 };

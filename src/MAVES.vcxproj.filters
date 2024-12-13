@@ -41,6 +41,12 @@
     <QtUic Include="FormRun.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="FormGeometry.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FormMeshImport.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -61,6 +67,12 @@
     <ClCompile Include="FormRun.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FormGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormMeshImport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -76,6 +88,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="custompushbutton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormGeometry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormMeshImport.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
