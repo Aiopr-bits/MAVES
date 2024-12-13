@@ -160,6 +160,12 @@ QPushButton:hover {
           <iconset>
            <normaloff>../res/pqVcrFirst.png</normaloff>../res/pqVcrFirst.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -196,6 +202,12 @@ QPushButton:hover {
           <iconset>
            <normaloff>../res/pqVcrBack.png</normaloff>../res/pqVcrBack.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -213,7 +225,7 @@ QPushButton:hover {
           </size>
          </property>
          <property name="toolTip">
-          <string>重新播放</string>
+          <string>倒放</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
@@ -231,6 +243,12 @@ QPushButton:hover {
          <property name="icon">
           <iconset>
            <normaloff>../res/pqVcrReverse.png</normaloff>../res/pqVcrReverse.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -268,6 +286,12 @@ QPushButton:hover {
           <iconset>
            <normaloff>../res/pqVcrPlay.png</normaloff>../res/pqVcrPlay.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -303,6 +327,12 @@ QPushButton:hover {
          <property name="icon">
           <iconset>
            <normaloff>../res/pqVcrForward.png</normaloff>../res/pqVcrForward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -340,6 +370,12 @@ QPushButton:hover {
           <iconset>
            <normaloff>../res/pqVcrLast.png</normaloff>../res/pqVcrLast.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -375,6 +411,12 @@ QPushButton:hover {
          <property name="icon">
           <iconset>
            <normaloff>../res/pqVcrLoop.png</normaloff>../res/pqVcrLoop.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>

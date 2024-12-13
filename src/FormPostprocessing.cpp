@@ -20,8 +20,66 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     ui->treeView->setModel(treeViewModel);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    // 创建并设置 pushButtonLoopPlayTimerPause
+    pushButtonLoopPlayTimerPause = new QPushButton(this);
+    pushButtonLoopPlayTimerPause->setToolTip("停止播放");
+    pushButtonLoopPlayTimerPause->setStyleSheet(
+        "QPushButton {"
+        "    background-color: rgb(255, 255, 255);"
+        "    border: none;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: rgb(204, 204, 204);"
+        "}"
+    );
+    pushButtonLoopPlayTimerPause->setFixedSize(40, 40);
+    QIcon icon("../res/pqVcrPause.png");
+    pushButtonLoopPlayTimerPause->setIcon(icon);
+    pushButtonLoopPlayTimerPause->setIconSize(QSize(32, 32));
+    ui->horizontalLayout_6->insertWidget(6, pushButtonLoopPlayTimerPause);
+    pushButtonLoopPlayTimerPause->hide();
+
+    // 创建并设置 pushButtonPlayTimerPause
+    pushButtonPlayTimerPause = new QPushButton(this);
+    pushButtonPlayTimerPause->setToolTip("停止播放");
+    pushButtonPlayTimerPause->setStyleSheet(
+        "QPushButton {"
+        "    background-color: rgb(255, 255, 255);"
+        "    border: none;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: rgb(204, 204, 204);"
+        "}"
+    );
+    pushButtonPlayTimerPause->setFixedSize(40, 40);
+    pushButtonPlayTimerPause->setIcon(icon);
+    pushButtonPlayTimerPause->setIconSize(QSize(32, 32));
+    ui->horizontalLayout_6->insertWidget(3, pushButtonPlayTimerPause);
+    pushButtonPlayTimerPause->hide();
+
+	// 创建并设置 pushButtonreverseTimerPause
+	pushButtonReverseTimerPause = new QPushButton(this);
+	pushButtonReverseTimerPause->setToolTip("停止播放");
+	pushButtonReverseTimerPause->setStyleSheet(
+        "QPushButton {"
+        "    background-color: rgb(255, 255, 255);"
+        "    border: none;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: rgb(204, 204, 204);"
+        "}"
+    );
+	pushButtonReverseTimerPause->setFixedSize(40, 40);
+	pushButtonReverseTimerPause->setIcon(icon);
+	pushButtonReverseTimerPause->setIconSize(QSize(32, 32));
+	ui->horizontalLayout_6->insertWidget(2, pushButtonReverseTimerPause);
+	pushButtonReverseTimerPause->hide();
+
     connect(ui->pushButton, &QPushButton::clicked, this, &FormPostprocessing::on_pushButton_clicked);
     connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
+	connect(pushButtonPlayTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
+	connect(pushButtonReverseTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonReverseTimerPause_clicked);
+	connect(pushButtonLoopPlayTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonLoopPlayTimerPause_clicked);
 }
 
 FormPostprocessing::~FormPostprocessing()
@@ -165,4 +223,19 @@ void FormPostprocessing::on_pushButton_8_clicked()
 void FormPostprocessing::on_pushButton_9_clicked()
 {
 	emit loopPlay();
+}
+
+void FormPostprocessing::on_pushButtonPlayTimerPause_clicked()
+{
+	emit playPause();
+}
+
+void FormPostprocessing::on_pushButtonReverseTimerPause_clicked()
+{
+	emit reversePause();
+}
+
+void FormPostprocessing::on_pushButtonLoopPlayTimerPause_clicked()
+{
+	emit loopPlayPause();
 }

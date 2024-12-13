@@ -65,26 +65,23 @@ MainWindow::MainWindow(QWidget *parent)
 	this->setWindowState(Qt::WindowMaximized);
 	ui->setupUi(this);
 
+	//初始化三维窗口
     renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
     render = vtkSmartPointer<vtkRenderer>::New();
     ui->openGLWidget->setRenderWindow(renderWindow);
     renderWindow->AddRenderer(render);
-
     render->SetBackground(1.0, 1.0, 1.0);
     render->SetBackground2(0.0, 0.8039, 1.0); 
     render->GradientBackgroundOn();
-
     addCoordinateAxes();
 
+	//创建各个子面板
 	formMesh = new FormMesh(this);
 	formPostprocessing = new FormPostprocessing(this);
-
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
-
 	formMesh->hide();
 	formPostprocessing->hide();
-
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -95,6 +92,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);			//z正向
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
+	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);					//播放
+	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);				//倒放
+	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
 
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//渲染结果数据
@@ -106,9 +106,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);			//下一帧
 	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);			//最后一帧
 	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);				//循环播放
-	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);
-	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);
-	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);
+	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);			//播放暂停
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);		//反向播放暂停
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);	//循环播放暂停
 }
 
 MainWindow::~MainWindow()
@@ -700,15 +700,40 @@ void MainWindow::formPostprocessing_loopPlay()
 	loopPlayTimer->start(100);
 }
 
+void MainWindow::formPostprocessing_playPause()
+{
+	playTimer->stop();
+	formPostprocessing->pushButtonPlayTimerPause->hide();
+	formPostprocessing->ui->pushButton_6->show();
+}
+
+void MainWindow::formPostprocessing_reversePause()
+{
+	reverseTimer->stop();
+	formPostprocessing->pushButtonReverseTimerPause->hide();
+	formPostprocessing->ui->pushButton_5->show();
+}
+
+void MainWindow::formPostprocessing_loopPlayPause()
+{
+	loopPlayTimer->stop();
+	formPostprocessing->pushButtonLoopPlayTimerPause->hide();
+	formPostprocessing->ui->pushButton_9->show();
+}
+
 void MainWindow::onPlayTimerTimeout()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
 		formPostprocessing_apply();
+		formPostprocessing->pushButtonPlayTimerPause->show();
+		formPostprocessing->ui->pushButton_6->hide();
 	}
 	else {
 		playTimer->stop();
+		formPostprocessing->pushButtonPlayTimerPause->hide();
+		formPostprocessing->ui->pushButton_6->show();
 	}
 }
 
@@ -718,9 +743,13 @@ void MainWindow::onReverseTimerTimeout()
 	if (index > 0) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index - 1);
 		formPostprocessing_apply();
+		formPostprocessing->pushButtonReverseTimerPause->show();
+		formPostprocessing->ui->pushButton_5->hide();
 	}
 	else {
 		reverseTimer->stop();
+		formPostprocessing->pushButtonReverseTimerPause->hide();
+		formPostprocessing->ui->pushButton_5->show();
 	}
 }
 
@@ -729,11 +758,14 @@ void MainWindow::onLoopPlayTimerTimeout()
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
+
 	}
 	else {
 		formPostprocessing->ui->comboBox->setCurrentIndex(0);
 	}
 	formPostprocessing_apply();
+	formPostprocessing->pushButtonLoopPlayTimerPause->show();
+	formPostprocessing->ui->pushButton_9->hide();
 }
 
 void MainWindow::handleAction1Triggered()

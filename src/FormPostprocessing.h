@@ -34,6 +34,8 @@
 #include <vtkScalarBarActor.h>
 #include <vtkTextProperty.h>
 
+#pragma execution_character_set("utf-8")
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };
 QT_END_NAMESPACE
@@ -59,6 +61,9 @@ public slots:
 	void on_pushButton_7_clicked();									//下一帧
 	void on_pushButton_8_clicked();									//最后一帧
 	void on_pushButton_9_clicked();									//循环播放
+	void on_pushButtonPlayTimerPause_clicked();						//播放暂停
+	void on_pushButtonReverseTimerPause_clicked();					//反向播放暂停
+	void on_pushButtonLoopPlayTimerPause_clicked();					//循环播放暂停
 
 
 signals:
@@ -71,8 +76,15 @@ signals:
 	void nextFrame();
 	void lastFrame();
 	void loopPlay();
+	void playPause();
+	void reversePause();
+	void loopPlayPause();
 
 public:
 	Ui::FormPostprocessingClass *ui;
 	QStandardItemModel* treeViewModel;
+
+	QPushButton* pushButtonPlayTimerPause;
+	QPushButton* pushButtonReverseTimerPause;
+	QPushButton* pushButtonLoopPlayTimerPause;
 };

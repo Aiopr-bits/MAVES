@@ -65,9 +65,13 @@ public slots:
 	void on_pushButton_2_clicked();								    //网格
 	void on_pushButton_17_clicked();								//后处理
 
-	void formMesh_apply(); 											//更新渲染窗口		相应网格导入后三维窗口刷新
-	void formPostprocessing_loadData();								//渲染结果数据		相应后处理数据加载后三维窗口刷新
-	void formPostprocessing_apply();								//更新渲染窗口		相应网格导入后三维窗口刷新
+	void onPlayTimerTimeout();										//播放
+	void onReverseTimerTimeout(); 									//倒放
+	void onLoopPlayTimerTimeout(); 									//循环播放
+
+	void formMesh_apply(); 											//更新渲染窗口		
+	void formPostprocessing_loadData();								//渲染结果数据		
+	void formPostprocessing_apply();								//更新渲染窗口	
 	void formPostprocessing_firstFrame();							//第一帧
 	void formPostprocessing_previousFrame();						//上一帧
 	void formPostprocessing_reverse();								//重新播放
@@ -75,9 +79,9 @@ public slots:
 	void formPostprocessing_nextFrame();							//下一帧
 	void formPostprocessing_lastFrame();							//最后一帧
 	void formPostprocessing_loopPlay();								//循环播放
-	void onPlayTimerTimeout();
-	void onReverseTimerTimeout();
-	void onLoopPlayTimerTimeout();
+	void formPostprocessing_playPause();							//播放暂停
+	void formPostprocessing_reversePause();							//反向播放暂停
+	void formPostprocessing_loopPlayPause();						//循环播放暂停
 
 public:
 	Ui::MainWindowClass *ui;
@@ -86,10 +90,12 @@ public:
 	vtkSmartPointer<vtkRenderer> render;
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
 
-	FormMesh* formMesh;
-	FormPostprocessing* formPostprocessing;
-
 	QTimer* playTimer;
 	QTimer* reverseTimer;
 	QTimer* loopPlayTimer;
+
+	FormMesh* formMesh;
+	FormPostprocessing* formPostprocessing;
+
+
 };
