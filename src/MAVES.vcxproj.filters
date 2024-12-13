@@ -38,6 +38,9 @@
     <QtUic Include="FormPostprocessing.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="FormRun.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -55,6 +58,9 @@
     <ClCompile Include="FormPostprocessing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FormRun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -64,6 +70,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormPostprocessing.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormRun.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="custompushbutton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

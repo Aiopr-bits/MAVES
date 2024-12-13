@@ -29,6 +29,7 @@
 #include <QPushButton>
 #include "FormMesh.h"
 #include "FormPostprocessing.h"
+#include "FormRun.h"
 #include "GlobalData.h"
 #include <tuple>
 #include "ui_FormPostprocessing.h"
@@ -63,6 +64,7 @@ public slots:
 	void on_pushButton_clicked();								    //几何导入
 	void on_pushButton_4_clicked();								    //网格导入
 	void on_pushButton_2_clicked();								    //网格
+	void on_pushButton_16_clicked();								//求解计算
 	void on_pushButton_17_clicked();								//后处理
 
 	void onPlayTimerTimeout();										//播放
@@ -100,4 +102,5 @@ public:
 
 	FormMesh* formMesh;
 	FormPostprocessing* formPostprocessing;
+	FormRun* formRun;
 };

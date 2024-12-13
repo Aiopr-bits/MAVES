@@ -90,10 +90,13 @@ MainWindow::MainWindow(QWidget *parent)
 	//创建各个子面板
 	formMesh = new FormMesh(this);
 	formPostprocessing = new FormPostprocessing(this);
+	formRun = new FormRun(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	formMesh->hide();
 	formPostprocessing->hide();
+	formRun->hide();
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -145,6 +148,7 @@ void MainWindow::hideAllSubForm()
 {
 	formMesh->hide();
 	formPostprocessing->hide();
+	formRun->hide();
 }
 
 void MainWindow::handleAction2Triggered()
@@ -371,6 +375,12 @@ void MainWindow::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
+}
+
+void MainWindow::on_pushButton_16_clicked()
+{
+	hideAllSubForm();
+	formRun->show();
 }
 
 void MainWindow::on_pushButton_17_clicked()
