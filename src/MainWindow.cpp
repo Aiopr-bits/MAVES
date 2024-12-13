@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, playTimer(new QTimer(this))
 	, reverseTimer(new QTimer(this))
 	, loopPlayTimer(new QTimer(this))
+	, lastClickedButton(nullptr)
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -74,6 +75,17 @@ MainWindow::MainWindow(QWidget *parent)
     render->SetBackground2(0.0, 0.8039, 1.0); 
     render->GradientBackgroundOn();
     addCoordinateAxes();
+
+	// 初始化按钮
+	QPushButton* buttons[] = {
+		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
+		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
+		ui->pushButton_11, ui->pushButton_12, ui->pushButton_13, ui->pushButton_14, ui->pushButton_15,
+		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20
+	};
+	for (QPushButton* button : buttons) {
+		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
+	}
 
 	//创建各个子面板
 	formMesh = new FormMesh(this);
@@ -719,6 +731,38 @@ void MainWindow::formPostprocessing_loopPlayPause()
 	loopPlayTimer->stop();
 	formPostprocessing->pushButtonLoopPlayTimerPause->hide();
 	formPostprocessing->ui->pushButton_9->show();
+}
+
+void MainWindow::onButtonClicked()
+{
+	QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
+	if (clickedButton) {
+		// 还原上一个点击的按钮背景色
+		if (lastClickedButton) {
+			lastClickedButton->setStyleSheet(
+				"QPushButton {"
+				"    background-color: rgb(255, 255, 255);"
+				"    border: none;"
+				"	 text-align: left;"
+				"	 padding-left: 50px;"
+				"}"
+				"QPushButton:hover {"
+				"    background-color: rgb(242, 242, 242);"
+				"}"
+			);
+		}
+		// 设置当前点击的按钮背景色
+		clickedButton->setStyleSheet(
+			"QPushButton {"
+			"    background-color: rgb(232, 232, 232);"
+			"    border: none;"
+			"	 text-align: left;"
+			"	 padding-left: 50px;"
+			"}"
+		);
+		// 更新上一个点击的按钮
+		lastClickedButton = clickedButton;
+	}
 }
 
 void MainWindow::onPlayTimerTimeout()

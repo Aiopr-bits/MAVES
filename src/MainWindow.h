@@ -83,6 +83,8 @@ public slots:
 	void formPostprocessing_reversePause();							//反向播放暂停
 	void formPostprocessing_loopPlayPause();						//循环播放暂停
 
+	void onButtonClicked();											//按钮点击
+
 public:
 	Ui::MainWindowClass *ui;
 
@@ -93,9 +95,9 @@ public:
 	QTimer* playTimer;
 	QTimer* reverseTimer;
 	QTimer* loopPlayTimer;
+	QPushButton* buttons[20];
+	QPushButton* lastClickedButton;
 
 	FormMesh* formMesh;
 	FormPostprocessing* formPostprocessing;
-
-
 };
