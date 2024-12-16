@@ -5,6 +5,7 @@
 WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::WorkSpaceWindowClass())
+	, mainWindow()
 {
     ui->setupUi(this);
     this->setWindowState(Qt::WindowMaximized);
@@ -38,9 +39,17 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
         else
             ui->treeView->expand(index);
         });
+
+	connect(ui->pushButton_3, &QPushButton::clicked, this, &WorkSpaceWindow::on_pushButton_3_clicked);
 }
 
 WorkSpaceWindow::~WorkSpaceWindow()
 {
     delete ui;
+}
+
+void WorkSpaceWindow::on_pushButton_3_clicked()
+{
+	this->hide();
+	mainWindow.show();
 }
