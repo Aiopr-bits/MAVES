@@ -316,6 +316,9 @@ QComboBox QAbstractItemView QScrollBar::sub-page:vertical {
            <height>40</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="toolTip">
           <string>第一帧</string>
          </property>
@@ -357,6 +360,9 @@ QPushButton:hover {
            <width>40</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="toolTip">
           <string>上一帧</string>
@@ -400,6 +406,9 @@ QPushButton:hover {
            <height>40</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="toolTip">
           <string>倒放</string>
          </property>
@@ -441,6 +450,9 @@ QPushButton:hover {
            <width>40</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="toolTip">
           <string>播放</string>
@@ -484,6 +496,9 @@ QPushButton:hover {
            <height>40</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="toolTip">
           <string>下一帧</string>
          </property>
@@ -526,6 +541,9 @@ QPushButton:hover {
            <height>40</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="toolTip">
           <string>最后一帧</string>
          </property>
@@ -567,6 +585,9 @@ QPushButton:hover {
            <width>40</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="toolTip">
           <string>循环播放</string>

@@ -316,16 +316,16 @@ void MainWindow::on_pushButton_4_clicked()
 	formMeshImport->show();
 
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-		tr(/*"所有类型 (*.vtk *.foam);;"
+		tr(/*"所有类型 (*.vtk *.trf);;"
 			"VTK 文件 (*.vtk);;"*/
-			"OpenFOAM 文件 (*.foam)"));
+			"TRF 文件 (*.trf)"));
 	QFileInfo fileInfo(filePath);
 	if (fileInfo.exists())
 	{
 		QString type = fileInfo.suffix().toLower();
 		render->RemoveAllViewProps();
 
-		if (type == "foam")
+		if (type == "trf")
 		{
 			QString casePath = fileInfo.path();
 			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
