@@ -7,13 +7,7 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
     , ui(new Ui::WorkSpaceWindowClass())
 {
     ui->setupUi(this);
-
-    // 窗口在屏幕中间显示
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int x = (screenGeometry.width() - this->width()) / 2;
-    int y = (screenGeometry.height() - this->height()) / 2;
-    this->move(x, y);
+    this->setWindowState(Qt::WindowMaximized);
 
     //label
     QPalette palette = ui->label_2->palette();

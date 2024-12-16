@@ -458,27 +458,6 @@ QPushButton:hover {
                <property name="bottomMargin">
                 <number>30</number>
                </property>
-               <item row="2" column="2">
-                <widget class="QLabel" name="label_15">
-                 <property name="styleSheet">
-                  <string notr="true">QLabel{
-    border-radius: 15px;             
-	background-color: rgb(242, 242, 242);
-    padding: 0;                    
-}
-
-QLabel:hover {
-    background-color: rgb(209, 209, 209);
-}</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
                <item row="3" column="2">
                 <widget class="QLabel" name="label_14">
                  <property name="minimumSize">
@@ -511,35 +490,80 @@ QLabel:hover {
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2">
-                <widget class="QLabel" name="label_10">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
+               <item row="0" column="0">
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLabel{
+                  <string notr="true">QPushButton{
     border-radius: 15px;             
 	background-color: rgb(242, 242, 242);
     padding: 0;                    
 }
 
-QLabel:hover {
+QPushButton:hover {
     background-color: rgb(209, 209, 209);
 }</string>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{
+    border-radius: 15px;             
+	background-color: rgb(242, 242, 242);
+    padding: 0;                    
+}
+
+QPushButton:hover {
+    background-color: rgb(209, 209, 209);
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
-                <widget class="QLabel" name="label_11">
+               <item row="2" column="0">
+                <widget class="QPushButton" name="pushButton_5">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{
+    border-radius: 15px;             
+	background-color: rgb(242, 242, 242);
+    padding: 0;                    
+}
+
+QPushButton:hover {
+    background-color: rgb(209, 209, 209);
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_13">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
@@ -563,39 +587,28 @@ QLabel:hover {
 }</string>
                  </property>
                  <property name="text">
-                  <string>初步阶段</string>
+                  <string>详细阶段</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignHCenter|Qt::AlignTop</set>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_16">
-                 <property name="minimumSize">
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
                   <size>
-                   <width>0</width>
-                   <height>0</height>
+                   <width>10</width>
+                   <height>20</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QLabel{
-    border-radius: 15px;             
-	background-color: rgb(242, 242, 242);
-    padding: 0;                    
-}
-
-QLabel:hover {
-    background-color: rgb(209, 209, 209);
-}</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
+                </spacer>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_12">
@@ -635,8 +648,8 @@ QLabel:hover {
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_13">
+               <item row="1" column="2">
+                <widget class="QLabel" name="label_11">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
@@ -660,60 +673,36 @@ QLabel:hover {
 }</string>
                  </property>
                  <property name="text">
-                  <string>详细阶段</string>
+                  <string>初步阶段</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignHCenter|Qt::AlignTop</set>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_9">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>7</pointsize>
-                  </font>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pushButton_4">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLabel{
+                  <string notr="true">QPushButton{
     border-radius: 15px;             
 	background-color: rgb(242, 242, 242);
     padding: 0;                    
 }
 
-QLabel:hover {
+QPushButton:hover {
     background-color: rgb(209, 209, 209);
 }</string>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
                 </widget>
-               </item>
-               <item row="0" column="1">
-                <spacer name="horizontalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>10</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
              </item>
