@@ -580,7 +580,7 @@ QPushButton:pressed {
 }</string>
              </property>
              <property name="text">
-              <string>Operating Conditions</string>
+              <string>参考值</string>
              </property>
              <property name="icon">
               <iconset>
@@ -629,7 +629,7 @@ QPushButton:pressed {
 }</string>
              </property>
              <property name="text">
-              <string>Cell Zones</string>
+              <string>区域设置</string>
              </property>
              <property name="icon">
               <iconset>
