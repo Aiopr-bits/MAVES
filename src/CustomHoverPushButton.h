@@ -29,6 +29,17 @@ protected:
         emit cursorLeave();
     }
 
+    void mousePressEvent(QMouseEvent* event) override {
+        QSize newSize = originalIconSize * 0.8;
+        setIconSize(newSize);
+        QPushButton::mousePressEvent(event);
+    }
+
+    void mouseReleaseEvent(QMouseEvent* event) override {
+        setIconSize(originalIconSize);
+        QPushButton::mouseReleaseEvent(event);
+    }
+
 signals:
     void cursorEnter();
     void cursorLeave();
@@ -36,4 +47,3 @@ signals:
 private:
     QSize originalIconSize;
 };
-

@@ -549,14 +549,9 @@ QLineEdit:hover {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: rgb(237, 237, 237);
+    background-color: rgb(255, 255, 255);
     border: none;
 	border-radius: 50px;
-}
-
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-	qproperty-iconSize: 150px 150px;
 }</string>
          </property>
          <property name="text">
