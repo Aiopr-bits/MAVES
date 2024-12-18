@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>703</height>
+    <width>444</width>
+    <height>712</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,23 +65,27 @@
           <widget class="QComboBox" name="comboBox">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>120</width>
              <height>27</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
+             <width>120</width>
              <height>25</height>
             </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QComboBox {
     background-color: white;
-    border: 1px solid #b4b4b4;
-    border-radius: 5px;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
     padding: 5px;
     min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
 }
 
 QComboBox::drop-down {
@@ -89,10 +93,14 @@ QComboBox::drop-down {
     subcontrol-position: top right;
     width: 20px;
     border-left-width: 1px;
-    border-left-color: #dcdcdc;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
     border-left-style: solid;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
 }
 
 QComboBox::down-arrow {
@@ -102,7 +110,7 @@ QComboBox::down-arrow {
 }
 
 QComboBox QAbstractItemView {
-    border: 1px solid #dcdcdc;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     selection-background-color: #f0f0f0;
     selection-color: black;
     outline: 0px;
@@ -113,7 +121,7 @@ QComboBox QAbstractItemView::item {
 }
 
 QComboBox QAbstractItemView QScrollBar:vertical {
-    border: 1px solid #dcdcdc;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     background: white;
     width: 12px;
     margin: 0px 0px 0px 0px;
@@ -139,18 +147,20 @@ QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
     subcontrol-origin: margin;
 }
 
-QComboBox QAbstractItemView QScrollBar::up-arrow:vertical,
-QComboBox QAbstractItemView QScrollBar::down-arrow:vertical {
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
     border: none;
     width: 0px;
     height: 0px;
     background: none;
 }
 
-QComboBox QAbstractItemView QScrollBar::add-page:vertical,
-QComboBox QAbstractItemView QScrollBar::sub-page:vertical {
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     background: none;
-}</string>
+}
+
+</string>
            </property>
           </widget>
          </item>
@@ -191,23 +201,27 @@ QComboBox QAbstractItemView QScrollBar::sub-page:vertical {
           <widget class="QComboBox" name="comboBox_2">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>120</width>
              <height>27</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
+             <width>120</width>
              <height>25</height>
             </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QComboBox {
     background-color: white;
-    border: 1px solid #b4b4b4;
-    border-radius: 5px;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
     padding: 5px;
     min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
 }
 
 QComboBox::drop-down {
@@ -215,10 +229,14 @@ QComboBox::drop-down {
     subcontrol-position: top right;
     width: 20px;
     border-left-width: 1px;
-    border-left-color: #dcdcdc;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
     border-left-style: solid;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
 }
 
 QComboBox::down-arrow {
@@ -228,7 +246,7 @@ QComboBox::down-arrow {
 }
 
 QComboBox QAbstractItemView {
-    border: 1px solid #dcdcdc;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     selection-background-color: #f0f0f0;
     selection-color: black;
     outline: 0px;
@@ -239,7 +257,7 @@ QComboBox QAbstractItemView::item {
 }
 
 QComboBox QAbstractItemView QScrollBar:vertical {
-    border: 1px solid #dcdcdc;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     background: white;
     width: 12px;
     margin: 0px 0px 0px 0px;
@@ -265,18 +283,20 @@ QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
     subcontrol-origin: margin;
 }
 
-QComboBox QAbstractItemView QScrollBar::up-arrow:vertical,
-QComboBox QAbstractItemView QScrollBar::down-arrow:vertical {
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
     border: none;
     width: 0px;
     height: 0px;
     background: none;
 }
 
-QComboBox QAbstractItemView QScrollBar::add-page:vertical,
-QComboBox QAbstractItemView QScrollBar::sub-page:vertical {
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     background: none;
-}</string>
+}
+
+</string>
            </property>
           </widget>
          </item>
@@ -746,13 +766,19 @@ QTreeView QScrollBar::sub-page:vertical {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: rgb(237, 237, 237);
-    border: none;
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆润边框 */
 }
 
 QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮背景色 */
+}
+
+QPushButton:pressed {
+    background-color: rgb(235, 235, 235); /* 鼠标点击背景色 */
+}
+</string>
          </property>
          <property name="text">
           <string>加载数据</string>
@@ -788,13 +814,19 @@ QPushButton:hover {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: rgb(237, 237, 237);
-    border: none;
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆润边框 */
 }
 
 QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮背景色 */
+}
+
+QPushButton:pressed {
+    background-color: rgb(235, 235, 235); /* 鼠标点击背景色 */
+}
+</string>
          </property>
          <property name="text">
           <string>应用</string>

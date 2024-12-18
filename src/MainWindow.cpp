@@ -75,7 +75,6 @@ MainWindow::MainWindow(QWidget *parent)
     renderWindow->AddRenderer(render);
     render->SetBackground(1.0, 1.0, 1.0);
     render->SetBackground2(27/255.0, 85/255.0, 133/255.0); 
-	//render->SetBackground2(112 / 255.0, 130 / 255.0, 190 / 255.0);
     render->GradientBackgroundOn();
     addCoordinateAxes();
 

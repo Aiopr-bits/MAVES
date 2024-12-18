@@ -1,10 +1,12 @@
 #include "WorkSpaceWindow.h"
 #include <QScreen>
 #include <QStandardItemModel>
+#include <QMessageBox>
 
 WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::WorkSpaceWindowClass())
+	, mainWindow(this)
 {
     ui->setupUi(this);
     this->setWindowState(Qt::WindowMaximized);
@@ -38,9 +40,17 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
         else
             ui->treeView->expand(index);
         });
+
+    connect(ui->pushButton_3, &CustomDoubleClickPushButton::doubleClicked, this, &WorkSpaceWindow::on_PushButton_3_DoubleClicked);
 }
 
 WorkSpaceWindow::~WorkSpaceWindow()
 {
     delete ui;
+}
+
+void WorkSpaceWindow::on_PushButton_3_DoubleClicked()
+{
+	mainWindow.show();
+	this->hide(); 
 }

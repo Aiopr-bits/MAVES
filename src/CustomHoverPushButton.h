@@ -2,6 +2,7 @@
 #include <QPushButton>
 #include <QEvent>
 #include <QIcon>
+#include <QTimer>
 
 class CustomHoverPushButton : public QPushButton
 {
@@ -9,23 +10,30 @@ class CustomHoverPushButton : public QPushButton
 
 public:
     CustomHoverPushButton(QWidget* parent = nullptr) : QPushButton(parent) {
-        setIconSize(QSize(100, 100));
+        QTimer::singleShot(0, this, [this]() {
+            originalIconSize = iconSize();
+            });
     }
 
 protected:
     void enterEvent(QEvent* event) override {
-        setIconSize(QSize(110, 110));
+        QSize newSize = originalIconSize * 1.1;
+        setIconSize(newSize);
         QPushButton::enterEvent(event);
-		emit cursorEnter();
+        emit cursorEnter();
     }
 
     void leaveEvent(QEvent* event) override {
-        setIconSize(QSize(100, 100));
+        setIconSize(originalIconSize);
         QPushButton::leaveEvent(event);
-		emit cursorLeave();
+        emit cursorLeave();
     }
 
 signals:
     void cursorEnter();
-	void cursorLeave();
+    void cursorLeave();
+
+private:
+    QSize originalIconSize;
 };
+

@@ -169,6 +169,18 @@
            <height>25</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -253,6 +265,18 @@
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
          </property>
         </widget>
        </item>
@@ -339,6 +363,18 @@
            <height>25</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -423,6 +459,18 @@
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
          </property>
         </widget>
        </item>

@@ -156,13 +156,19 @@ QTreeView QScrollBar::sub-page:vertical {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: rgb(237, 237, 237);
-    border: none;
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆润边框 */
 }
 
 QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮背景色 */
+}
+
+QPushButton:pressed {
+    background-color: rgb(235, 235, 235); /* 鼠标点击背景色 */
+}
+</string>
        </property>
        <property name="text">
         <string>应用</string>
