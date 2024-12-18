@@ -131,7 +131,7 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>25</height>
+               <height>27</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -169,7 +169,7 @@ QComboBox::drop-down:hover {
 }
 
 QComboBox::down-arrow {
-    image: url(:/icons/down_arrow.png); /* 请确保有一个合适的箭头图标 */
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
     width: 10px;
     height: 10px;
 }
