@@ -119,6 +119,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);				//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
 
+	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);							//导入几何
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//渲染结果数据
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
@@ -233,82 +234,6 @@ void MainWindow::on_pushButton_clicked()
 {
 	hideAllSubForm();
 	formGeometry->show();
-
-	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-		tr("所有类型 (*.stp *.step *.igs *.iges *.brep);;"
-			"STP 文件 (*.stp *.step);;"
-			"IGS 文件 (*.igs *.iges);;"
-			"BREP 文件 (*.brep)"));
-	QFileInfo fileInfo(filePath);
-
-	if (fileInfo.exists())
-	{
-		QString type = fileInfo.suffix().toLower();
-		vtkNew<vtkPolyDataMapper> mapper;
-
-		render->RemoveAllViewProps();
-
-		if (type == "step" || type == "stp")
-		{
-			STEPControl_Reader Reader;
-			Reader.ReadFile(filePath.toStdString().c_str());
-			Reader.TransferRoots();
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
-			vtkNew<IVtkTools_ShapeDataSource> DS;
-			DS->SetShape(aShapeImpl);
-			DS->Update();
-			vtkNew<IVtkTools_DisplayModeFilter> filter;
-			filter->SetInputData(DS->GetOutput());
-			filter->SetDisplayMode(DM_Shading);
-			filter->SetSmoothShading(1);
-			filter->Update();
-			mapper->SetInputData(filter->GetOutput());
-		}
-		else if (type == "iges" || type == "igs")
-		{
-			IGESControl_Reader Reader;
-			Reader.ReadFile(filePath.toStdString().c_str());
-			Reader.TransferRoots();
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
-			vtkNew<IVtkTools_ShapeDataSource> DS;
-			DS->SetShape(aShapeImpl);
-			DS->Update();
-			vtkNew<IVtkTools_DisplayModeFilter> filter;
-			filter->SetInputData(DS->GetOutput());
-			filter->SetDisplayMode(DM_Shading);
-			filter->SetSmoothShading(1);
-			filter->Update();
-			mapper->SetInputData(filter->GetOutput());
-		}
-		else if (type == "brep")
-		{
-			BRep_Builder builder;
-			TopoDS_Shape shape;
-			BRepTools::Read(shape, filePath.toStdString().c_str(), builder);
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(shape);
-			vtkNew<IVtkTools_ShapeDataSource> DS;
-			DS->SetShape(aShapeImpl);
-			DS->Update();
-			vtkNew<IVtkTools_DisplayModeFilter> filter;
-			filter->SetInputData(DS->GetOutput());
-			filter->SetDisplayMode(DM_Shading);
-			filter->SetSmoothShading(1);
-			filter->Update();
-			mapper->SetInputData(filter->GetOutput());
-		}
-		else
-		{
-			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
-			return;
-		}
-
-		vtkNew<vtkActor> actor;
-		actor->SetMapper(mapper);
-		actor->GetProperty()->SetColor(97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0); 
-		render->AddActor(actor);
-		render->ResetCamera();
-		ui->openGLWidget->renderWindow()->Render();
-	}
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -410,6 +335,82 @@ void MainWindow::on_pushButton_17_clicked()
 {
 	hideAllSubForm();
 	formPostprocessing->show();
+}
+
+void MainWindow::formGeometry_import(const QString& filePath)
+{
+	QFileInfo fileInfo(filePath);
+	if (!fileInfo.exists())
+	{
+		QMessageBox::warning(this, tr("错误"), tr("文件不存在"));
+		return;
+	}
+
+	QString type = fileInfo.suffix().toLower();
+	vtkNew<vtkPolyDataMapper> mapper;
+
+	render->RemoveAllViewProps();
+
+	if (type == "step" || type == "stp")
+	{
+		STEPControl_Reader Reader;
+		Reader.ReadFile(filePath.toStdString().c_str());
+		Reader.TransferRoots();
+		IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
+		vtkNew<IVtkTools_ShapeDataSource> DS;
+		DS->SetShape(aShapeImpl);
+		DS->Update();
+		vtkNew<IVtkTools_DisplayModeFilter> filter;
+		filter->SetInputData(DS->GetOutput());
+		filter->SetDisplayMode(DM_Shading);
+		filter->SetSmoothShading(1);
+		filter->Update();
+		mapper->SetInputData(filter->GetOutput());
+	}
+	else if (type == "iges" || type == "igs")
+	{
+		IGESControl_Reader Reader;
+		Reader.ReadFile(filePath.toStdString().c_str());
+		Reader.TransferRoots();
+		IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(Reader.Shape());
+		vtkNew<IVtkTools_ShapeDataSource> DS;
+		DS->SetShape(aShapeImpl);
+		DS->Update();
+		vtkNew<IVtkTools_DisplayModeFilter> filter;
+		filter->SetInputData(DS->GetOutput());
+		filter->SetDisplayMode(DM_Shading);
+		filter->SetSmoothShading(1);
+		filter->Update();
+		mapper->SetInputData(filter->GetOutput());
+	}
+	else if (type == "brep")
+	{
+		BRep_Builder builder;
+		TopoDS_Shape shape;
+		BRepTools::Read(shape, filePath.toStdString().c_str(), builder);
+		IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(shape);
+		vtkNew<IVtkTools_ShapeDataSource> DS;
+		DS->SetShape(aShapeImpl);
+		DS->Update();
+		vtkNew<IVtkTools_DisplayModeFilter> filter;
+		filter->SetInputData(DS->GetOutput());
+		filter->SetDisplayMode(DM_Shading);
+		filter->SetSmoothShading(1);
+		filter->Update();
+		mapper->SetInputData(filter->GetOutput());
+	}
+	else
+	{
+		QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+		return;
+	}
+
+	vtkNew<vtkActor> actor;
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetColor(97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0);
+	render->AddActor(actor);
+	render->ResetCamera();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::formMesh_apply()

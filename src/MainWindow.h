@@ -63,16 +63,17 @@ public slots:
 	void handleAction7Triggered();								    //z负向
 	void handleAction8Triggered();								    //适应窗口
 
-	void on_pushButton_clicked();								    //几何导入
-	void on_pushButton_4_clicked();								    //网格导入
-	void on_pushButton_2_clicked();								    //网格
-	void on_pushButton_16_clicked();								//求解计算
-	void on_pushButton_17_clicked();								//后处理
+	void on_pushButton_clicked();								    //几何页面
+	void on_pushButton_4_clicked();								    //网格导入页面
+	void on_pushButton_2_clicked();								    //网格页面
+	void on_pushButton_16_clicked();								//求解计算页面
+	void on_pushButton_17_clicked();								//后处理页面
 
 	void onPlayTimerTimeout();										//播放
 	void onReverseTimerTimeout(); 									//倒放
 	void onLoopPlayTimerTimeout(); 									//循环播放
 
+	void formGeometry_import(const QString& filePath);				//几何导入
 	void formMesh_apply(); 											//更新渲染窗口		
 	void formPostprocessing_loadData();								//渲染结果数据		
 	void formPostprocessing_apply();								//更新渲染窗口	

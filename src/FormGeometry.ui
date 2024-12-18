@@ -234,7 +234,7 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
              </item>
              <item>
               <property name="text">
-               <string>IGS 文件</string>
+               <string>IGES 文件</string>
               </property>
              </item>
              <item>
@@ -406,12 +406,18 @@ QPushButton:pressed {
            <height>30</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
     background-color: rgb(255, 255, 255); /* 背景色 */
     border: 1px solid rgb(122, 122, 122); /* 边框色 */
     border-radius: 2px; /* 圆润边框 */
+	text-align: left;
+    padding-left: 30px;
 }
+
 
 QPushButton:hover {
     background-color: rgb(242, 242, 242); /* 鼠标悬浮背景色 */
@@ -424,6 +430,10 @@ QPushButton:pressed {
          </property>
          <property name="text">
           <string>导入</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/importData.png</normaloff>../res/importData.png</iconset>
          </property>
         </widget>
        </item>
