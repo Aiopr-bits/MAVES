@@ -7,8 +7,8 @@ FormRun::FormRun(QWidget *parent)
 	ui->setupUi(this);
 	ui->label_6->hide();
 
-	connect(ui->pushButton, &CustomPushButton::cursorEnter, this, &FormRun::cursorEnter);
-	connect(ui->pushButton, &CustomPushButton::cursorLeave, this, &FormRun::cursorLeave);
+	connect(ui->pushButton, &CustomHoverPushButton::cursorEnter, this, &FormRun::cursorEnter);
+	connect(ui->pushButton, &CustomHoverPushButton::cursorLeave, this, &FormRun::cursorLeave);
 }
 
 FormRun::~FormRun()

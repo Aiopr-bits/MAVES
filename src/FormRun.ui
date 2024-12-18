@@ -480,7 +480,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="CustomPushButton" name="pushButton">
+        <widget class="CustomHoverPushButton" name="pushButton">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -627,9 +627,9 @@ QPushButton:hover {
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>CustomPushButton</class>
+   <class>CustomHoverPushButton</class>
    <extends>QPushButton</extends>
-   <header location="global">custompushbutton.h</header>
+   <header location="global">customhoverpushbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
