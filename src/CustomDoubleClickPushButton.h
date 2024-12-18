@@ -17,7 +17,7 @@ protected:
         if (event->button() == Qt::LeftButton) {
             emit doubleClicked();
         }
-        // Call the base class implementation
+ 
         QPushButton::mouseDoubleClickEvent(event);
     }
 };

@@ -629,7 +629,7 @@ QPushButton:hover {
   <customwidget>
    <class>CustomHoverPushButton</class>
    <extends>QPushButton</extends>
-   <header location="global">customhoverpushbutton.h</header>
+   <header>customhoverpushbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
