@@ -176,6 +176,10 @@ void FormPostprocessing::on_pushButton_clicked()
 
 void FormPostprocessing::on_pushButton_2_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return; 
+    }
+
 	emit apply();
 }
 
@@ -191,36 +195,57 @@ void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
 
 void FormPostprocessing::on_pushButton_3_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit firstFrame();
 }
 
 void FormPostprocessing::on_pushButton_4_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit previousFrame();
 }
 
 void FormPostprocessing::on_pushButton_5_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit reverse();
 }
 
 void FormPostprocessing::on_pushButton_6_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit play();
 }
 
 void FormPostprocessing::on_pushButton_7_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit nextFrame();
 }
 
 void FormPostprocessing::on_pushButton_8_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit lastFrame();
 }
 
 void FormPostprocessing::on_pushButton_9_clicked()
 {
+    if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+        return;
+    }
 	emit loopPlay();
 }
 
