@@ -512,6 +512,16 @@ QPushButton:hover {
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
                <item row="2" column="2">
@@ -536,6 +546,16 @@ QPushButton:hover {
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../res/ceshi1.jpg</normaloff>../res/ceshi1.jpg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
                <item row="2" column="0">
@@ -559,6 +579,16 @@ QPushButton:hover {
                  </property>
                  <property name="text">
                   <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -701,6 +731,16 @@ QPushButton:hover {
                  </property>
                  <property name="text">
                   <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
                  </property>
                 </widget>
                </item>
