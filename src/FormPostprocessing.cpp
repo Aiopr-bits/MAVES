@@ -8,6 +8,7 @@
 #include <vtkPointData.h>
 #include <vtkCellData.h>
 #include <vtkLookupTable.h>
+#include <QThread>
 
 FormPostprocessing::FormPostprocessing(QWidget* parent)
     : QWidget(parent)
@@ -27,9 +28,6 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
         "    background-color: rgb(255, 255, 255);"
         "    border: none;"
         "}"
-        "QPushButton:hover {"
-        "    background-color: rgb(204, 204, 204);"
-        "}"
     );
     pushButtonLoopPlayTimerPause->setFixedSize(40, 40);
     QIcon icon("../res/pqVcrPause.png");
@@ -46,9 +44,6 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
         "    background-color: rgb(255, 255, 255);"
         "    border: none;"
         "}"
-        "QPushButton:hover {"
-        "    background-color: rgb(204, 204, 204);"
-        "}"
     );
     pushButtonPlayTimerPause->setFixedSize(40, 40);
     pushButtonPlayTimerPause->setIcon(icon);
@@ -64,9 +59,6 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
         "    background-color: rgb(255, 255, 255);"
         "    border: none;"
         "}"
-        "QPushButton:hover {"
-        "    background-color: rgb(204, 204, 204);"
-        "}"
     );
 	pushButtonReverseTimerPause->setFixedSize(40, 40);
 	pushButtonReverseTimerPause->setIcon(icon);
@@ -76,9 +68,11 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 
     connect(ui->pushButton, &QPushButton::clicked, this, &FormPostprocessing::on_pushButton_clicked);
     connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
-	connect(pushButtonPlayTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
-	connect(pushButtonReverseTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonReverseTimerPause_clicked);
-	connect(pushButtonLoopPlayTimerPause, &QPushButton::clicked, this, &FormPostprocessing::on_pushButtonLoopPlayTimerPause_clicked);
+
+    //Êó±êÌ§Æð
+    connect(pushButtonPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
+    connect(pushButtonReverseTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonReverseTimerPause_clicked);
+    connect(pushButtonLoopPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonLoopPlayTimerPause_clicked);
 }
 
 FormPostprocessing::~FormPostprocessing()
