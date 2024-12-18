@@ -1,7 +1,6 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
 #include "ui_WorkSpaceWindow.h"
-#include "MainWindow.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -17,10 +16,6 @@ public:
     WorkSpaceWindow(QWidget *parent = nullptr);
     ~WorkSpaceWindow();
 
-public slots:
-	void on_pushButton_3_clicked();
-
 private:
     Ui::WorkSpaceWindowClass *ui;
-	MainWindow mainWindow;
 };

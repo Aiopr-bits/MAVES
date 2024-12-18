@@ -230,8 +230,8 @@ void MainWindow::handleAction8Triggered()
 
 void MainWindow::on_pushButton_clicked()
 {
-	//hideAllSubForm();
-	//formGeometry->show();
+	hideAllSubForm();
+	formGeometry->show();
 
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
 		tr("所有类型 (*.stp *.step *.igs *.iges *.brep);;"
@@ -312,24 +312,24 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-	//hideAllSubForm();
-	//formMeshImport->show();
+	hideAllSubForm();
+	formMeshImport->show();
 
 	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-		tr(/*"所有类型 (*.vtk *.trf);;"
+		tr(/*"所有类型 (*.vtk *.foam);;"
 			"VTK 文件 (*.vtk);;"*/
-			"TRF 文件 (*.trf)"));
+			"OpenFOAM 文件 (*.foam)"));
 	QFileInfo fileInfo(filePath);
 	if (fileInfo.exists())
 	{
 		QString type = fileInfo.suffix().toLower();
 		render->RemoveAllViewProps();
 
-		if (type == "trf")
+		if (type == "foam")
 		{
 			QString casePath = fileInfo.path();
-			/*std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
-			std::system(command.c_str());*/
+			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
+			std::system(command.c_str());
 
 			QString folderName = casePath.split("/").last();
 			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";

@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     _putenv("MPI_BUFFER_SIZE=20000000");
 
     QApplication a(argc, argv);
-    WorkSpaceWindow w;
+    MainWindow w;
     w.show();
     return a.exec();
 }

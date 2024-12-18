@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1295</width>
-    <height>838</height>
+    <width>1299</width>
+    <height>847</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -512,10 +512,6 @@ QPushButton:hover {
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
-                 </property>
                  <property name="iconSize">
                   <size>
                    <width>400</width>
@@ -546,10 +542,6 @@ QPushButton:hover {
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>../res/ceshi1.jpg</normaloff>../res/ceshi1.jpg</iconset>
-                 </property>
                  <property name="iconSize">
                   <size>
                    <width>400</width>
@@ -579,10 +571,6 @@ QPushButton:hover {
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -731,10 +719,6 @@ QPushButton:hover {
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>../res/ceshi2.png</normaloff>../res/ceshi2.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
