@@ -33,6 +33,7 @@
 #include <vtkGeometryFilter.h>
 #include <vtkScalarBarActor.h>
 #include <vtkTextProperty.h>
+#include "CustomHoverPushButton.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -84,7 +85,7 @@ public:
 	Ui::FormPostprocessingClass *ui;
 	QStandardItemModel* treeViewModel;
 
-	QPushButton* pushButtonPlayTimerPause;
-	QPushButton* pushButtonReverseTimerPause;
-	QPushButton* pushButtonLoopPlayTimerPause;
+	CustomHoverPushButton* pushButtonPlayTimerPause;
+	CustomHoverPushButton* pushButtonReverseTimerPause;
+	CustomHoverPushButton* pushButtonLoopPlayTimerPause;
 };

@@ -323,7 +323,7 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="CustomHoverPushButton" name="pushButton_3">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -347,10 +347,7 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     background-color: rgb(255, 255, 255);
     border: none;
 }
-
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -368,7 +365,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="CustomHoverPushButton" name="pushButton_4">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -393,9 +390,7 @@ QPushButton:hover {
     border: none;
 }
 
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -413,7 +408,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_5">
+        <widget class="CustomHoverPushButton" name="pushButton_5">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -437,10 +432,7 @@ QPushButton:hover {
     background-color: rgb(255, 255, 255);
     border: none;
 }
-
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -458,7 +450,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="CustomHoverPushButton" name="pushButton_6">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -483,9 +475,7 @@ QPushButton:hover {
     border: none;
 }
 
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -503,7 +493,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="CustomHoverPushButton" name="pushButton_7">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -528,9 +518,7 @@ QPushButton:hover {
     border: none;
 }
 
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -548,7 +536,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_8">
+        <widget class="CustomHoverPushButton" name="pushButton_8">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -573,9 +561,7 @@ QPushButton:hover {
     border: none;
 }
 
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -593,7 +579,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_9">
+        <widget class="CustomHoverPushButton" name="pushButton_9">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -617,10 +603,7 @@ QPushButton:hover {
     background-color: rgb(255, 255, 255);
     border: none;
 }
-
-QPushButton:hover {
-    background-color: rgb(204, 204, 204);
-}</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -866,6 +849,13 @@ QPushButton:pressed {
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CustomHoverPushButton</class>
+   <extends>QPushButton</extends>
+   <header>customhoverpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

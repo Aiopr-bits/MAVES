@@ -20,7 +20,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // 创建并设置 pushButtonLoopPlayTimerPause
-    pushButtonLoopPlayTimerPause = new QPushButton(this);
+    pushButtonLoopPlayTimerPause = new CustomHoverPushButton(this);
     pushButtonLoopPlayTimerPause->setToolTip("停止播放");
     pushButtonLoopPlayTimerPause->setStyleSheet(
         "QPushButton {"
@@ -39,7 +39,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     pushButtonLoopPlayTimerPause->hide();
 
     // 创建并设置 pushButtonPlayTimerPause
-    pushButtonPlayTimerPause = new QPushButton(this);
+    pushButtonPlayTimerPause = new CustomHoverPushButton(this);
     pushButtonPlayTimerPause->setToolTip("停止播放");
     pushButtonPlayTimerPause->setStyleSheet(
         "QPushButton {"
@@ -57,7 +57,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
     pushButtonPlayTimerPause->hide();
 
 	// 创建并设置 pushButtonreverseTimerPause
-	pushButtonReverseTimerPause = new QPushButton(this);
+	pushButtonReverseTimerPause = new CustomHoverPushButton(this);
 	pushButtonReverseTimerPause->setToolTip("停止播放");
 	pushButtonReverseTimerPause->setStyleSheet(
         "QPushButton {"
