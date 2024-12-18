@@ -53,6 +53,8 @@
 #include <vtkOpenFOAMReader.h>
 #include <QString>
 #include <vtkColorTransferFunction.h>
+#include <QProcess>
+#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -329,7 +331,15 @@ void MainWindow::on_pushButton_4_clicked()
 		{
 			QString casePath = fileInfo.path();
 			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
-			std::system(command.c_str());
+
+			QProcess process;
+			process.setProgram("cmd.exe");
+			process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
+			process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+				args->flags |= CREATE_NO_WINDOW;
+				});
+			process.start();
+			process.waitForFinished();
 
 			QString folderName = casePath.split("/").last();
 			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
