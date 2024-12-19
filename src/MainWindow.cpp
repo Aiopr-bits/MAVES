@@ -120,6 +120,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
 
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);							//导入几何
+	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);						//导入网格
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//渲染结果数据
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
@@ -239,84 +240,7 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
 	hideAllSubForm();
-	formMeshImport->show();
-
-	QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-		tr(/*"所有类型 (*.vtk *.foam);;"
-			"VTK 文件 (*.vtk);;"*/
-			"OpenFOAM 文件 (*.foam)"));
-	QFileInfo fileInfo(filePath);
-	if (fileInfo.exists())
-	{
-		QString type = fileInfo.suffix().toLower();
-		render->RemoveAllViewProps();
-
-		if (type == "foam")
-		{
-			QString casePath = fileInfo.path();
-			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
-
-			QProcess process;
-			process.setProgram("cmd.exe");
-			process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
-			process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
-				args->flags |= CREATE_NO_WINDOW;
-				});
-			process.start();
-			process.waitForFinished();
-
-			QString folderName = casePath.split("/").last();
-			QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
-
-			//获取vtpPath文件夹下的所有.vtp文件路径
-			QDir dir(vtpPath);
-			QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
-
-			foreach(QString vtpFile, vtpFiles)
-			{
-				QString fullPath = dir.absoluteFilePath(vtpFile);
-				vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-				reader->SetFileName(fullPath.toStdString().c_str());
-				reader->Update();
-
-				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-				mapper->SetInputConnection(reader->GetOutputPort());
-
-				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-				actor->SetMapper(mapper);
-				actor->GetProperty()->SetColor(0,221,221);
-
-				render->AddActor(actor);
-
-				vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
-				extractEdges->SetInputConnection(reader->GetOutputPort());
-				extractEdges->Update();
-
-				vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-				edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
-
-				vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
-				edgeActor->SetMapper(edgeMapper);
-				edgeActor->GetProperty()->SetColor(0, 0, 0);
-
-				render->AddActor(edgeActor);
-
-				QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
-				GlobalData::getInstance().getCaseData()->meshFaceActors.insert(std::make_pair(baseName, actor));
-				GlobalData::getInstance().getCaseData()->meshEdgeActors.insert(std::make_pair(baseName, edgeActor));
-			}
-			GlobalData::getInstance().getCaseData()->meshPath = fileInfo.path().toStdString();
-
-			formMesh->updateForm();
-
-			render->ResetCamera();
-			renderWindow->Render();
-		}
-		else
-		{
-			QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
-		}
-	}
+	formMeshImport->show();	
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -411,6 +335,85 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	render->AddActor(actor);
 	render->ResetCamera();
 	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formMeshImport_import(const QString& filePath)
+{
+	QFileInfo fileInfo(filePath);
+	if (!fileInfo.exists())
+	{
+		QMessageBox::warning(this, tr("错误"), tr("文件不存在"));
+		return;
+	}
+
+	QString type = fileInfo.suffix().toLower();
+	render->RemoveAllViewProps();
+
+	if (type == "foam")
+	{
+		QString casePath = fileInfo.path();
+		std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
+
+		QProcess process;
+		process.setProgram("cmd.exe");
+		process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
+		process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+			args->flags |= CREATE_NO_WINDOW;
+			});
+		process.start();
+		process.waitForFinished();
+
+		QString folderName = casePath.split("/").last();
+		QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
+
+		// 获取vtpPath文件夹下的所有.vtp文件路径
+		QDir dir(vtpPath);
+		QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
+
+		foreach(QString vtpFile, vtpFiles)
+		{
+			QString fullPath = dir.absoluteFilePath(vtpFile);
+			vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+			reader->SetFileName(fullPath.toStdString().c_str());
+			reader->Update();
+
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			mapper->SetInputConnection(reader->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			actor->SetMapper(mapper);
+			actor->GetProperty()->SetColor(0, 221, 221);
+
+			render->AddActor(actor);
+
+			vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
+			extractEdges->SetInputConnection(reader->GetOutputPort());
+			extractEdges->Update();
+
+			vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
+			edgeActor->SetMapper(edgeMapper);
+			edgeActor->GetProperty()->SetColor(0, 0, 0);
+
+			render->AddActor(edgeActor);
+
+			QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
+			GlobalData::getInstance().getCaseData()->meshFaceActors.insert(std::make_pair(baseName, actor));
+			GlobalData::getInstance().getCaseData()->meshEdgeActors.insert(std::make_pair(baseName, edgeActor));
+		}
+		GlobalData::getInstance().getCaseData()->meshPath = fileInfo.path().toStdString();
+
+		formMesh->updateForm();
+
+		render->ResetCamera();
+		renderWindow->Render();
+	}
+	else
+	{
+		QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+	}
 }
 
 void MainWindow::formMesh_apply()

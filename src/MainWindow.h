@@ -74,6 +74,7 @@ public slots:
 	void onLoopPlayTimerTimeout(); 									//循环播放
 
 	void formGeometry_import(const QString& filePath);				//几何导入
+	void formMeshImport_import(const QString& filePath);			//网格导入
 	void formMesh_apply(); 											//更新渲染窗口		
 	void formPostprocessing_loadData();								//渲染结果数据		
 	void formPostprocessing_apply();								//更新渲染窗口	
