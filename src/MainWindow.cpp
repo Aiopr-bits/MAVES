@@ -409,6 +409,34 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 
 		render->ResetCamera();
 		renderWindow->Render();
+
+		//网格导入成功之后，自动跳转到网格页面
+		on_pushButton_2_clicked();
+		QPushButton* clickedButton = ui->pushButton_2;
+		if (clickedButton) {
+			if (lastClickedButton) {
+				lastClickedButton->setStyleSheet(
+					"QPushButton {"
+					"    background-color: rgb(255, 255, 255);"
+					"    border: none;"
+					"	 text-align: left;"
+					"	 padding-left: 50px;"
+					"}"
+					"QPushButton:hover {"
+					"    background-color: rgb(242, 242, 242);"
+					"}"
+				);
+			}
+			clickedButton->setStyleSheet(
+				"QPushButton {"
+				"    background-color: rgb(232, 232, 232);"
+				"    border: none;"
+				"	 text-align: left;"
+				"	 padding-left: 50px;"
+				"}"
+			);
+			lastClickedButton = clickedButton;
+		}
 	}
 	else
 	{

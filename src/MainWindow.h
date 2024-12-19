@@ -69,10 +69,6 @@ public slots:
 	void on_pushButton_16_clicked();								//求解计算页面
 	void on_pushButton_17_clicked();								//后处理页面
 
-	void onPlayTimerTimeout();										//播放
-	void onReverseTimerTimeout(); 									//倒放
-	void onLoopPlayTimerTimeout(); 									//循环播放
-
 	void formGeometry_import(const QString& filePath);				//几何导入
 	void formMeshImport_import(const QString& filePath);			//网格导入
 	void formMesh_apply(); 											//更新渲染窗口		
@@ -89,7 +85,11 @@ public slots:
 	void formPostprocessing_reversePause();							//反向播放暂停
 	void formPostprocessing_loopPlayPause();						//循环播放暂停
 
-	void onButtonClicked();											//按钮点击
+	void onPlayTimerTimeout();										//播放
+	void onReverseTimerTimeout(); 									//倒放
+	void onLoopPlayTimerTimeout(); 									//循环播放
+
+	void onButtonClicked();											//主控制面板按钮点击
 
 public:
 	Ui::MainWindowClass *ui;
