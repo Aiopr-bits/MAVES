@@ -91,6 +91,11 @@ MainWindow::MainWindow(QWidget *parent)
 		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
 	}
 
+	//布局管理
+	QList<int> sizes;
+	sizes << 400 << 100; 
+	ui->splitter->setSizes(sizes);
+
 	//创建各个子面板
 	formMesh = new FormMesh(this);
 	formPostprocessing = new FormPostprocessing(this);
