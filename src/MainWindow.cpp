@@ -109,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//程序启动点击几何页面
 	on_pushButton_clicked();
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
-	lastClickedButton = ui->pushButton_2;
+	lastClickedButton = ui->pushButton;
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
