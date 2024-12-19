@@ -106,6 +106,11 @@ MainWindow::MainWindow(QWidget *parent)
 	formGeometry->hide();
 	formMeshImport->hide();
 
+	//程序启动点击几何页面
+	on_pushButton_clicked();
+	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+	lastClickedButton = ui->pushButton_2;
+
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);			//x正向
@@ -412,35 +417,9 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 
 		//网格导入成功之后，自动跳转到网格页面
 		on_pushButton_2_clicked();
-		QPushButton* clickedButton = ui->pushButton_2;
-		if (clickedButton) {
-			if (lastClickedButton) {
-				lastClickedButton->setStyleSheet(
-					"QPushButton {"
-					"    background-color: rgb(255, 255, 255);"
-					"    border: none;"
-					"	 text-align: left;"
-					"	 padding-left: 50px;"
-					"}"
-					"QPushButton:hover {"
-					"    background-color: rgb(242, 242, 242);"
-					"}"
-				);
-			}
-			clickedButton->setStyleSheet(
-				"QPushButton {"
-				"    background-color: rgb(232, 232, 232);"
-				"    border: none;"
-				"	 text-align: left;"
-				"	 padding-left: 50px;"
-				"}"
-			);
-			lastClickedButton = clickedButton;
-		}
-	}
-	else
-	{
-		QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+		ui->pushButton_2->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
+		lastClickedButton = ui->pushButton_2;
 	}
 }
 
