@@ -871,14 +871,20 @@ void MainWindow::onButtonClicked()
 
 void MainWindow::onProcessOutput()
 {
-	QByteArray output = process.readAllStandardOutput();
-	ui->textBrowser->append(QString::fromLocal8Bit(output));
+	while (process.canReadLine()) {
+		QByteArray output = process.readLine();
+		ui->textBrowser->append(QString::fromLocal8Bit(output));
+		ui->textBrowser->repaint();
+	}
 }
 
 void MainWindow::onProcessError()
 {
-	QByteArray error = process.readAllStandardError();
-	ui->textBrowser->append(QString::fromLocal8Bit(error));
+	while (process.canReadLine()) {
+		QByteArray error = process.readLine();
+		ui->textBrowser->append(QString::fromLocal8Bit(error));
+		ui->textBrowser->repaint(); 
+	}
 }
 
 void MainWindow::onPlayTimerTimeout()
