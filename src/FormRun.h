@@ -21,6 +21,10 @@ public:
 public slots:
 	void cursorEnter();
 	void cursorLeave();
+	void on_pushButton_clicked();
+
+signals:
+	void run();
 
 private:
 	Ui::FormRunClass *ui;

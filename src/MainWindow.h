@@ -35,6 +35,7 @@
 #include "FormRun.h"
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
+#include <QProcess>
 
 #pragma execution_character_set("utf-8")
 
@@ -71,8 +72,9 @@ public slots:
 
 	void formGeometry_import(const QString& filePath);				//几何导入
 	void formMeshImport_import(const QString& filePath);			//网格导入
-	void formMesh_apply(); 											//更新渲染窗口		
-	void formPostprocessing_loadData();								//渲染结果数据		
+	void formMesh_apply(); 											//更新渲染窗口	
+	void formRun_run();												//求解计算
+	void formPostprocessing_loadData();								//加载结果数据		
 	void formPostprocessing_apply();								//更新渲染窗口	
 	void formPostprocessing_firstFrame();							//第一帧
 	void formPostprocessing_previousFrame();						//上一帧
@@ -90,6 +92,8 @@ public slots:
 	void onLoopPlayTimerTimeout(); 									//循环播放
 
 	void onButtonClicked();											//主控制面板按钮点击
+	void onProcessOutput();											//进程输出
+	void onProcessError();											//进程错误
 
 public:
 	Ui::MainWindowClass *ui;
@@ -97,6 +101,7 @@ public:
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
 	vtkSmartPointer<vtkRenderer> render;
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
+	QProcess process;
 
 	QTimer* playTimer;
 	QTimer* reverseTimer;

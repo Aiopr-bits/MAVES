@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, reverseTimer(new QTimer(this))
 	, loopPlayTimer(new QTimer(this))
 	, lastClickedButton(nullptr)
+	, process(this)
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -123,11 +124,14 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);					//播放
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);				//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
+	connect(&process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);		//进程输出
+	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);		//进程错误
 
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);							//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);						//导入网格
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//渲染结果数据
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//网格应用
+	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);														//求解计算
+	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//加载结果数据
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);			//第一帧
 	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);	//上一帧
@@ -359,7 +363,6 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		QString casePath = fileInfo.path();
 		std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
 
-		QProcess process;
 		process.setProgram("cmd.exe");
 		process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
 		process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
@@ -426,6 +429,22 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 void MainWindow::formMesh_apply()
 {
 	renderWindow->Render();
+}
+
+void MainWindow::formRun_run()
+{
+	//保存界面上所有的配置参数，并校验是否符合要求
+
+
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+
+
+
+
+	
 }
 
 std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createActorFromFile(const QString& filePath, const QString& variableName)
@@ -807,6 +826,18 @@ void MainWindow::onButtonClicked()
 		// 更新上一个点击的按钮
 		lastClickedButton = clickedButton;
 	}
+}
+
+void MainWindow::onProcessOutput()
+{
+	QByteArray output = process.readAllStandardOutput();
+	ui->textBrowser->append(QString::fromLocal8Bit(output));
+}
+
+void MainWindow::onProcessError()
+{
+	QByteArray error = process.readAllStandardError();
+	ui->textBrowser->append(QString::fromLocal8Bit(error));
 }
 
 void MainWindow::onPlayTimerTimeout()

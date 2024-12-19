@@ -40,4 +40,8 @@ void FormRun::cursorLeave()
 	ui->label_6->hide();
 }
 
+void FormRun::on_pushButton_clicked()
+{
+	emit run();
+}
 
