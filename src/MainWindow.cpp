@@ -55,6 +55,7 @@
 #include <vtkColorTransferFunction.h>
 #include <QProcess>
 #include <QStringList>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -111,6 +112,9 @@ MainWindow::MainWindow(QWidget *parent)
 	on_pushButton_clicked();
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton = ui->pushButton;
+
+	//对滚动条进行polish抛光
+	ui->textBrowser->verticalScrollBar()->style()->polish(ui->textBrowser->verticalScrollBar());
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -440,11 +444,48 @@ void MainWindow::formRun_run()
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
+	QString controlDictPath = caseDir + "/system/controlDict";
 
+	// 打开 controlDict 文件
+	QFile controlDictFile(controlDictPath);
+	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		return;
+	}
 
+	// 读取 controlDict 文件中的 application 字段
+	QString application;
+	QTextStream in(&controlDictFile);
+	while (!in.atEnd()) {
+		QString line = in.readLine();
+		if (line.trimmed().startsWith("application")) {
+			QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+			if (parts.size() >= 2) {
+				application = parts[1].trimmed();
+				if (application.endsWith(";")) {
+					application.chop(1); // 去除末尾的分号
+				}
+				break;
+			}
+		}
+	}
+	controlDictFile.close();
 
+	if (application.isEmpty()) {
+		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		return;
+	}
 
-	
+	// 构建并执行命令
+	QString command = application + " -case " + caseDir;
+
+	process.setProgram("cmd.exe");
+	process.setArguments(QStringList() << "/C" << command);
+	process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		args->flags |= CREATE_NO_WINDOW;
+		});
+	process.start();
+	process.waitForFinished();
 }
 
 std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createActorFromFile(const QString& filePath, const QString& variableName)
