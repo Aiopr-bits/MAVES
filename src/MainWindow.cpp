@@ -885,11 +885,11 @@ void MainWindow::onProcessOutput()
 
 void MainWindow::onProcessError()
 {
-	while (process.canReadLine()) {
-		QByteArray error = process.readLine();
-		ui->textBrowser->append(QString::fromLocal8Bit(error));
-		ui->textBrowser->repaint(); 
-	}
+	//while (process.canReadLine()) {
+	//	QByteArray error = process.readLine();
+	//	ui->textBrowser->append(QString::fromLocal8Bit(error));
+	//	ui->textBrowser->repaint(); 
+	//}
 }
 
 void MainWindow::onPlayTimerTimeout()

@@ -87,13 +87,16 @@
     <QtMoc Include="FormRun.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="custompushbutton.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="FormGeometry.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormMeshImport.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomHoverPushButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomDoubleClickPushButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
