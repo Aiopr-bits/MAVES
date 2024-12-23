@@ -1,5 +1,10 @@
 #pragma once
 #include <QMainWindow>
+#include <QMap>
+#include <QChartView>
+#include <QLineSeries>
+#include <QValueAxis>
+QT_CHARTS_USE_NAMESPACE
 #include "ui_MainWindow.h"
 #include <QMessageBox>
 #include <QFileDialog>
@@ -36,18 +41,16 @@
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include <QProcess>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QValueAxis>
 #include <QLogValueAxis>
+#include <QChart>
+#include <QTimer>
+#include <QDateTimeAxis>
 
 #pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };
 QT_END_NAMESPACE
-
-QT_CHARTS_USE_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
@@ -59,6 +62,7 @@ public:
 
 	void addCoordinateAxes();									    //添加左下角三维坐标轴
 	void hideAllSubForm();										    //隐藏所有子窗口
+	void parseOutput(const QString& output);						//解析输出
 
 public slots:
 	void handleAction1Triggered();								    //信息框
@@ -103,21 +107,30 @@ public slots:
 
 public:
 	Ui::MainWindowClass *ui;
-
-	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
-	vtkSmartPointer<vtkRenderer> render;
-	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
-	QProcess process;
-
 	QTimer* playTimer;
 	QTimer* reverseTimer;
 	QTimer* loopPlayTimer;
 	QPushButton* buttons[20];
 	QPushButton* lastClickedButton;
+	QProcess process;
 
+	//渲染窗口
+	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
+	vtkSmartPointer<vtkRenderer> render;
+	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();//左下角三维坐标轴
+
+	//副控制面板
 	FormMesh* formMesh;
 	FormPostprocessing* formPostprocessing;
 	FormRun* formRun;
 	FormGeometry* formGeometry;
 	FormMeshImport* formMeshImport;
+
+	//残差图相关变量
+	QChart* chart;
+	QValueAxis* axisX;
+	QLogValueAxis* axisY;
+	QMap<QString, QLineSeries*> seriesMap;
+	QMap<QString, QPair<double, double>> seriesRangeMap;
+	double currentTimeStep;
 };

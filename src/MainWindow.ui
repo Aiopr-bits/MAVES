@@ -1126,7 +1126,7 @@ QPushButton:pressed {
           <string notr="true">QWidget { background-color: white;}</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab">
           <property name="styleSheet">
@@ -1145,6 +1145,21 @@ QPushButton:pressed {
           <attribute name="title">
            <string>残差</string>
           </attribute>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QChartView" name="chartView">
+             <property name="backgroundBrush">
+              <brush brushstyle="NoBrush">
+               <color alpha="255">
+                <red>255</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
         <widget class="QTextBrowser" name="textBrowser">
@@ -1414,6 +1429,11 @@ QMenu::item:selected {
    <class>QVTKOpenGLNativeWidget</class>
    <extends>QOpenGLWidget</extends>
    <header location="global">qvtkopenglnativewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">qchartview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

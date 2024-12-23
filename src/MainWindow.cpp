@@ -57,6 +57,9 @@
 #include <QStringList>
 #include <QScrollBar>
 
+#define AXIS_MAX_X 10
+#define AXIS_MIN_Y 0.001
+
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindowClass())
@@ -65,6 +68,10 @@ MainWindow::MainWindow(QWidget *parent)
 	, loopPlayTimer(new QTimer(this))
 	, lastClickedButton(nullptr)
 	, process(this)
+	, chart(new QChart())
+	, axisX(new QValueAxis())
+	, axisY(new QLogValueAxis())
+	, currentTimeStep(0)
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -118,8 +125,54 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton = ui->pushButton;
 
-	//对滚动条进行polish抛光
+	//对信息输出框滚动条进行polish抛光
 	ui->textBrowser->verticalScrollBar()->style()->polish(ui->textBrowser->verticalScrollBar());
+
+	// 初始化图表
+	// 初始化图表
+	axisX->setTitleText("迭代次数");
+	axisY->setTitleText("残差");
+	axisX->setMin(0);
+	axisX->setMax(AXIS_MAX_X);
+	axisY->setBase(10);  
+	axisY->setMin(AXIS_MIN_Y);
+	axisY->setMax(1);
+	chart->addAxis(axisX, Qt::AlignBottom);
+	chart->addAxis(axisY, Qt::AlignLeft);
+	chart->setAnimationOptions(QChart::SeriesAnimations);
+
+	// 设置图表的上框线和右框线
+	QPen pen(QColor(196, 196, 196));
+	pen.setWidth(1);
+	chart->setPlotAreaBackgroundVisible(true);
+	chart->setPlotAreaBackgroundPen(pen);
+
+	ui->chartView->setChart(chart);
+	ui->chartView->setRenderHint(QPainter::Antialiasing);
+
+
+	//chart->createDefaultAxes();
+	//chart->legend()->setVisible(true);
+	//chart->legend()->setAlignment(Qt::AlignRight);
+	//chart->setBackgroundVisible(false);
+
+	//QValueAxis* axisX = new QValueAxis;
+	//axisX->setTitleText("迭代次数");
+	//axisX->setLabelFormat("%d");
+	//axisX->setGridLineVisible(false);
+	//chart->setAxisX(axisX);
+
+	//QLogValueAxis* axisY = new QLogValueAxis;
+	//axisY->setTitleText("残差");
+	//axisY->setLabelFormat("%e"); // 使用科学计数法显示
+	//axisY->setBase(10); // 设置对数坐标轴的底数为10
+	//axisY->setMinorTickCount(-1); // 自动设置次刻度
+	//axisY->setGridLineVisible(false);
+	//chart->setAxisY(axisY);
+
+	//ui->chartView->setChart(chart);
+	//ui->chartView->setRenderHint(QPainter::Antialiasing);
+
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -444,6 +497,13 @@ void MainWindow::formRun_run()
 {
 	//保存界面上所有的配置参数，并校验是否符合要求
 
+
+	//初始化残差图数据
+	seriesMap.clear();
+	seriesRangeMap.clear();
+	currentTimeStep = 0;
+	chart->removeAllSeries();
+	ui->tabWidget->setCurrentIndex(1);
 
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -880,6 +940,48 @@ void MainWindow::onProcessOutput()
 		QByteArray output = process.readLine();
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
+
+		// 解析输出信息并更新图表
+		parseOutput(QString::fromLocal8Bit(output));
+		//updateChart(); 
+		//ui->tab_2->repaint();
+	}
+}
+
+void MainWindow::parseOutput(const QString& output)
+{
+	QRegExp regex("Solving for (\\w+), Initial residual = ([\\d\\.eE\\-]+), Final residual = ([\\d\\.eE\\-]+)");
+	if (regex.indexIn(output) != -1) {
+		QString variable = regex.cap(1);
+		double initialResidual = regex.cap(2).toDouble();
+		
+		// 如果该变量的 QLineSeries 不存在，则创建一个新的
+		if (!seriesMap.contains(variable)) {
+			QLineSeries* newSeries = new QLineSeries();
+			newSeries->setName(variable);
+			seriesMap.insert(variable, newSeries);
+			chart->addSeries(newSeries);
+			chart->createDefaultAxes();
+			seriesRangeMap.insert(variable, qMakePair(initialResidual, initialResidual));
+		}
+
+		// 更新 QLineSeries
+		seriesMap[variable]->append(currentTimeStep, initialResidual);
+
+		if (initialResidual < AXIS_MIN_Y) {
+			chart->axisY()->setMin(initialResidual);
+		}
+		if (initialResidual > 1) {
+			chart->axisY()->setMax(initialResidual);
+		}
+	}
+
+	if (output.startsWith("Time = ")) {
+		currentTimeStep = output.split("=").last().trimmed().toDouble();
+
+		if (currentTimeStep > AXIS_MAX_X) {
+			chart->axisX()->setMax(currentTimeStep);
+		}
 	}
 }
 
