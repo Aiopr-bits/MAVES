@@ -318,6 +318,7 @@ void MainWindow::on_pushButton_17_clicked()
 {
 	hideAllSubForm();
 	formPostprocessing->show();
+	ui->tabWidget->setCurrentIndex(0);
 }
 
 void MainWindow::formGeometry_import(const QString& filePath)
