@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// ³õÊ¼»¯°´Å¥
 	QPushButton* buttons[] = {
-		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
+		ui->pushButton, ui->pushButton_2, ui->pushButton_4, ui->pushButton_5,
 		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
 		ui->pushButton_11, ui->pushButton_12, ui->pushButton_13, ui->pushButton_14, ui->pushButton_15,
 		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20
