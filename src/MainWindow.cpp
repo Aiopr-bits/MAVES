@@ -508,6 +508,20 @@ void MainWindow::formRun_run()
 	QString caseDir = fileInfo.path();
 	QString controlDictPath = caseDir + "/system/controlDict";
 
+	// 删除原来的计算结果
+	QDir dir(caseDir);
+	QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	foreach(QString folder, folders)
+	{
+		bool ok;
+		int folderNumber = folder.toInt(&ok);
+		if (ok && folderNumber != 0)
+		{
+			QDir folderDir(caseDir + "/" + folder);
+			folderDir.removeRecursively();
+		}
+	}
+
 	// 打开 controlDict 文件
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
