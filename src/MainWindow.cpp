@@ -551,6 +551,14 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
+
+	//删除原来的VTK文件夹
+	QDir dir(caseDir + "/VTK");
+	if (dir.exists())
+	{
+		dir.removeRecursively();
+	}
+
 	QString command = "foamToVTK -case " + caseDir;
 	processFoamToVTK.setProgram("cmd.exe");
 	processFoamToVTK.setArguments(QStringList() << "/C" << command);

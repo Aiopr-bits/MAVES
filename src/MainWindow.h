@@ -85,8 +85,6 @@ public slots:
 	void formMeshImport_import(const QString& filePath);																//网格导入
 	void formMesh_apply(); 																								//更新渲染窗口	
 	void formRun_run();																									//求解计算
-	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
-	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
 	void formRun_stopRun();																								//停止计算
 	void formPostprocessing_loadData();																					//加载结果数据		
 	void formPostprocessing_apply();																					//更新渲染窗口	
@@ -106,10 +104,12 @@ public slots:
 	void onLoopPlayTimerTimeout(); 																						//循环播放
 
 	void onButtonClicked();																								//主控制面板按钮点击
+	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
+	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
 	void onProcessRunOutput();																							//求解计算进程输出
 	void onprocessFoamToVTKOutput(); 																					//foamToVTK进程输出
 	void onProcessOutput(); 																							//进程输出
-	void onProcessError();																								//进程错误
+	void onProcessError();																								//进程错误输出
 
 public:
 	Ui::MainWindowClass *ui;
