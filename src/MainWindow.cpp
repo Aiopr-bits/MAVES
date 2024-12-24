@@ -514,8 +514,8 @@ void MainWindow::formRun_run()
 	foreach(QString folder, folders)
 	{
 		bool ok;
-		int folderNumber = folder.toInt(&ok);
-		if (ok && folderNumber != 0)
+		double folderNumber = folder.toDouble(&ok);
+		if (ok && folderNumber != 0.0)
 		{
 			QDir folderDir(caseDir + "/" + folder);
 			folderDir.removeRecursively();
