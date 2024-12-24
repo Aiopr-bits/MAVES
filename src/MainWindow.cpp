@@ -414,6 +414,13 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		QString casePath = fileInfo.path();
 		std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
 
+		//删除原来的VTK文件夹
+		QDir dirVTK(casePath + "/VTK");
+		if (dirVTK.exists())
+		{
+			dirVTK.removeRecursively();
+		}
+
 		process.setProgram("cmd.exe");
 		process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
 		process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
