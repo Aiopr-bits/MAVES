@@ -85,6 +85,8 @@ public slots:
 	void formMeshImport_import(const QString& filePath);			//网格导入
 	void formMesh_apply(); 											//更新渲染窗口	
 	void formRun_run();												//求解计算
+	void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+	void formRun_stopRun();											//停止计算
 	void formPostprocessing_loadData();								//加载结果数据		
 	void formPostprocessing_apply();								//更新渲染窗口	
 	void formPostprocessing_firstFrame();							//第一帧

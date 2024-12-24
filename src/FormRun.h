@@ -19,12 +19,15 @@ public:
 	~FormRun();
 
 public slots:
-	void cursorEnter();
-	void cursorLeave();
-	void on_pushButton_clicked();
+	void cursorEnterPushButton();
+	void cursorLeavePushButton();
+
+	void on_pushButton_clicked();				//开始计算
+	void on_pushButton_clicked_2();				//停止计算
 
 signals:
 	void run();
+	void stopRun();
 
 private:
 	Ui::FormRunClass *ui;

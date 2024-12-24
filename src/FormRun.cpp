@@ -1,5 +1,6 @@
 #include "FormRun.h"
 #include <QRegularExpressionValidator> 
+#include <QThread>
 
 FormRun::FormRun(QWidget *parent)
 	: QWidget(parent)
@@ -8,6 +9,8 @@ FormRun::FormRun(QWidget *parent)
 	ui->setupUi(this);
 
 	ui->label_6->hide();
+	ui->label_12->hide();
+	ui->pushButton_2->hide();
 
 	// 设置 lineEdit 只支持整数和小数输入
 	QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
@@ -20,8 +23,9 @@ FormRun::FormRun(QWidget *parent)
 	QIntValidator* intValidator = new QIntValidator(1, INT_MAX, this);
 	ui->lineEdit_4->setValidator(intValidator);
 
-	connect(ui->pushButton, &CustomHoverPushButton::cursorEnter, this, &FormRun::cursorEnter);
-	connect(ui->pushButton, &CustomHoverPushButton::cursorLeave, this, &FormRun::cursorLeave);
+	connect(ui->pushButton, &CustomHoverPushButton::cursorEnter, this, &FormRun::cursorEnterPushButton);
+	connect(ui->pushButton, &CustomHoverPushButton::cursorLeave, this, &FormRun::cursorLeavePushButton);
+	connect(ui->pushButton_2, &CustomHoverPushButton::clicked, this, &FormRun::on_pushButton_clicked_2);
 }
 
 FormRun::~FormRun()
@@ -29,19 +33,32 @@ FormRun::~FormRun()
 	delete ui;
 }
 
-void FormRun::cursorEnter()
+void FormRun::cursorEnterPushButton()
 {
 	ui->label_6->show();
 }
 
 
-void FormRun::cursorLeave()
+void FormRun::cursorLeavePushButton()
 {
 	ui->label_6->hide();
 }
 
 void FormRun::on_pushButton_clicked()
 {
+	QThread::msleep(500);
+	ui->pushButton->hide();
+	ui->pushButton_2->show();
+	ui->label_12->show();
 	emit run();
+}
+
+void FormRun::on_pushButton_clicked_2()
+{
+	QThread::msleep(500);
+	ui->pushButton_2->hide();
+	ui->label_12->hide();
+	ui->pushButton->show();
+	emit stopRun();
 }
 

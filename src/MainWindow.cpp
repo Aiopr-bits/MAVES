@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, currentTimeStep(0)
 	, chartUpdateTimer(new QTimer(this))
 	, axisMinX(0)
-	, axisMaxX(10)
+	, axisMaxX(0)
 	, axisMinY(0.01)
 	, axisMaxY(1)
 {
@@ -170,11 +170,13 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
 	connect(&process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);		//进程输出
 	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);		//进程错误
+	connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessFinished); // 进程结束
 
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);							//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);						//导入网格
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//网格应用
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);														//求解计算
+	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);												//停止计算
 	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//加载结果数据
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);			//第一帧
@@ -485,7 +487,8 @@ void MainWindow::formRun_run()
 	seriesRangeMap.clear();
 	currentTimeStep = 0;
 	chart->removeAllSeries();
-	ui->tabWidget->setCurrentIndex(1);
+	axisMaxX = 0;
+	ui->tabWidget->setCurrentIndex(1);	
 
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -532,6 +535,23 @@ void MainWindow::formRun_run()
 		args->flags |= CREATE_NO_WINDOW;
 		});
 	process.start();
+
+	
+}
+
+void MainWindow::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+	Q_UNUSED(exitCode);
+	Q_UNUSED(exitStatus);
+
+	formRun->on_pushButton_clicked_2();
+}
+
+void MainWindow::formRun_stopRun()
+{
+	if (process.state() == QProcess::Running) {
+		process.kill();
+	}
 }
 
 std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createActorFromFile(const QString& filePath, const QString& variableName)
@@ -935,13 +955,7 @@ void MainWindow::parseOutput(const QString& output)
 	if (output.startsWith("Time = ")) {
 		currentTimeStep = output.split("=").last().trimmed().toDouble();
 
-		if (axisMinX < 0) {
-			axisMinX = currentTimeStep;
-		}
-
-		if (currentTimeStep > axisMaxX && currentTimeStep >= 10) {
-			axisMaxX = currentTimeStep;
-		}
+		axisMaxX++;
 	}
 
 	if (regex.indexIn(output) != -1) {
@@ -959,7 +973,7 @@ void MainWindow::parseOutput(const QString& output)
 		}
 
 		// 更新 QLineSeries
-		seriesMap[variable]->append(currentTimeStep, initialResidual);
+		seriesMap[variable]->append(axisMaxX, initialResidual);
 
 		if (initialResidual < axisMinY) {
 			axisMinY /= 10;
@@ -989,13 +1003,9 @@ void MainWindow::updateChart()
 		axisX->setLabelFormat("%d");
 	}
 
-	// 设置图例位置
 	chart->legend()->setAlignment(Qt::AlignRight);
-
 	chart->update();
 }
-
-
 
 void MainWindow::onProcessError()
 {
