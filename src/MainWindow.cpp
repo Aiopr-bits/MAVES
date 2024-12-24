@@ -294,18 +294,21 @@ void MainWindow::on_pushButton_clicked()
 {
 	hideAllSubForm();
 	formGeometry->show();
+	ui->tabWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
 	hideAllSubForm();
 	formMeshImport->show();	
+	ui->tabWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
+	ui->tabWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_pushButton_16_clicked()
