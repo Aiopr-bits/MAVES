@@ -57,9 +57,6 @@
 #include <QStringList>
 #include <QScrollBar>
 
-#define AXIS_MAX_X 10
-#define AXIS_MIN_Y 0.001
-
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindowClass())
@@ -72,6 +69,11 @@ MainWindow::MainWindow(QWidget *parent)
 	, axisX(new QValueAxis())
 	, axisY(new QLogValueAxis())
 	, currentTimeStep(0)
+	, chartUpdateTimer(new QTimer(this))
+	, axisMinX(0)
+	, axisMaxX(10)
+	, axisMinY(0.01)
+	, axisMaxY(1)
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -129,14 +131,14 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->textBrowser->verticalScrollBar()->style()->polish(ui->textBrowser->verticalScrollBar());
 
 	// 初始化图表
-	// 初始化图表
 	axisX->setTitleText("迭代次数");
+	axisX->setLabelFormat("%d");
 	axisY->setTitleText("残差");
-	axisX->setMin(0);
-	axisX->setMax(AXIS_MAX_X);
 	axisY->setBase(10);  
-	axisY->setMin(AXIS_MIN_Y);
-	axisY->setMax(1);
+	axisY->setMin(axisMinY);
+	axisY->setMax(axisMaxY);
+	axisX->setMin(axisMinX);
+	axisX->setMax(axisMaxX);
 	chart->addAxis(axisX, Qt::AlignBottom);
 	chart->addAxis(axisY, Qt::AlignLeft);
 	chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -150,29 +152,9 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->chartView->setChart(chart);
 	ui->chartView->setRenderHint(QPainter::Antialiasing);
 
-
-	//chart->createDefaultAxes();
-	//chart->legend()->setVisible(true);
-	//chart->legend()->setAlignment(Qt::AlignRight);
-	//chart->setBackgroundVisible(false);
-
-	//QValueAxis* axisX = new QValueAxis;
-	//axisX->setTitleText("迭代次数");
-	//axisX->setLabelFormat("%d");
-	//axisX->setGridLineVisible(false);
-	//chart->setAxisX(axisX);
-
-	//QLogValueAxis* axisY = new QLogValueAxis;
-	//axisY->setTitleText("残差");
-	//axisY->setLabelFormat("%e"); // 使用科学计数法显示
-	//axisY->setBase(10); // 设置对数坐标轴的底数为10
-	//axisY->setMinorTickCount(-1); // 自动设置次刻度
-	//axisY->setGridLineVisible(false);
-	//chart->setAxisY(axisY);
-
-	//ui->chartView->setChart(chart);
-	//ui->chartView->setRenderHint(QPainter::Antialiasing);
-
+	// 初始化残差图刷新定时器
+	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart);
+	chartUpdateTimer->start(100);
 
     // 连接信号和槽
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
@@ -550,7 +532,6 @@ void MainWindow::formRun_run()
 		args->flags |= CREATE_NO_WINDOW;
 		});
 	process.start();
-	process.waitForFinished();
 }
 
 std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createActorFromFile(const QString& filePath, const QString& variableName)
@@ -943,14 +924,26 @@ void MainWindow::onProcessOutput()
 
 		// 解析输出信息并更新图表
 		parseOutput(QString::fromLocal8Bit(output));
-		//updateChart(); 
-		//ui->tab_2->repaint();
+		ui->tab_2->repaint();
 	}
 }
 
 void MainWindow::parseOutput(const QString& output)
 {
 	QRegExp regex("Solving for (\\w+), Initial residual = ([\\d\\.eE\\-]+), Final residual = ([\\d\\.eE\\-]+)");
+
+	if (output.startsWith("Time = ")) {
+		currentTimeStep = output.split("=").last().trimmed().toDouble();
+
+		if (axisMinX < 0) {
+			axisMinX = currentTimeStep;
+		}
+
+		if (currentTimeStep > axisMaxX && currentTimeStep >= 10) {
+			axisMaxX = currentTimeStep;
+		}
+	}
+
 	if (regex.indexIn(output) != -1) {
 		QString variable = regex.cap(1);
 		double initialResidual = regex.cap(2).toDouble();
@@ -968,22 +961,41 @@ void MainWindow::parseOutput(const QString& output)
 		// 更新 QLineSeries
 		seriesMap[variable]->append(currentTimeStep, initialResidual);
 
-		if (initialResidual < AXIS_MIN_Y) {
-			chart->axisY()->setMin(initialResidual);
+		if (initialResidual < axisMinY) {
+			axisMinY /= 10;
 		}
-		if (initialResidual > 1) {
-			chart->axisY()->setMax(initialResidual);
-		}
-	}
-
-	if (output.startsWith("Time = ")) {
-		currentTimeStep = output.split("=").last().trimmed().toDouble();
-
-		if (currentTimeStep > AXIS_MAX_X) {
-			chart->axisX()->setMax(currentTimeStep);
+		if (initialResidual > axisMaxY) {
+			axisMinY *= 10;
 		}
 	}
 }
+
+void MainWindow::updateChart()
+{
+	chart->axisX()->setTitleText("迭代次数");
+	chart->axisX()->setRange(axisMinX, axisMaxX);
+
+	// 确保 axisY 保持为对数坐标系
+	QLogValueAxis* logAxisY = new QLogValueAxis();
+	logAxisY->setTitleText("残差");
+	logAxisY->setBase(10);
+	logAxisY->setRange(axisMinY, axisMaxY);
+	logAxisY->setLabelFormat("%.1e");
+	chart->setAxisY(logAxisY);
+
+	// 设置横坐标为整数
+	QValueAxis* axisX = qobject_cast<QValueAxis*>(chart->axisX());
+	if (axisX) {
+		axisX->setLabelFormat("%d");
+	}
+
+	// 设置图例位置
+	chart->legend()->setAlignment(Qt::AlignRight);
+
+	chart->update();
+}
+
+
 
 void MainWindow::onProcessError()
 {

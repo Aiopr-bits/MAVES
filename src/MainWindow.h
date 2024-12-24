@@ -63,6 +63,7 @@ public:
 	void addCoordinateAxes();									    //添加左下角三维坐标轴
 	void hideAllSubForm();										    //隐藏所有子窗口
 	void parseOutput(const QString& output);						//解析输出
+	void updateChart();											    //更新残差图
 
 public slots:
 	void handleAction1Triggered();								    //信息框
@@ -132,5 +133,10 @@ public:
 	QLogValueAxis* axisY;
 	QMap<QString, QLineSeries*> seriesMap;
 	QMap<QString, QPair<double, double>> seriesRangeMap;
+	QTimer* chartUpdateTimer;
 	double currentTimeStep;
+	int axisMinX;
+	int axisMaxX;
+	double axisMinY;
+	double axisMaxY;
 };
