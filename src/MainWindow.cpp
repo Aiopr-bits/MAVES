@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, loopPlayTimer(new QTimer(this))
 	, lastClickedButton(nullptr)
 	, process(this)
+	, processRun(this)
 	, chart(new QChart())
 	, axisX(new QValueAxis())
 	, axisY(new QLogValueAxis())
@@ -157,38 +158,41 @@ MainWindow::MainWindow(QWidget *parent)
 	chartUpdateTimer->start(100);
 
     // 连接信号和槽
-	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);			//信息框
-	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);			//x正向
-	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);			//x负向
-	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);			//y正向
-	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);			//y负向
-	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);			//z正向
-	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);			//z负向
-	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);			//适应窗口
-	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);					//播放
-	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);				//倒放
-	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);			//循环播放
-	connect(&process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);		//进程输出
-	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);		//进程错误
-	connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessFinished); // 进程结束
+	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//信息框
+	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//x正向
+	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//x负向
+	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);														//y正向
+	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);														//y负向
+	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);														//z正向
+	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z负向
+	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
+	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
+	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
+	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
+	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//求解计算进程输出
+	connect(&processFoamToVTK, &QProcess::readyReadStandardOutput, this, &MainWindow::onprocessFoamToVTKOutput);								//foamToVTK进程输出
+	connect(&process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);													//进程输出
+	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);													//进程错误
+	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//求解计算进程结束
+	connect(&processFoamToVTK, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessFoamToVTKFinished);	//foamToVTK进程结束
 
-	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);							//导入几何
-	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);						//导入网格
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);									//网格应用
-	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);														//求解计算
-	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);												//停止计算
-	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);		//加载结果数据
-	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);					//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);			//第一帧
-	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);	//上一帧
-	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);				//重新播放
-	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);						//播放
-	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);			//下一帧
-	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);			//最后一帧
-	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);				//循环播放
-	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);			//播放暂停
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);		//反向播放暂停
-	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);	//循环播放暂停
+	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//导入几何
+	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//导入网格
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
+	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//求解计算
+	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//停止计算
+	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);							//加载结果数据
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);								//第一帧
+	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);						//上一帧
+	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);									//重新播放
+	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);											//播放
+	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);								//下一帧
+	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);								//最后一帧
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);									//循环播放
+	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
 }
 
 MainWindow::~MainWindow()
@@ -529,28 +533,43 @@ void MainWindow::formRun_run()
 	// 构建并执行命令
 	QString command = application + " -case " + caseDir;
 
-	process.setProgram("cmd.exe");
-	process.setArguments(QStringList() << "/C" << command);
-	process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+	processRun.setProgram("cmd.exe");
+	processRun.setArguments(QStringList() << "/C" << command);
+	processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
 		args->flags |= CREATE_NO_WINDOW;
 		});
-	process.start();
-
-	
+	processRun.start();
 }
 
-void MainWindow::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
-
 	formRun->on_pushButton_clicked_2();
+
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	QString command = "foamToVTK -case " + caseDir;
+	processFoamToVTK.setProgram("cmd.exe");
+	processFoamToVTK.setArguments(QStringList() << "/C" << command);
+	processFoamToVTK.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		args->flags |= CREATE_NO_WINDOW;
+		});
+	processFoamToVTK.start();
+}
+
+void MainWindow::onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+	Q_UNUSED(exitCode);
+	Q_UNUSED(exitStatus);
+	formPostprocessing->loadResultData();
 }
 
 void MainWindow::formRun_stopRun()
 {
-	if (process.state() == QProcess::Running) {
-		process.kill();
+	if (processRun.state() == QProcess::Running) {
+		processRun.kill();
 	}
 }
 
@@ -932,6 +951,32 @@ void MainWindow::onButtonClicked()
 		);
 		// 更新上一个点击的按钮
 		lastClickedButton = clickedButton;
+	}
+}
+
+void MainWindow::onProcessRunOutput()
+{
+	while (processRun.canReadLine()) {
+		QByteArray output = processRun.readLine();
+		ui->textBrowser->append(QString::fromLocal8Bit(output));
+		ui->textBrowser->repaint();
+
+		// 解析输出信息并更新图表
+		parseOutput(QString::fromLocal8Bit(output));
+		ui->tab_2->repaint();
+	}
+}
+
+void MainWindow::onprocessFoamToVTKOutput()
+{
+	while (processFoamToVTK.canReadLine()) {
+		QByteArray output = processFoamToVTK.readLine();
+		ui->textBrowser->append(QString::fromLocal8Bit(output));
+		ui->textBrowser->repaint();
+
+		// 解析输出信息并更新图表
+		parseOutput(QString::fromLocal8Bit(output));
+		ui->tab_2->repaint();
 	}
 }
 
