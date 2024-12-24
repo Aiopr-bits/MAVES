@@ -16,6 +16,9 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 {
     ui->setupUi(this);
 
+    //隐藏加载数据按钮
+	ui->pushButton->hide();
+
     treeViewModel = new QStandardItemModel(this);
     ui->treeView->setModel(treeViewModel);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
