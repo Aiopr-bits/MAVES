@@ -15,6 +15,6 @@ public:
 	FormModelClip(QWidget *parent = nullptr);
 	~FormModelClip();
 
-private:
+public:
 	Ui::FormModelClipClass *ui;
 };

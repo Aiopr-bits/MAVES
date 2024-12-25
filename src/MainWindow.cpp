@@ -1,61 +1,5 @@
 #pragma once
 #include "MainWindow.h"
-#include <vtkSTLReader.h>
-#include <vtkGenericDataObjectReader.h>
-#include <vtkPolyData.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkDataSetMapper.h>
-#include <vtkCamera.h>
-#include <vtkLight.h>
-#include <vtkPropCollection.h>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QStandardItemModel>
-#include <QMenu>
-#include <QAction>
-#include <iostream>
-#include <vtkOBJReader.h>
-#include <vtkPLYReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <QTimer>
-#include <qdebug.h>
-#include <vtkAxesActor.h>
-#include <vtkOrientationMarkerWidget.h>
-#include <QPushButton>
-#include <QVTKOpenGLNativeWidget.h>
-#include <vtkActor.h>
-#include <vtkCaptionActor2D.h>
-#include <vtkEventQtSlotConnect.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkTextProperty.h>
-#include <vtkWorldPointPicker.h>
-#include <IGESControl_Reader.hxx>
-#include <IVtkOCC_Shape.hxx>
-#include <IVtkTools_DisplayModeFilter.hxx>
-#include <IVtkTools_ShapeDataSource.hxx>
-#include <QBoxLayout>
-#include <QDockWidget>
-#include <QLineEdit>
-#include <QMenuBar>
-#include <QTextBrowser>
-#include <QToolBar>
-#include <QTreeWidget>
-#include <STEPControl_Reader.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepTools.hxx>
-#include <vtkSmartPointer.h>
-#include <QMetaType>
-#include <QMainWindow>
-#include <QMessageBox.h>
-#include <vtkOpenFOAMReader.h>
-#include <QString>
-#include <vtkColorTransferFunction.h>
-#include <QProcess>
-#include <QStringList>
-#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -75,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, axisMaxX(0)
 	, axisMinY(0.01)
 	, axisMaxY(1)
+	, planeRep(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
+	, planeWidget(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -202,6 +148,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
+
+	planeRep->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepValues); 													//更新平面选择器的值
 }
 
 MainWindow::~MainWindow()
@@ -351,6 +299,7 @@ void MainWindow::on_pushButton_3_clicked()
 	formModelClip->show();
 	ui->tabWidget->setCurrentIndex(0);
 
+	//按钮颜色处理
 	QPushButton* clickedButton = ui->pushButton_3;
 	if (clickedButton) {
 		// 还原上一个点击的按钮背景色
@@ -379,6 +328,69 @@ void MainWindow::on_pushButton_3_clicked()
 		// 更新上一个点击的按钮
 		lastClickedButton = clickedButton;
 	}
+
+	//平面选择器
+	planeWidget->Off();
+	planeRep->PlaceWidget(render->ComputeVisiblePropBounds());
+	planeRep->SetPlaceFactor(1.5);
+	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
+	actors->InitTraversal();
+	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
+	if (actors->GetNumberOfItems() == 0) return;
+
+	double origin[3] = { 0, 0, 0 };
+	int visibleActorCount = 0;
+	while (actor)
+	{
+		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
+		if (actor_ && actor_->GetVisibility())
+		{
+			double* bounds = actor_->GetBounds();
+			origin[0] += (bounds[0] + bounds[1]) / 2;
+			origin[1] += (bounds[2] + bounds[3]) / 2;
+			origin[2] += (bounds[4] + bounds[5]) / 2;
+			visibleActorCount++;
+		}
+		actor = actors->GetNextProp();
+	}
+
+	if (visibleActorCount > 0)
+	{
+		origin[0] /= visibleActorCount;
+		origin[1] /= visibleActorCount;
+		origin[2] /= visibleActorCount;
+	}
+	else return;
+
+	double normal[3] = { 1, 0, 0 };
+
+	double center[3];
+	center[0] = origin[0] + normal[0] * 0.5;
+	center[1] = origin[1] + normal[1] * 0.5;
+	center[2] = origin[2] + normal[2] * 0.5;
+	planeRep->SetOrigin(center);
+
+	planeWidget->SetRepresentation(planeRep);
+	planeWidget->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
+	planeWidget->On();
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+
+void MainWindow::updatePlaneRepValues()
+{
+	double origin[3];
+	double normal[3];
+
+	planeRep->GetOrigin(origin);
+	planeRep->GetNormal(normal);
+
+	formModelClip->ui->lineEdit->setText(QString::number(origin[0]));
+	formModelClip->ui->lineEdit_2->setText(QString::number(origin[1]));
+	formModelClip->ui->lineEdit_3->setText(QString::number(origin[2]));
+	formModelClip->ui->lineEdit_4->setText(QString::number(normal[0]));
+	formModelClip->ui->lineEdit_5->setText(QString::number(normal[1]));
+	formModelClip->ui->lineEdit_6->setText(QString::number(normal[2]));
 }
 
 void MainWindow::on_pushButton_21_clicked()

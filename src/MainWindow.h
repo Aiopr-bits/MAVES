@@ -47,6 +47,51 @@ QT_CHARTS_USE_NAMESPACE
 #include <QChart>
 #include <QTimer>
 #include <QDateTimeAxis>
+#include <vtkImplicitPlaneWidget2.h>
+#include <vtkImplicitPlaneRepresentation.h>
+#include <vtkClipPolyData.h>
+#include <vtkPlane.h>
+#include <vtkCutter.h>
+#include <vtkXMLUnstructuredGridReader.h>
+#include <vtkGenericDataObjectReader.h>
+#include <vtkPolyData.h>
+#include <vtkCamera.h>
+#include <vtkLight.h>
+#include <vtkPropCollection.h>
+#include <QStandardItemModel>
+#include <QMenu>
+#include <QAction>
+#include <iostream>
+#include <vtkOBJReader.h>
+#include <vtkPLYReader.h>
+#include <vtkXMLPolyDataReader.h>
+#include <qdebug.h>
+#include <vtkAxesActor.h>
+#include <vtkCaptionActor2D.h>
+#include <vtkEventQtSlotConnect.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkWorldPointPicker.h>
+#include <IGESControl_Reader.hxx>
+#include <IVtkOCC_Shape.hxx>
+#include <IVtkTools_DisplayModeFilter.hxx>
+#include <IVtkTools_ShapeDataSource.hxx>
+#include <QBoxLayout>
+#include <QDockWidget>
+#include <QLineEdit>
+#include <QMenuBar>
+#include <QTextBrowser>
+#include <QToolBar>
+#include <QTreeWidget>
+#include <STEPControl_Reader.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepTools.hxx>
+#include <QMetaType>
+#include <QMessageBox.h>
+#include <vtkOpenFOAMReader.h>
+#include <QString>
+#include <vtkColorTransferFunction.h>
+#include <QStringList>
+#include <QScrollBar>
 
 #pragma execution_character_set("utf-8")
 
@@ -108,6 +153,7 @@ public slots:
 	void onPlayTimerTimeout();																							//播放
 	void onReverseTimerTimeout(); 																						//倒放
 	void onLoopPlayTimerTimeout(); 																						//循环播放
+	void updatePlaneRepValues();								    													//更新平面选择器的值
 
 	void onButtonClicked();																								//控制面板按钮点击背景色调整
 	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
@@ -154,4 +200,8 @@ public:
 	int axisMaxX;
 	double axisMinY;
 	double axisMaxY;
+
+	//平面选择器相关变量
+	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidget;
+	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRep;
 };
