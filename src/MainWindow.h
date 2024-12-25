@@ -110,9 +110,9 @@ public:
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
-	void updateChart();											    													//更新残差图
 
 public slots:
+	//工具栏信号处理
 	void handleAction1Triggered();								    													//信息框
 	void handleAction2Triggered();								    													//x正向
 	void handleAction3Triggered();								    													//x负向
@@ -124,6 +124,7 @@ public slots:
 	void handleAction9Triggered();								    													//模型切分
 	void handleAction10Triggered();								    													//模型切片
 
+	//控制面板按钮点击事件处理
 	void on_pushButton_clicked();								    													//几何页面
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
@@ -132,6 +133,21 @@ public slots:
 	void on_pushButton_3_clicked();								    													//模型切分
 	void on_pushButton_21_clicked();								    												//模型切片
 
+	//主界面其他事件处理
+	void onPlayTimerTimeout();																							//播放
+	void onReverseTimerTimeout(); 																						//倒放
+	void onLoopPlayTimerTimeout(); 																						//循环播放
+	void onButtonClicked();																								//控制面板按钮点击背景色调整
+	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
+	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
+	void onProcessRunOutput();																							//求解计算进程输出
+	void onprocessFoamToVTKOutput(); 																					//foamToVTK进程输出
+	void onProcessOutput(); 																							//进程输出
+	void onProcessError();																								//进程错误输出
+	void updateChart();											    													//更新残差图
+	void updateplaneRepModelClipValues();								    											//更新模型切分平面选择器的值
+
+	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
 	void formMeshImport_import(const QString& filePath);																//网格导入
 	void formMesh_apply(); 																								//更新渲染窗口	
@@ -149,19 +165,6 @@ public slots:
 	void formPostprocessing_playPause();																				//播放暂停
 	void formPostprocessing_reversePause();																				//反向播放暂停
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
-
-	void onPlayTimerTimeout();																							//播放
-	void onReverseTimerTimeout(); 																						//倒放
-	void onLoopPlayTimerTimeout(); 																						//循环播放
-	void updatePlaneRepValues();								    													//更新平面选择器的值
-
-	void onButtonClicked();																								//控制面板按钮点击背景色调整
-	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
-	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
-	void onProcessRunOutput();																							//求解计算进程输出
-	void onprocessFoamToVTKOutput(); 																					//foamToVTK进程输出
-	void onProcessOutput(); 																							//进程输出
-	void onProcessError();																								//进程错误输出
 
 public:
 	Ui::MainWindowClass *ui;
@@ -202,6 +205,6 @@ public:
 	double axisMaxY;
 
 	//平面选择器相关变量
-	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidget;
-	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRep;
+	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
+	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
 };

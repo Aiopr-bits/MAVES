@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, axisMaxX(0)
 	, axisMinY(0.01)
 	, axisMaxY(1)
-	, planeRep(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
-	, planeWidget(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
+	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
+	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -107,10 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->chartView->setRenderHint(QPainter::Antialiasing);
 
 	// 初始化残差图刷新定时器
-	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart);
 	chartUpdateTimer->start(100);
 
-    // 连接信号和槽
+    // 工具栏信号处理
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//x正向
 	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//x负向
@@ -121,6 +120,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
 	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//模型切分
 	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//模型切片
+
+	//主界面其他事件处理
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
@@ -130,7 +131,10 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);													//进程错误
 	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//求解计算进程结束
 	connect(&processFoamToVTK, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessFoamToVTKFinished);	//foamToVTK进程结束
+	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//更新残差图
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updateplaneRepModelClipValues); 				 				//更新模型切分平面选择器的值
 
+	//副控制面板事件处理
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//导入网格
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
@@ -148,8 +152,6 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
-
-	planeRep->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepValues); 													//更新平面选择器的值
 }
 
 MainWindow::~MainWindow()
@@ -330,9 +332,9 @@ void MainWindow::on_pushButton_3_clicked()
 	}
 
 	//平面选择器
-	planeWidget->Off();
-	planeRep->PlaceWidget(render->ComputeVisiblePropBounds());
-	planeRep->SetPlaceFactor(1.5);
+	planeWidgetModelClip->Off();
+	planeRepModelClip->PlaceWidget(render->ComputeVisiblePropBounds());
+	planeRepModelClip->SetPlaceFactor(1.5);
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
 	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
@@ -368,22 +370,22 @@ void MainWindow::on_pushButton_3_clicked()
 	center[0] = origin[0] + normal[0] * 0.5;
 	center[1] = origin[1] + normal[1] * 0.5;
 	center[2] = origin[2] + normal[2] * 0.5;
-	planeRep->SetOrigin(center);
+	planeRepModelClip->SetOrigin(center);
 
-	planeWidget->SetRepresentation(planeRep);
-	planeWidget->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
-	planeWidget->On();
+	planeWidgetModelClip->SetRepresentation(planeRepModelClip);
+	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
+	planeWidgetModelClip->On();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
 
-void MainWindow::updatePlaneRepValues()
+void MainWindow::updateplaneRepModelClipValues()
 {
 	double origin[3];
 	double normal[3];
 
-	planeRep->GetOrigin(origin);
-	planeRep->GetNormal(normal);
+	planeRepModelClip->GetOrigin(origin);
+	planeRepModelClip->GetNormal(normal);
 
 	formModelClip->ui->lineEdit->setText(QString::number(origin[0]));
 	formModelClip->ui->lineEdit_2->setText(QString::number(origin[1]));
