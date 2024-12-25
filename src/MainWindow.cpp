@@ -266,6 +266,8 @@ void MainWindow::on_pushButton_clicked()
 	hideAllSubForm();
 	formGeometry->show();
 	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -273,6 +275,8 @@ void MainWindow::on_pushButton_4_clicked()
 	hideAllSubForm();
 	formMeshImport->show();	
 	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -280,12 +284,16 @@ void MainWindow::on_pushButton_2_clicked()
 	hideAllSubForm();
 	formMesh->show();
 	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_16_clicked()
 {
 	hideAllSubForm();
 	formRun->show();
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_17_clicked()
@@ -293,6 +301,8 @@ void MainWindow::on_pushButton_17_clicked()
 	hideAllSubForm();
 	formPostprocessing->show();
 	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -398,6 +408,8 @@ void MainWindow::on_pushButton_21_clicked()
 	hideAllSubForm();
 	formModelSlice->show();
 	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
 
 	QPushButton* clickedButton = ui->pushButton_21;
 	if (clickedButton) {
