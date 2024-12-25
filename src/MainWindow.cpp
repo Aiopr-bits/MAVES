@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
 	formGeometry = new FormGeometry(this);
 	formMeshImport = new FormMeshImport(this);
 	formModelClip = new FormModelClip(this);
-	formModelSlice = new ModelSlice(this);
+	formModelSlice = new FormModelSlice(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);

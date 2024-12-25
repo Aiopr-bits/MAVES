@@ -7,13 +7,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class ModelSliceClass; };
 QT_END_NAMESPACE
 
-class ModelSlice : public QWidget
+class FormModelSlice : public QWidget
 {
 	Q_OBJECT
 
 public:
-	ModelSlice(QWidget *parent = nullptr);
-	~ModelSlice();
+	FormModelSlice(QWidget *parent = nullptr);
+	~FormModelSlice();
 
 private:
 	Ui::ModelSliceClass *ui;

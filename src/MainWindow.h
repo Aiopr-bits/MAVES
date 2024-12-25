@@ -41,7 +41,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
-#include "ModelSlice.h"
+#include "FormModelSlice.h"
 #include <QProcess>
 #include <QLogValueAxis>
 #include <QChart>
@@ -189,7 +189,7 @@ public:
 	FormGeometry* formGeometry;
 	FormMeshImport* formMeshImport;
 	FormModelClip* formModelClip;
-	ModelSlice* formModelSlice;
+	FormModelSlice* formModelSlice;
 
 	//残差图相关变量
 	QChart* chart;
