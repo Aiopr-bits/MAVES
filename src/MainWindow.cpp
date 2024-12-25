@@ -153,6 +153,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
 	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_CheckBoxToggle);									//模型切分页面CheckBox切换
+	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//模型切分页面LineEdit值改变
 }
 
 MainWindow::~MainWindow()
@@ -349,7 +350,6 @@ void MainWindow::on_pushButton_3_clicked()
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
 	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
-	if (actors->GetNumberOfItems() == 0) return;
 
 	double bounds[6] = { VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN };
 	int visibleActorCount = 0;
@@ -396,6 +396,14 @@ void MainWindow::updateplaneRepModelClipValues()
 
 	planeRepModelClip->GetOrigin(origin);
 	planeRepModelClip->GetNormal(normal);
+
+	// 临时禁用信号
+	QSignalBlocker blocker1(formModelClip->ui->lineEdit);
+	QSignalBlocker blocker2(formModelClip->ui->lineEdit_2);
+	QSignalBlocker blocker3(formModelClip->ui->lineEdit_3);
+	QSignalBlocker blocker4(formModelClip->ui->lineEdit_4);
+	QSignalBlocker blocker5(formModelClip->ui->lineEdit_5);
+	QSignalBlocker blocker6(formModelClip->ui->lineEdit_6);
 
 	formModelClip->ui->lineEdit->setText(QString::number(origin[0]));
 	formModelClip->ui->lineEdit_2->setText(QString::number(origin[1]));
@@ -1076,12 +1084,34 @@ void MainWindow::formPostprocessing_loopPlayPause()
 
 void MainWindow::formModelClip_CheckBoxToggle()
 {
+	// 检查是否有可见的演员
+	int visibleActorCount = 0;
+	for (vtkSmartPointer<vtkProp> actor = render->GetViewProps()->GetNextProp(); actor; actor = render->GetViewProps()->GetNextProp()) {
+		if (vtkActor::SafeDownCast(actor) && actor->GetVisibility()) visibleActorCount++;
+	}
+	if (visibleActorCount == 0) return;
+	
 	if (formModelClip->ui->checkBox->isChecked()) {
 		planeWidgetModelClip->On();
 	}
 	else {
 		planeWidgetModelClip->Off();
 	}
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_lineEditsChanged()
+{
+	double origin[3];
+	double normal[3];
+	origin[0] = formModelClip->ui->lineEdit->text().toDouble();
+	origin[1] = formModelClip->ui->lineEdit_2->text().toDouble();
+	origin[2] = formModelClip->ui->lineEdit_3->text().toDouble();
+	normal[0] = formModelClip->ui->lineEdit_4->text().toDouble();
+	normal[1] = formModelClip->ui->lineEdit_5->text().toDouble();
+	normal[2] = formModelClip->ui->lineEdit_6->text().toDouble();
+	planeRepModelClip->SetOrigin(origin);
+	planeRepModelClip->SetNormal(normal);
 	ui->openGLWidget->renderWindow()->Render();
 }
 

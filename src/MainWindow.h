@@ -166,6 +166,7 @@ public slots:
 	void formPostprocessing_reversePause();																				//反向播放暂停
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
 	void formModelClip_CheckBoxToggle();																				//模型切分页面CheckBox切换
+	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
 
 public:
 	Ui::MainWindowClass *ui;

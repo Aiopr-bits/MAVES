@@ -15,8 +15,12 @@ public:
 	FormModelClip(QWidget *parent = nullptr);
 	~FormModelClip();
 
+private slots:
+	void onLineEditChanged();
+
 signals:
 	void checkBoxToggled(bool checked);
+	void lineEditsChanged();
 
 public:
 	Ui::FormModelClipClass *ui;
