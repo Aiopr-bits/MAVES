@@ -15,6 +15,9 @@ public:
 	FormModelClip(QWidget *parent = nullptr);
 	~FormModelClip();
 
+signals:
+	void checkBoxToggled(bool checked);
+
 public:
 	Ui::FormModelClipClass *ui;
 };

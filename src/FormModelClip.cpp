@@ -5,9 +5,12 @@ FormModelClip::FormModelClip(QWidget *parent)
 	, ui(new Ui::FormModelClipClass())
 {
 	ui->setupUi(this);
+
+	connect(ui->checkBox, &QCheckBox::toggled, this, &FormModelClip::checkBoxToggled);
 }
 
 FormModelClip::~FormModelClip()
 {
 	delete ui;
 }
+

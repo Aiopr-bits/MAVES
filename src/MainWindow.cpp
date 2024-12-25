@@ -152,6 +152,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
+	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_CheckBoxToggle);									//模型切分页面CheckBox切换
 }
 
 MainWindow::~MainWindow()
@@ -1071,6 +1072,17 @@ void MainWindow::formPostprocessing_loopPlayPause()
 	loopPlayTimer->stop();
 	formPostprocessing->pushButtonLoopPlayTimerPause->hide();
 	formPostprocessing->ui->pushButton_9->show();
+}
+
+void MainWindow::formModelClip_CheckBoxToggle()
+{
+	if (formModelClip->ui->checkBox->isChecked()) {
+		planeWidgetModelClip->On();
+	}
+	else {
+		planeWidgetModelClip->Off();
+	}
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::onButtonClicked()
