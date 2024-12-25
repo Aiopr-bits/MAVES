@@ -333,7 +333,6 @@ void MainWindow::on_pushButton_3_clicked()
 
 	//Æ½ÃæÑ¡ÔñÆ÷
 	planeWidgetModelClip->Off();
-	planeRepModelClip->PlaceWidget(render->ComputeVisiblePropBounds());
 	planeRepModelClip->SetPlaceFactor(1.5);
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
@@ -366,13 +365,11 @@ void MainWindow::on_pushButton_3_clicked()
 	origin[1] = (bounds[2] + bounds[3]) / 2.0;
 	origin[2] = (bounds[4] + bounds[5]) / 2.0;
 
-	double normal[3] = { 1, 0, 0 };
+	double normal[3] = { 1, 1, 0 };
 
-	double center[3];
-	center[0] = origin[0] + normal[0] * 0.5;
-	center[1] = origin[1] + normal[1] * 0.5;
-	center[2] = origin[2] + normal[2] * 0.5;
-	planeRepModelClip->SetOrigin(center);
+	planeRepModelClip->SetOrigin(origin);
+	planeRepModelClip->SetNormal(normal);
+	planeRepModelClip->PlaceWidget(bounds); 
 
 	planeWidgetModelClip->SetRepresentation(planeRepModelClip);
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
