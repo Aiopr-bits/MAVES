@@ -101,18 +101,22 @@
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
+    <QtUic Include="FormModelClip.ui" />
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="MainWindow.ui" />
+    <QtUic Include="ModelSlice.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
+    <ClCompile Include="FormModelClip.cpp" />
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="ModelSlice.cpp" />
     <ClCompile Include="WorkSpaceWindow.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -128,12 +132,14 @@
     <QtMoc Include="FormMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="ModelSlice.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
     <QtMoc Include="CustomHoverPushButton.h" />
     <QtMoc Include="FormGeometry.h" />
     <QtMoc Include="FormMeshImport.h" />
     <QtMoc Include="CustomDoubleClickPushButton.h" />
+    <QtMoc Include="FormModelClip.h" />
     <ClInclude Include="GlobalData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

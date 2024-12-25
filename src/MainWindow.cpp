@@ -92,10 +92,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// 初始化按钮
 	QPushButton* buttons[] = {
-		ui->pushButton, ui->pushButton_2, ui->pushButton_4, ui->pushButton_5,
+		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
 		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
 		ui->pushButton_11, ui->pushButton_12, ui->pushButton_13, ui->pushButton_14, ui->pushButton_15,
-		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20
+		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20,
+		ui->pushButton_21
 	};
 	for (QPushButton* button : buttons) {
 		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
@@ -112,16 +113,22 @@ MainWindow::MainWindow(QWidget *parent)
 	formRun = new FormRun(this);
 	formGeometry = new FormGeometry(this);
 	formMeshImport = new FormMeshImport(this);
+	formModelClip = new FormModelClip(this);
+	formModelSlice = new ModelSlice(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formModelClip, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formModelSlice, 0, 0, 1, 1);
 	formMesh->hide();
 	formPostprocessing->hide();
 	formRun->hide();
 	formGeometry->hide();
 	formMeshImport->hide();
+	formModelClip->hide();
+	formModelSlice->hide();
 
 	//程序启动点击几何页面
 	on_pushButton_clicked();
@@ -166,6 +173,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);														//z正向
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
+	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//模型切分
+	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//模型切片
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
@@ -220,6 +229,8 @@ void MainWindow::hideAllSubForm()
 	formRun->hide();
 	formGeometry->hide();
 	formMeshImport->hide();
+	formModelClip->hide();
+	formModelSlice->hide();
 }
 
 void MainWindow::handleAction2Triggered()
@@ -290,6 +301,16 @@ void MainWindow::handleAction8Triggered()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
+void MainWindow::handleAction9Triggered()
+{
+	on_pushButton_3_clicked();
+}
+
+void MainWindow::handleAction10Triggered()
+{
+	on_pushButton_21_clicked();
+}
+
 void MainWindow::on_pushButton_clicked()
 {
 	hideAllSubForm();
@@ -322,6 +343,78 @@ void MainWindow::on_pushButton_17_clicked()
 	hideAllSubForm();
 	formPostprocessing->show();
 	ui->tabWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+	hideAllSubForm();
+	formModelClip->show();
+	ui->tabWidget->setCurrentIndex(0);
+
+	QPushButton* clickedButton = ui->pushButton_3;
+	if (clickedButton) {
+		// 还原上一个点击的按钮背景色
+		if (lastClickedButton) {
+			lastClickedButton->setStyleSheet(
+				"QPushButton {"
+				"    background-color: rgb(255, 255, 255);"
+				"    border: none;"
+				"	 text-align: left;"
+				"	 padding-left: 50px;"
+				"}"
+				"QPushButton:hover {"
+				"    background-color: rgb(242, 242, 242);"
+				"}"
+			);
+		}
+		// 设置当前点击的按钮背景色
+		clickedButton->setStyleSheet(
+			"QPushButton {"
+			"    background-color: rgb(232, 232, 232);"
+			"    border: none;"
+			"	 text-align: left;"
+			"	 padding-left: 50px;"
+			"}"
+		);
+		// 更新上一个点击的按钮
+		lastClickedButton = clickedButton;
+	}
+}
+
+void MainWindow::on_pushButton_21_clicked()
+{
+	hideAllSubForm();
+	formModelSlice->show();
+	ui->tabWidget->setCurrentIndex(0);
+
+	QPushButton* clickedButton = ui->pushButton_21;
+	if (clickedButton) {
+		// 还原上一个点击的按钮背景色
+		if (lastClickedButton) {
+			lastClickedButton->setStyleSheet(
+				"QPushButton {"
+				"    background-color: rgb(255, 255, 255);"
+				"    border: none;"
+				"	 text-align: left;"
+				"	 padding-left: 50px;"
+				"}"
+				"QPushButton:hover {"
+				"    background-color: rgb(242, 242, 242);"
+				"}"
+			);
+		}
+		// 设置当前点击的按钮背景色
+		clickedButton->setStyleSheet(
+			"QPushButton {"
+			"    background-color: rgb(232, 232, 232);"
+			"    border: none;"
+			"	 text-align: left;"
+			"	 padding-left: 50px;"
+			"}"
+		);
+		// 更新上一个点击的按钮
+		lastClickedButton = clickedButton;
+	}
 }
 
 void MainWindow::formGeometry_import(const QString& filePath)

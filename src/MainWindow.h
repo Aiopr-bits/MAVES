@@ -40,6 +40,8 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormRun.h"
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
+#include "FormModelClip.h"
+#include "ModelSlice.h"
 #include <QProcess>
 #include <QLogValueAxis>
 #include <QChart>
@@ -74,12 +76,16 @@ public slots:
 	void handleAction6Triggered();								    													//z正向
 	void handleAction7Triggered();								    													//z负向
 	void handleAction8Triggered();								    													//适应窗口
+	void handleAction9Triggered();								    													//模型切分
+	void handleAction10Triggered();								    													//模型切片
 
 	void on_pushButton_clicked();								    													//几何页面
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
+	void on_pushButton_3_clicked();								    													//模型切分
+	void on_pushButton_21_clicked();								    												//模型切片
 
 	void formGeometry_import(const QString& filePath);																	//几何导入
 	void formMeshImport_import(const QString& filePath);																//网格导入
@@ -103,7 +109,7 @@ public slots:
 	void onReverseTimerTimeout(); 																						//倒放
 	void onLoopPlayTimerTimeout(); 																						//循环播放
 
-	void onButtonClicked();																								//主控制面板按钮点击
+	void onButtonClicked();																								//控制面板按钮点击背景色调整
 	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
 	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
 	void onProcessRunOutput();																							//求解计算进程输出
@@ -133,6 +139,8 @@ public:
 	FormRun* formRun;
 	FormGeometry* formGeometry;
 	FormMeshImport* formMeshImport;
+	FormModelClip* formModelClip;
+	ModelSlice* formModelSlice;
 
 	//残差图相关变量
 	QChart* chart;
