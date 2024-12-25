@@ -15,6 +15,13 @@ public:
 	FormModelSlice(QWidget *parent = nullptr);
 	~FormModelSlice();
 
-private:
+public slots:
+	void onLineEditChanged();
+
+signals:
+	void checkBoxToggled(bool checked);
+	void lineEditsChanged();
+
+public:
 	Ui::FormModelSliceClass *ui;
 };

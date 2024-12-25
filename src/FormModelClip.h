@@ -15,7 +15,7 @@ public:
 	FormModelClip(QWidget *parent = nullptr);
 	~FormModelClip();
 
-private slots:
+public slots:
 	void onLineEditChanged();
 
 signals:

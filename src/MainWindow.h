@@ -145,7 +145,8 @@ public slots:
 	void onProcessOutput(); 																							//进程输出
 	void onProcessError();																								//进程错误输出
 	void updateChart();											    													//更新残差图
-	void updateplaneRepModelClipValues();								    											//更新模型切分平面选择器的值
+	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
+	void updatePlaneRepModelSliceValues();								    											//更新模型切片平面选择器的值
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
@@ -167,6 +168,8 @@ public slots:
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
 	void formModelClip_CheckBoxToggle();																				//模型切分页面CheckBox切换
 	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
+	void formModelSlice_CheckBoxToggle();																				//模型切片页面CheckBox切换
+	void formModelSlice_lineEditsChanged();																				//模型切片页面LineEdit值改变
 
 public:
 	Ui::MainWindowClass *ui;
@@ -209,4 +212,7 @@ public:
 	//平面选择器相关变量
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
+	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelSlice;
+	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelSlice;
+
 };
