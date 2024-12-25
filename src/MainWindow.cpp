@@ -1084,12 +1084,10 @@ void MainWindow::formPostprocessing_loopPlayPause()
 
 void MainWindow::formModelClip_CheckBoxToggle()
 {
-	// 检查是否有可见的演员
-	int visibleActorCount = 0;
-	for (vtkSmartPointer<vtkProp> actor = render->GetViewProps()->GetNextProp(); actor; actor = render->GetViewProps()->GetNextProp()) {
-		if (vtkActor::SafeDownCast(actor) && actor->GetVisibility()) visibleActorCount++;
+	//如果没有可见演员则直接返回
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
 	}
-	if (visibleActorCount == 0) return;
 	
 	if (formModelClip->ui->checkBox->isChecked()) {
 		planeWidgetModelClip->On();
