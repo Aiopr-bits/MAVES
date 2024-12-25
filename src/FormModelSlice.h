@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_ModelSlice.h"
+#include "ui_FormModelSlice.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ModelSliceClass; };
+namespace Ui { class FormModelSliceClass; };
 QT_END_NAMESPACE
 
 class FormModelSlice : public QWidget
@@ -16,5 +16,5 @@ public:
 	~FormModelSlice();
 
 private:
-	Ui::ModelSliceClass *ui;
+	Ui::FormModelSliceClass *ui;
 };

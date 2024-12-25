@@ -2,7 +2,7 @@
 
 FormModelSlice::FormModelSlice(QWidget *parent)
 	: QWidget(parent)
-	, ui(new Ui::ModelSliceClass())
+	, ui(new Ui::FormModelSliceClass())
 {
 	ui->setupUi(this);
 }
