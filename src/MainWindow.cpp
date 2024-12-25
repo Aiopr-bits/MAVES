@@ -340,29 +340,31 @@ void MainWindow::on_pushButton_3_clicked()
 	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
 	if (actors->GetNumberOfItems() == 0) return;
 
-	double origin[3] = { 0, 0, 0 };
+	double bounds[6] = { VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN };
 	int visibleActorCount = 0;
 	while (actor)
 	{
 		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
 		if (actor_ && actor_->GetVisibility())
 		{
-			double* bounds = actor_->GetBounds();
-			origin[0] += (bounds[0] + bounds[1]) / 2;
-			origin[1] += (bounds[2] + bounds[3]) / 2;
-			origin[2] += (bounds[4] + bounds[5]) / 2;
+			double* actorBounds = actor_->GetBounds();
+			bounds[0] = std::min(bounds[0], actorBounds[0]);
+			bounds[1] = std::max(bounds[1], actorBounds[1]);
+			bounds[2] = std::min(bounds[2], actorBounds[2]);
+			bounds[3] = std::max(bounds[3], actorBounds[3]);
+			bounds[4] = std::min(bounds[4], actorBounds[4]);
+			bounds[5] = std::max(bounds[5], actorBounds[5]);
 			visibleActorCount++;
 		}
 		actor = actors->GetNextProp();
 	}
 
-	if (visibleActorCount > 0)
-	{
-		origin[0] /= visibleActorCount;
-		origin[1] /= visibleActorCount;
-		origin[2] /= visibleActorCount;
-	}
-	else return;
+	if (visibleActorCount == 0) return;
+
+	double origin[3];
+	origin[0] = (bounds[0] + bounds[1]) / 2.0;
+	origin[1] = (bounds[2] + bounds[3]) / 2.0;
+	origin[2] = (bounds[4] + bounds[5]) / 2.0;
 
 	double normal[3] = { 1, 0, 0 };
 
@@ -377,7 +379,6 @@ void MainWindow::on_pushButton_3_clicked()
 	planeWidgetModelClip->On();
 	ui->openGLWidget->renderWindow()->Render();
 }
-
 
 void MainWindow::updateplaneRepModelClipValues()
 {
