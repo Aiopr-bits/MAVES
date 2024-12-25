@@ -74,6 +74,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QCheckBox { 
     spacing: 10px; 
@@ -516,6 +519,9 @@ QLineEdit:hover {
            <width>100</width>
            <height>30</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
