@@ -310,6 +310,7 @@ void MainWindow::on_pushButton_3_clicked()
 	hideAllSubForm();
 	formModelClip->show();
 	ui->tabWidget->setCurrentIndex(0);
+	formModelClip->ui->checkBox->setChecked(true);
 
 	//按钮颜色处理
 	QPushButton* clickedButton = ui->pushButton_3;
