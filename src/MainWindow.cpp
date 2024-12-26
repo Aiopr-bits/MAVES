@@ -1235,6 +1235,7 @@ void MainWindow::formModelClip_apply()
 	}
 
 	formModelClip->ui->checkBox->setChecked(false);
+	formModelClip->ui->checkBox->setChecked(true);
 
 	// 获取平面选择器的原点和法向量
 	double origin[3];
@@ -1266,15 +1267,21 @@ void MainWindow::formModelClip_apply()
 			if (polyDataMapper || dataSetMapper)
 			{
 				vtkSmartPointer<vtkPolyData> polyData = nullptr;
+				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = nullptr;
+				double range[2] = { 0.0, 1.0 };
 
 				if (polyDataMapper)
 				{
-					polyData = polyDataMapper->GetInput();
+					polyData = vtkPolyData::SafeDownCast(polyDataMapper->GetInput());
+					colorTransferFunction = vtkColorTransferFunction::SafeDownCast(polyDataMapper->GetLookupTable());
+					polyDataMapper->GetScalarRange(range);
 				}
 				else if (dataSetMapper)
 				{
-					vtkSmartPointer<vtkDataSet> dataSet = dataSetMapper->GetInput();
+					vtkSmartPointer<vtkDataSet> dataSet = vtkDataSet::SafeDownCast(dataSetMapper->GetInput());
 					polyData = vtkPolyData::SafeDownCast(dataSet);
+					colorTransferFunction = vtkColorTransferFunction::SafeDownCast(dataSetMapper->GetLookupTable());
+					dataSetMapper->GetScalarRange(range);
 
 					// 如果数据集不是 vtkPolyData 类型，则尝试将其转换为 vtkPolyData
 					if (!polyData)
@@ -1301,6 +1308,8 @@ void MainWindow::formModelClip_apply()
 					// 创建新的映射器和演员
 					vtkSmartPointer<vtkPolyDataMapper> clippedMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 					clippedMapper->SetInputData(clippedPolyData);
+					clippedMapper->SetLookupTable(colorTransferFunction);
+					clippedMapper->SetScalarRange(range);
 
 					vtkSmartPointer<vtkActor> clippedActor = vtkSmartPointer<vtkActor>::New();
 					clippedActor->SetMapper(clippedMapper);
@@ -1326,6 +1335,7 @@ void MainWindow::formModelClip_apply()
 	// 渲染窗口
 	ui->openGLWidget->renderWindow()->Render();
 }
+
 
 void MainWindow::onButtonClicked()
 {
