@@ -627,6 +627,9 @@ QLineEdit:hover {
            <height>25</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
     background-color: rgb(255, 255, 255); /* 背景色 */
@@ -678,6 +681,9 @@ QPushButton:pressed {
            <width>100</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
@@ -761,6 +767,9 @@ QPushButton:pressed {
            <height>25</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
     background-color: rgb(255, 255, 255); /* 背景色 */
@@ -812,6 +821,9 @@ QPushButton:pressed {
            <width>100</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
@@ -894,6 +906,9 @@ QPushButton:pressed {
            <width>227</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
