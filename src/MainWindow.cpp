@@ -1260,10 +1260,32 @@ void MainWindow::formModelClip_apply()
 		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
 		if (actor_ && actor_->GetVisibility())
 		{
-			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(actor_->GetMapper());
-			if (mapper)
+			vtkSmartPointer<vtkPolyDataMapper> polyDataMapper = vtkPolyDataMapper::SafeDownCast(actor_->GetMapper());
+			vtkSmartPointer<vtkDataSetMapper> dataSetMapper = vtkDataSetMapper::SafeDownCast(actor_->GetMapper());
+
+			if (polyDataMapper || dataSetMapper)
 			{
-				vtkSmartPointer<vtkPolyData> polyData = mapper->GetInput();
+				vtkSmartPointer<vtkPolyData> polyData = nullptr;
+
+				if (polyDataMapper)
+				{
+					polyData = polyDataMapper->GetInput();
+				}
+				else if (dataSetMapper)
+				{
+					vtkSmartPointer<vtkDataSet> dataSet = dataSetMapper->GetInput();
+					polyData = vtkPolyData::SafeDownCast(dataSet);
+
+					// 如果数据集不是 vtkPolyData 类型，则尝试将其转换为 vtkPolyData
+					if (!polyData)
+					{
+						vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
+						geometryFilter->SetInputData(dataSet);
+						geometryFilter->Update();
+						polyData = geometryFilter->GetOutput();
+					}
+				}
+
 				if (polyData)
 				{
 					// 使用平面切分多边形数据
@@ -1285,14 +1307,14 @@ void MainWindow::formModelClip_apply()
 
 					// 存储切分后的演员
 					clippedActors.push_back(clippedActor);
+
+					// 移除原始演员
+					render->RemoveActor(actor_);
 				}
 			}
 		}
 		actor = actors->GetNextProp();
 	}
-
-	// 清除当前的演员
-	render->RemoveAllViewProps();
 
 	// 将切分后的演员添加到渲染器中
 	for (auto& clippedActor : clippedActors)
