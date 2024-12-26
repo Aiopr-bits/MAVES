@@ -1292,6 +1292,7 @@ void MainWindow::formModelClip_apply()
 					vtkSmartPointer<vtkClipPolyData> clipper = vtkSmartPointer<vtkClipPolyData>::New();
 					clipper->SetInputData(polyData);
 					clipper->SetClipFunction(plane);
+					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked()); 
 					clipper->Update();
 
 					// 获取切分后的数据
