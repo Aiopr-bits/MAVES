@@ -1118,21 +1118,30 @@ void MainWindow::formModelClip_alignView()
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
 	}
+
+	double normal[3];
+	double origin[3];
+	planeRepModelClip->GetNormal(normal);
+	planeRepModelClip->GetOrigin(origin);
+
 	vtkCamera* camera = render->GetActiveCamera();
 	double cameraPosition[3];
-	camera->GetPosition(cameraPosition);
-	double cameraFocalPoint[3];
-	camera->GetFocalPoint(cameraFocalPoint);
-	double cameraDirection[3];
-	camera->GetDirectionOfProjection(cameraDirection);
-	double origin[3];
-	double normal[3];
-	for (int i = 0; i < 3; i++) {
-		origin[i] = cameraPosition[i] + cameraDirection[i] * 0.5 * (camera->GetDistance());
-		normal[i] = cameraDirection[i];
+	double distance = camera->GetDistance();
+	for (int i = 0; i < 3; ++i) {
+		cameraPosition[i] = origin[i] - normal[i] * distance;
 	}
-	planeRepModelClip->SetOrigin(origin);
-	planeRepModelClip->SetNormal(normal);
+	camera->SetPosition(cameraPosition);
+	camera->SetFocalPoint(origin);
+
+	const double* viewUpPtr = camera->GetViewUp();
+	double viewUp[3] = { viewUpPtr[0], viewUpPtr[1], viewUpPtr[2] };
+	if (normal[0] == 0.0 && normal[1] == 0.0) {
+		viewUp[1] = 1.0; // 如果法向量在Z轴方向上，设置Y轴为上方向
+	}
+	camera->SetViewUp(viewUp);
+
+	render->ResetCamera();
+	planeWidgetModelClip->GetInteractor()->Render();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
