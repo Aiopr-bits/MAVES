@@ -1046,6 +1046,8 @@ void MainWindow::formModelClip_checkBoxToggle()
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
 	}
+
+	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
 	
 	if (formModelClip->ui->checkBox->isChecked()) {
 		planeWidgetModelClip->On();
