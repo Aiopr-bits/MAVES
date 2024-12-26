@@ -105,7 +105,6 @@
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="MainWindow.ui" />
-    <QtUic Include="FormModelSlice.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
     <ClCompile Include="FormGeometry.cpp" />
@@ -116,7 +115,6 @@
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="FormModelSlice.cpp" />
     <ClCompile Include="WorkSpaceWindow.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -132,7 +130,6 @@
     <QtMoc Include="FormMesh.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="FormModelSlice.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
     <QtMoc Include="CustomHoverPushButton.h" />

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1563</width>
-    <height>884</height>
+    <height>916</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -915,55 +915,6 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_21">
-             <property name="minimumSize">
-              <size>
-               <width>180</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>180</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-    background-color: white;
-    color: black;
-    border: none;
-    text-align: left;
-    padding-left: 50px;
-}
-
-QPushButton:hover {
-    background-color: rgb(242, 242, 242);
-}
-
-QPushButton:pressed {
-    background-color: rgb(232, 232, 232);
-}</string>
-             </property>
-             <property name="text">
-              <string>模型切片</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../res/ModelSlice.png</normaloff>../res/ModelSlice.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QPushButton" name="pushButton_18">
              <property name="minimumSize">
               <size>
@@ -1360,7 +1311,6 @@ QMenu::item:selected {
     <bool>false</bool>
    </attribute>
    <addaction name="action9"/>
-   <addaction name="action10"/>
    <addaction name="action2"/>
    <addaction name="action3"/>
    <addaction name="action4"/>
@@ -1483,18 +1433,6 @@ QMenu::item:selected {
    </property>
    <property name="toolTip">
     <string>模型切分</string>
-   </property>
-  </action>
-  <action name="action10">
-   <property name="icon">
-    <iconset>
-     <normaloff>../res/pqSlice.png</normaloff>../res/pqSlice.png</iconset>
-   </property>
-   <property name="text">
-    <string>模型切片</string>
-   </property>
-   <property name="toolTip">
-    <string>模型切片</string>
    </property>
   </action>
  </widget>

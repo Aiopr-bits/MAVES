@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
 	, axisMaxY(1)
 	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
 	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
-	, planeRepModelSlice(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
-	, planeWidgetModelSlice(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 {
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
@@ -43,8 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
 		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
 		ui->pushButton_11, ui->pushButton_12, ui->pushButton_13, ui->pushButton_14, ui->pushButton_15,
-		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20,
-		ui->pushButton_21
+		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20
 	};
 	for (QPushButton* button : buttons) {
 		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
@@ -62,21 +59,18 @@ MainWindow::MainWindow(QWidget *parent)
 	formGeometry = new FormGeometry(this);
 	formMeshImport = new FormMeshImport(this);
 	formModelClip = new FormModelClip(this);
-	formModelSlice = new FormModelSlice(this);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formModelClip, 0, 0, 1, 1);
-	ui->gridLayout_3->addWidget(formModelSlice, 0, 0, 1, 1);
 	formMesh->hide();
 	formPostprocessing->hide();
 	formRun->hide();
 	formGeometry->hide();
 	formMeshImport->hide();
 	formModelClip->hide();
-	formModelSlice->hide();
 
 	//程序启动点击几何页面
 	on_pushButton_clicked();
@@ -121,7 +115,6 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
 	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//模型切分
-	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//模型切片
 
 	//主界面其他事件处理
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
@@ -135,7 +128,6 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&processFoamToVTK, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessFoamToVTKFinished);	//foamToVTK进程结束
 	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//更新残差图
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//更新模型切分平面选择器的值
-	planeRepModelSlice->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelSliceValues); 				 				//更新模型切片平面选择器的值
 
 	//副控制面板事件处理
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//导入几何
@@ -157,8 +149,6 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
 	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_CheckBoxToggle);									//模型切分页面CheckBox切换
 	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//模型切分页面LineEdit值改变
-	connect(formModelSlice, &FormModelSlice::checkBoxToggled, this, &MainWindow::formModelSlice_CheckBoxToggle);								//模型切片页面CheckBox切换
-	connect(formModelSlice, &FormModelSlice::lineEditsChanged, this, &MainWindow::formModelSlice_lineEditsChanged);								//模型切片页面LineEdit值改变
 }
 
 MainWindow::~MainWindow()
@@ -187,7 +177,6 @@ void MainWindow::hideAllSubForm()
 	formGeometry->hide();
 	formMeshImport->hide();
 	formModelClip->hide();
-	formModelSlice->hide();
 }
 
 void MainWindow::handleAction2Triggered()
@@ -263,18 +252,12 @@ void MainWindow::handleAction9Triggered()
 	on_pushButton_3_clicked();
 }
 
-void MainWindow::handleAction10Triggered()
-{
-	on_pushButton_21_clicked();
-}
-
 void MainWindow::on_pushButton_clicked()
 {
 	hideAllSubForm();
 	formGeometry->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
-	planeWidgetModelSlice->Off();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -284,7 +267,6 @@ void MainWindow::on_pushButton_4_clicked()
 	formMeshImport->show();	
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
-	planeWidgetModelSlice->Off();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -294,7 +276,6 @@ void MainWindow::on_pushButton_2_clicked()
 	formMesh->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
-	planeWidgetModelSlice->Off();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -303,7 +284,6 @@ void MainWindow::on_pushButton_16_clicked()
 	hideAllSubForm();
 	formRun->show();
 	planeWidgetModelClip->Off();
-	planeWidgetModelSlice->Off();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -313,7 +293,6 @@ void MainWindow::on_pushButton_17_clicked()
 	formPostprocessing->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
-	planeWidgetModelSlice->Off();
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -322,7 +301,6 @@ void MainWindow::on_pushButton_3_clicked()
 	hideAllSubForm();
 	formModelClip->show();
 	ui->tabWidget->setCurrentIndex(0);
-	planeWidgetModelSlice->Off();
 	formModelClip->ui->checkBox->setChecked(true);
 
 	//按钮颜色处理
@@ -423,115 +401,6 @@ void MainWindow::updatePlaneRepModelClipValues()
 	formModelClip->ui->lineEdit_5->setText(QString::number(normal[1]));
 	formModelClip->ui->lineEdit_6->setText(QString::number(normal[2]));
 }
-
-void MainWindow::updatePlaneRepModelSliceValues()
-{
-	double origin[3];
-	double normal[3];
-
-	planeRepModelSlice->GetOrigin(origin);
-	planeRepModelSlice->GetNormal(normal);
-
-	// 临时禁用信号
-	QSignalBlocker blocker1(formModelSlice->ui->lineEdit);
-	QSignalBlocker blocker2(formModelSlice->ui->lineEdit_2);
-	QSignalBlocker blocker3(formModelSlice->ui->lineEdit_3);
-	QSignalBlocker blocker4(formModelSlice->ui->lineEdit_4);
-	QSignalBlocker blocker5(formModelSlice->ui->lineEdit_5);
-	QSignalBlocker blocker6(formModelSlice->ui->lineEdit_6);
-
-	formModelSlice->ui->lineEdit->setText(QString::number(origin[0]));
-	formModelSlice->ui->lineEdit_2->setText(QString::number(origin[1]));
-	formModelSlice->ui->lineEdit_3->setText(QString::number(origin[2]));
-	formModelSlice->ui->lineEdit_4->setText(QString::number(normal[0]));
-	formModelSlice->ui->lineEdit_5->setText(QString::number(normal[1]));
-	formModelSlice->ui->lineEdit_6->setText(QString::number(normal[2]));
-}
-
-
-void MainWindow::on_pushButton_21_clicked()
-{
-	hideAllSubForm();
-	formModelSlice->show();
-	ui->tabWidget->setCurrentIndex(0);
-	planeWidgetModelClip->Off(); 
-	formModelSlice->ui->checkBox->setChecked(true);
-
-	//按钮颜色处理
-	QPushButton* clickedButton = ui->pushButton_21;
-	if (clickedButton) {
-		// 还原上一个点击的按钮背景色
-		if (lastClickedButton) {
-			lastClickedButton->setStyleSheet(
-				"QPushButton {"
-				"    background-color: rgb(255, 255, 255);"
-				"    border: none;"
-				"	 text-align: left;"
-				"	 padding-left: 50px;"
-				"}"
-				"QPushButton:hover {"
-				"    background-color: rgb(242, 242, 242);"
-				"}"
-			);
-		}
-		// 设置当前点击的按钮背景色
-		clickedButton->setStyleSheet(
-			"QPushButton {"
-			"    background-color: rgb(232, 232, 232);"
-			"    border: none;"
-			"	 text-align: left;"
-			"	 padding-left: 50px;"
-			"}"
-		);
-		// 更新上一个点击的按钮
-		lastClickedButton = clickedButton;
-	}
-
-	//平面选择器
-	planeWidgetModelSlice->Off();
-	planeRepModelSlice->SetPlaceFactor(1.5);
-	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
-	actors->InitTraversal();
-	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
-
-	double bounds[6] = { VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN };
-	int visibleActorCount = 0;
-	while (actor)
-	{
-		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
-		if (actor_ && actor_->GetVisibility())
-		{
-			double* actorBounds = actor_->GetBounds();
-			bounds[0] = std::min(bounds[0], actorBounds[0]);
-			bounds[1] = std::max(bounds[1], actorBounds[1]);
-			bounds[2] = std::min(bounds[2], actorBounds[2]);
-			bounds[3] = std::max(bounds[3], actorBounds[3]);
-			bounds[4] = std::min(bounds[4], actorBounds[4]);
-			bounds[5] = std::max(bounds[5], actorBounds[5]);
-			visibleActorCount++;
-		}
-		actor = actors->GetNextProp();
-	}
-
-	if (visibleActorCount == 0) return;
-
-	double origin[3];
-	origin[0] = (bounds[0] + bounds[1]) / 2.0;
-	origin[1] = (bounds[2] + bounds[3]) / 2.0;
-	origin[2] = (bounds[4] + bounds[5]) / 2.0;
-
-	double normal[3] = { 1, 1, 0 };
-
-	planeRepModelSlice->SetOrigin(origin);
-	planeRepModelSlice->SetNormal(normal);
-	planeRepModelSlice->PlaceWidget(bounds);
-
-	planeWidgetModelSlice->SetRepresentation(planeRepModelSlice);
-	planeWidgetModelSlice->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
-	planeWidgetModelSlice->On();
-	ui->openGLWidget->renderWindow()->Render();
-}
-
 
 void MainWindow::formGeometry_import(const QString& filePath)
 {
@@ -1192,37 +1061,6 @@ void MainWindow::formModelClip_lineEditsChanged()
 	normal[2] = formModelClip->ui->lineEdit_6->text().toDouble();
 	planeRepModelClip->SetOrigin(origin);
 	planeRepModelClip->SetNormal(normal);
-	ui->openGLWidget->renderWindow()->Render();
-}
-
-void MainWindow::formModelSlice_CheckBoxToggle()
-{
-	//如果没有可见演员则直接返回
-	if (render->GetActors()->GetNumberOfItems() == 0) {
-		return;
-	}
-
-	if (formModelSlice->ui->checkBox->isChecked()) {
-		planeWidgetModelSlice->On();
-	}
-	else {
-		planeWidgetModelSlice->Off();
-	}
-	ui->openGLWidget->renderWindow()->Render();
-}
-
-void MainWindow::formModelSlice_lineEditsChanged()
-{
-	double origin[3];
-	double normal[3];
-	origin[0] = formModelSlice->ui->lineEdit->text().toDouble();
-	origin[1] = formModelSlice->ui->lineEdit_2->text().toDouble();
-	origin[2] = formModelSlice->ui->lineEdit_3->text().toDouble();
-	normal[0] = formModelSlice->ui->lineEdit_4->text().toDouble();
-	normal[1] = formModelSlice->ui->lineEdit_5->text().toDouble();
-	normal[2] = formModelSlice->ui->lineEdit_6->text().toDouble();
-	planeRepModelSlice->SetOrigin(origin);
-	planeRepModelSlice->SetNormal(normal);
 	ui->openGLWidget->renderWindow()->Render();
 }
 

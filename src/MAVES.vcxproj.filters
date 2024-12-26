@@ -50,9 +50,6 @@
     <QtUic Include="FormModelClip.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="FormModelSlice.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -82,9 +79,6 @@
     <ClCompile Include="FormModelClip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FormModelSlice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -112,9 +106,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormModelClip.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="FormModelSlice.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

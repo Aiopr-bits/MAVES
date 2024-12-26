@@ -41,7 +41,6 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
-#include "FormModelSlice.h"
 #include <QProcess>
 #include <QLogValueAxis>
 #include <QChart>
@@ -122,7 +121,6 @@ public slots:
 	void handleAction7Triggered();								    													//z负向
 	void handleAction8Triggered();								    													//适应窗口
 	void handleAction9Triggered();								    													//模型切分
-	void handleAction10Triggered();								    													//模型切片
 
 	//控制面板按钮点击事件处理
 	void on_pushButton_clicked();								    													//几何页面
@@ -131,7 +129,6 @@ public slots:
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
-	void on_pushButton_21_clicked();								    												//模型切片
 
 	//主界面其他事件处理
 	void onPlayTimerTimeout();																							//播放
@@ -146,7 +143,6 @@ public slots:
 	void onProcessError();																								//进程错误输出
 	void updateChart();											    													//更新残差图
 	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
-	void updatePlaneRepModelSliceValues();								    											//更新模型切片平面选择器的值
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
@@ -168,8 +164,6 @@ public slots:
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
 	void formModelClip_CheckBoxToggle();																				//模型切分页面CheckBox切换
 	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
-	void formModelSlice_CheckBoxToggle();																				//模型切片页面CheckBox切换
-	void formModelSlice_lineEditsChanged();																				//模型切片页面LineEdit值改变
 
 public:
 	Ui::MainWindowClass *ui;
@@ -194,7 +188,6 @@ public:
 	FormGeometry* formGeometry;
 	FormMeshImport* formMeshImport;
 	FormModelClip* formModelClip;
-	FormModelSlice* formModelSlice;
 
 	//残差图相关变量
 	QChart* chart;
@@ -212,7 +205,4 @@ public:
 	//平面选择器相关变量
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
-	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelSlice;
-	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelSlice;
-
 };
