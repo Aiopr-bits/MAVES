@@ -27,7 +27,7 @@ public slots:
 signals:
 	void meshVisibilityChanged();
 
-private:
+public:
 	Ui::FormMeshClass *ui;
 	QStandardItemModel* treeViewModel;
 };

@@ -576,6 +576,28 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 
 void MainWindow::formMesh_apply()
 {
+	render->RemoveAllViewProps();
+	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
+
+	// 遍历 treeView 并更新 actor
+	for (int i = 0; i < formMesh->treeViewModel->rowCount(); ++i)
+	{
+		QStandardItem* item = formMesh->treeViewModel->item(i);
+		const auto& actor = meshFaceActors.find(item->text());
+		if (actor != meshFaceActors.end() && item->checkState() == Qt::Checked)
+		{
+			render->AddActor(actor->second);
+		}
+
+		const auto& edgeActor = meshEdgeActors.find(item->text());
+		if (edgeActor != meshEdgeActors.end() && item->checkState() == Qt::Checked)
+		{
+			render->AddActor(edgeActor->second);
+		}
+	}
+
+	render->ResetCamera();
 	renderWindow->Render();
 }
 
@@ -1157,6 +1179,7 @@ void MainWindow::formModelClip_resetPlane()
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 
+	formModelClip->ui->checkBox->setChecked(true);
 
 	// 设置平面选择器的放置因子
 	planeRepModelClip->SetPlaceFactor(1.5);
@@ -1205,10 +1228,78 @@ void MainWindow::formModelClip_resetPlane()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-
-
 void MainWindow::formModelClip_apply()
 {
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+
+	// 获取平面选择器的原点和法向量
+	double origin[3];
+	double normal[3];
+	planeRepModelClip->GetOrigin(origin);
+	planeRepModelClip->GetNormal(normal);
+
+	// 创建一个平面
+	vtkSmartPointer<vtkPlane> plane = vtkSmartPointer<vtkPlane>::New();
+	plane->SetOrigin(origin);
+	plane->SetNormal(normal);
+
+	// 存储切分后的演员
+	std::vector<vtkSmartPointer<vtkActor>> clippedActors;
+
+	// 遍历所有可见的演员并进行切分
+	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
+	actors->InitTraversal();
+	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
+
+	while (actor)
+	{
+		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
+		if (actor_ && actor_->GetVisibility())
+		{
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(actor_->GetMapper());
+			if (mapper)
+			{
+				vtkSmartPointer<vtkPolyData> polyData = mapper->GetInput();
+				if (polyData)
+				{
+					// 使用平面切分多边形数据
+					vtkSmartPointer<vtkClipPolyData> clipper = vtkSmartPointer<vtkClipPolyData>::New();
+					clipper->SetInputData(polyData);
+					clipper->SetClipFunction(plane);
+					clipper->Update();
+
+					// 获取切分后的数据
+					vtkSmartPointer<vtkPolyData> clippedPolyData = clipper->GetOutput();
+
+					// 创建新的映射器和演员
+					vtkSmartPointer<vtkPolyDataMapper> clippedMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+					clippedMapper->SetInputData(clippedPolyData);
+
+					vtkSmartPointer<vtkActor> clippedActor = vtkSmartPointer<vtkActor>::New();
+					clippedActor->SetMapper(clippedMapper);
+					clippedActor->GetProperty()->SetColor(actor_->GetProperty()->GetColor());
+
+					// 存储切分后的演员
+					clippedActors.push_back(clippedActor);
+				}
+			}
+		}
+		actor = actors->GetNextProp();
+	}
+
+	// 清除当前的演员
+	render->RemoveAllViewProps();
+
+	// 将切分后的演员添加到渲染器中
+	for (auto& clippedActor : clippedActors)
+	{
+		render->AddActor(clippedActor);
+	}
+
+	// 渲染窗口
+	ui->openGLWidget->renderWindow()->Render();
 }
 
 void MainWindow::onButtonClicked()

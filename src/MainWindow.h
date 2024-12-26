@@ -91,6 +91,8 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkColorTransferFunction.h>
 #include <QStringList>
 #include <QScrollBar>
+#include <vtkClipClosedSurface.h>
+#include <vtkPlaneCollection.h>
 
 #pragma execution_character_set("utf-8")
 
