@@ -31,6 +31,41 @@ FormModelClip::~FormModelClip()
 	delete ui;
 }
 
+void FormModelClip::on_pushButton_2_clicked()
+{
+	emit xPositive();
+}
+
+void FormModelClip::on_pushButton_3_clicked()
+{
+	emit yPositive();
+}
+
+void FormModelClip::on_pushButton_4_clicked()
+{
+	emit zPositive();
+}
+
+void FormModelClip::on_pushButton_5_clicked()
+{
+	emit cameraDirection();
+}
+
+void FormModelClip::on_pushButton_6_clicked()
+{
+	emit alignView();
+}
+
+void FormModelClip::on_pushButton_7_clicked()
+{
+	emit resetPlane();
+}
+
+void FormModelClip::on_pushButton_clicked()
+{
+	emit apply();
+}
+
 void FormModelClip::onLineEditChanged()
 {
 	emit lineEditsChanged();

@@ -147,8 +147,15 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
-	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_CheckBoxToggle);									//模型切分页面CheckBox切换
+	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);									//模型切分页面CheckBox切换
 	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//模型切分页面LineEdit值改变
+	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);												//模型切分：X正向
+	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);												//模型切分：Y正向
+	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);												//模型切分：Z正向
+	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);									//模型切分：相机方向
+	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);												//模型切分：对齐视角
+	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);											//模型切分：重置平面
+	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);														//模型切分：应用
 }
 
 MainWindow::~MainWindow()
@@ -1033,7 +1040,7 @@ void MainWindow::formPostprocessing_loopPlayPause()
 	formPostprocessing->ui->pushButton_9->show();
 }
 
-void MainWindow::formModelClip_CheckBoxToggle()
+void MainWindow::formModelClip_checkBoxToggle()
 {
 	//如果没有可见演员则直接返回
 	if (render->GetActors()->GetNumberOfItems() == 0) {
@@ -1062,6 +1069,77 @@ void MainWindow::formModelClip_lineEditsChanged()
 	planeRepModelClip->SetOrigin(origin);
 	planeRepModelClip->SetNormal(normal);
 	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_xPositive()
+{
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+
+	planeRepModelClip->SetNormal(1, 0, 0); 
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_yPositive()
+{
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+	planeRepModelClip->SetNormal(0, 1, 0);
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_zPositive()
+{
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+	planeRepModelClip->SetNormal(0, 0, 1);
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_cameraDirection()
+{
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+	vtkCamera* camera = render->GetActiveCamera();
+	double cameraDirection[3];
+	camera->GetDirectionOfProjection(cameraDirection);
+	planeRepModelClip->SetNormal(cameraDirection);
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_alignView()
+{
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+	vtkCamera* camera = render->GetActiveCamera();
+	double cameraPosition[3];
+	camera->GetPosition(cameraPosition);
+	double cameraFocalPoint[3];
+	camera->GetFocalPoint(cameraFocalPoint);
+	double cameraDirection[3];
+	camera->GetDirectionOfProjection(cameraDirection);
+	double origin[3];
+	double normal[3];
+	for (int i = 0; i < 3; i++) {
+		origin[i] = cameraPosition[i] + cameraDirection[i] * 0.5 * (camera->GetDistance());
+		normal[i] = cameraDirection[i];
+	}
+	planeRepModelClip->SetOrigin(origin);
+	planeRepModelClip->SetNormal(normal);
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::formModelClip_resetPlane()
+{
+}
+
+void MainWindow::formModelClip_apply()
+{
 }
 
 void MainWindow::onButtonClicked()

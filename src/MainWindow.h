@@ -162,8 +162,15 @@ public slots:
 	void formPostprocessing_playPause();																				//播放暂停
 	void formPostprocessing_reversePause();																				//反向播放暂停
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
-	void formModelClip_CheckBoxToggle();																				//模型切分页面CheckBox切换
+	void formModelClip_checkBoxToggle();																				//模型切分页面CheckBox切换
 	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
+	void formModelClip_xPositive();																						//模型切分：X正向
+	void formModelClip_yPositive();																						//模型切分：Y正向
+	void formModelClip_zPositive();																						//模型切分：Z正向
+	void formModelClip_cameraDirection();																				//模型切分：相机方向
+	void formModelClip_alignView();																						//模型切分：对齐视角
+	void formModelClip_resetPlane();																					//模型切分：重置平面
+	void formModelClip_apply();																							//模型切分：应用
 
 public:
 	Ui::MainWindowClass *ui;
