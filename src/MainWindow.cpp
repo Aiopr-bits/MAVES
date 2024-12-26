@@ -341,7 +341,9 @@ void MainWindow::on_pushButton_3_clicked()
 	}
 
 	//平面选择器
-	planeWidgetModelClip->Off();
+	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
+	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
 	planeRepModelClip->SetPlaceFactor(1.5);
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
@@ -1147,7 +1149,63 @@ void MainWindow::formModelClip_alignView()
 
 void MainWindow::formModelClip_resetPlane()
 {
+	if (render->GetActors()->GetNumberOfItems() == 0) {
+		return;
+	}
+
+	// 重新创建平面选择器和表示对象
+	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
+	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 
+
+	// 设置平面选择器的放置因子
+	planeRepModelClip->SetPlaceFactor(1.5);
+
+	// 获取所有演员的边界
+	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
+	actors->InitTraversal();
+	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
+
+	double bounds[6] = { VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN, VTK_DOUBLE_MAX, VTK_DOUBLE_MIN };
+	while (actor)
+	{
+		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
+		if (actor_ && actor_->GetVisibility())
+		{
+			double* actorBounds = actor_->GetBounds();
+			bounds[0] = std::min(bounds[0], actorBounds[0]);
+			bounds[1] = std::max(bounds[1], actorBounds[1]);
+			bounds[2] = std::min(bounds[2], actorBounds[2]);
+			bounds[3] = std::max(bounds[3], actorBounds[3]);
+			bounds[4] = std::min(bounds[4], actorBounds[4]);
+			bounds[5] = std::max(bounds[5], actorBounds[5]);
+		}
+		actor = actors->GetNextProp();
+	}
+
+	// 计算平面选择器的原点和法向量
+	double origin[3];
+	origin[0] = (bounds[0] + bounds[1]) / 2.0;
+	origin[1] = (bounds[2] + bounds[3]) / 2.0;
+	origin[2] = (bounds[4] + bounds[5]) / 2.0;
+
+	double normal[3] = { 1, 1, 0 };
+
+	// 设置平面选择器的原点和法向量
+	planeRepModelClip->SetOrigin(origin);
+	planeRepModelClip->SetNormal(normal);
+	planeRepModelClip->PlaceWidget(bounds);
+
+	// 启用平面选择器
+	planeWidgetModelClip->SetRepresentation(planeRepModelClip);
+	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
+	planeWidgetModelClip->On();
+
+	// 渲染窗口
+	ui->openGLWidget->renderWindow()->Render();
 }
+
+
 
 void MainWindow::formModelClip_apply()
 {
