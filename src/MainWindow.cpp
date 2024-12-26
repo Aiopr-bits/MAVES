@@ -1234,6 +1234,8 @@ void MainWindow::formModelClip_apply()
 		return;
 	}
 
+	formModelClip->ui->checkBox->setChecked(false);
+
 	// 获取平面选择器的原点和法向量
 	double origin[3];
 	double normal[3];
