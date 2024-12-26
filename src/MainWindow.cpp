@@ -1,7 +1,7 @@
 #pragma once
 #include "MainWindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindowClass())
 	, playTimer(new QTimer(this))
@@ -22,19 +22,25 @@ MainWindow::MainWindow(QWidget *parent)
 	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
 	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 {
+	//确保当前窗口缩小到任务栏
+	setWindowFlags(Qt::Window);
+#ifdef _WIN32
+	SetWindowLong(HWND(this->winId()), GWL_EXSTYLE, WS_EX_APPWINDOW);
+#endif
+
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
 	ui->setupUi(this);
 
 	//初始化三维窗口
-    renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
-    render = vtkSmartPointer<vtkRenderer>::New();
-    ui->openGLWidget->setRenderWindow(renderWindow);
-    renderWindow->AddRenderer(render);
-    render->SetBackground(1.0, 1.0, 1.0);
-    render->SetBackground2(27/255.0, 85/255.0, 133/255.0); 
-    render->GradientBackgroundOn();
-    addCoordinateAxes();
+	renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+	render = vtkSmartPointer<vtkRenderer>::New();
+	ui->openGLWidget->setRenderWindow(renderWindow);
+	renderWindow->AddRenderer(render);
+	render->SetBackground(1.0, 1.0, 1.0);
+	render->SetBackground2(27 / 255.0, 85 / 255.0, 133 / 255.0);
+	render->GradientBackgroundOn();
+	addCoordinateAxes();
 
 	// 初始化按钮
 	QPushButton* buttons[] = {
@@ -49,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	//布局管理
 	QList<int> sizes;
-	sizes << 400 << 100; 
+	sizes << 400 << 100;
 	ui->splitter->setSizes(sizes);
 
 	//创建各个子面板
@@ -84,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
 	axisX->setTitleText("迭代次数");
 	axisX->setLabelFormat("%d");
 	axisY->setTitleText("残差");
-	axisY->setBase(10);  
+	axisY->setBase(10);
 	axisY->setMin(axisMinY);
 	axisY->setMax(axisMaxY);
 	axisX->setMin(axisMinX);
@@ -105,7 +111,7 @@ MainWindow::MainWindow(QWidget *parent)
 	// 初始化残差图刷新定时器
 	chartUpdateTimer->start(100);
 
-    // 工具栏信号处理
+	// 工具栏信号处理
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//x正向
 	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//x负向
@@ -165,15 +171,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::addCoordinateAxes()
 {
-    vtkSmartPointer<vtkAxesActor> actor_axes = vtkSmartPointer<vtkAxesActor>::New();
+	vtkSmartPointer<vtkAxesActor> actor_axes = vtkSmartPointer<vtkAxesActor>::New();
 
-    axesWidget->SetOrientationMarker(actor_axes);
-    axesWidget->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
-    axesWidget->SetEnabled(true);
-    axesWidget->InteractiveOn();
-    axesWidget->SetInteractive(false);
+	axesWidget->SetOrientationMarker(actor_axes);
+	axesWidget->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
+	axesWidget->SetEnabled(true);
+	axesWidget->InteractiveOn();
+	axesWidget->SetInteractive(false);
 
-    axesWidget->SetViewport(0.0, 0.0, 0.14, 0.2);
+	axesWidget->SetViewport(0.0, 0.0, 0.14, 0.2);
 }
 
 void MainWindow::hideAllSubForm()
@@ -189,8 +195,8 @@ void MainWindow::hideAllSubForm()
 void MainWindow::handleAction2Triggered()
 {
 	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(1, 0, 0); 
-	camera->SetFocalPoint(0, 0, 0); 
+	camera->SetPosition(1, 0, 0);
+	camera->SetFocalPoint(0, 0, 0);
 	camera->SetViewUp(0, 0, 1);
 	render->ResetCamera();
 	renderWindow->Render();
@@ -250,7 +256,7 @@ void MainWindow::handleAction8Triggered()
 {
 	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
 	render->ResetCamera();
-	camera->Zoom(1); 
+	camera->Zoom(1);
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -271,7 +277,7 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
 	hideAllSubForm();
-	formMeshImport->show();	
+	formMeshImport->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
@@ -379,7 +385,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 	planeRepModelClip->SetOrigin(origin);
 	planeRepModelClip->SetNormal(normal);
-	planeRepModelClip->PlaceWidget(bounds); 
+	planeRepModelClip->PlaceWidget(bounds);
 
 	planeWidgetModelClip->SetRepresentation(planeRepModelClip);
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
@@ -612,7 +618,7 @@ void MainWindow::formRun_run()
 	currentTimeStep = 0;
 	chart->removeAllSeries();
 	axisMaxX = 0;
-	ui->tabWidget->setCurrentIndex(1);	
+	ui->tabWidget->setCurrentIndex(1);
 
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -774,7 +780,7 @@ std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>,
 	dataSet->GetPointData()->GetArray(variableName.toStdString().c_str())->GetRange(range);
 
 	// 添加颜色点
-	colorTransferFunction->AddRGBPoint(range[0], 0 / 255.0, 127 / 255.0, 255/ 255.0); // 蓝色
+	colorTransferFunction->AddRGBPoint(range[0], 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
 	colorTransferFunction->AddRGBPoint((range[0] + range[1]) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
 	colorTransferFunction->AddRGBPoint(range[1], 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
 
@@ -809,7 +815,7 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 		reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
 	}
 	else {
-		return std::make_tuple( nullptr, std::array<double, 2>{0.0, 1.0});
+		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
 	}
 
 	// 设置文件名并更新读取器
@@ -841,7 +847,7 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 
 	// 检查是否包含指定的物理量
 	if (!dataSet->GetPointData()->HasArray(variableName.toStdString().c_str())) {
-		return std::make_tuple( nullptr, std::array<double, 2>{0.0, 1.0});
+		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
 	}
 
 	// 创建颜色传输函数
@@ -1072,7 +1078,7 @@ void MainWindow::formModelClip_checkBoxToggle()
 	}
 
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
-	
+
 	if (formModelClip->ui->checkBox->isChecked()) {
 		planeWidgetModelClip->On();
 	}
@@ -1103,7 +1109,7 @@ void MainWindow::formModelClip_xPositive()
 		return;
 	}
 
-	planeRepModelClip->SetNormal(1, 0, 0); 
+	planeRepModelClip->SetNormal(1, 0, 0);
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -1178,7 +1184,7 @@ void MainWindow::formModelClip_resetPlane()
 	// 重新创建平面选择器和表示对象
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
 	formModelClip->ui->checkBox->setChecked(true);
 
 	// 设置平面选择器的放置因子
@@ -1299,7 +1305,7 @@ void MainWindow::formModelClip_apply()
 					vtkSmartPointer<vtkClipPolyData> clipper = vtkSmartPointer<vtkClipPolyData>::New();
 					clipper->SetInputData(polyData);
 					clipper->SetClipFunction(plane);
-					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked()); 
+					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
 					clipper->Update();
 
 					// 获取切分后的数据
@@ -1421,7 +1427,7 @@ void MainWindow::parseOutput(const QString& output)
 	if (regex.indexIn(output) != -1) {
 		QString variable = regex.cap(1);
 		double initialResidual = regex.cap(2).toDouble();
-		
+
 		// 如果该变量的 QLineSeries 不存在，则创建一个新的
 		if (!seriesMap.contains(variable)) {
 			QLineSeries* newSeries = new QLineSeries();
@@ -1525,5 +1531,5 @@ void MainWindow::onLoopPlayTimerTimeout()
 
 void MainWindow::handleAction1Triggered()
 {
-    ui->textBrowser->setVisible(!ui->textBrowser->isVisible());
+	ui->textBrowser->setVisible(!ui->textBrowser->isVisible());
 }

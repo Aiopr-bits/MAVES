@@ -94,6 +94,10 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkClipClosedSurface.h>
 #include <vtkPlaneCollection.h>
 
+#ifdef _WIN32
+#include "qt_windows.h"
+#endif
+
 #pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
