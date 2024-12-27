@@ -93,6 +93,11 @@ QT_CHARTS_USE_NAMESPACE
 #include <QScrollBar>
 #include <vtkClipClosedSurface.h>
 #include <vtkPlaneCollection.h>
+#include <vtkNamedColors.h>
+#include <vtkContourTriangulator.h> 
+#include <vtkProbeFilter.h>
+#include <vtkClipDataSet.h>
+#include <vtkDataSetSurfaceFilter.h>
 
 #ifdef _WIN32
 #include "qt_windows.h"

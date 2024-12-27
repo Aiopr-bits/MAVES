@@ -1254,6 +1254,9 @@ void MainWindow::formModelClip_apply()
 	plane->SetOrigin(origin);
 	plane->SetNormal(normal);
 
+	// 获取当前选中的活动标量
+	QString activeScalar = this->formPostprocessing->ui->comboBox_2->currentText();
+
 	// 存储切分后的演员
 	std::vector<vtkSmartPointer<vtkActor>> clippedActors;
 
@@ -1270,34 +1273,12 @@ void MainWindow::formModelClip_apply()
 			vtkSmartPointer<vtkPolyDataMapper> polyDataMapper = vtkPolyDataMapper::SafeDownCast(actor_->GetMapper());
 			vtkSmartPointer<vtkDataSetMapper> dataSetMapper = vtkDataSetMapper::SafeDownCast(actor_->GetMapper());
 
-			if (polyDataMapper || dataSetMapper)
+			if (polyDataMapper)
 			{
-				vtkSmartPointer<vtkPolyData> polyData = nullptr;
-				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = nullptr;
+				vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(polyDataMapper->GetInput());
+				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkColorTransferFunction::SafeDownCast(polyDataMapper->GetLookupTable());
 				double range[2] = { 0.0, 1.0 };
-
-				if (polyDataMapper)
-				{
-					polyData = vtkPolyData::SafeDownCast(polyDataMapper->GetInput());
-					colorTransferFunction = vtkColorTransferFunction::SafeDownCast(polyDataMapper->GetLookupTable());
-					polyDataMapper->GetScalarRange(range);
-				}
-				else if (dataSetMapper)
-				{
-					vtkSmartPointer<vtkDataSet> dataSet = vtkDataSet::SafeDownCast(dataSetMapper->GetInput());
-					polyData = vtkPolyData::SafeDownCast(dataSet);
-					colorTransferFunction = vtkColorTransferFunction::SafeDownCast(dataSetMapper->GetLookupTable());
-					dataSetMapper->GetScalarRange(range);
-
-					// 如果数据集不是 vtkPolyData 类型，则尝试将其转换为 vtkPolyData
-					if (!polyData)
-					{
-						vtkSmartPointer<vtkGeometryFilter> geometryFilter = vtkSmartPointer<vtkGeometryFilter>::New();
-						geometryFilter->SetInputData(dataSet);
-						geometryFilter->Update();
-						polyData = geometryFilter->GetOutput();
-					}
-				}
+				polyDataMapper->GetScalarRange(range);
 
 				if (polyData)
 				{
@@ -1328,6 +1309,72 @@ void MainWindow::formModelClip_apply()
 					render->RemoveActor(actor_);
 				}
 			}
+			else if (dataSetMapper)
+			{
+				vtkSmartPointer<vtkDataSet> dataSet = vtkDataSet::SafeDownCast(dataSetMapper->GetInput());
+				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkColorTransferFunction::SafeDownCast(dataSetMapper->GetLookupTable());
+				double range[2] = { 0.0, 1.0 };
+				dataSetMapper->GetScalarRange(range);
+
+				if (dataSet)
+				{
+					// 使用 vtkClipDataSet 对原始数据进行剪裁
+					vtkSmartPointer<vtkClipDataSet> clipper = vtkSmartPointer<vtkClipDataSet>::New();
+					clipper->SetInputData(dataSet);
+					clipper->SetClipFunction(plane);
+					clipper->InsideOutOff();
+					clipper->Update();
+
+					// 提取剪裁后的表面
+					vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+					surfaceFilter->SetInputConnection(clipper->GetOutputPort());
+					surfaceFilter->Update();
+
+					vtkSmartPointer<vtkPolyData> cutSurface = surfaceFilter->GetOutput();
+
+					// 检查结果是否有效
+					if (cutSurface->GetNumberOfPoints() == 0)
+					{
+						QMessageBox::warning(this, "警告", "剪裁后的数据为空，请调整平面位置。");
+						return;
+					}
+
+					// 设置活动标量为当前选中的物理量
+					if (cutSurface->GetPointData()->HasArray(activeScalar.toStdString().c_str()))
+					{
+						cutSurface->GetPointData()->SetActiveScalars(activeScalar.toStdString().c_str());
+					}
+					else
+					{
+						QMessageBox::warning(this, "警告", "剪裁后的数据不包含标量 '" + activeScalar + "'。");
+						return;
+					}
+
+					// 获取标量范围（与原始数据一致）
+					double scalarRange[2];
+					cutSurface->GetPointData()->GetArray(activeScalar.toStdString().c_str())->GetRange(scalarRange);
+
+					// 创建映射器和演员（切分面）
+					vtkSmartPointer<vtkPolyDataMapper> cutMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+					cutMapper->SetInputData(cutSurface);
+					cutMapper->SetLookupTable(colorTransferFunction);
+					cutMapper->SetScalarRange(scalarRange);
+					cutMapper->SetScalarModeToUsePointData();
+
+					vtkSmartPointer<vtkActor> cutActor = vtkSmartPointer<vtkActor>::New();
+					cutActor->SetMapper(cutMapper);
+
+					// 设置切分面演员属性
+					cutActor->GetProperty()->SetOpacity(1.0);
+					cutActor->GetProperty()->EdgeVisibilityOff();
+
+					// 存储切分后的演员
+					clippedActors.push_back(cutActor);
+
+					// 移除原始演员
+					render->RemoveActor(actor_);
+				}
+			}
 		}
 		actor = actors->GetNextProp();
 	}
@@ -1341,7 +1388,6 @@ void MainWindow::formModelClip_apply()
 	// 渲染窗口
 	ui->openGLWidget->renderWindow()->Render();
 }
-
 
 void MainWindow::onButtonClicked()
 {
