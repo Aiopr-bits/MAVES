@@ -619,6 +619,8 @@ void MainWindow::formRun_run()
 	seriesRangeMap.clear();
 	currentTimeStep = 0;
 	chart->removeAllSeries();
+	formPostprocessing->ui->comboBox->clear();
+	formPostprocessing->ui->comboBox_2->clear();
 	axisMaxX = 0;
 	ui->tabWidget->setCurrentIndex(1);
 

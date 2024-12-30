@@ -98,12 +98,14 @@ void FormPostprocessing::loadResultData()
     foreach(QString folder, folders)
     {
         QStringList list = folder.split("_");
+
         if (list.size() > 1)
         {
             QString time = list.last();
             if (time.toDouble() != 0) times.push_back(time.toDouble());
         }
     }
+    if (times.empty()) return;
     std::sort(times.begin(), times.end());
 
     ui->comboBox->clear();
