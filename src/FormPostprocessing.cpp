@@ -101,7 +101,7 @@ void FormPostprocessing::loadResultData()
         if (list.size() > 1)
         {
             QString time = list.last();
-            times.push_back(time.toDouble());
+            if (time.toDouble() != 0) times.push_back(time.toDouble());
         }
     }
     std::sort(times.begin(), times.end());
