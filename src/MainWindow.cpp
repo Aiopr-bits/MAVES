@@ -1322,7 +1322,7 @@ void MainWindow::formModelClip_apply()
 					vtkSmartPointer<vtkClipDataSet> clipper = vtkSmartPointer<vtkClipDataSet>::New();
 					clipper->SetInputData(dataSet);
 					clipper->SetClipFunction(plane);
-					clipper->InsideOutOff();
+					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
 					clipper->Update();
 
 					// 提取剪裁后的表面
@@ -1333,43 +1333,40 @@ void MainWindow::formModelClip_apply()
 					vtkSmartPointer<vtkPolyData> cutSurface = surfaceFilter->GetOutput();
 
 					// 检查结果是否有效
-					if (cutSurface->GetNumberOfPoints() == 0)
+					if (cutSurface->GetNumberOfPoints() > 0)
 					{
-						QMessageBox::warning(this, "警告", "剪裁后的数据为空，请调整平面位置。");
-						return;
+						// 设置活动标量为当前选中的物理量
+						if (cutSurface->GetPointData()->HasArray(activeScalar.toStdString().c_str()))
+						{
+							cutSurface->GetPointData()->SetActiveScalars(activeScalar.toStdString().c_str());
+						}
+						else
+						{
+							QMessageBox::warning(this, "警告", "剪裁后的数据不包含标量 '" + activeScalar + "'。");
+							continue;
+						}
+
+						// 获取标量范围（与原始数据一致）
+						double scalarRange[2];
+						cutSurface->GetPointData()->GetArray(activeScalar.toStdString().c_str())->GetRange(scalarRange);
+
+						// 创建映射器和演员（切分面）
+						vtkSmartPointer<vtkPolyDataMapper> cutMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+						cutMapper->SetInputData(cutSurface);
+						cutMapper->SetLookupTable(colorTransferFunction);
+						cutMapper->SetScalarRange(scalarRange);
+						cutMapper->SetScalarModeToUsePointData();
+
+						vtkSmartPointer<vtkActor> cutActor = vtkSmartPointer<vtkActor>::New();
+						cutActor->SetMapper(cutMapper);
+
+						// 设置切分面演员属性
+						cutActor->GetProperty()->SetOpacity(1.0);
+						cutActor->GetProperty()->EdgeVisibilityOff();
+
+						// 存储切分后的演员
+						clippedActors.push_back(cutActor);
 					}
-
-					// 设置活动标量为当前选中的物理量
-					if (cutSurface->GetPointData()->HasArray(activeScalar.toStdString().c_str()))
-					{
-						cutSurface->GetPointData()->SetActiveScalars(activeScalar.toStdString().c_str());
-					}
-					else
-					{
-						QMessageBox::warning(this, "警告", "剪裁后的数据不包含标量 '" + activeScalar + "'。");
-						return;
-					}
-
-					// 获取标量范围（与原始数据一致）
-					double scalarRange[2];
-					cutSurface->GetPointData()->GetArray(activeScalar.toStdString().c_str())->GetRange(scalarRange);
-
-					// 创建映射器和演员（切分面）
-					vtkSmartPointer<vtkPolyDataMapper> cutMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-					cutMapper->SetInputData(cutSurface);
-					cutMapper->SetLookupTable(colorTransferFunction);
-					cutMapper->SetScalarRange(scalarRange);
-					cutMapper->SetScalarModeToUsePointData();
-
-					vtkSmartPointer<vtkActor> cutActor = vtkSmartPointer<vtkActor>::New();
-					cutActor->SetMapper(cutMapper);
-
-					// 设置切分面演员属性
-					cutActor->GetProperty()->SetOpacity(1.0);
-					cutActor->GetProperty()->EdgeVisibilityOff();
-
-					// 存储切分后的演员
-					clippedActors.push_back(cutActor);
 
 					// 移除原始演员
 					render->RemoveActor(actor_);
