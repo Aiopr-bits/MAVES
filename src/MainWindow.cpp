@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, axisY(new QLogValueAxis())
 	, currentTimeStep(0)
 	, chartUpdateTimer(new QTimer(this))
+	, residuals()
 	, axisMinX(0)
 	, axisMaxX(0)
 	, axisMinY(0.01)
@@ -613,6 +614,7 @@ void MainWindow::formRun_run()
 
 
 	//初始化残差图数据
+	residuals.clear();
 	seriesMap.clear();
 	seriesRangeMap.clear();
 	currentTimeStep = 0;
@@ -1460,10 +1462,38 @@ void MainWindow::onProcessOutput()
 void MainWindow::parseOutput(const QString& output)
 {
 	QRegExp regex("Solving for (\\w+), Initial residual = ([\\d\\.eE\\-]+), Final residual = ([\\d\\.eE\\-]+)");
-
 	if (output.startsWith("Time = ")) {
-		currentTimeStep = output.split("=").last().trimmed().toDouble();
+		// 遇到新的时间步，更新 QLineSeries
+		for (auto it = residuals.begin(); it != residuals.end(); ++it) {
+			const QString& variable = it.key();
+			double initialResidual = it.value();
 
+			// 如果该变量的 QLineSeries 不存在，则创建一个新的
+			if (!seriesMap.contains(variable)) {
+				QLineSeries* newSeries = new QLineSeries();
+				newSeries->setName(variable);
+				seriesMap.insert(variable, newSeries);
+				chart->addSeries(newSeries);
+				chart->createDefaultAxes();
+				seriesRangeMap.insert(variable, qMakePair(initialResidual, initialResidual));
+			}
+
+			// 更新 QLineSeries
+			seriesMap[variable]->append(axisMaxX, initialResidual);
+
+			if (initialResidual < axisMinY) {
+				axisMinY /= 10;
+			}
+			if (initialResidual > axisMaxY) {
+				axisMinY *= 10;
+			}
+		}
+
+		// 清空当前时间步的残差数据
+		residuals.clear();
+
+		// 更新时间步
+		currentTimeStep = output.split("=").last().trimmed().toDouble();
 		axisMaxX++;
 	}
 
@@ -1471,32 +1501,15 @@ void MainWindow::parseOutput(const QString& output)
 		QString variable = regex.cap(1);
 		double initialResidual = regex.cap(2).toDouble();
 
-		// 如果该变量的 QLineSeries 不存在，则创建一个新的
-		if (!seriesMap.contains(variable)) {
-			QLineSeries* newSeries = new QLineSeries();
-			newSeries->setName(variable);
-			seriesMap.insert(variable, newSeries);
-			chart->addSeries(newSeries);
-			chart->createDefaultAxes();
-			seriesRangeMap.insert(variable, qMakePair(initialResidual, initialResidual));
-		}
-
-		// 更新 QLineSeries
-		seriesMap[variable]->append(axisMaxX, initialResidual);
-
-		if (initialResidual < axisMinY) {
-			axisMinY /= 10;
-		}
-		if (initialResidual > axisMaxY) {
-			axisMinY *= 10;
-		}
+		// 存储当前时间步的残差数据
+		residuals[variable] = initialResidual;
 	}
 }
 
 void MainWindow::updateChart()
 {
 	chart->axisX()->setTitleText("迭代次数");
-	chart->axisX()->setRange(axisMinX, axisMaxX);
+	chart->axisX()->setRange(axisMinX, axisMaxX - 1);
 
 	// 确保 axisY 保持为对数坐标系
 	QLogValueAxis* logAxisY = new QLogValueAxis();

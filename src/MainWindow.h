@@ -214,6 +214,7 @@ public:
 	QMap<QString, QLineSeries*> seriesMap;
 	QMap<QString, QPair<double, double>> seriesRangeMap;
 	QTimer* chartUpdateTimer;
+	QMap<QString, double> residuals;																				// 用于存储当前时间步的残差数据
 	double currentTimeStep;
 	int axisMinX;
 	int axisMaxX;
