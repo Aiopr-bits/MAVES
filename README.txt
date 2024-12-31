@@ -1,3 +1,6 @@
+MAVES (Multi-source Adaptability Verification and Evaluation Software)
+“多源诱发机制”（Multi-source） “验证与评估”（Verification and Evaluation）
+
 1. 开发环境：
 	vs2022 + qt5.15.3 + VTK9.3.1 + OCCT7.8.0
 
