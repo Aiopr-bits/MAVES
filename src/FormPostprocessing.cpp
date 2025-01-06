@@ -114,22 +114,26 @@ void FormPostprocessing::loadResultData(QString caseFilePath)
 	QString vtuFilePath = caseDirPath + "/VTK/" + caseDirName + "_0/internal.vtu";
 	vtkSmartPointer<vtkXMLUnstructuredGridReader> reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
 	reader->SetFileName(vtuFilePath.toStdString().c_str());
-	reader->Update();
+	reader->UpdateInformation();
 
-	vtkUnstructuredGrid* unstructuredGrid = reader->GetOutput();
-	vtkPointData* pointData = unstructuredGrid->GetPointData();
-	vtkCellData* cellData = unstructuredGrid->GetCellData();
+	int numPointArrays = reader->GetNumberOfPointArrays();
+	int numCellArrays  = reader->GetNumberOfCellArrays();
 
 	std::vector<QString> variableNames;
-	for (int i = 0; i < pointData->GetNumberOfArrays(); ++i)
-	{
-		variableNames.push_back(pointData->GetArrayName(i));
+	for(int i = 0; i < numPointArrays; ++i){
+		const char* name = reader->GetPointArrayName(i);
+		if(name) variableNames.push_back(QString::fromStdString(name));
+	}
+	for(int i = 0; i < numCellArrays; ++i){
+		const char* name = reader->GetCellArrayName(i);
+		if(name) variableNames.push_back(QString::fromStdString(name));
 	}
 
 	ui->comboBox_2->clear();
-	foreach(QString variableName, variableNames)
-	{
-		ui->comboBox_2->addItem(variableName);
+	foreach(auto variableName, variableNames){
+		if (ui->comboBox_2->findText(variableName) == -1) {
+			ui->comboBox_2->addItem(variableName);
+		}
 	}
 
 	//¸üÐÂ treeView
