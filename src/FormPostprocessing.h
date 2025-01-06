@@ -49,7 +49,7 @@ public:
 	FormPostprocessing(QWidget *parent = nullptr);
 	~FormPostprocessing();
 
-	void loadResultData();
+	void loadResultData(QString caseFilePath);
 
 public slots:
 	void on_pushButton_clicked();									//加载数据按钮

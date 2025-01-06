@@ -715,7 +715,8 @@ void MainWindow::onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus e
 {
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
-	formPostprocessing->loadResultData();
+	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
+	formPostprocessing->loadResultData(caseFilePath);
 }
 
 void MainWindow::formRun_stopRun()

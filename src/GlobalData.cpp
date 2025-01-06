@@ -13,6 +13,8 @@ GlobalData::GlobalData() {
 	m_caseData->geometryPath = "";
 	m_caseData->meshPath = "";
 	m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20-s\\case.foam";	
+	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_2\\case.foam";	
+	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_3\\case.foam";	
 	m_caseData->times = {};
 	m_caseData->variableNames = {};
 	m_caseData->meshPartName = {};
