@@ -161,8 +161,8 @@ public slots:
 	void formMesh_apply(); 																								//更新渲染窗口	
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
-	void formPostprocessing_loadData();																					//加载结果数据		
-	void formPostprocessing_apply();																					//更新渲染窗口	
+	void formPostprocessing_loadData(const QString& caseFilePath);														//加载结果数据		
+	void formPostprocessing_apply();																					//应用	
 	void formPostprocessing_firstFrame();																				//第一帧
 	void formPostprocessing_previousFrame();																			//上一帧
 	void formPostprocessing_reverse();																					//重新播放

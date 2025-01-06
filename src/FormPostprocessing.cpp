@@ -160,7 +160,7 @@ void FormPostprocessing::loadResultData(QString caseFilePath)
 	GlobalData::getInstance().getCaseData()->variableNames = variableNames;
 	GlobalData::getInstance().getCaseData()->meshPartName = vtpFileNames;
 
-	emit resultDataLoaded();
+	emit resultDataLoaded(caseFilePath);
 }
 
 void FormPostprocessing::on_pushButton_clicked()

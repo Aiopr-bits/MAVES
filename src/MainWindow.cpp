@@ -874,13 +874,12 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 	return std::make_tuple(colorTransferFunction, std::array<double, 2>{range[0], range[1]});
 }
 
-void MainWindow::formPostprocessing_loadData()
+void MainWindow::formPostprocessing_loadData(const QString& caseFilePath)
 {
 	double time = GlobalData::getInstance().getCaseData()->times.back();
 	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
 	QString meshPartName = GlobalData::getInstance().getCaseData()->meshPartName[0];
 
-	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
 	QFileInfo fileInfo(caseFilePath);
 	QString caseDirPath = fileInfo.absolutePath();
 	QString caseDirName = fileInfo.dir().dirName();

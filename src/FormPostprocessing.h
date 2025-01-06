@@ -68,7 +68,7 @@ public slots:
 
 
 signals:
-	void resultDataLoaded();
+	void resultDataLoaded(const QString& caseFilePath);
 	void apply();
 	void firstFrame();
 	void previousFrame();
