@@ -122,6 +122,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z负向
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
 	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//模型切分
+	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//导入案例
 
 	//主界面其他事件处理
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
@@ -264,6 +265,33 @@ void MainWindow::handleAction8Triggered()
 void MainWindow::handleAction9Triggered()
 {
 	on_pushButton_3_clicked();
+}
+
+void MainWindow::handleAction10Triggered()
+{
+	QString caseFilePath;
+	QFileDialog dialog(this, tr("加载后处理数据"), "", tr("OpenFOAM 文件 (*.foam);;"));
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setViewMode(QFileDialog::Detail);
+
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setWindowFlags(dialog.windowFlags() | Qt::WindowStaysOnTopHint);
+
+	if (dialog.exec() == QDialog::Accepted) {
+		caseFilePath = dialog.selectedFiles().first();
+		if (caseFilePath.isEmpty()) return;
+
+		GlobalData::getInstance().clearAllData();
+
+		ui->textBrowser->append("Load case：" + caseFilePath);
+		//储存各种配置信息(需补充)
+		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
+
+		//更新页面显示(需补充)
+		updatePostProcessingPage(caseFilePath);
+
+		ui->textBrowser->append("Load case successfully!");
+	}
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -610,8 +638,15 @@ void MainWindow::formMesh_apply()
 
 void MainWindow::formRun_run()
 {
-	//保存界面上所有的配置参数，并校验是否符合要求
+	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 
+
+
+	//隐藏开始按钮，显示停止按钮
+	QThread::msleep(500);
+	formRun->ui->pushButton->hide();
+	formRun->ui->pushButton_2->show();
+	formRun->ui->label_12->show();
 
 	//初始化残差图数据
 	residuals.clear();
@@ -716,11 +751,16 @@ void MainWindow::onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus e
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
 	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
-	formPostprocessing->loadResultData(caseFilePath);
+	updatePostProcessingPage(caseFilePath);
 }
 
 void MainWindow::formRun_stopRun()
 {
+	QThread::msleep(500);
+	formRun->ui->pushButton_2->hide();
+	formRun->ui->label_12->hide();
+	formRun->ui->pushButton->show();
+
 	if (processRun.state() == QProcess::Running) {
 		processRun.kill();
 	}
@@ -1505,6 +1545,142 @@ void MainWindow::parseOutput(const QString& output)
 
 		// 存储当前时间步的残差数据
 		residuals[variable] = initialResidual;
+	}
+}
+
+void MainWindow::updatePostProcessingPage(const QString& casePath)
+{
+	QFileInfo fileInfo(casePath);
+	QString caseDirPath = fileInfo.absolutePath();
+	QString caseDirName = fileInfo.dir().dirName();
+	if (!QDir(caseDirPath + "/VTK").exists()) return;
+
+	//更新comboBox
+	QDir dir(caseDirPath + "/VTK");
+	QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	std::vector<double> times;
+	foreach(QString folder, folders)
+	{
+		QStringList list = folder.split("_");
+
+		if (list.size() > 1)
+		{
+			QString time = list.last();
+			if (time.toDouble() != 0) times.push_back(time.toDouble());
+		}
+	}
+	if (times.empty()) return;
+	std::sort(times.begin(), times.end());
+
+	formPostprocessing->ui->comboBox->clear();
+	foreach(double time, times)
+	{
+		formPostprocessing->ui->comboBox->addItem(QString::number(time));
+	}
+	formPostprocessing->ui->comboBox->setCurrentIndex(formPostprocessing->ui->comboBox->count() - 1);
+
+	//更新comboBox_2
+	QString vtuFilePath = caseDirPath + "/VTK/" + caseDirName + "_0/internal.vtu";
+	vtkSmartPointer<vtkXMLUnstructuredGridReader> reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
+	reader->SetFileName(vtuFilePath.toStdString().c_str());
+	reader->UpdateInformation();
+
+	int numPointArrays = reader->GetNumberOfPointArrays();
+	int numCellArrays = reader->GetNumberOfCellArrays();
+
+	std::vector<QString> variableNames;
+	for (int i = 0; i < numPointArrays; ++i) {
+		const char* name = reader->GetPointArrayName(i);
+		if (name) variableNames.push_back(QString::fromStdString(name));
+	}
+	for (int i = 0; i < numCellArrays; ++i) {
+		const char* name = reader->GetCellArrayName(i);
+		if (name) variableNames.push_back(QString::fromStdString(name));
+	}
+
+	formPostprocessing->ui->comboBox_2->clear();
+	foreach(auto variableName, variableNames) {
+		if (formPostprocessing->ui->comboBox_2->findText(variableName) == -1) {
+			formPostprocessing->ui->comboBox_2->addItem(variableName);
+		}
+	}
+
+	//更新 treeView
+	QString vtpDirPath = caseDirPath + "/VTK/" + caseDirName + "_0/boundary/";
+	QDir vtpDir(vtpDirPath);
+	QStringList vtpFiles = vtpDir.entryList(QStringList() << "*.vtp", QDir::Files);
+
+	std::vector<QString> vtpFileNames;
+	vtpFileNames.push_back("internal");
+	foreach(QString vtpFile, vtpFiles)
+	{
+		QFileInfo vtpFileInfo(vtpFile);
+		vtpFileNames.push_back(vtpFileInfo.baseName());
+	}
+
+	formPostprocessing->treeViewModel->clear();
+	foreach(QString vtpFileName, vtpFileNames)
+	{
+		QStandardItem* item = new QStandardItem(vtpFileName);
+		item->setCheckable(true);
+		if (vtpFileName == "internal")item->setCheckState(Qt::Checked);
+		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+		item->setSizeHint(QSize(0, 40));
+		formPostprocessing->treeViewModel->appendRow(item);
+	}
+
+	GlobalData::getInstance().getCaseData()->times = times;
+	GlobalData::getInstance().getCaseData()->variableNames = variableNames;
+	GlobalData::getInstance().getCaseData()->meshPartName = vtpFileNames;
+
+	//三维可视化窗口
+	double time = GlobalData::getInstance().getCaseData()->times.back();
+	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
+	QString meshPartName = GlobalData::getInstance().getCaseData()->meshPartName[0];
+	QString  internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/internal.vtu";
+
+	auto result = createActorFromFile(internalPath, variableName);
+	vtkSmartPointer<vtkActor> actor = std::get<0>(result);
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
+	std::array<double, 2> range = std::get<2>(result);
+
+	if (actor) {
+		render->RemoveAllViewProps();
+		render->AddActor(actor);
+
+		// 创建图例
+		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+		scalarBar->SetLookupTable(colorTransferFunction);
+		scalarBar->SetNumberOfLabels(4);
+		scalarBar->SetOrientationToVertical();
+		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
+		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
+		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
+		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
+
+		// 设置图例标题的文本属性
+		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		titleTextProperty->SetFontSize(24);
+		titleTextProperty->SetColor(1.0, 1.0, 1.0);
+		titleTextProperty->SetBold(1);
+		titleTextProperty->SetJustificationToCentered();
+		scalarBar->SetTitleTextProperty(titleTextProperty);
+
+		// 设置图例标签的文本属性
+		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		labelTextProperty->SetFontSize(18);
+		labelTextProperty->SetColor(0, 0, 0);
+		scalarBar->SetLabelTextProperty(labelTextProperty);
+
+		render->AddActor2D(scalarBar);
+		render->ResetCamera();
+		renderWindow->Render();
+
+		//切换到后处理子页面
+		on_pushButton_17_clicked();
+		ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
+		lastClickedButton = ui->pushButton_17;
 	}
 }
 

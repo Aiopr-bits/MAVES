@@ -1271,6 +1271,7 @@ QMenu::item:selected {
     <property name="title">
      <string>文件</string>
     </property>
+    <addaction name="action10"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -1310,6 +1311,7 @@ QMenu::item:selected {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action10"/>
    <addaction name="action9"/>
    <addaction name="action2"/>
    <addaction name="action3"/>
@@ -1433,6 +1435,18 @@ QMenu::item:selected {
    </property>
    <property name="toolTip">
     <string>模型切分</string>
+   </property>
+  </action>
+  <action name="action10">
+   <property name="icon">
+    <iconset>
+     <normaloff>../res/importCase.png</normaloff>../res/importCase.png</iconset>
+   </property>
+   <property name="text">
+    <string>导入案例</string>
+   </property>
+   <property name="toolTip">
+    <string>导入案例</string>
    </property>
   </action>
  </widget>

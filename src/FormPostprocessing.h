@@ -52,7 +52,6 @@ public:
 	void loadResultData(QString caseFilePath);
 
 public slots:
-	void on_pushButton_clicked();									//加载数据按钮
 	void on_pushButton_2_clicked();									//应用按钮
 	void on_treeView_itemClicked(const QModelIndex& index);			//treeView点击事件
 	void on_pushButton_3_clicked();									//第一帧

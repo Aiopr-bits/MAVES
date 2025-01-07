@@ -46,19 +46,11 @@ void FormRun::cursorLeavePushButton()
 
 void FormRun::on_pushButton_clicked()
 {
-	QThread::msleep(500);
-	ui->pushButton->hide();
-	ui->pushButton_2->show();
-	ui->label_12->show();
 	emit run();
 }
 
 void FormRun::on_pushButton_clicked_2()
 {
-	QThread::msleep(500);
-	ui->pushButton_2->hide();
-	ui->label_12->hide();
-	ui->pushButton->show();
 	emit stopRun();
 }
 

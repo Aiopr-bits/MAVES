@@ -29,6 +29,6 @@ signals:
 	void run();
 	void stopRun();
 
-private:
+public:
 	Ui::FormRunClass *ui;
 };

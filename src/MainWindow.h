@@ -98,6 +98,7 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkProbeFilter.h>
 #include <vtkClipDataSet.h>
 #include <vtkDataSetSurfaceFilter.h>
+#include <QThread>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -120,6 +121,7 @@ public:
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
+	void updatePostProcessingPage(const QString& casePath);																//更新后处理子页面信息
 
 public slots:
 	//工具栏信号处理
@@ -132,6 +134,7 @@ public slots:
 	void handleAction7Triggered();								    													//z负向
 	void handleAction8Triggered();								    													//适应窗口
 	void handleAction9Triggered();								    													//模型切分
+	void handleAction10Triggered();								    													//导入案例
 
 	//控制面板按钮点击事件处理
 	void on_pushButton_clicked();								    													//几何页面
