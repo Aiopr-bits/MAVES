@@ -143,7 +143,6 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//停止计算
-	connect(formPostprocessing, &FormPostprocessing::resultDataLoaded, this, &MainWindow::formPostprocessing_loadData);							//加载结果数据
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//更新渲染窗口
 	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);								//第一帧
 	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);						//上一帧
@@ -912,65 +911,6 @@ std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> cre
 	dataSet->GetPointData()->SetScalars(dataSet->GetPointData()->GetArray(variableName.toStdString().c_str()));
 
 	return std::make_tuple(colorTransferFunction, std::array<double, 2>{range[0], range[1]});
-}
-
-void MainWindow::formPostprocessing_loadData(const QString& caseFilePath)
-{
-	double time = GlobalData::getInstance().getCaseData()->times.back();
-	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
-	QString meshPartName = GlobalData::getInstance().getCaseData()->meshPartName[0];
-
-	QFileInfo fileInfo(caseFilePath);
-	QString caseDirPath = fileInfo.absolutePath();
-	QString caseDirName = fileInfo.dir().dirName();
-	QString  internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/internal.vtu";
-
-	auto result = createActorFromFile(internalPath, variableName);
-	vtkSmartPointer<vtkActor> actor = std::get<0>(result);
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
-	std::array<double, 2> range = std::get<2>(result);
-
-	if (actor) {
-		// 清除以前的演员
-		render->RemoveAllViewProps();
-
-		// 添加新的演员
-		render->AddActor(actor);
-
-		// 创建图例
-		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-		scalarBar->SetLookupTable(colorTransferFunction);
-		//scalarBar->SetTitle(variableName.toStdString().c_str());
-		scalarBar->SetNumberOfLabels(4);
-		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
-		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
-		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
-		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
-
-		// 设置图例标题的文本属性
-		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24); // 设置标题字体大小
-		titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
-		titleTextProperty->SetBold(1); // 设置标题为粗体
-		titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
-		scalarBar->SetTitleTextProperty(titleTextProperty);
-
-		// 设置图例标签的文本属性
-		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18); // 设置标签字体大小
-		labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为白色
-		scalarBar->SetLabelTextProperty(labelTextProperty);
-
-		// 添加图例
-		render->AddActor2D(scalarBar);
-
-		// 调整视角到合适的大小
-		render->ResetCamera();
-
-		// 渲染
-		renderWindow->Render();
-	}
 }
 
 void MainWindow::formPostprocessing_apply()
