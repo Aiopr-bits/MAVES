@@ -33,7 +33,8 @@ public:
     GlobalData& operator=(const GlobalData&) = delete;                                  // 禁止赋值构造
 
     void setCaseData(const caseData& data);                                             // 设置全局数据                                      
-    caseData* getCaseData() const;
+	caseData* getCaseData() const;													    // 获取全局数据
+	void clearAllData(); 															    // 清空全局数据
 
 private:
     GlobalData();                                                                       // 私有构造函数                
