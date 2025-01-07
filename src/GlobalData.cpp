@@ -33,8 +33,8 @@ void GlobalData::clearAllData()
 	m_caseData->geometryPath = "";
 	m_caseData->meshPath = "";
 	m_caseData->casePath = "";
-	m_caseData->times.clear();
-	m_caseData->variableNames.clear();
-	m_caseData->meshPartName.clear();
+	m_caseData->meshEdgeActors.clear();
+	m_caseData->meshFaceActors.clear();
+	m_caseData->timeFilePairs.clear();
 }
 

@@ -8,6 +8,7 @@
 #include <qstring.h>
 #include <vtkLookupTable.h>
 #include <array>
+#include <vtkScalarBarActor.h>
 
 using namespace std;
 
@@ -19,9 +20,9 @@ struct caseData
     std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    // 网格面actor
 
     std::string casePath; 														                        // case路径
-    std::vector<double> times;                                                                          // 时间步
-    std::vector<QString> variableNames;                                                                 // 物理量名称
-    std::vector<QString> meshPartName;																	// 网格部件名称
+	QList<QPair<double, QStringList>> timeFilePairs; 													// 时间-VTK文件路径对
+	QStringList fieldNames; 																			// 物理量名称
+    QMap<QString, vtkSmartPointer<vtkScalarBarActor>> scalarBars;                                       // 物理量对应的图例
 };
 
 class GlobalData

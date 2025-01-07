@@ -844,73 +844,80 @@ std::tuple<vtkSmartPointer<vtkActor>, vtkSmartPointer<vtkColorTransferFunction>,
 	return std::make_tuple(surfaceActor, colorTransferFunction, std::array<double, 2>{range[0], range[1]});
 }
 
-std::tuple<vtkSmartPointer<vtkColorTransferFunction>, std::array<double, 2>> createLengendFromFile(const QString& filePath, const QString& variableName)
+void createLengendFromFile()
 {
-	vtkSmartPointer<vtkAlgorithm> reader;
+	QFileInfo fileInfo(GlobalData::getInstance().getCaseData()->casePath.c_str());
+	QString caseDirPath = fileInfo.absolutePath();
 
-	// 根据文件扩展名选择合适的读取器
-	if (filePath.endsWith(".vtk", Qt::CaseInsensitive)) {
-		reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
-	}
-	else if (filePath.endsWith(".vtu", Qt::CaseInsensitive)) {
-		reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
-	}
-	else if (filePath.endsWith(".vtp", Qt::CaseInsensitive)) {
-		reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-	}
-	else {
-		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
+	const QStringList& filePaths = GlobalData::getInstance().getCaseData()->timeFilePairs.last().second;
+	QMap<QString, vtkSmartPointer<vtkScalarBarActor>> scalarBars;
+
+	for (const QString& variableName : GlobalData::getInstance().getCaseData()->fieldNames) {
+		double globalRange[2] = { std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest() };
+
+		for (const QString& filePath : filePaths) {
+			if (!filePath.endsWith(".vtp", Qt::CaseInsensitive)) {
+				continue;
+			}
+
+			vtkSmartPointer<vtkAlgorithm> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+			vtkXMLPolyDataReader::SafeDownCast(reader)->SetFileName((caseDirPath + "/VTK/" + filePath).toStdString().c_str());
+			reader->Update();
+
+			vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(reader->GetOutputDataObject(0));
+			if (!polyData || !polyData->GetPointData()->HasArray(variableName.toStdString().c_str())) {
+				continue;
+			}
+
+			double range[2];
+			polyData->GetPointData()->GetArray(variableName.toStdString().c_str())->GetRange(range);
+
+			if (range[0] < globalRange[0]) {
+				globalRange[0] = range[0];
+			}
+			if (range[1] > globalRange[1]) {
+				globalRange[1] = range[1];
+			}
+		}
+
+		// 创建颜色传输函数
+		vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+		colorTransferFunction->SetColorSpaceToRGB();
+
+		// 添加颜色点
+		colorTransferFunction->AddRGBPoint(globalRange[0], 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
+		colorTransferFunction->AddRGBPoint((globalRange[0] + globalRange[1]) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
+		colorTransferFunction->AddRGBPoint(globalRange[1], 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
+
+		// 创建图例
+		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+		scalarBar->SetLookupTable(colorTransferFunction);
+		scalarBar->SetNumberOfLabels(4);
+		scalarBar->SetOrientationToVertical();
+		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
+		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
+		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
+		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
+
+		// 设置图例标题的文本属性
+		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		titleTextProperty->SetFontSize(24); // 设置标题字体大小
+		titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
+		titleTextProperty->SetBold(1); // 设置标题为粗体
+		titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
+		scalarBar->SetTitleTextProperty(titleTextProperty);
+
+		// 设置图例标签的文本属性
+		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+		labelTextProperty->SetFontSize(18); // 设置标签字体大小
+		labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为白色
+		scalarBar->SetLabelTextProperty(labelTextProperty);
+
+		// 将图例添加到容器中
+		scalarBars.insert(variableName, scalarBar);
 	}
 
-	// 设置文件名并更新读取器
-	if (auto unstructuredGridReader = vtkUnstructuredGridReader::SafeDownCast(reader)) {
-		unstructuredGridReader->SetFileName(filePath.toStdString().c_str());
-	}
-	else if (auto xmlUnstructuredGridReader = vtkXMLUnstructuredGridReader::SafeDownCast(reader)) {
-		xmlUnstructuredGridReader->SetFileName(filePath.toStdString().c_str());
-	}
-	else if (auto xmlPolyDataReader = vtkXMLPolyDataReader::SafeDownCast(reader)) {
-		xmlPolyDataReader->SetFileName(filePath.toStdString().c_str());
-	}
-	reader->Update();
-
-	// 获取数据集
-	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkUnstructuredGrid::SafeDownCast(reader->GetOutputDataObject(0));
-	vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(reader->GetOutputDataObject(0));
-
-	vtkSmartPointer<vtkDataSet> dataSet;
-	if (unstructuredGrid) {
-		dataSet = unstructuredGrid;
-	}
-	else if (polyData) {
-		dataSet = polyData;
-	}
-	else {
-		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
-	}
-
-	// 检查是否包含指定的物理量
-	if (!dataSet->GetPointData()->HasArray(variableName.toStdString().c_str())) {
-		return std::make_tuple(nullptr, std::array<double, 2>{0.0, 1.0});
-	}
-
-	// 创建颜色传输函数
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-	colorTransferFunction->SetColorSpaceToRGB();
-
-	// 设置颜色映射范围
-	double range[2];
-	dataSet->GetPointData()->GetArray(variableName.toStdString().c_str())->GetRange(range);
-
-	// 添加颜色点
-	colorTransferFunction->AddRGBPoint(range[0], 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
-	colorTransferFunction->AddRGBPoint((range[0] + range[1]) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
-	colorTransferFunction->AddRGBPoint(range[1], 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
-
-	// 设置标量数据为指定的物理量
-	dataSet->GetPointData()->SetScalars(dataSet->GetPointData()->GetArray(variableName.toStdString().c_str()));
-
-	return std::make_tuple(colorTransferFunction, std::array<double, 2>{range[0], range[1]});
+	GlobalData::getInstance().getCaseData()->scalarBars = scalarBars;
 }
 
 void MainWindow::formPostprocessing_apply()
@@ -950,39 +957,12 @@ void MainWindow::formPostprocessing_apply()
 		}
 	}
 
-	//创建图例
-	internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + formPostprocessing->ui->comboBox->itemText(formPostprocessing->ui->comboBox->count() - 1) + "/internal.vtu";
-	auto result = createLengendFromFile(internalPath, variableName);
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<0>(result);
-	std::array<double, 2> range = std::get<1>(result);
-
-	// 创建图例
-	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-	scalarBar->SetLookupTable(colorTransferFunction);
-	//scalarBar->SetTitle(variableName.toStdString().c_str());
-	scalarBar->SetNumberOfLabels(4);
-	scalarBar->SetOrientationToVertical();
-	scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
-	scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
-	scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
-	scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
-
-	// 设置图例标题的文本属性
-	vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-	titleTextProperty->SetFontSize(24); // 设置标题字体大小
-	titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
-	titleTextProperty->SetBold(1); // 设置标题为粗体
-	titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
-	scalarBar->SetTitleTextProperty(titleTextProperty);
-
-	// 设置图例标签的文本属性
-	vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-	labelTextProperty->SetFontSize(18); // 设置标签字体大小
-	labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为白色
-	scalarBar->SetLabelTextProperty(labelTextProperty);
-
 	// 添加图例
-	render->AddActor2D(scalarBar);
+	for (auto it = GlobalData::getInstance().getCaseData()->scalarBars.begin(); it != GlobalData::getInstance().getCaseData()->scalarBars.end(); ++it) {
+		if (variableName == it.key()) {
+			render->AddActor2D(it.value());
+		}
+	}
 
 	// 渲染
 	renderWindow->Render();
@@ -1495,133 +1475,148 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	QString caseDirName = fileInfo.dir().dirName();
 	if (!QDir(caseDirPath + "/VTK").exists()) return;
 
-	//更新comboBox
-	QDir dir(caseDirPath + "/VTK");
-	QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	std::vector<double> times;
-	foreach(QString folder, folders)
-	{
-		QStringList list = folder.split("_");
+	// 解析series系列文件，获取时间和文件路径
+	QString seriesPath = caseDirPath + "/VTK/" + caseDirName + ".vtm.series";
+	QFile seriesFile(seriesPath);
+	if (!seriesFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开系列文件"));
+		return;
+	}
 
-		if (list.size() > 1)
-		{
-			QString time = list.last();
-			if (time.toDouble() != 0) times.push_back(time.toDouble());
+	QByteArray seriesData = seriesFile.readAll();
+	seriesFile.close();
+
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(seriesData);
+	if (jsonDoc.isNull() || !jsonDoc.isObject()) {
+		QMessageBox::warning(this, tr("错误"), tr("series系列文件格式错误"));
+		return;
+	}
+
+	QJsonObject jsonObj = jsonDoc.object();
+	QJsonArray filesArray = jsonObj["files"].toArray();
+
+	QList<QPair<double, QStringList>> timeFilePairs; // 用于存储时间和文件路径的容器
+
+	for (const QJsonValue& value : filesArray) {
+		QJsonObject fileObj = value.toObject();
+		double time = fileObj["time"].toDouble();
+		QString name = fileObj["name"].toString();
+
+		if (time != 0) {
+			QString vtmFilePath = caseDirPath + "/VTK/" + name;
+			QFile vtmFile(vtmFilePath);
+			if (!vtmFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				QMessageBox::warning(this, tr("错误"), tr("无法打开VTM文件: ") + vtmFilePath);
+				continue;
+			}
+
+			QByteArray vtmData = vtmFile.readAll();
+			vtmFile.close();
+
+			QStringList filePaths;
+			QXmlStreamReader xmlReader(vtmData);
+			while (!xmlReader.atEnd() && !xmlReader.hasError()) {
+				QXmlStreamReader::TokenType token = xmlReader.readNext();
+				if (token == QXmlStreamReader::StartElement) {
+					if (xmlReader.name() == "DataSet") {
+						QXmlStreamAttributes attributes = xmlReader.attributes();
+						QString filePath = attributes.value("file").toString();
+						filePaths.append(filePath);
+					}
+				}
+			}
+
+			if (xmlReader.hasError()) {
+				QMessageBox::warning(this, tr("错误"), tr("解析VTM文件时出错: ") + xmlReader.errorString());
+			}
+
+			timeFilePairs.append(qMakePair(time, filePaths));
 		}
 	}
-	if (times.empty()) return;
-	std::sort(times.begin(), times.end());
 
+	//获取场量列表
+	QString lastFilePath = caseDirPath + "/VTK/" + timeFilePairs.last().second.last();
+	QFile lastFile(lastFilePath);
+	if (!lastFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开文件: ") + lastFilePath);
+		return;
+	}
+
+	QByteArray lastFileData = lastFile.readAll();
+	lastFile.close();
+
+	vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	reader->SetFileName(lastFilePath.toStdString().c_str());
+	reader->Update();
+
+	vtkSmartPointer<vtkPolyData> polyData = reader->GetOutput();
+	vtkSmartPointer<vtkPointData> pointData = polyData->GetPointData();
+
+	QStringList fieldNames;
+	for (int i = 0; i < pointData->GetNumberOfArrays(); ++i) {
+		fieldNames.append(pointData->GetArrayName(i));
+	}
+
+	//更新界面控件
 	formPostprocessing->ui->comboBox->clear();
-	foreach(double time, times)
-	{
-		formPostprocessing->ui->comboBox->addItem(QString::number(time));
-	}
-	formPostprocessing->ui->comboBox->setCurrentIndex(formPostprocessing->ui->comboBox->count() - 1);
-
-	//更新comboBox_2
-	QString vtuFilePath = caseDirPath + "/VTK/" + caseDirName + "_0/internal.vtu";
-	vtkSmartPointer<vtkXMLUnstructuredGridReader> reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
-	reader->SetFileName(vtuFilePath.toStdString().c_str());
-	reader->UpdateInformation();
-
-	int numPointArrays = reader->GetNumberOfPointArrays();
-	int numCellArrays = reader->GetNumberOfCellArrays();
-
-	std::vector<QString> variableNames;
-	for (int i = 0; i < numPointArrays; ++i) {
-		const char* name = reader->GetPointArrayName(i);
-		if (name) variableNames.push_back(QString::fromStdString(name));
-	}
-	for (int i = 0; i < numCellArrays; ++i) {
-		const char* name = reader->GetCellArrayName(i);
-		if (name) variableNames.push_back(QString::fromStdString(name));
+	for (const auto& pair : timeFilePairs) {
+		formPostprocessing->ui->comboBox->addItem(QString::number(pair.first));
 	}
 
 	formPostprocessing->ui->comboBox_2->clear();
-	foreach(auto variableName, variableNames) {
-		if (formPostprocessing->ui->comboBox_2->findText(variableName) == -1) {
-			formPostprocessing->ui->comboBox_2->addItem(variableName);
-		}
-	}
+	formPostprocessing->ui->comboBox_2->addItems(fieldNames);
 
-	//更新 treeView
-	QString vtpDirPath = caseDirPath + "/VTK/" + caseDirName + "_0/boundary/";
-	QDir vtpDir(vtpDirPath);
-	QStringList vtpFiles = vtpDir.entryList(QStringList() << "*.vtp", QDir::Files);
-
-	std::vector<QString> vtpFileNames;
-	vtpFileNames.push_back("internal");
-	foreach(QString vtpFile, vtpFiles)
-	{
-		QFileInfo vtpFileInfo(vtpFile);
-		vtpFileNames.push_back(vtpFileInfo.baseName());
+	QStringList lastFileBaseNames;
+	for (const QString& filePath : timeFilePairs.last().second) {
+		QFileInfo fileInfo(filePath);
+		lastFileBaseNames.append(fileInfo.baseName());
 	}
 
 	formPostprocessing->treeViewModel->clear();
-	foreach(QString vtpFileName, vtpFileNames)
-	{
-		QStandardItem* item = new QStandardItem(vtpFileName);
+	foreach(const QString & baseName, lastFileBaseNames) {
+		QStandardItem* item = new QStandardItem(baseName);
 		item->setCheckable(true);
-		if (vtpFileName == "internal")item->setCheckState(Qt::Checked);
+		if (baseName != "internal") item->setCheckState(Qt::Checked);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 		item->setSizeHint(QSize(0, 40));
 		formPostprocessing->treeViewModel->appendRow(item);
 	}
 
-	GlobalData::getInstance().getCaseData()->times = times;
-	GlobalData::getInstance().getCaseData()->variableNames = variableNames;
-	GlobalData::getInstance().getCaseData()->meshPartName = vtpFileNames;
+	GlobalData::getInstance().getCaseData()->timeFilePairs = timeFilePairs;
+	GlobalData::getInstance().getCaseData()->fieldNames = fieldNames;
 
-	//三维可视化窗口
-	double time = GlobalData::getInstance().getCaseData()->times.back();
-	QString variableName = GlobalData::getInstance().getCaseData()->variableNames[0];
-	QString meshPartName = GlobalData::getInstance().getCaseData()->meshPartName[0];
-	QString  internalPath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/internal.vtu";
-
-	auto result = createActorFromFile(internalPath, variableName);
-	vtkSmartPointer<vtkActor> actor = std::get<0>(result);
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = std::get<1>(result);
-	std::array<double, 2> range = std::get<2>(result);
-
-	if (actor) {
-		render->RemoveAllViewProps();
-		render->AddActor(actor);
-
-		// 创建图例
-		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-		scalarBar->SetLookupTable(colorTransferFunction);
-		scalarBar->SetNumberOfLabels(4);
-		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
-		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
-		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
-		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
-
-		// 设置图例标题的文本属性
-		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24);
-		titleTextProperty->SetColor(1.0, 1.0, 1.0);
-		titleTextProperty->SetBold(1);
-		titleTextProperty->SetJustificationToCentered();
-		scalarBar->SetTitleTextProperty(titleTextProperty);
-
-		// 设置图例标签的文本属性
-		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18);
-		labelTextProperty->SetColor(0, 0, 0);
-		scalarBar->SetLabelTextProperty(labelTextProperty);
-
-		render->AddActor2D(scalarBar);
-		render->ResetCamera();
-		renderWindow->Render();
-
-		//切换到后处理子页面
-		on_pushButton_17_clicked();
-		ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
-		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
-		lastClickedButton = ui->pushButton_17;
+	//更新三维显示窗口
+	double time = formPostprocessing->ui->comboBox->currentText().toDouble();
+	QString variableName = formPostprocessing->ui->comboBox_2->currentText();
+	render->RemoveAllViewProps();
+	for (const QString& baseName : lastFileBaseNames) {
+		if (baseName != "internal") {
+			QString filePath = caseDirPath + "/VTK/" + caseDirName + "_" + QString::number(time) + "/boundary/" + baseName + ".vtp";
+			auto result = createActorFromFile(filePath, variableName);
+			vtkSmartPointer<vtkActor> actor = std::get<0>(result);
+			if (actor) {
+				render->AddActor(actor);
+			}
+		}
 	}
+
+	createLengendFromFile();
+
+	// 添加图例
+	for (auto it = GlobalData::getInstance().getCaseData()->scalarBars.begin(); it != GlobalData::getInstance().getCaseData()->scalarBars.end(); ++it) {
+		if (variableName == it.key()) {
+			render->AddActor2D(it.value());
+		}
+	}
+
+	render->ResetCamera();
+	renderWindow->Render();
+
+	//切换到后处理子页面
+	on_pushButton_17_clicked();
+	ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+	lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
+	lastClickedButton = ui->pushButton_17;
 }
 
 void MainWindow::updateChart()

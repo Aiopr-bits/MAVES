@@ -99,6 +99,9 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkClipDataSet.h>
 #include <vtkDataSetSurfaceFilter.h>
 #include <QThread>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #ifdef _WIN32
 #include "qt_windows.h"
