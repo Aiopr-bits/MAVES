@@ -1473,7 +1473,14 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	QFileInfo fileInfo(casePath);
 	QString caseDirPath = fileInfo.absolutePath();
 	QString caseDirName = fileInfo.dir().dirName();
-	if (!QDir(caseDirPath + "/VTK").exists()) return;
+	if (!QDir(caseDirPath + "/VTK").exists()) {
+		formPostprocessing->ui->comboBox->clear();
+		formPostprocessing->ui->comboBox_2->clear();
+		formPostprocessing->treeViewModel->clear();
+		render->RemoveAllViewProps();
+		renderWindow->Render();
+		return;
+	}
 
 	// 解析series系列文件，获取时间和文件路径
 	QString seriesPath = caseDirPath + "/VTK/" + caseDirName + ".vtm.series";
@@ -1532,6 +1539,15 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 
 			timeFilePairs.append(qMakePair(time, filePaths));
 		}
+	}
+
+	if (timeFilePairs.isEmpty()) {
+		formPostprocessing->ui->comboBox->clear();
+		formPostprocessing->ui->comboBox_2->clear();
+		formPostprocessing->treeViewModel->clear();
+		render->RemoveAllViewProps();
+		renderWindow->Render();
+		return;
 	}
 
 	//获取场量列表
