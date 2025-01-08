@@ -536,18 +536,59 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	if (type == "foam")
 	{
 		QString casePath = fileInfo.path();
-		std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
-
-		process.setProgram("cmd.exe");
-		process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
-		process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
-			args->flags |= CREATE_NO_WINDOW;
-			});
-		process.start();
-		process.waitForFinished();
-
 		QString folderName = casePath.split("/").last();
 		QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
+
+		//如果VTK网格文件不在则转换
+		QDir vtpDir(vtpPath);
+		if (!vtpDir.exists())
+		{
+			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
+
+			process.setProgram("cmd.exe");
+			process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
+			process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+				args->flags |= CREATE_NO_WINDOW;
+				});
+			process.start();
+			process.waitForFinished();
+
+			// 等待文件写入完成
+			QString vtmFilePath = casePath + "/VTK/" + folderName + "_0.vtm";
+			QFile vtmFile(vtmFilePath);
+			while (!vtmFile.exists()) {
+				QThread::msleep(100);
+			}
+
+			// 检查所有引用的文件是否存在
+			QFile file(vtmFilePath);
+			if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				qWarning() << "无法打开文件:" << vtmFilePath;
+				return;
+			}
+
+			QXmlStreamReader xml(&file);
+			bool allFilesExist = true;
+			while (!xml.atEnd() && !xml.hasError()) {
+				QXmlStreamReader::TokenType token = xml.readNext();
+				if (token == QXmlStreamReader::StartElement) {
+					if (xml.name() == "DataSet") {
+						QString filePath = casePath + "/VTK/" + xml.attributes().value("file").toString();
+						if (!QFile::exists(filePath)) {
+							allFilesExist = false;
+							break;
+						}
+					}
+				}
+			}
+			file.close();
+
+			// 如果所有文件都存在，则继续
+			if (!allFilesExist) {
+				qWarning() << "部分文件不存在，等待中...";
+				QThread::msleep(100);
+			}
+		}
 
 		// 获取vtpPath文件夹下的所有.vtp文件路径
 		QDir dir(vtpPath);
