@@ -60,23 +60,26 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->splitter->setSizes(sizes);
 
 	//创建各个子面板
-	formMesh = new FormMesh(this);
-	formPostprocessing = new FormPostprocessing(this);
-	formRun = new FormRun(this);
 	formGeometry = new FormGeometry(this);
+	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
+	formBoundaryConditions = new FormBoundaryConditions(this);
+	formRun = new FormRun(this);
+	formPostprocessing = new FormPostprocessing(this);
 	formModelClip = new FormModelClip(this);
-	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
-	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
-	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formModelClip, 0, 0, 1, 1);
-	formMesh->hide();
-	formPostprocessing->hide();
-	formRun->hide();
 	formGeometry->hide();
+	formMesh->hide();
 	formMeshImport->hide();
+	formBoundaryConditions->hide();
+	formRun->hide();
+	formPostprocessing->hide();
 	formModelClip->hide();
 
 	//程序启动点击几何页面
@@ -185,11 +188,12 @@ void MainWindow::addCoordinateAxes()
 
 void MainWindow::hideAllSubForm()
 {
-	formMesh->hide();
-	formPostprocessing->hide();
-	formRun->hide();
 	formGeometry->hide();
+	formMesh->hide();
 	formMeshImport->hide();
+	formBoundaryConditions->hide();
+	formRun->hide();
+	formPostprocessing->hide();
 	formModelClip->hide();
 }
 
@@ -315,6 +319,15 @@ void MainWindow::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_13_clicked()
+{
+	hideAllSubForm();
+	formBoundaryConditions->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();

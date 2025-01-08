@@ -41,6 +41,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
+#include "FormBoundaryConditions.h"
 #include <QProcess>
 #include <QLogValueAxis>
 #include <QChart>
@@ -143,6 +144,7 @@ public slots:
 	void on_pushButton_clicked();								    													//几何页面
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
+	void on_pushButton_13_clicked();								    													//边界条件页面
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
@@ -205,11 +207,12 @@ public:
 	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();		//左下角三维坐标轴
 
 	//副控制面板
-	FormMesh* formMesh;
-	FormPostprocessing* formPostprocessing;
-	FormRun* formRun;
 	FormGeometry* formGeometry;
+	FormMesh* formMesh;
 	FormMeshImport* formMeshImport;
+	FormBoundaryConditions* formBoundaryConditions;
+	FormRun* formRun;
+	FormPostprocessing* formPostprocessing;
 	FormModelClip* formModelClip;
 
 	//残差图相关变量

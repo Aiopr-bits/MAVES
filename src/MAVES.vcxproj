@@ -98,6 +98,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtUic Include="FormBoundaryConditions.ui" />
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
@@ -107,6 +108,7 @@
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
+    <ClCompile Include="FormBoundaryConditions.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
@@ -137,6 +139,7 @@
     <QtMoc Include="FormMeshImport.h" />
     <QtMoc Include="CustomDoubleClickPushButton.h" />
     <QtMoc Include="FormModelClip.h" />
+    <QtMoc Include="FormBoundaryConditions.h" />
     <ClInclude Include="GlobalData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
