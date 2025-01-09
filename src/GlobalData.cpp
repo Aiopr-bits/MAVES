@@ -11,7 +11,7 @@ GlobalData& GlobalData::getInstance()
 GlobalData::GlobalData() {
     m_caseData = new caseData();
 	clearAllData();
-	m_caseData->casePath = "..\\Case\\j20-s\\case.foam";
+	//m_caseData->casePath = "..\\Case\\j20-s\\case.foam";
 	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_2\\case.foam";	
 	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_3\\case.foam";	
 }

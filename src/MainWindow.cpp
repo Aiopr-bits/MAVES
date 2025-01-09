@@ -684,6 +684,11 @@ void MainWindow::formMesh_apply()
 
 void MainWindow::formRun_run()
 {
+	if (GlobalData::getInstance().getCaseData()->casePath.empty())
+	{
+		QMessageBox::warning(this, tr("错误"), tr("请先导入网格"));
+		return;
+	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 
 
