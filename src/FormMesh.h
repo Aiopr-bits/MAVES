@@ -22,12 +22,12 @@ public:
 public slots:
 	void updateForm();
 	void on_pushButton_clicked();
-	void on_treeView_itemClicked(const QModelIndex& index);
+	void on_listView_itemClicked(const QModelIndex& index);
 
 signals:
 	void meshVisibilityChanged();
 
 public:
 	Ui::FormMeshClass *ui;
-	QStandardItemModel* treeViewModel;
+	QStandardItemModel* listViewModel;
 };

@@ -665,9 +665,9 @@ void MainWindow::formMesh_apply()
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 
 	// 遍历 treeView 并更新 actor
-	for (int i = 0; i < formMesh->treeViewModel->rowCount(); ++i)
+	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
 	{
-		QStandardItem* item = formMesh->treeViewModel->item(i);
+		QStandardItem* item = formMesh->listViewModel->item(i);
 		const auto& actor = meshFaceActors.find(item->text());
 		if (actor != meshFaceActors.end() && item->checkState() == Qt::Checked)
 		{

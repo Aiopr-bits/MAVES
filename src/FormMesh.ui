@@ -6,118 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>575</height>
+    <width>405</width>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FormMesh</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <pointsize>13</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>网格</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QTreeView" name="treeView">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>280</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>280</height>
-      </size>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QTreeView::item{
-    padding:11px;
-}
-QTreeView {
-    border: none;
-}
-
-QTreeView::item {
-    background: #FFFFFF;
-}
-
-QTreeView::item:hover {
-    background: #F7F7F7;
-}
-
-QTreeView::item:selected {
-    background: #EEEEEE;
-}
-
-QTreeView QScrollBar:vertical {
-    border: 1px solid #dcdcdc;
-    background: white;
-    width: 12px;
-    margin: 0px 0px 0px 0px;
-}
-
-QTreeView QScrollBar::handle:vertical {
-    background: #bfbfbf;
-    min-height: 20px;
-    border-radius: 5px;
-}
-
-QTreeView QScrollBar::add-line:vertical {
-    background: white;
-    height: 0px;
-    subcontrol-position: bottom;
-    subcontrol-origin: margin;
-}
-
-QTreeView QScrollBar::sub-line:vertical {
-    background: white;
-    height: 0px;
-    subcontrol-position: top;
-    subcontrol-origin: margin;
-}
-
-QTreeView QScrollBar::up-arrow:vertical,
-QTreeView QScrollBar::down-arrow:vertical {
-    border: none;
-    width: 0px;
-    height: 0px;
-    background: none;
-}
-
-QTreeView QScrollBar::add-page:vertical,
-QTreeView QScrollBar::sub-page:vertical {
-    background: none;
-}</string>
-     </property>
-     <property name="headerHidden">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="Line" name="line_2">
      <property name="orientation">
@@ -189,6 +85,109 @@ QPushButton:pressed {
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QListView" name="listView">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>280</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>280</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QListView::item {
+    padding: 11px;
+}
+
+QListView {
+    border: none;
+}
+
+QListView::item {
+    background: #FFFFFF;
+}
+
+QListView::item:hover {
+    background: #F7F7F7;
+}
+
+QListView::item:selected {
+    background: #EEEEEE;
+}
+
+QListView QScrollBar:vertical {
+    border: 1px solid #dcdcdc;
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QListView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QListView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QListView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QListView QScrollBar::up-arrow:vertical,
+QListView QScrollBar::down-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QListView QScrollBar::add-page:vertical,
+QListView QScrollBar::sub-page:vertical {
+    background: none;
+}
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>网格</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
