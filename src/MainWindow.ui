@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../res/icon.png</normaloff>../res/icon.png</iconset>
+    <normaloff>../res/icon.ico</normaloff>../res/icon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow { background-color: white; }</string>

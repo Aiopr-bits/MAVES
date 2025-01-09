@@ -132,6 +132,7 @@
     <QtMoc Include="FormMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
     <QtMoc Include="CustomHoverPushButton.h" />
@@ -142,6 +143,12 @@
     <QtMoc Include="FormBoundaryConditions.h" />
     <QtMoc Include="CustomRoundedImageLabel.h" />
     <ClInclude Include="GlobalData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MAVES.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
