@@ -47,12 +47,21 @@ void FormMesh::updateForm()
     for (const auto& actor : meshFaceActors)
     {
         QStandardItem* item = new QStandardItem(actor.first);
-		item->setCheckable(true);
+        item->setCheckable(true);
         item->setCheckState(Qt::Checked);
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-		item->setSizeHint(QSize(0, 40));
-		listViewModel->appendRow(item);
+        item->setSizeHint(QSize(0, 40));
+        listViewModel->appendRow(item);
     }
+
+    // 计算所有 item 的总高度
+    int totalHeight = 0;
+    for (int i = 0; i < listViewModel->rowCount(); ++i) {
+        totalHeight += ui->listView->sizeHintForRow(i);
+    }
+
+    // 设置 QListView 的高度
+    ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
 }
 
 void FormMesh::on_pushButton_clicked()

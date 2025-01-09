@@ -545,6 +545,7 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	}
 
 	QString type = fileInfo.suffix().toLower();
+	GlobalData::getInstance().clearAllData();
 	render->RemoveAllViewProps();
 
 	if (type == "foam")
