@@ -117,6 +117,9 @@
     <QtMoc Include="FormBoundaryConditions.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="CustomRoundedImageLabel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">

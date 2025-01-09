@@ -80,18 +80,29 @@
               <number>2</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="CustomRoundedImageLabel" name="label_3">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>80</width>
                  <height>80</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>80</width>
                  <height>80</height>
                 </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    border-radius: 25px; /* 圆角半径 */
+    border: 2px solid #000000; /* 边框颜色和宽度 */
+    background-image: url(:/path/to/your/image.png); /* 背景图片路径 */
+    background-position: center; /* 背景图片居中 */
+    background-repeat: no-repeat; /* 背景图片不重复 */
+    background-clip: border-box; /* 背景图片裁剪到边框 */
+}
+</string>
                </property>
                <property name="text">
                 <string/>
@@ -789,6 +800,11 @@ QPushButton:hover {
    <class>CustomDoubleClickPushButton</class>
    <extends>QPushButton</extends>
    <header>customdoubleclickpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomRoundedImageLabel</class>
+   <extends>QLabel</extends>
+   <header>customroundedimagelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

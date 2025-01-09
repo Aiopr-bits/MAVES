@@ -140,6 +140,7 @@
     <QtMoc Include="CustomDoubleClickPushButton.h" />
     <QtMoc Include="FormModelClip.h" />
     <QtMoc Include="FormBoundaryConditions.h" />
+    <QtMoc Include="CustomRoundedImageLabel.h" />
     <ClInclude Include="GlobalData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
