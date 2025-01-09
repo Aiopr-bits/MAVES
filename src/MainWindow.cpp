@@ -1654,6 +1654,13 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 		formPostprocessing->listViewModel->appendRow(item);
 	}
 
+	// 计算所有 item 的总高度
+	int totalHeight = 0;
+	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
+		totalHeight += formPostprocessing->ui->listView->sizeHintForRow(i);
+	}
+	formPostprocessing->ui->listView->setFixedHeight(totalHeight + 2 * formPostprocessing->ui->listView->frameWidth());
+
 	GlobalData::getInstance().getCaseData()->timeFilePairs = timeFilePairs;
 	GlobalData::getInstance().getCaseData()->fieldNames = fieldNames;
 
