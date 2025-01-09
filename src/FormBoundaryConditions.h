@@ -2,6 +2,8 @@
 
 #include <QWidget>
 #include "ui_FormBoundaryConditions.h"
+#include "GlobalData.h"
+#include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormBoundaryConditionsClass; };
@@ -14,7 +16,10 @@ class FormBoundaryConditions : public QWidget
 public:
 	FormBoundaryConditions(QWidget *parent = nullptr);
 	~FormBoundaryConditions();
+	void onMeshImported();
 
 private:
 	Ui::FormBoundaryConditionsClass *ui;
+	QStandardItemModel* listViewModel;
+	
 };

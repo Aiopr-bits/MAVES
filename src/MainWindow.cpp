@@ -128,6 +128,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//导入案例
 
 	//主界面其他事件处理
+	connect(this, &MainWindow::meshImported, this, &MainWindow::onMeshImported);																//网格导入完成
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
@@ -652,6 +653,8 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		ui->pushButton_2->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
 		lastClickedButton = ui->pushButton_2;
+
+		emit meshImported();
 	}
 }
 
@@ -1717,6 +1720,13 @@ void MainWindow::onProcessError()
 	//	ui->textBrowser->append(QString::fromLocal8Bit(error));
 	//	ui->textBrowser->repaint(); 
 	//}
+}
+
+void MainWindow::onMeshImported()
+{
+	QMessageBox::information(this, "提示", "网格导入成功");
+
+	formBoundaryConditions->onMeshImported();
 }
 
 void MainWindow::onPlayTimerTimeout()

@@ -49,8 +49,6 @@ public:
 	FormPostprocessing(QWidget *parent = nullptr);
 	~FormPostprocessing();
 
-	void loadResultData(QString caseFilePath);
-
 public slots:
 	void on_pushButton_2_clicked();									//应用按钮
 	void on_treeView_itemClicked(const QModelIndex& index);			//treeView点击事件
