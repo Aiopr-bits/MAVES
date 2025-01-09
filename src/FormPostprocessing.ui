@@ -630,85 +630,72 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
       </widget>
      </item>
      <item>
-      <widget class="QTreeView" name="treeView">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>330</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>330</height>
-        </size>
-       </property>
+      <widget class="QListView" name="listView">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QTreeView::item{
-    padding:11px;
+        <string notr="true">QListView::item {
+    padding: 11px;
 }
-QTreeView {
+
+QListView {
     border: none;
 }
 
-QTreeView::item {
+QListView::item {
     background: #FFFFFF;
 }
 
-QTreeView::item:hover {
+QListView::item:hover {
     background: #F7F7F7;
 }
 
-QTreeView::item:selected {
+QListView::item:selected {
     background: #EEEEEE;
 }
 
-QTreeView QScrollBar:vertical {
+QListView QScrollBar:vertical {
     border: 1px solid #dcdcdc;
     background: white;
     width: 12px;
     margin: 0px 0px 0px 0px;
 }
 
-QTreeView QScrollBar::handle:vertical {
+QListView QScrollBar::handle:vertical {
     background: #bfbfbf;
     min-height: 20px;
     border-radius: 5px;
 }
 
-QTreeView QScrollBar::add-line:vertical {
+QListView QScrollBar::add-line:vertical {
     background: white;
     height: 0px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
 
-QTreeView QScrollBar::sub-line:vertical {
+QListView QScrollBar::sub-line:vertical {
     background: white;
     height: 0px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 
-QTreeView QScrollBar::up-arrow:vertical,
-QTreeView QScrollBar::down-arrow:vertical {
+QListView QScrollBar::up-arrow:vertical,
+QListView QScrollBar::down-arrow:vertical {
     border: none;
     width: 0px;
     height: 0px;
     background: none;
 }
 
-QTreeView QScrollBar::add-page:vertical,
-QTreeView QScrollBar::sub-page:vertical {
+QListView QScrollBar::add-page:vertical,
+QListView QScrollBar::sub-page:vertical {
     background: none;
-}</string>
+}
+</string>
        </property>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
       </widget>
      </item>
      <item>

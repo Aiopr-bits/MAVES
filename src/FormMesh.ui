@@ -89,7 +89,7 @@ QPushButton:pressed {
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QListView" name="listView_2">
+    <widget class="QListView" name="listView">
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>

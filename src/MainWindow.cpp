@@ -982,7 +982,7 @@ void MainWindow::formPostprocessing_apply()
 	QString variableName = formPostprocessing->ui->comboBox_2->currentText();
 
 	// 获取 QTreeView 的模型
-	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formPostprocessing->ui->treeView->model());
+	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formPostprocessing->ui->listView->model());
 	if (!model) {
 		return;
 	}
@@ -1532,7 +1532,7 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	if (!QDir(caseDirPath + "/VTK").exists()) {
 		formPostprocessing->ui->comboBox->clear();
 		formPostprocessing->ui->comboBox_2->clear();
-		formPostprocessing->treeViewModel->clear();
+		formPostprocessing->listViewModel->clear();
 		render->RemoveAllViewProps();
 		renderWindow->Render();
 		return;
@@ -1600,7 +1600,7 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	if (timeFilePairs.isEmpty()) {
 		formPostprocessing->ui->comboBox->clear();
 		formPostprocessing->ui->comboBox_2->clear();
-		formPostprocessing->treeViewModel->clear();
+		formPostprocessing->listViewModel->clear();
 		render->RemoveAllViewProps();
 		renderWindow->Render();
 		return;
@@ -1644,14 +1644,14 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 		lastFileBaseNames.append(fileInfo.baseName());
 	}
 
-	formPostprocessing->treeViewModel->clear();
+	formPostprocessing->listViewModel->clear();
 	foreach(const QString & baseName, lastFileBaseNames) {
 		QStandardItem* item = new QStandardItem(baseName);
 		item->setCheckable(true);
 		if (baseName != "internal") item->setCheckState(Qt::Checked);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 		item->setSizeHint(QSize(0, 40));
-		formPostprocessing->treeViewModel->appendRow(item);
+		formPostprocessing->listViewModel->appendRow(item);
 	}
 
 	GlobalData::getInstance().getCaseData()->timeFilePairs = timeFilePairs;

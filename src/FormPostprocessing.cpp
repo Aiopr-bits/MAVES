@@ -16,9 +16,9 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 {
 	ui->setupUi(this);
 
-	treeViewModel = new QStandardItemModel(this);
-	ui->treeView->setModel(treeViewModel);
-	ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+	listViewModel = new QStandardItemModel(this);
+	ui->listView->setModel(listViewModel);
+	ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	// 创建并设置 pushButtonLoopPlayTimerPause
 	pushButtonLoopPlayTimerPause = new CustomHoverPushButton(this);
@@ -66,7 +66,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->horizontalLayout_6->insertWidget(2, pushButtonReverseTimerPause);
 	pushButtonReverseTimerPause->hide();
 
-	connect(ui->treeView, &QTreeView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
+	connect(ui->listView, &QListView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
 
 	//鼠标抬起
 	connect(pushButtonPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
@@ -81,7 +81,7 @@ FormPostprocessing::~FormPostprocessing()
 
 void FormPostprocessing::on_pushButton_2_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 
@@ -90,7 +90,7 @@ void FormPostprocessing::on_pushButton_2_clicked()
 
 void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
 {
-	QStandardItem* item = treeViewModel->itemFromIndex(index);
+	QStandardItem* item = listViewModel->itemFromIndex(index);
 	if (item)
 	{
 		Qt::CheckState newState = (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
@@ -100,7 +100,7 @@ void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
 
 void FormPostprocessing::on_pushButton_3_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit firstFrame();
@@ -108,7 +108,7 @@ void FormPostprocessing::on_pushButton_3_clicked()
 
 void FormPostprocessing::on_pushButton_4_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit previousFrame();
@@ -116,7 +116,7 @@ void FormPostprocessing::on_pushButton_4_clicked()
 
 void FormPostprocessing::on_pushButton_5_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit reverse();
@@ -124,7 +124,7 @@ void FormPostprocessing::on_pushButton_5_clicked()
 
 void FormPostprocessing::on_pushButton_6_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit play();
@@ -132,7 +132,7 @@ void FormPostprocessing::on_pushButton_6_clicked()
 
 void FormPostprocessing::on_pushButton_7_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit nextFrame();
@@ -140,7 +140,7 @@ void FormPostprocessing::on_pushButton_7_clicked()
 
 void FormPostprocessing::on_pushButton_8_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit lastFrame();
@@ -148,7 +148,7 @@ void FormPostprocessing::on_pushButton_8_clicked()
 
 void FormPostprocessing::on_pushButton_9_clicked()
 {
-	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || treeViewModel->rowCount() == 0) {
+	if (ui->comboBox->count() == 0 || ui->comboBox_2->count() == 0 || listViewModel->rowCount() == 0) {
 		return;
 	}
 	emit loopPlay();

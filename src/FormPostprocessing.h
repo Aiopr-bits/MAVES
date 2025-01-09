@@ -34,6 +34,7 @@
 #include <vtkScalarBarActor.h>
 #include <vtkTextProperty.h>
 #include "CustomHoverPushButton.h"
+#include "QListView.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -80,7 +81,7 @@ signals:
 
 public:
 	Ui::FormPostprocessingClass *ui;
-	QStandardItemModel* treeViewModel;
+	QStandardItemModel* listViewModel;
 
 	CustomHoverPushButton* pushButtonPlayTimerPause;
 	CustomHoverPushButton* pushButtonReverseTimerPause;
