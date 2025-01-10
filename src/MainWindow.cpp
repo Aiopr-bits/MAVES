@@ -295,6 +295,7 @@ void MainWindow::handleAction10Triggered()
 		updatePostProcessingPage(caseFilePath);
 
 		ui->textBrowser->append("Load case successfully!");
+		QMessageBox::information(this, "提示", "案例导入成功");
 	}
 }
 
