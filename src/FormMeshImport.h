@@ -25,6 +25,6 @@ private slots:
 signals:
 	void meshImported(const QString& filePath);
 
-private:
+public:
 	Ui::FormMeshImportClass *ui;
 };

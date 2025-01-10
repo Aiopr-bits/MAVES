@@ -1734,6 +1734,9 @@ void MainWindow::onMeshImported()
 {
 	QMessageBox::information(this, "提示", "网格导入成功");
 
+	//(后期需删除)
+	GlobalData::getInstance().getCaseData()->casePath = formMeshImport->ui->lineEdit->text().toStdString();
+
 	formBoundaryConditions->onMeshImported();
 }
 
