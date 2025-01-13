@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormPostprocessing.h"
 #include <QSvgRenderer>
@@ -35,8 +35,6 @@
 #include <vtkTextProperty.h>
 #include "CustomHoverPushButton.h"
 #include "QListView.h"
-
-#pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };

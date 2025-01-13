@@ -1,4 +1,5 @@
 #pragma once
+#pragma execution_character_set("utf-8")
 #include <QMainWindow>
 #include <QMap>
 #include <QChartView>
@@ -107,8 +108,6 @@ QT_CHARTS_USE_NAMESPACE
 #ifdef _WIN32
 #include "qt_windows.h"
 #endif
-
-#pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };

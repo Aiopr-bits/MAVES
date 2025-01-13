@@ -1,11 +1,9 @@
 #pragma once
-
+#pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormMesh.h"
 #include "GlobalData.h"
 #include <QStandardItemModel.h>
-
-#pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormMeshClass; };

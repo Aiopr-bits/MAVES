@@ -1,10 +1,9 @@
 #pragma once
+#pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormRun.h"
 #include <QEvent>
 #include <QIcon>
-
-#pragma execution_character_set("utf-8")
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };

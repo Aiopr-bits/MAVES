@@ -7,6 +7,8 @@
 #include <vtkActor.h>
 #include <qstring.h>
 #include <vtkLookupTable.h>
+#pragma once
+#pragma execution_character_set("utf-8")
 #include <array>
 #include <vtkScalarBarActor.h>
 
