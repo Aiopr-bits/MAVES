@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>720</height>
+    <width>458</width>
+    <height>723</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,8 +81,8 @@ QScrollArea QScrollBar::add-page:horizontal, QScrollArea QScrollBar::sub-page:ho
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>393</width>
-        <height>702</height>
+        <width>440</width>
+        <height>705</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -177,9 +177,15 @@ QScrollArea QScrollBar::add-page:horizontal, QScrollArea QScrollBar::sub-page:ho
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -331,15 +337,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -445,9 +454,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -604,15 +619,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_2">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -718,9 +736,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -877,15 +901,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_3">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -991,9 +1018,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -1150,15 +1183,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_4">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -1264,9 +1300,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -1418,15 +1460,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_5">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -1532,9 +1577,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_6">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -1691,15 +1742,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_6">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
@@ -1805,9 +1859,15 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                </item>
                <item>
                 <widget class="QComboBox" name="comboBox_7">
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -1959,15 +2019,18 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                 <widget class="QLineEdit" name="lineEdit_7">
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>160</width>
                    <height>27</height>
                   </size>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                 </widget>
                </item>
