@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtUic Include="FormBoundaryConditions.ui" />
+    <QtUic Include="FormBoundaryConditionsTabWidget.ui" />
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
@@ -109,6 +110,7 @@
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
     <ClCompile Include="FormBoundaryConditions.cpp" />
+    <ClCompile Include="FormBoundaryConditionsTabWidget.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
@@ -132,6 +134,7 @@
     <QtMoc Include="FormMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="FormBoundaryConditionsTabWidget.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

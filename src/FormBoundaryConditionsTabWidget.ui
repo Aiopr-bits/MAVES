@@ -1,0 +1,2004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormBoundaryConditionsTabWidgetClass</class>
+ <widget class="QWidget" name="FormBoundaryConditionsTabWidgetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>411</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FormBoundaryConditionsTabWidget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QSplitter::handle {
+    background-color: rgb(191, 191, 191);
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="styleSheet">
+      <string notr="true">QScrollArea {
+    background-color: white;
+    border: none;
+}
+
+QScrollArea QScrollBar:vertical, QScrollArea QScrollBar:horizontal {
+    border: 1px solid #dcdcdc;
+    background: white;
+    width: 12px;
+    height: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollArea QScrollBar::handle:vertical, QScrollArea QScrollBar::handle:horizontal {
+    background: #bfbfbf;
+    min-height: 20px;
+    min-width: 20px;
+    border-radius: 5px;
+}
+
+QScrollArea QScrollBar::add-line:vertical, QScrollArea QScrollBar::add-line:horizontal {
+    background: white;
+    height: 0px;
+    width: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollArea QScrollBar::sub-line:vertical, QScrollArea QScrollBar::sub-line:horizontal {
+    background: white;
+    height: 0px;
+    width: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollArea QScrollBar::up-arrow:vertical, QScrollArea QScrollBar::down-arrow:vertical,
+QScrollArea QScrollBar::left-arrow:horizontal, QScrollArea QScrollBar::right-arrow:horizontal {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QScrollArea QScrollBar::add-page:vertical, QScrollArea QScrollBar::sub-page:vertical,
+QScrollArea QScrollBar::add-page:horizontal, QScrollArea QScrollBar::sub-page:horizontal {
+    background: none;
+}
+</string>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>393</width>
+        <height>702</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>p</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>zeroGradient</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>fixedValue</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(Pa)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>T</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_2">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <widget class="QLabel" name="label_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_2">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>zeroGradient</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>fixedValue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>heatFluxTemperature</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_6">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(K)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>U</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QLabel" name="label_8">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_3">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>zeroGradient</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>fixedValue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>noSlip</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QLabel" name="label_9">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(m/s)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_10">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>k</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_4">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QLabel" name="label_11">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_4">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>fixedValue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>inletOutlet</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>kqRWallFunction</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QLabel" name="label_12">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(m²/s²)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_11">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_13">
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>nut</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_5">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item>
+                <widget class="QLabel" name="label_14">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_5">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>calculated</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>nutkWallFunction</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <item>
+                <widget class="QLabel" name="label_15">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(m²/s)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_16">
+           <item>
+            <widget class="QLabel" name="label_16">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>omega</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_6">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_17">
+               <item>
+                <widget class="QLabel" name="label_17">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_6">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>fixedValue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>inletOutlet</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>omegaWallFunction</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_18">
+               <item>
+                <widget class="QLabel" name="label_18">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(s⁻¹)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_6">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_13">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_19">
+           <item>
+            <widget class="QLabel" name="label_19">
+             <property name="minimumSize">
+              <size>
+               <width>45</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>45</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>alphat</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_7">
+             <property name="styleSheet">
+              <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_20">
+               <item>
+                <widget class="QLabel" name="label_20">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>类型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_7">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>calculated</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>alphatWallFunction</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>18</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_21">
+               <item>
+                <widget class="QLabel" name="label_21">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Microsoft YaHei</family>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>值(m²/s)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_7">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_14">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

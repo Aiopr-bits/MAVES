@@ -27,13 +27,12 @@ void FormBoundaryConditions::onMeshImported()
 
 void FormBoundaryConditions::initListView()
 {
+	listViewModel->clear();
 	std::vector<QString> meshEdgeActorsName;
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 	for (const auto& pair : meshEdgeActors) {
 		meshEdgeActorsName.push_back(pair.first);
 	}
-
-	listViewModel->clear();
 
 	QIcon icon("../res/meshBoundary.png");
 	foreach(const QString & name, meshEdgeActorsName) {
@@ -53,6 +52,7 @@ void FormBoundaryConditions::initListView()
 
 void FormBoundaryConditions::initTabWidget()
 {
+	tabWidgetList.clear();
 	std::vector<QString> meshEdgeActorsName;
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 	for (const auto& pair : meshEdgeActors) {
@@ -65,38 +65,12 @@ void FormBoundaryConditions::initTabWidget()
 
 	for (int i = 0; i < meshEdgeActorsName.size(); ++i) {
 		QString meshPartName = meshEdgeActorsName[i];
-		ui->tabWidget->addTab(new QWidget(), meshPartName);
-		ui->tabWidget->setTabVisible(i, false);	
+		QWidget* tabPage = new QWidget();
+		FormBoundaryConditionsTabWidget* tabWidget = new FormBoundaryConditionsTabWidget();
+		ui->tabWidget->addTab(tabWidget, meshPartName);
+		ui->tabWidget->setTabVisible(i, false);
+		tabWidgetList.push_back(tabWidget);
 	}
-
-	for (int i = 0; i < static_cast<int>(PhysicalFields::COUNT); ++i) {
-		PhysicalFields field = static_cast<PhysicalFields>(i);
-		switch (field) {
-		case PhysicalFields::p:
-
-			break;
-		case PhysicalFields::T:
-
-			break;
-		case PhysicalFields::U:
-
-			break;
-		case PhysicalFields::k:
-
-			break;
-		case PhysicalFields::nut:
-
-			break;
-		case PhysicalFields::omega:
-
-			break;
-		case PhysicalFields::alphat:
-
-			break;
-		default:
-			break;
-		}
-	}	
 }
 
 void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
@@ -113,6 +87,9 @@ void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
 			break;
 		}
 	}
+
+	//ui->verticalSpacer_3вўВи
+	ui->verticalSpacer_3->changeSize(20, 0, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
 	ui->tabWidget->setStyleSheet(
 		"QTabWidget::pane {"

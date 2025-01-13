@@ -5,6 +5,8 @@
 #include "GlobalData.h"
 #include <QStandardItemModel>
 #include <QMessageBox.h>
+#include "FormBoundaryConditionsTabWidget.h"
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormBoundaryConditionsClass; };
@@ -75,7 +77,7 @@ private slots:
     void onListViewItemClicked(const QModelIndex& index);
 
 private:
+	vector<FormBoundaryConditionsTabWidget*> tabWidgetList;
 	Ui::FormBoundaryConditionsClass *ui;
 	QStandardItemModel* listViewModel;
-	
 };
