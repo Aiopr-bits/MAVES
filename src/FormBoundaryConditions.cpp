@@ -271,7 +271,98 @@ void FormBoundaryConditions::importParameter()
 
 void FormBoundaryConditions::exportParameter()
 {
+	// 获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QString caseDirPath = QFileInfo(casePath).absolutePath();
+	QStringList fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 
+	// 将界面上的修改写入 boundaryConditions 中
+	for (int i = 0; i < ui->tabWidget->count(); ++i) {
+		QString tabName = ui->tabWidget->tabText(i);
+		FormBoundaryConditionsTabWidget* tabWidget = qobject_cast<FormBoundaryConditionsTabWidget*>(ui->tabWidget->widget(i));
+
+		auto updateBoundaryConditions = [&](QComboBox* comboBox, QLineEdit* lineEdit, const QString& field) {
+			boundaryConditions[field][tabName][0] = comboBox->currentText();
+
+			// 特殊处理
+			if (boundaryConditions[field][tabName][0] == "alphatWallFunction") boundaryConditions[field][tabName][0] = "compressible::alphatWallFunction";
+			if (boundaryConditions[field][tabName][0] == "heatFluxTemperature") boundaryConditions[field][tabName][0] = "externalWallHeatFluxTemperature";
+
+			if (!lineEdit->text().isEmpty()) {
+				boundaryConditions[field][tabName][1] = lineEdit->text();
+			}
+			};
+
+		updateBoundaryConditions(tabWidget->ui->comboBox, tabWidget->ui->lineEdit, "p");
+		updateBoundaryConditions(tabWidget->ui->comboBox_2, tabWidget->ui->lineEdit_2, "T");
+
+		boundaryConditions["U"][tabName][0] = tabWidget->ui->comboBox_3->currentText();
+		QString value = QString("(%1 %2 %3)").arg(tabWidget->ui->lineEdit_8->text(), tabWidget->ui->lineEdit_9->text(), tabWidget->ui->lineEdit_10->text());
+		boundaryConditions["U"][tabName][1] = value;
+
+		updateBoundaryConditions(tabWidget->ui->comboBox_4, tabWidget->ui->lineEdit_4, "k");
+		updateBoundaryConditions(tabWidget->ui->comboBox_5, tabWidget->ui->lineEdit_5, "nut");
+		updateBoundaryConditions(tabWidget->ui->comboBox_6, tabWidget->ui->lineEdit_6, "omega");
+		updateBoundaryConditions(tabWidget->ui->comboBox_7, tabWidget->ui->lineEdit_7, "alphat");
+	}
+
+	// 遍历每个物理场文件
+	for (const QString& fileName : fileNames) {
+		QString filePath = caseDirPath + "/0/" + fileName;
+		QFile file(filePath);
+		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+			QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+			continue;
+		}
+
+		QTextStream in(&file);
+		QString content = in.readAll();
+		file.close();
+
+		// 提取 boundaryField 之前的内容
+		QRegularExpression boundaryFieldRegex(R"(boundaryField\s*\{)");
+		QRegularExpressionMatch boundaryFieldMatch = boundaryFieldRegex.match(content);
+		if (!boundaryFieldMatch.hasMatch()) {
+			QMessageBox::warning(this, "错误", "无法解析文件: " + filePath);
+			return;
+		}
+		QString preBoundaryFieldContent = content.left(boundaryFieldMatch.capturedStart());
+
+		// 向 preBoundaryFieldContent 中写入 boundaryField 的部分
+		QStringList specialTypes = { "fixedValue", "externalWallHeatFluxTemperature", "inletOutlet", "kqRWallFunction", "nutkWallFunction", "omegaWallFunction", "compressible::alphatWallFunction", "calculated" };
+		preBoundaryFieldContent += "boundaryField\n{\n";
+		const auto& boundaryField = boundaryConditions[fileName];
+		for (auto it = boundaryField.begin(); it != boundaryField.end(); ++it) {
+			preBoundaryFieldContent += "    " + it.key() + "\n";
+			preBoundaryFieldContent += "    {\n";
+			preBoundaryFieldContent += "        type            " + it.value()[0] + ";\n";
+			if (it.value()[0] == "externalWallHeatFluxTemperature") {
+				preBoundaryFieldContent += "        mode            coefficient;\n";
+				preBoundaryFieldContent += "        Ta              constant 300.0;\n";
+				preBoundaryFieldContent += "        h               uniform 100.0;\n";
+				preBoundaryFieldContent += "        thicknessLayers (0.001);\n";
+				preBoundaryFieldContent += "        kappaLayers     (1);\n";
+				preBoundaryFieldContent += "        kappaMethod     fluidThermo;\n";
+			}
+			if (it.value()[0] == "inletOutlet") {
+				preBoundaryFieldContent += "        inletValue      uniform " + it.value()[1] + ";\n";
+			}
+			if (specialTypes.contains(it.value()[0])) {
+				preBoundaryFieldContent += "        value           uniform " + it.value()[1] + ";\n";
+			}
+			preBoundaryFieldContent += "    }\n";
+		}
+		preBoundaryFieldContent += "}\n";
+
+		// 将 preBoundaryFieldContent 写入文件，替换原来的文件内容
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+			QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+			continue;
+		}
+		QTextStream out(&file);
+		out << preBoundaryFieldContent;
+		file.close();
+	}
 }
 
 void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
