@@ -15,6 +15,8 @@ class FormBoundaryConditionsTabWidget : public QWidget
 public:
 	FormBoundaryConditionsTabWidget(QWidget *parent = nullptr);
 	~FormBoundaryConditionsTabWidget();
+	void setLayoutVisibility(QLayout* layout, bool visible);
+	void updateLayoutVisibility(QGridLayout* layout, bool visible);
 
 public slots:
 	void onComboBoxCurrentIndexChanged(int index);

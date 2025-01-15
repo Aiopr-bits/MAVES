@@ -97,7 +97,6 @@
                 <string notr="true">QLabel {
     border-radius: 25px; /* 圆角半径 */
     border: 2px solid #000000; /* 边框颜色和宽度 */
-    background-image: url(:/path/to/your/image.png); /* 背景图片路径 */
     background-position: center; /* 背景图片居中 */
     background-repeat: no-repeat; /* 背景图片不重复 */
     background-clip: border-box; /* 背景图片裁剪到边框 */
