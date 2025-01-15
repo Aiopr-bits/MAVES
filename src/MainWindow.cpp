@@ -1537,22 +1537,60 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	QString caseDirName = fileInfo.dir().dirName();
 	QString vtkDirPath = caseDirPath + "/VTK";
 
-	// 检查是否存在 caseDirPath + "/VTK/" + caseDirName + "_0" 以外的文件夹
-	QDir vtkDir(vtkDirPath);
-	QStringList subDirs = vtkDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	bool hasOtherSubDirs = false;
-	foreach(const QString & subDir, subDirs) {
-		if (subDir != caseDirName + "_0") {
-			hasOtherSubDirs = true;
-			break;
+	//// 检查是否存在 caseDirPath + "/VTK/" + caseDirName + "_0" 以外的文件夹
+	//QDir vtkDir(vtkDirPath);
+	//QStringList subDirs = vtkDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	//bool hasOtherSubDirs = false;
+	//foreach(const QString & subDir, subDirs) {
+	//	if (subDir != caseDirName + "_0") {
+	//		hasOtherSubDirs = true;
+	//		break;
+	//	}
+	//}
+
+	//if (!hasOtherSubDirs) {
+	//	formPostprocessing->ui->comboBox->clear();
+	//	formPostprocessing->ui->comboBox_2->clear();
+	//	formPostprocessing->listViewModel->clear();
+	//	return;
+	//}
+
+	//检查caseDirPath下是否有除了以“0”命名的其他数字文件夹，如果没有则直接返回，有则获取其列表
+	QDir caseDir(caseDirPath);
+	QStringList subDirs = caseDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QStringList numericDirs;
+	for (const QString& subDir : subDirs) {
+		bool isNumeric;
+		double dirNumber = subDir.toDouble(&isNumeric);
+		if (isNumeric && dirNumber != 0.0) {
+			numericDirs.append(subDir);
 		}
 	}
 
-	if (!hasOtherSubDirs) {
+	if (numericDirs.isEmpty()) {
 		formPostprocessing->ui->comboBox->clear();
 		formPostprocessing->ui->comboBox_2->clear();
 		formPostprocessing->listViewModel->clear();
+		render->RemoveAllViewProps();
+		renderWindow->Render();
 		return;
+	}
+
+	//检查numericDirs中每个caseDirPath + "/VTK/caseDirName_"+numericDirs[i]文件夹是否都存在
+	numericDirs.removeOne(*std::max_element(numericDirs.begin(), numericDirs.end()));
+	for (const QString& dir : numericDirs) {
+		QString vtkSubDirPath = caseDirPath + "/VTK/" + caseDirName + "_" + dir;
+		if (!QDir(vtkSubDirPath).exists()) {
+			QString command = "foamToVTK -case " + caseDirPath;
+			processFoamToVTK.setProgram("cmd.exe");
+			processFoamToVTK.setArguments(QStringList() << "/C" << command);
+			processFoamToVTK.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+				args->flags |= CREATE_NO_WINDOW;
+				});
+			processFoamToVTK.start();
+			processFoamToVTK.waitForFinished();
+			break;
+		}
 	}
 
 	// 解析series系列文件，获取时间和文件路径
