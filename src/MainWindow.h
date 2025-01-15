@@ -149,7 +149,6 @@ public slots:
 	void on_pushButton_3_clicked();								    													//模型切分
 
 	//主界面其他事件处理
-	void onMeshImported();																								//网格导入完成
 	void onPlayTimerTimeout();																							//播放
 	void onReverseTimerTimeout(); 																						//倒放
 	void onLoopPlayTimerTimeout(); 																						//循环播放
@@ -189,9 +188,6 @@ public slots:
 	void formModelClip_alignView();																						//模型切分：对齐视角
 	void formModelClip_resetPlane();																					//模型切分：重置平面
 	void formModelClip_apply();																							//模型切分：应用
-
-signals:
-	void meshImported();																								//网格导入完成
 
 public:
 	Ui::MainWindowClass *ui;

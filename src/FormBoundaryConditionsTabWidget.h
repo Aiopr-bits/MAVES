@@ -27,6 +27,6 @@ public slots:
 	void onComboBox_6CurrentIndexChanged(int index);
 	void onComboBox_7CurrentIndexChanged(int index);
 
-private:
+public:
 	Ui::FormBoundaryConditionsTabWidgetClass *ui;
 };

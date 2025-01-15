@@ -128,7 +128,6 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//导入案例
 
 	//主界面其他事件处理
-	connect(this, &MainWindow::meshImported, this, &MainWindow::onMeshImported);																//网格导入完成
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
@@ -274,7 +273,7 @@ void MainWindow::handleAction9Triggered()
 void MainWindow::handleAction10Triggered()
 {
 	QString caseFilePath;
-	QFileDialog dialog(this, tr("加载后处理数据"), "", tr("OpenFOAM 文件 (*.foam);;"));
+	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM 文件 (*.foam);;"));
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setViewMode(QFileDialog::Detail);
 
@@ -284,14 +283,17 @@ void MainWindow::handleAction10Triggered()
 	if (dialog.exec() == QDialog::Accepted) {
 		caseFilePath = dialog.selectedFiles().first();
 		if (caseFilePath.isEmpty()) return;
-
 		GlobalData::getInstance().clearAllData();
-
 		ui->textBrowser->append("Load case：" + caseFilePath);
-		//储存各种配置信息(需补充)
-		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 
-		//更新页面显示(需补充)
+		//更新网格导入页面
+		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
+		formMeshImport_import(caseFilePath);
+
+		//更新参数配置页面(需补充)
+		formBoundaryConditions->importParameter();
+
+		//更新后处理数据页面(需补充)
 		updatePostProcessingPage(caseFilePath);
 
 		ui->textBrowser->append("Load case successfully!");
@@ -548,6 +550,7 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	QString type = fileInfo.suffix().toLower();
 	GlobalData::getInstance().clearAllData();
 	render->RemoveAllViewProps();
+	GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
 
 	if (type == "foam")
 	{
@@ -646,7 +649,6 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		GlobalData::getInstance().getCaseData()->meshPath = fileInfo.path().toStdString();
 
 		formMesh->updateForm();
-
 		render->ResetCamera();
 		renderWindow->Render();
 
@@ -656,7 +658,8 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
 		lastClickedButton = ui->pushButton_2;
 
-		emit meshImported();
+		//网格导入成功,初始化参数配置页面
+		formBoundaryConditions->onMeshImported();
 	}
 }
 
@@ -695,7 +698,7 @@ void MainWindow::formRun_run()
 		return;
 	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
-
+	formBoundaryConditions->exportParameter();
 
 
 	//隐藏开始按钮，显示停止按钮
@@ -1530,12 +1533,23 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	QFileInfo fileInfo(casePath);
 	QString caseDirPath = fileInfo.absolutePath();
 	QString caseDirName = fileInfo.dir().dirName();
-	if (!QDir(caseDirPath + "/VTK").exists()) {
+	QString vtkDirPath = caseDirPath + "/VTK";
+
+	// 检查是否存在 caseDirPath + "/VTK/" + caseDirName + "_0" 以外的文件夹
+	QDir vtkDir(vtkDirPath);
+	QStringList subDirs = vtkDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	bool hasOtherSubDirs = false;
+	foreach(const QString & subDir, subDirs) {
+		if (subDir != caseDirName + "_0") {
+			hasOtherSubDirs = true;
+			break;
+		}
+	}
+
+	if (!hasOtherSubDirs) {
 		formPostprocessing->ui->comboBox->clear();
 		formPostprocessing->ui->comboBox_2->clear();
 		formPostprocessing->listViewModel->clear();
-		render->RemoveAllViewProps();
-		renderWindow->Render();
 		return;
 	}
 
@@ -1729,16 +1743,6 @@ void MainWindow::onProcessError()
 	//	ui->textBrowser->append(QString::fromLocal8Bit(error));
 	//	ui->textBrowser->repaint(); 
 	//}
-}
-
-void MainWindow::onMeshImported()
-{
-	QMessageBox::information(this, "提示", "网格导入成功");
-
-	//(后期需删除)
-	GlobalData::getInstance().getCaseData()->casePath = formMeshImport->ui->lineEdit->text().toStdString();
-
-	formBoundaryConditions->onMeshImported();
 }
 
 void MainWindow::onPlayTimerTimeout()

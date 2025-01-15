@@ -1,4 +1,6 @@
 #include "FormBoundaryConditions.h"
+#include <QTextStream>
+#include <qdebug.h>
 
 FormBoundaryConditions::FormBoundaryConditions(QWidget* parent)
 	: QWidget(parent)
@@ -52,25 +54,224 @@ void FormBoundaryConditions::initListView()
 
 void FormBoundaryConditions::initTabWidget()
 {
-	tabWidgetList.clear();
+	//移除 ui->tabWidget 中的所有 tab
+	for (int i = ui->tabWidget->count() - 1; i >= 0; --i) {
+		ui->tabWidget->removeTab(i);
+	}
+
+	// 获取所有 meshEdgeActors 的名称
 	std::vector<QString> meshEdgeActorsName;
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 	for (const auto& pair : meshEdgeActors) {
 		meshEdgeActorsName.push_back(pair.first);
 	}
 
-	for (int i = ui->tabWidget->count() - 1; i >= 0; --i) {
-		ui->tabWidget->removeTab(i);
-	}
-
+	// 为每个 meshEdgeActor 创建一个新的 tab，并将其添加到 ui->tabWidget 中
 	for (int i = 0; i < meshEdgeActorsName.size(); ++i) {
 		QString meshPartName = meshEdgeActorsName[i];
 		QWidget* tabPage = new QWidget();
 		FormBoundaryConditionsTabWidget* tabWidget = new FormBoundaryConditionsTabWidget();
 		ui->tabWidget->addTab(tabWidget, meshPartName);
 		ui->tabWidget->setTabVisible(i, false);
-		tabWidgetList.push_back(tabWidget);
 	}
+}
+
+void FormBoundaryConditions::initBoundaryConditions()
+{
+	vector<QString> physicalFields = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	vector<QString> boundaryField;
+	for (const auto& pair : meshFaceActors) {
+		boundaryField.push_back(pair.first);
+	}
+
+	boundaryConditions.clear();
+	for (int i = 0; i < physicalFields.size(); ++i) {
+		QString physicalField = physicalFields[i];
+		QMap<QString, QVector<QString>> boundaryCondition;
+		for (int j = 0; j < boundaryField.size(); ++j) {
+			QVector<QString> boundaryConditionValue;
+			boundaryConditionValue.push_back("");
+			boundaryConditionValue.push_back("");
+			boundaryCondition[boundaryField[j]] = boundaryConditionValue;
+		}
+		boundaryConditions[physicalField] = boundaryCondition;
+	}
+}
+
+void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QString& fieldName)
+{
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	QTextStream in(&file);
+	QString content = in.readAll();
+	content.replace("uniform", "");
+	file.close();
+
+	// 提取 boundaryField 之前的内容
+	QRegularExpression boundaryFieldRegex(R"(boundaryField\s*\{)");
+	QRegularExpressionMatch boundaryFieldMatch = boundaryFieldRegex.match(content);
+	if (!boundaryFieldMatch.hasMatch()) {
+		QMessageBox::warning(this, "错误", "无法解析文件: " + filePath);
+		return;
+	}
+
+	QString preBoundaryFieldContent = content.left(boundaryFieldMatch.capturedStart());
+
+	// 提取变量定义
+	QMap<QString, QString> variables;
+	QRegularExpression variableRegex(R"((\w+)\s+([\w\d\.\+\-eE\(\)\s\$]+);)");
+	QRegularExpressionMatchIterator varIt = variableRegex.globalMatch(preBoundaryFieldContent);
+	while (varIt.hasNext()) {
+		QRegularExpressionMatch varMatch = varIt.next();
+		QString varName = varMatch.captured(1);
+		QString varValue = varMatch.captured(2);
+		variables[varName] = varValue;
+	}
+
+	// 递归解析变量值
+	auto resolveVariable = [&variables](const QString& value) -> QString {
+		QString resolvedValue = value;
+		QRegularExpression varRefRegex(R"(\$(\w+))");
+		QRegularExpressionMatchIterator varRefIt = varRefRegex.globalMatch(value);
+		while (varRefIt.hasNext()) {
+			QRegularExpressionMatch varRefMatch = varRefIt.next();
+			QString varRefName = varRefMatch.captured(1);
+			if (variables.contains(varRefName)) {
+				resolvedValue.replace("$" + varRefName, variables[varRefName]);
+			}
+		}
+		return resolvedValue;
+		};
+
+	// 解析所有变量的值
+	for (auto it = variables.begin(); it != variables.end(); ++it) {
+		it.value() = resolveVariable(it.value());
+	}
+
+	QRegularExpression boundaryFieldRegex2(R"(boundaryField\s*\{([\s\S]*?)\n\})");
+	QRegularExpressionMatch match = boundaryFieldRegex2.match(content);
+	if (!match.hasMatch()) {
+		QMessageBox::warning(this, "错误", "无法解析文件: " + filePath);
+		return;
+	}
+
+	QString boundaryFieldContent = match.captured(1);
+	QRegularExpression varRefRegex2(R"(\$(\w+))");
+	QRegularExpressionMatchIterator varRefIt2 = varRefRegex2.globalMatch(boundaryFieldContent);
+	while (varRefIt2.hasNext()) {
+		QRegularExpressionMatch varRefMatch = varRefIt2.next();
+		QString varRefName = varRefMatch.captured(1);
+		if (variables.contains(varRefName)) {
+			boundaryFieldContent.replace("$" + varRefName, variables[varRefName]);
+		}
+	}
+
+	QRegularExpression boundaryRegex(R"((\w+)\s*\{([\s\S]*?)\n\s*\})");
+	QRegularExpressionMatchIterator it = boundaryRegex.globalMatch(boundaryFieldContent);
+
+	while (it.hasNext()) {
+		QRegularExpressionMatch boundaryMatch = it.next();
+		QString boundaryName = boundaryMatch.captured(1);
+		QString boundaryContent = boundaryMatch.captured(2);
+
+		QRegularExpression typeRegex(R"(type\s+([\w:]+);)");
+		QRegularExpression valueRegex(R"(value\s+([\w\d\.\+\-eE\(\)\s\$]+);)");
+
+		QRegularExpressionMatch typeMatch = typeRegex.match(boundaryContent);
+		QRegularExpressionMatch valueMatch = valueRegex.match(boundaryContent);
+
+		QString type = typeMatch.hasMatch() ? typeMatch.captured(1) : "";
+		QString value = valueMatch.hasMatch() ? valueMatch.captured(1) : "";
+
+		//特殊处理
+		if (type == "compressible::alphatWallFunction")type = "alphatWallFunction";
+		if (type == "externalWallHeatFluxTemperature")type = "heatFluxTemperature";
+
+		if (boundaryConditions.contains(fieldName) && boundaryConditions[fieldName].contains(boundaryName)) {
+			boundaryConditions[fieldName][boundaryName][0] = type;
+			boundaryConditions[fieldName][boundaryName][1] = value;
+		}
+	}
+}
+
+void FormBoundaryConditions::importParameter()
+{
+	// 获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QString caseDirPath = QFileInfo(casePath).absolutePath();
+	QStringList fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+
+	// 初始化边界条件
+	initBoundaryConditions();
+
+	// 解析每个文件并更新边界条件
+	for (const QString& fileName : fileNames) {
+		QString filePath = caseDirPath + "/0/" + fileName;
+		parseBoundaryFile(filePath, fileName);
+	}
+
+	// 更新每个 tab 页的 comboBox 选择项
+	for (int i = 0; i < ui->tabWidget->count(); ++i) {
+		QString tabName = ui->tabWidget->tabText(i);
+		FormBoundaryConditionsTabWidget* tabWidget = qobject_cast<FormBoundaryConditionsTabWidget*>(ui->tabWidget->widget(i));
+
+		auto updateComboBox = [&](QComboBox* comboBox, const QString& field) {
+			for (int j = 0; j < comboBox->count(); ++j) {
+				if (comboBox->itemText(j) == boundaryConditions[field][tabName][0]) {
+					comboBox->setCurrentIndex(j);
+					break;
+				}
+			}
+			};
+
+		updateComboBox(tabWidget->ui->comboBox, "p");
+		updateComboBox(tabWidget->ui->comboBox_2, "T");
+		updateComboBox(tabWidget->ui->comboBox_3, "U");
+		updateComboBox(tabWidget->ui->comboBox_4, "k");
+		updateComboBox(tabWidget->ui->comboBox_5, "nut");
+		updateComboBox(tabWidget->ui->comboBox_6, "omega");
+		updateComboBox(tabWidget->ui->comboBox_7, "alphat");
+
+		QStringList specialTypes = { "fixedValue", "heatFluxTemperature", "inletOutlet", "kqRWallFunction", "nutkWallFunction", "omegaWallFunction", "alphatWallFunction", "calculated" };
+
+		auto updateLineEdit = [&](QComboBox* comboBox, QLineEdit* lineEdit, const QString& field) {
+			if (specialTypes.contains(comboBox->currentText())) {
+				lineEdit->setText(boundaryConditions[field][tabName][1]);
+			}
+			};
+
+		updateLineEdit(tabWidget->ui->comboBox, tabWidget->ui->lineEdit, "p");
+		updateLineEdit(tabWidget->ui->comboBox_2, tabWidget->ui->lineEdit_2, "T");
+
+		if (specialTypes.contains(tabWidget->ui->comboBox_3->currentText())) {
+			QString value = boundaryConditions["U"][tabName][1];
+			QRegularExpression re(R"(\(([^)]+)\))");
+			QRegularExpressionMatch match = re.match(value);
+			if (match.hasMatch()) {
+				QStringList valueList = match.captured(1).split(" ");
+				if (valueList.size() == 3) {
+					tabWidget->ui->lineEdit_8->setText(valueList[0]);
+					tabWidget->ui->lineEdit_9->setText(valueList[1]);
+					tabWidget->ui->lineEdit_10->setText(valueList[2]);
+				}
+			}
+		}
+
+		updateLineEdit(tabWidget->ui->comboBox_4, tabWidget->ui->lineEdit_4, "k");
+		updateLineEdit(tabWidget->ui->comboBox_5, tabWidget->ui->lineEdit_5, "nut");
+		updateLineEdit(tabWidget->ui->comboBox_6, tabWidget->ui->lineEdit_6, "omega");
+		updateLineEdit(tabWidget->ui->comboBox_7, tabWidget->ui->lineEdit_7, "alphat");
+	}
+}
+
+void FormBoundaryConditions::exportParameter()
+{
+
 }
 
 void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)

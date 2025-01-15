@@ -7,6 +7,7 @@
 #include <QMessageBox.h>
 #include "FormBoundaryConditionsTabWidget.h"
 #include <vector>
+#include <QFileInfo>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormBoundaryConditionsClass; };
@@ -22,12 +23,17 @@ public:
 	void onMeshImported();
 	void initListView();
 	void initTabWidget();
+	void importParameter();
+	void exportParameter();
+	void initBoundaryConditions();
+
+	void parseBoundaryFile(const QString& filePath, const QString& fieldName);
 
 private slots:
     void onListViewItemClicked(const QModelIndex& index);
 
 private:
-	vector<FormBoundaryConditionsTabWidget*> tabWidgetList;
 	Ui::FormBoundaryConditionsClass *ui;
 	QStandardItemModel* listViewModel;
+	QMap<QString, QMap<QString, QVector<QString>>> boundaryConditions;
 };
