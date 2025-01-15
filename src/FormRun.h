@@ -4,6 +4,10 @@
 #include "ui_FormRun.h"
 #include <QEvent>
 #include <QIcon>
+#include <QFileInfo>
+#include "GlobalData.h"
+#include <QMessageBox>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };
@@ -16,6 +20,8 @@ class FormRun : public QWidget
 public:
 	FormRun(QWidget *parent = nullptr);
 	~FormRun();
+	void importParameter();
+	void exportParameter();
 
 public slots:
 	void cursorEnterPushButton();

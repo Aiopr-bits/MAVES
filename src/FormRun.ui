@@ -181,6 +181,9 @@ QLineEdit:hover {
     border: 1px solid rgb(23, 23, 23); 
 }</string>
          </property>
+         <property name="text">
+          <string>0</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -305,6 +308,9 @@ QLineEdit:hover {
     border: 1px solid rgb(23, 23, 23); 
 }</string>
          </property>
+         <property name="text">
+          <string>100</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -426,6 +432,9 @@ QLineEdit:hover {
     border: 1px solid rgb(23, 23, 23); 
 }</string>
          </property>
+         <property name="text">
+          <string>1</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -546,6 +555,9 @@ QLineEdit:hover {
 QLineEdit:hover {
     border: 1px solid rgb(23, 23, 23); 
 }</string>
+         </property>
+         <property name="text">
+          <string>5</string>
          </property>
         </widget>
        </item>

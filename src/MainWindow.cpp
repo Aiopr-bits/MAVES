@@ -292,6 +292,7 @@ void MainWindow::handleAction10Triggered()
 
 		//更新参数配置页面(需补充)
 		formBoundaryConditions->importParameter();
+		formRun->importParameter();
 
 		//更新后处理数据页面(需补充)
 		updatePostProcessingPage(caseFilePath);
@@ -699,6 +700,7 @@ void MainWindow::formRun_run()
 	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	formBoundaryConditions->exportParameter();
+	formRun->exportParameter();
 
 
 	//隐藏开始按钮，显示停止按钮
