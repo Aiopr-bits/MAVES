@@ -19,6 +19,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	listViewModel = new QStandardItemModel(this);
 	ui->listView->setModel(listViewModel);
 	ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
+	ui->listView->setItemDelegate(new CustomCheckBoxDelegate(this));
 
 	// 创建并设置 pushButtonLoopPlayTimerPause
 	pushButtonLoopPlayTimerPause = new CustomHoverPushButton(this);
@@ -66,8 +67,6 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->horizontalLayout_6->insertWidget(2, pushButtonReverseTimerPause);
 	pushButtonReverseTimerPause->hide();
 
-	connect(ui->listView, &QListView::clicked, this, &FormPostprocessing::on_treeView_itemClicked);
-
 	//鼠标抬起
 	connect(pushButtonPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
 	connect(pushButtonReverseTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonReverseTimerPause_clicked);
@@ -86,16 +85,6 @@ void FormPostprocessing::on_pushButton_2_clicked()
 	}
 
 	emit apply();
-}
-
-void FormPostprocessing::on_treeView_itemClicked(const QModelIndex& index)
-{
-	QStandardItem* item = listViewModel->itemFromIndex(index);
-	if (item)
-	{
-		Qt::CheckState newState = (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
-		item->setCheckState(newState);
-	}
 }
 
 void FormPostprocessing::on_pushButton_3_clicked()

@@ -13,26 +13,14 @@ FormMesh::FormMesh(QWidget* parent)
     ui->setupUi(this);
 
     ui->listView->setModel(listViewModel);
-    ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    ui->listView->setItemDelegate(new CustomCheckBoxDelegate(this));
     connect(ui->pushButton, &QPushButton::clicked, this, &FormMesh::on_pushButton_clicked);
-    connect(ui->listView, &QListView::clicked, this, &FormMesh::on_listView_itemClicked);
-
 }
 
 FormMesh::~FormMesh()
 {
-	delete ui;
-}
-
-void FormMesh::on_listView_itemClicked(const QModelIndex& index)
-{
-    QStandardItem* item = listViewModel->itemFromIndex(index);
-    if (item)
-    {
-        Qt::CheckState newState = (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
-        item->setCheckState(newState);
-    }
+    delete ui;
 }
 
 void FormMesh::updateForm()
@@ -66,8 +54,5 @@ void FormMesh::updateForm()
 
 void FormMesh::on_pushButton_clicked()
 {
-	emit meshVisibilityChanged();
+    emit meshVisibilityChanged();
 }
-
-
-

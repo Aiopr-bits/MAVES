@@ -35,6 +35,7 @@
 #include <vtkTextProperty.h>
 #include "CustomHoverPushButton.h"
 #include "QListView.h"
+#include "CustomCheckBoxDelegate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };
@@ -50,7 +51,6 @@ public:
 
 public slots:
 	void on_pushButton_2_clicked();									//应用按钮
-	void on_treeView_itemClicked(const QModelIndex& index);			//treeView点击事件
 	void on_pushButton_3_clicked();									//第一帧
 	void on_pushButton_4_clicked();									//上一帧
 	void on_pushButton_5_clicked();									//重新播放

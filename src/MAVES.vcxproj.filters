@@ -129,6 +129,9 @@
     <QtMoc Include="FormBoundaryConditionsTabWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="CustomCheckBoxDelegate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
