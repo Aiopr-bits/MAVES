@@ -12,20 +12,28 @@ QT_END_NAMESPACE
 
 class FormMesh : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	FormMesh(QWidget *parent = nullptr);
-	~FormMesh();
+    FormMesh(QWidget* parent = nullptr);
+    ~FormMesh();
 
 public slots:
-	void updateForm();
-	void on_pushButton_clicked();
+    void updateForm();
+    void on_pushButton_clicked();
+    void onItemEntered(const QString& text);
+    void onItemExited(const QString& text);
 
 signals:
-	void meshVisibilityChanged();
+    void meshVisibilityChanged();
+	void itemEntered(const QString& text);
+	void itemExited(const QString& text);
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 public:
-	Ui::FormMeshClass *ui;
-	QStandardItemModel* listViewModel;
+    Ui::FormMeshClass* ui;
+    QStandardItemModel* listViewModel;
+    QModelIndex lastIndex;
 };

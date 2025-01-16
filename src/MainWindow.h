@@ -166,6 +166,8 @@ public slots:
 	void formGeometry_import(const QString& filePath);																	//几何导入
 	void formMeshImport_import(const QString& filePath);																//网格导入
 	void formMesh_apply(); 																								//更新渲染窗口	
+	void formMesh_itemEntered(const QString& text);																		//网格页面Item进入
+	void formMesh_itemExited(const QString& text);																		//网格页面Item退出
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
 	void formPostprocessing_apply();																					//应用	

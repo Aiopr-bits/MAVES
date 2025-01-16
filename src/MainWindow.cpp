@@ -144,6 +144,8 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//导入网格
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
+	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);															//网格页面Item进入
+	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);															//网格页面Item退出
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//更新渲染窗口
@@ -671,7 +673,7 @@ void MainWindow::formMesh_apply()
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 
 	// 遍历 treeView 并更新 actor
-	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
+ 	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
 	{
 		QStandardItem* item = formMesh->listViewModel->item(i);
 		const auto& actor = meshFaceActors.find(item->text());
@@ -689,6 +691,28 @@ void MainWindow::formMesh_apply()
 
 	render->ResetCamera();
 	renderWindow->Render();
+}
+
+void MainWindow::formMesh_itemEntered(const QString& text)
+{
+	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	const auto& actor = meshFaceActors.find(text);
+	if (actor != meshFaceActors.end())
+	{
+		actor->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
+		renderWindow->Render();
+	}
+}
+
+void MainWindow::formMesh_itemExited(const QString& text)
+{
+	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	const auto& actor = meshFaceActors.find(text);
+	if (actor != meshFaceActors.end())
+	{
+		actor->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+		renderWindow->Render();
+	}
 }
 
 void MainWindow::formRun_run()

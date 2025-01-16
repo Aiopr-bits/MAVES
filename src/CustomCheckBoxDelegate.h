@@ -8,7 +8,7 @@ class CustomCheckBoxDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit CustomCheckBoxDelegate(QObject* parent = nullptr) {};
+    explicit CustomCheckBoxDelegate(QObject* parent = nullptr) {}
 
     bool editorEvent(QEvent* event, QAbstractItemModel* model,
         const QStyleOptionViewItem& option, const QModelIndex& index) override {
@@ -32,8 +32,8 @@ public:
                 return true;
             }
         }
+
         // 对于其他事件，使用默认处理
         return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 };
-

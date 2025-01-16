@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QStandardItem>
 #include <QRandomGenerator>
+#include <qdebug.h>
 
 FormMesh::FormMesh(QWidget* parent)
     : QWidget(parent)
@@ -13,8 +14,12 @@ FormMesh::FormMesh(QWidget* parent)
     ui->setupUi(this);
 
     ui->listView->setModel(listViewModel);
+    ui->listView->setMouseTracking(true);
+    ui->listView->viewport()->installEventFilter(this);
 
-    ui->listView->setItemDelegate(new CustomCheckBoxDelegate(this));
+    CustomCheckBoxDelegate* delegate = new CustomCheckBoxDelegate(this);
+    ui->listView->setItemDelegate(delegate);
+
     connect(ui->pushButton, &QPushButton::clicked, this, &FormMesh::on_pushButton_clicked);
 }
 
@@ -55,4 +60,59 @@ void FormMesh::updateForm()
 void FormMesh::on_pushButton_clicked()
 {
     emit meshVisibilityChanged();
+}
+
+void FormMesh::onItemEntered(const QString& text)
+{
+	emit itemEntered(text);
+}
+
+void FormMesh::onItemExited(const QString& text)
+{
+	emit itemExited(text);
+}
+
+bool FormMesh::eventFilter(QObject* watched, QEvent* event)
+{
+    if (watched == ui->listView->viewport())
+    {
+        if (event->type() == QEvent::MouseMove)
+        {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            QPoint pos = mouseEvent->pos();
+            QModelIndex index = ui->listView->indexAt(pos);
+
+            if (index.isValid())
+            {
+                if (index != lastIndex)
+                {
+                    if (lastIndex.isValid())
+                    {
+                        onItemExited(lastIndex.data(Qt::DisplayRole).toString());
+                    }
+                    onItemEntered(index.data(Qt::DisplayRole).toString());
+                    lastIndex = index;
+                }
+            }
+            else
+            {
+                if (lastIndex.isValid())
+                {
+                    onItemExited(lastIndex.data(Qt::DisplayRole).toString());
+                    lastIndex = QModelIndex();
+                }
+            }
+            return false; // 继续处理其他事件
+        }
+        else if (event->type() == QEvent::Leave)
+        {
+            if (lastIndex.isValid())
+            {
+                onItemExited(lastIndex.data(Qt::DisplayRole).toString());
+                lastIndex = QModelIndex();
+            }
+            return false;
+        }
+    }
+    return QWidget::eventFilter(watched, event);
 }
