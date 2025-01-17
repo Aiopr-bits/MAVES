@@ -288,16 +288,15 @@ void MainWindow::handleAction10Triggered()
 		GlobalData::getInstance().clearAllData();
 		ui->textBrowser->append("Load case：" + caseFilePath);
 
+		//更新后处理数据页面(需补充)
+		updatePostProcessingPage(caseFilePath);
+
 		//更新网格导入页面
-		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		formMeshImport_import(caseFilePath);
 
 		//更新参数配置页面(需补充)
 		formBoundaryConditions->importParameter();
 		formRun->importParameter();
-
-		//更新后处理数据页面(需补充)
-		updatePostProcessingPage(caseFilePath);
 
 		ui->textBrowser->append("Load case successfully!");
 		QMessageBox::information(this, "提示", "案例导入成功");
@@ -551,9 +550,11 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	}
 
 	QString type = fileInfo.suffix().toLower();
-	GlobalData::getInstance().clearAllData();
-	render->RemoveAllViewProps();
-	GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
+	if (GlobalData::getInstance().getCaseData()->casePath != filePath.toStdString()) {
+		render->RemoveAllViewProps();
+		GlobalData::getInstance().clearAllData();
+		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
+	}
 
 	if (type == "foam")
 	{
@@ -1556,6 +1557,10 @@ void MainWindow::parseOutput(const QString& output)
 
 void MainWindow::updatePostProcessingPage(const QString& casePath)
 {
+	if (GlobalData::getInstance().getCaseData()->casePath != casePath.toStdString()) {
+		GlobalData::getInstance().clearAllData();
+		GlobalData::getInstance().getCaseData()->casePath = casePath.toStdString();
+	}
 	QFileInfo fileInfo(casePath);
 	QString caseDirPath = fileInfo.absolutePath();
 	QString caseDirName = fileInfo.dir().dirName();
