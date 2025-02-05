@@ -81,7 +81,7 @@
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -104,6 +104,7 @@
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
     <QtUic Include="FormModelClip.ui" />
+    <QtUic Include="FormPhysicalPropertyParameter.ui" />
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="MainWindow.ui" />
@@ -115,6 +116,7 @@
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
     <ClCompile Include="FormModelClip.cpp" />
+    <ClCompile Include="FormPhysicalPropertyParameter.cpp" />
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="GlobalData.cpp" />
@@ -136,6 +138,7 @@
   <ItemGroup>
     <QtMoc Include="FormBoundaryConditionsTabWidget.h" />
     <QtMoc Include="CustomCheckBoxDelegate.h" />
+    <QtMoc Include="FormPhysicalPropertyParameter.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

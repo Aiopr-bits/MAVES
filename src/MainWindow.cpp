@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formGeometry = new FormGeometry(this);
 	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
+	formPhysicalPropertyParameter = new FormPhysicalPropertyParameter(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formRun = new FormRun(this);
 	formPostprocessing = new FormPostprocessing(this);
@@ -70,6 +71,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formPhysicalPropertyParameter, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
@@ -77,6 +79,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formGeometry->hide();
 	formMesh->hide();
 	formMeshImport->hide();
+	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -193,6 +196,7 @@ void MainWindow::hideAllSubForm()
 	formGeometry->hide();
 	formMesh->hide();
 	formMeshImport->hide();
+	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -325,6 +329,15 @@ void MainWindow::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+	hideAllSubForm();
+	formPhysicalPropertyParameter->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
@@ -662,7 +675,7 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
 		lastClickedButton = ui->pushButton_2;
 
-		//网格导入成功,初始化参数配置页面
+		//网格导入成功,初始化参数配置页面(需补充)
 		formBoundaryConditions->onMeshImported();
 	}
 }
