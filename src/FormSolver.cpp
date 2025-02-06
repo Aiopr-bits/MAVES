@@ -92,6 +92,44 @@ bool FormSolver::importParameter()
 	}
 }
 
+bool FormSolver::exportParameter()
+{
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QString caseDirPath = QFileInfo(casePath).absolutePath();
+	QString controlDictPath = caseDirPath + "/system/controlDict";
+	// 打开 controlDict 文件
+	QFile controlDictFile(controlDictPath);
+	if (!controlDictFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + controlDictPath);
+		return false;
+	}
+	// 读取 controlDict 文件内容
+	QTextStream in(&controlDictFile);
+	QString content = in.readAll();
+	controlDictFile.close();
+	// 替换 controlDict 文件中的 application 字段
+	QString application = ui->label_8->text();
+	if (application != "rhoSimpleFoam" && application != "buoyantBoussinesqPimpleFoam")
+	{
+		QMessageBox::warning(this, "错误", "求解器参数配置错误");
+		return false;
+	}
+
+	QRegExp rx("application\\s+\\S+;");
+	rx.setMinimal(true);
+	content.replace(rx, "application     " + application + ";");
+
+	// 将修改后的内容写入 controlDict 文件
+	if (!controlDictFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + controlDictPath);
+		return false;
+	}
+	QTextStream out(&controlDictFile);
+	out << content;
+	controlDictFile.close();
+	return true;
+}
+
 void FormSolver::handleButtonGroup1()
 {
 	QPushButton* senderButton = qobject_cast<QPushButton*>(sender());

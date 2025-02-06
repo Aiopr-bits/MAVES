@@ -22,7 +22,7 @@ public:
 	~FormSolver();
 
 	bool importParameter();
-
+	bool exportParameter();
 	void handleButtonGroup1();
 	void handleButtonGroup2();
 	void handleCheckBoxGroup(int state);
