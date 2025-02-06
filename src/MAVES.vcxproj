@@ -108,6 +108,7 @@
     <QtUic Include="FormPhysicalPropertyParameter.ui" />
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
+    <QtUic Include="FormSolver.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="FormPhysicalPropertyParameter.cpp" />
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
+    <ClCompile Include="FormSolver.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="WorkSpaceWindow.cpp" />
@@ -140,6 +142,7 @@
     <QtMoc Include="FormBoundaryConditionsTabWidget.h" />
     <QtMoc Include="CustomCheckBoxDelegate.h" />
     <QtMoc Include="FormPhysicalPropertyParameter.h" />
+    <QtMoc Include="FormSolver.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

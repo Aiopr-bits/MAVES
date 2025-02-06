@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formGeometry = new FormGeometry(this);
 	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
+	formSolver = new FormSolver(this);
 	formPhysicalPropertyParameter = new FormPhysicalPropertyParameter(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formRun = new FormRun(this);
@@ -71,6 +72,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formGeometry, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formSolver, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPhysicalPropertyParameter, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
@@ -79,6 +81,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formGeometry->hide();
 	formMesh->hide();
 	formMeshImport->hide();
+	formSolver->hide();
 	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
@@ -196,6 +199,7 @@ void MainWindow::hideAllSubForm()
 	formGeometry->hide();
 	formMesh->hide();
 	formMeshImport->hide();
+	formSolver->hide();
 	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
@@ -329,6 +333,15 @@ void MainWindow::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+	hideAllSubForm();
+	formSolver->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
@@ -739,7 +752,6 @@ void MainWindow::formRun_run()
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	formBoundaryConditions->exportParameter();
 	formRun->exportParameter();
-
 
 	//隐藏开始按钮，显示停止按钮
 	QThread::msleep(500);

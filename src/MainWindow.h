@@ -44,6 +44,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormModelClip.h"
 #include "FormBoundaryConditions.h"
 #include "FormPhysicalPropertyParameter.h"
+#include "FormSolver.h"
 #include <QProcess>
 #include <QLogValueAxis>
 #include <QChart>
@@ -144,6 +145,7 @@ public slots:
 	void on_pushButton_clicked();								    													//几何页面
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
+	void on_pushButton_5_clicked();								    													//求解器页面
 	void on_pushButton_7_clicked();								    													//物理参数页面
 	void on_pushButton_13_clicked();								    												//边界条件页面
 	void on_pushButton_16_clicked();																					//求解计算页面
@@ -213,6 +215,7 @@ public:
 	FormGeometry* formGeometry;
 	FormMesh* formMesh;
 	FormMeshImport* formMeshImport;
+	FormSolver* formSolver;
 	FormPhysicalPropertyParameter* formPhysicalPropertyParameter;
 	FormBoundaryConditions* formBoundaryConditions;
 	FormRun* formRun;
