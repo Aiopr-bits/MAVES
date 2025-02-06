@@ -303,6 +303,7 @@ void MainWindow::handleAction10Triggered()
 		formMeshImport_import(caseFilePath);
 
 		//更新参数配置页面(需补充)
+		formSolver->importParameter();
 		formBoundaryConditions->importParameter();
 		formRun->importParameter();
 

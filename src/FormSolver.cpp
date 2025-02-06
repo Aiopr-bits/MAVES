@@ -28,6 +28,70 @@ FormSolver::~FormSolver()
 	delete ui;
 }
 
+bool FormSolver::importParameter()
+{
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	QString controlDictPath = caseDir + "/system/controlDict";
+
+	// 打开 controlDict 文件
+	QFile controlDictFile(controlDictPath);
+	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		return false;
+	}
+
+	// 读取 controlDict 文件中的 application 字段
+	QString application;
+	QTextStream in(&controlDictFile);
+	while (!in.atEnd()) {
+		QString line = in.readLine();
+		if (line.trimmed().startsWith("application")) {
+			QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+			if (parts.size() >= 2) {
+				application = parts[1].trimmed();
+				if (application.endsWith(";")) {
+					application.chop(1); 
+				}
+				break;
+			}
+		}
+	}
+	controlDictFile.close();
+
+	if (application.isEmpty()) {
+		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		return false;
+	}
+
+	if (application == "rhoSimpleFoam" )
+	{
+		ui->pushButton->setChecked(true);
+		ui->pushButton_2->setChecked(false);
+		ui->pushButton_3->setChecked(false);
+		ui->pushButton_4->setChecked(true);
+		ui->checkBox->setChecked(true);	
+		ui->label_8->setText("rhoSimpleFoam");
+		return true;
+	}
+	else if (application == "buoyantBoussinesqPimpleFoam")
+	{
+		ui->pushButton->setChecked(false);
+		ui->pushButton_2->setChecked(true);
+		ui->pushButton_3->setChecked(true);
+		ui->pushButton_4->setChecked(false);
+		ui->checkBox->setChecked(false);
+		ui->label_8->setText("buoyantBoussinesqPimpleFoam");
+		return true;
+	}
+	else {
+		QMessageBox::warning(this, tr("错误"), tr("暂不支持该类型案例"));
+		return false;
+	}
+}
+
 void FormSolver::handleButtonGroup1()
 {
 	QPushButton* senderButton = qobject_cast<QPushButton*>(sender());

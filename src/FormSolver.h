@@ -4,7 +4,10 @@
 #include "ui_FormSolver.h"
 #include <QStandardItemModel>
 #include <QMessageBox>
-
+#include "GlobalData.h"
+#include <QFileInfo>
+#include <QDir>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormSolverClass; };
@@ -17,6 +20,8 @@ class FormSolver : public QWidget
 public:
 	FormSolver(QWidget *parent = nullptr);
 	~FormSolver();
+
+	bool importParameter();
 
 	void handleButtonGroup1();
 	void handleButtonGroup2();
