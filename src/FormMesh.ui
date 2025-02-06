@@ -22,7 +22,7 @@
       </font>
      </property>
      <property name="text">
-      <string>网格</string>
+      <string>网格边界</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
