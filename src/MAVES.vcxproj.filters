@@ -62,6 +62,9 @@
     <QtUic Include="FormSolver.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="FormTurbulence.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -101,6 +104,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FormSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormTurbulence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -148,6 +154,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormSolver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormTurbulence.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

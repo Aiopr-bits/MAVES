@@ -109,6 +109,7 @@
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="FormSolver.ui" />
+    <QtUic Include="FormTurbulence.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="FormSolver.cpp" />
+    <ClCompile Include="FormTurbulence.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="WorkSpaceWindow.cpp" />
@@ -143,6 +145,7 @@
     <QtMoc Include="CustomCheckBoxDelegate.h" />
     <QtMoc Include="FormPhysicalPropertyParameter.h" />
     <QtMoc Include="FormSolver.h" />
+    <QtMoc Include="FormTurbulence.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

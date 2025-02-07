@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
 	formSolver = new FormSolver(this);
+	formTurbulence = new FormTurbulence(this);
 	formPhysicalPropertyParameter = new FormPhysicalPropertyParameter(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formRun = new FormRun(this);
@@ -73,6 +74,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formSolver, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formTurbulence, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPhysicalPropertyParameter, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
@@ -82,6 +84,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formMesh->hide();
 	formMeshImport->hide();
 	formSolver->hide();
+	formTurbulence->hide();
 	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
@@ -200,6 +203,7 @@ void MainWindow::hideAllSubForm()
 	formMesh->hide();
 	formMeshImport->hide();
 	formSolver->hide();
+	formTurbulence->hide();
 	formPhysicalPropertyParameter->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
@@ -304,7 +308,7 @@ void MainWindow::handleAction10Triggered()
 
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
-		formBoundaryConditions->importParameter();
+		//formBoundaryConditions->importParameter();
 		//formRun->importParameter();
 
 		ui->textBrowser->append("Load case successfully!");
@@ -343,6 +347,15 @@ void MainWindow::on_pushButton_5_clicked()
 {
 	hideAllSubForm();
 	formSolver->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+	hideAllSubForm();
+	formTurbulence->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
