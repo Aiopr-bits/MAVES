@@ -11,10 +11,6 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 	ui->gridLayout->setColumnStretch(0, 1);
 	ui->gridLayout->setColumnStretch(2, 1);
 
-	QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
-	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regExp, this);
-	ui->lineEdit->setValidator(validator);
-
 	connect(ui->comboBox, &QComboBox::currentTextChanged, this, &FormTurbulence::onComboBoxTextChanged);
 
 	onComboBoxTextChanged("RAS");
@@ -23,6 +19,194 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 FormTurbulence::~FormTurbulence()
 {
 	delete ui;
+}
+
+bool FormTurbulence::importParameter()
+{
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	QString turbulencePropertiesPath = caseDir + "/constant/turbulenceProperties";
+
+	// 打开 turbulencePropertiesPath 文件
+	QFile turbulencePropertiesFile(turbulencePropertiesPath);
+	if (!turbulencePropertiesFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		return false;
+	}
+
+	// 读取 turbulenceProperties 文件中的 simulationType 字段
+	QString simulationType;
+	QTextStream in(&turbulencePropertiesFile);
+	while (!in.atEnd()) {
+		QString line = in.readLine();
+		if (line.trimmed().startsWith("simulationType")) {
+			QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+			if (parts.size() >= 2) {
+				simulationType = parts[1].trimmed();
+				if (simulationType.endsWith(";")) {
+					simulationType.chop(1);
+				}
+				break;
+			}
+		}
+	}
+
+
+	if (simulationType.isEmpty()) {
+		QMessageBox::warning(this, tr("错误"), tr("未找到 simulationType 字段"));
+		return false;
+	}
+
+	if (simulationType == "RAS") {
+		//切换到 RAS 模型
+		for (int i = 0; i < ui->comboBox->count(); ++i) {
+			if (ui->comboBox->itemText(i) == "RAS") {
+				ui->comboBox->setCurrentIndex(i);
+				break;
+			}
+		}
+
+		// 读取 turbulenceProperties 文件中的RASModel字段
+		QString RASModel;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("RASModel")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					RASModel = parts[1].trimmed();
+					if (RASModel.endsWith(";")) {
+						RASModel.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < ui->comboBox_4->count(); ++i) {
+			if (ui->comboBox_4->itemText(i) == RASModel) {
+				ui->comboBox_4->setCurrentIndex(i);
+				break;
+			}
+		}
+
+		//读取turbulenceProperties 文件中的turbulence字段
+		QString turbulence;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("turbulence")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					turbulence = parts[1].trimmed();
+					if (turbulence.endsWith(";")) {
+						turbulence.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		ui->checkBox_3->setChecked(turbulence == "on" ? true : false);
+
+		//读取turbulenceProperties 文件中的printCoeffs字段
+		QString printCoeffs;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("printCoeffs")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					printCoeffs = parts[1].trimmed();
+					if (printCoeffs.endsWith(";")) {
+						printCoeffs.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		ui->checkBox_4->setChecked(printCoeffs == "on" ? true : false);		
+		return true;
+	}
+	else if(simulationType == "LES"){
+		for (int i = 0; i < ui->comboBox->count(); ++i) {
+			if (ui->comboBox->itemText(i) == "LES") {
+				ui->comboBox->setCurrentIndex(i);
+				break;
+			}
+		}
+
+		// 读取 turbulenceProperties 文件中的LESModel字段
+		QString LESModel;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("LESModel")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					LESModel = parts[1].trimmed();
+					if (LESModel.endsWith(";")) {
+						LESModel.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < ui->comboBox_4->count(); ++i) {
+			if (ui->comboBox_4->itemText(i) == LESModel) {
+				ui->comboBox_4->setCurrentIndex(i);
+				break;
+			}
+		}
+
+		//读取turbulenceProperties 文件中的turbulence字段
+		QString turbulence;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("turbulence")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					turbulence = parts[1].trimmed();
+					if (turbulence.endsWith(";")) {
+						turbulence.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		ui->checkBox_5->setChecked(turbulence == "on" ? true : false);
+
+		//读取turbulenceProperties 文件中的printCoeffs字段
+		QString printCoeffs;
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			if (line.trimmed().startsWith("printCoeffs")) {
+				QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+				if (parts.size() >= 2) {
+					printCoeffs = parts[1].trimmed();
+					if (printCoeffs.endsWith(";")) {
+						printCoeffs.chop(1);
+					}
+					break;
+				}
+			}
+		}
+		ui->checkBox_6->setChecked(printCoeffs == "on" ? true : false);
+		return true;
+	}
+	else if (simulationType == "laminar") {
+		for (int i = 0; i < ui->comboBox->count(); ++i) {
+			if (ui->comboBox->itemText(i) == "laminar") {
+				ui->comboBox->setCurrentIndex(i);
+				break;
+			}
+		}
+		return true;
+	}
+
+	turbulencePropertiesFile.close();
+	return false;
+}
+
+bool FormTurbulence::exportParameter()
+{
+	return true;
 }
 
 void FormTurbulence::onComboBoxTextChanged(const QString& text)
