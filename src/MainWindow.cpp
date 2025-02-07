@@ -305,7 +305,7 @@ void MainWindow::handleAction10Triggered()
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
 		formBoundaryConditions->importParameter();
-		formRun->importParameter();
+		//formRun->importParameter();
 
 		ui->textBrowser->append("Load case successfully!");
 		QMessageBox::information(this, "提示", "案例导入成功");
@@ -752,8 +752,8 @@ void MainWindow::formRun_run()
 	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	formSolver->exportParameter();
-	formBoundaryConditions->exportParameter();
-	formRun->exportParameter();
+	//formBoundaryConditions->exportParameter();
+	//formRun->exportParameter();
 
 	//隐藏开始按钮，显示停止按钮
 	QThread::msleep(500);

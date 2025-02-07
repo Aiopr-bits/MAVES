@@ -78,22 +78,27 @@ void FormBoundaryConditions::initTabWidget()
 
 void FormBoundaryConditions::initBoundaryConditions()
 {
-	vector<QString> physicalFields = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
 	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
-	vector<QString> boundaryField;
+
+	std::vector<QString> physicalFields;
+	if (solverName == "rhoSimpleFoam") { // 外流场
+		physicalFields = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+	}
+	else if (solverName == "buoyantBoussinesqPimpleFoam") { // 内流场
+		physicalFields = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
+	}
+
+	std::vector<QString> boundaryField;
 	for (const auto& pair : meshFaceActors) {
 		boundaryField.push_back(pair.first);
 	}
 
 	boundaryConditions.clear();
-	for (int i = 0; i < physicalFields.size(); ++i) {
-		QString physicalField = physicalFields[i];
+	for (const auto& physicalField : physicalFields) {
 		QMap<QString, QVector<QString>> boundaryCondition;
-		for (int j = 0; j < boundaryField.size(); ++j) {
-			QVector<QString> boundaryConditionValue;
-			boundaryConditionValue.push_back("");
-			boundaryConditionValue.push_back("");
-			boundaryCondition[boundaryField[j]] = boundaryConditionValue;
+		for (const auto& field : boundaryField) {
+			boundaryCondition[field] = QVector<QString>(2, "");
 		}
 		boundaryConditions[physicalField] = boundaryCondition;
 	}
@@ -204,7 +209,15 @@ void FormBoundaryConditions::importParameter()
 	// 获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QString caseDirPath = QFileInfo(casePath).absolutePath();
-	QStringList fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+
+	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
+	std::vector<QString> fileNames;
+	if (solverName == "rhoSimpleFoam") { // 外流场
+		fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
+	}
+	else if (solverName == "buoyantBoussinesqPimpleFoam") { // 内流场
+		fileNames = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
+	}
 
 	// 初始化边界条件
 	initBoundaryConditions();

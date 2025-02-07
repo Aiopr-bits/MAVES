@@ -9,27 +9,25 @@ GlobalData& GlobalData::getInstance()
 
 // 私有构造函数
 GlobalData::GlobalData() {
-    m_caseData = new caseData();
+    m_caseData = new CaseData();
 	clearAllData();
-	//m_caseData->casePath = "..\\Case\\j20-s\\case.foam";
-	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_2\\case.foam";	
-	//m_caseData->casePath = "C:\\Data\\kaisihaopeng\\OpenFOAM-2406\\OF2406\\j20_rhosimple_3\\case.foam";	
 }
 
 // 设置全局数据
-void GlobalData::setCaseData(const caseData& data)
+void GlobalData::setCaseData(const CaseData& data)
 {
 
 }
 
 // 获取全局数据
-caseData* GlobalData::getCaseData() const
+CaseData* GlobalData::getCaseData() const
 {
     return m_caseData;
 }
 
 void GlobalData::clearAllData()
 {
+	m_caseData->solverName = "";
 	m_caseData->geometryPath = "";
 	m_caseData->meshPath = "";
 	m_caseData->casePath = "";

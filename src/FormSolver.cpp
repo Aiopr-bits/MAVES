@@ -74,6 +74,7 @@ bool FormSolver::importParameter()
 		ui->pushButton_4->setChecked(true);
 		ui->checkBox->setChecked(true);	
 		ui->label_8->setText("rhoSimpleFoam");
+		GlobalData::getInstance().getCaseData()->solverName = "rhoSimpleFoam";
 		return true;
 	}
 	else if (application == "buoyantBoussinesqPimpleFoam")
@@ -84,9 +85,17 @@ bool FormSolver::importParameter()
 		ui->pushButton_4->setChecked(false);
 		ui->checkBox->setChecked(false);
 		ui->label_8->setText("buoyantBoussinesqPimpleFoam");
+		GlobalData::getInstance().getCaseData()->solverName = "buoyantBoussinesqPimpleFoam";
 		return true;
 	}
 	else {
+		ui->pushButton->setChecked(false);
+		ui->pushButton_2->setChecked(false);
+		ui->pushButton_3->setChecked(false);
+		ui->pushButton_4->setChecked(false);
+		ui->checkBox->setChecked(false);
+		ui->label_8->setText("");
+		GlobalData::getInstance().getCaseData()->solverName = "";
 		QMessageBox::warning(this, tr("错误"), tr("暂不支持该类型案例"));
 		return false;
 	}
@@ -241,5 +250,6 @@ void FormSolver::on_pushButton_5_clicked()
 	if (!selectedIndexes.isEmpty()) {
 		QString selectedText = selectedIndexes.first().data().toString();
 		ui->label_8->setText(selectedText);
+		GlobalData::getInstance().getCaseData()->solverName = "selectedText";
 	}
 }
