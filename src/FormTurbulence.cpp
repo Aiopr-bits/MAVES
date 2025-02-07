@@ -206,6 +206,64 @@ bool FormTurbulence::importParameter()
 
 bool FormTurbulence::exportParameter()
 {
+	// 获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	QString turbulencePropertiesPath = caseDir + "/constant/turbulenceProperties";
+
+	// 打开 turbulencePropertiesPath 文件
+	QFile turbulencePropertiesFile(turbulencePropertiesPath);
+	if (!turbulencePropertiesFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		return false;
+	}
+
+	// 读取文件内容
+	QTextStream in(&turbulencePropertiesFile);
+	QString content = in.readAll();
+	turbulencePropertiesFile.close();
+
+	// 替换 simulationType 字段
+	QString simulationType = ui->comboBox->currentText();
+	content.replace(QRegExp("simulationType\\s+\\w+;"), "simulationType " + simulationType + ";");
+
+	if (simulationType == "RAS") {
+		// 替换 RASModel 字段
+		QString RASModel = ui->comboBox_4->currentText();
+		content.replace(QRegExp("RASModel\\s+\\w+;"), "RASModel " + RASModel + ";");
+
+		// 替换 turbulence 字段
+		QString turbulence = ui->checkBox_3->isChecked() ? "on" : "off";
+		content.replace(QRegExp("turbulence\\s+\\w+;"), "turbulence " + turbulence + ";");
+
+		// 替换 printCoeffs 字段
+		QString printCoeffs = ui->checkBox_4->isChecked() ? "on" : "off";
+		content.replace(QRegExp("printCoeffs\\s+\\w+;"), "printCoeffs " + printCoeffs + ";");
+	}
+	else if (simulationType == "LES") {
+		// 替换 LESModel 字段
+		QString LESModel = ui->comboBox_4->currentText();
+		content.replace(QRegExp("LESModel\\s+\\w+;"), "LESModel " + LESModel + ";");
+
+		// 替换 turbulence 字段
+		QString turbulence = ui->checkBox_5->isChecked() ? "on" : "off";
+		content.replace(QRegExp("turbulence\\s+\\w+;"), "turbulence " + turbulence + ";");
+
+		// 替换 printCoeffs 字段
+		QString printCoeffs = ui->checkBox_6->isChecked() ? "on" : "off";
+		content.replace(QRegExp("printCoeffs\\s+\\w+;"), "printCoeffs " + printCoeffs + ";");
+	}
+
+	// 将修改后的内容写回文件
+	if (!turbulencePropertiesFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		return false;
+	}
+	QTextStream out(&turbulencePropertiesFile);
+	out << content;
+	turbulencePropertiesFile.close();
+
 	return true;
 }
 
