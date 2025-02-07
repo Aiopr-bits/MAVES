@@ -395,23 +395,4 @@ void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
 
 	//ui->verticalSpacer_3вўВи
 	ui->verticalSpacer_3->changeSize(20, 0, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-	ui->tabWidget->setStyleSheet(
-		"QTabWidget::pane {"
-		"    border-top: 1px solid #dcdcdc;"
-		"    position: relative;"
-		"    top: -1px;"
-		"}"
-		"QTabBar::tab {"
-		"    font-family: 'Microsoft YaHei';"
-		"    font-size: 12px;"
-		"    min-height: 20px;"
-		"    min-width: 80px;"
-		"    border: 1px solid #dcdcdc;"
-		"    border-bottom: none;"
-		"}"
-		"QTabBar::tab:selected {"
-		"    border-bottom: 1px solid #ffffff;"
-		"}"
-	);
 }

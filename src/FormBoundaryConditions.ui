@@ -147,7 +147,23 @@ QListView::item:selected {
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QTabWidget::pane {
+    border-top: 1px solid #dcdcdc;
+    position: relative;
+    top: -1px;
+}
+QTabBar::tab {
+    font-family: 'Microsoft YaHei';
+    font-size: 12px;
+    min-height: 20px;
+    min-width: 80px;
+    border: 1px solid #dcdcdc;
+    border-bottom: none;
+}
+QTabBar::tab:selected {
+    border-bottom: 1px solid #ffffff;
+}
+</string>
          </property>
          <property name="currentIndex">
           <number>-1</number>

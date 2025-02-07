@@ -308,7 +308,7 @@ void MainWindow::handleAction10Triggered()
 
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
-		//formBoundaryConditions->importParameter();
+		formBoundaryConditions->importParameter();
 		//formRun->importParameter();
 
 		ui->textBrowser->append("Load case successfully!");

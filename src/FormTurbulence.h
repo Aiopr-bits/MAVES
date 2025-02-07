@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormTurbulence.h"
 
@@ -14,6 +14,8 @@ class FormTurbulence : public QWidget
 public:
 	FormTurbulence(QWidget *parent = nullptr);
 	~FormTurbulence();
+
+	void onComboBoxTextChanged(const QString& text);
 
 private:
 	Ui::FormTurbulenceClass *ui;
