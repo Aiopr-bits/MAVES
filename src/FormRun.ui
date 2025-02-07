@@ -135,7 +135,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>开始时间</string>
+          <string>开始时间(s)</string>
          </property>
         </widget>
        </item>
@@ -183,33 +183,6 @@ QLineEdit:hover {
          </property>
          <property name="text">
           <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_7">
-         <property name="minimumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>15</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>s</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -262,7 +235,7 @@ QLineEdit:hover {
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>结束时间</string>
+          <string>结束时间(s)</string>
          </property>
         </widget>
        </item>
@@ -310,30 +283,6 @@ QLineEdit:hover {
          </property>
          <property name="text">
           <string>100</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="minimumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>15</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>s</string>
          </property>
         </widget>
        </item>
@@ -386,7 +335,7 @@ QLineEdit:hover {
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>时间步长</string>
+          <string>时间步长(s)</string>
          </property>
         </widget>
        </item>
@@ -434,30 +383,6 @@ QLineEdit:hover {
          </property>
          <property name="text">
           <string>1</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_10">
-         <property name="minimumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>15</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>s</string>
          </property>
         </widget>
        </item>
@@ -510,7 +435,7 @@ QLineEdit:hover {
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>写入间隔</string>
+          <string>写入间隔   </string>
          </property>
         </widget>
        </item>
@@ -558,30 +483,6 @@ QLineEdit:hover {
          </property>
          <property name="text">
           <string>5</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="minimumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>10</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>15</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
          </property>
         </widget>
        </item>
