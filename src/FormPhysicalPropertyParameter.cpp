@@ -171,6 +171,91 @@ bool FormPhysicalPropertyParameter::importParameter()
 
 bool FormPhysicalPropertyParameter::exportParameter()
 {
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
+
+	if (solverName == "rhoSimpleFoam") {
+		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
+		QFile file(thermophysicalPropertiesPath);
+		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			return false;
+		}
+
+		QTextStream in(&file);
+		QString content = in.readAll();
+		file.close();
+
+		QMap<QString, QString> fieldToValue = {
+			{ "type", ui->comboBox->currentText() },
+			{ "mixture", ui->comboBox_2->currentText() },
+			{ "transport", ui->comboBox_3->currentText() },
+			{ "thermo", ui->comboBox_4->currentText() },
+			{ "equationOfState", ui->comboBox_5->currentText() },
+			{ "specie", ui->comboBox_6->currentText() },
+			{ "energy", ui->comboBox_7->currentText() },
+			{ "molWeight", ui->lineEdit->text() },
+			{ "Cp", ui->lineEdit_2->text() },
+			{ "Hf", ui->lineEdit_3->text() },
+			{ "mu", ui->lineEdit_4->text() },
+			{ "Pr", ui->lineEdit_5->text() }
+		};
+
+		for (auto it = fieldToValue.begin(); it != fieldToValue.end(); ++it) {
+			QRegExp rx(it.key() + "\\s+\\S+;");
+			rx.setMinimal(true);
+			content.replace(rx, it.key() + " " + it.value() + ";");
+		}
+
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			return false;
+		}
+		QTextStream out(&file);
+		out << content;
+		file.close();
+		return true;
+	}
+	else if (solverName == "buoyantBoussinesqPimpleFoam") {
+		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
+		QFile file(transportPropertiesPath);
+		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			return false;
+		}
+
+		QTextStream in(&file);
+		QString content = in.readAll();
+		file.close();
+
+		QMap<QString, QString> fieldToValue = {
+			{ "transportModel", ui->comboBox_8->currentText() },
+			{ "nu", ui->lineEdit_6->text() },
+			{ "beta", ui->lineEdit_7->text() },
+			{ "TRef", ui->lineEdit_8->text() },
+			{ "Pr", ui->lineEdit_9->text() },
+			{ "Prt", ui->lineEdit_10->text() }
+		};
+
+		for (auto it = fieldToValue.begin(); it != fieldToValue.end(); ++it) {
+			QRegExp rx(it.key() + "\\s+\\S+;");
+			rx.setMinimal(true);
+			content.replace(rx, it.key() + " " + it.value() + ";");
+		}
+
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			return false;
+		}
+		QTextStream out(&file);
+		out << content;
+		file.close();
+		return true;
+	}
+
 	return false;
 }
 

@@ -769,6 +769,7 @@ void MainWindow::formRun_run()
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	formSolver->exportParameter();
 	formTurbulence->exportParameter();
+	formPhysicalPropertyParameter->exportParameter();
 	//formBoundaryConditions->exportParameter();
 	//formRun->exportParameter();
 
