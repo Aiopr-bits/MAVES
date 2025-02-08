@@ -155,6 +155,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);															//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);															//网格页面Item退出
+	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);		//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//更新渲染窗口

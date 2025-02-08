@@ -6,26 +6,1810 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
-    <height>623</height>
+    <width>378</width>
+    <height>1038</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FormPhysicalPropertyParameter</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>140</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>物性参数</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget" native="true">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel {
+    background-color: rgb(230, 230, 230); /* 背景色 */
+    padding-left: 5px; /* 左侧内边距 */
+}
+
+</string>
+              </property>
+              <property name="text">
+               <string>热物理性质</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>15</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>类型</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="comboBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>hePsiThermo</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>hThermo</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>psiThermo</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>混合物</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="comboBox_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>pureMixture</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>multiComponentMixture</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>传输</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="comboBox_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>const</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>sutherland</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>polynomial</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>热过程</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="comboBox_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>hConst</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>hPolynomial</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>状态方程</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QComboBox" name="comboBox_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>perfectGas</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>incompressible</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_8">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>组分</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QComboBox" name="comboBox_6">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>specie</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>speciesTransport </string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>能量</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QComboBox" name="comboBox_7">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>sensibleInternalEnergy</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>totalEnthalpy</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel {
+    background-color: rgb(230, 230, 230); /* 背景色 */
+    padding-left: 5px; /* 左侧内边距 */
+}
+
+</string>
+              </property>
+              <property name="text">
+               <string>混合物（空气，室温293K）</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>15</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_11">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>分子量（kg/kmol）</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+                </property>
+                <property name="text">
+                 <string>28.9</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_12">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>定压比热（J/(kg·K)）</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEdit_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+                </property>
+                <property name="text">
+                 <string>1005</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_13">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>生成焓（J/kg）</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_14">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>动力黏度（Pa·s）</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineEdit_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+                </property>
+                <property name="text">
+                 <string>1.82e-05</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_15">
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>140</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>普朗特数</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="lineEdit_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>170</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+                </property>
+                <property name="text">
+                 <string>0.85</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget_2" native="true">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+    background-color: rgb(230, 230, 230); /* 背景色 */
+    padding-left: 5px; /* 左侧内边距 */
+}
+
+</string>
+            </property>
+            <property name="text">
+             <string>传输性质</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>10</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>15</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_22">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>传输模型</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="comboBox_8">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>27</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 15px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Newtonian</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Sutherland</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>polynomial</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>nonNewtonian</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>运动黏度(m²/s)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_6">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+              </property>
+              <property name="text">
+               <string>1e-03</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>热膨胀系数 (1/K)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_7">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+              </property>
+              <property name="text">
+               <string>1e-03</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_19">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>参考温度 (K)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="lineEdit_8">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+              </property>
+              <property name="text">
+               <string>300</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_20">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>层流普朗特数</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="lineEdit_9">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+              </property>
+              <property name="text">
+               <string> 1.0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_21">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>湍流普朗特数</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLineEdit" name="lineEdit_10">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    background-color: rgb(255, 255, 255); /* 背景色 */
+    border: 1px solid rgb(122, 122, 122); /* 边框色 */
+    border-radius: 2px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(23, 23, 23); 
+}</string>
+              </property>
+              <property name="text">
+               <string>1.0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

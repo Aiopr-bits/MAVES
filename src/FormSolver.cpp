@@ -75,6 +75,7 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(true);	
 		ui->label_8->setText("rhoSimpleFoam");
 		GlobalData::getInstance().getCaseData()->solverName = "rhoSimpleFoam";
+		emit labelText_8_Changed("rhoSimpleFoam");
 		return true;
 	}
 	else if (application == "buoyantBoussinesqPimpleFoam")
@@ -86,6 +87,7 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(false);
 		ui->label_8->setText("buoyantBoussinesqPimpleFoam");
 		GlobalData::getInstance().getCaseData()->solverName = "buoyantBoussinesqPimpleFoam";
+		emit labelText_8_Changed("rhoSimpleFoam");
 		return true;
 	}
 	else {
@@ -251,5 +253,6 @@ void FormSolver::on_pushButton_5_clicked()
 		QString selectedText = selectedIndexes.first().data().toString();
 		ui->label_8->setText(selectedText);
 		GlobalData::getInstance().getCaseData()->solverName = "selectedText";
+		emit labelText_8_Changed(selectedText);
 	}
 }

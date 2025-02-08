@@ -2,6 +2,7 @@
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormPhysicalPropertyParameter.h"
+#include "FormSolver.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPhysicalPropertyParameterClass; };
@@ -14,6 +15,9 @@ class FormPhysicalPropertyParameter : public QWidget
 public:
 	FormPhysicalPropertyParameter(QWidget *parent = nullptr);
 	~FormPhysicalPropertyParameter();
+
+public slots:
+	void solverChanged(const QString& newText);
 
 private:
 	Ui::FormPhysicalPropertyParameterClass *ui;

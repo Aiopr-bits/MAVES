@@ -839,7 +839,7 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
               </size>
              </property>
              <property name="text">
-              <string>雷诺平均湍流模型</string>
+              <string>大涡模拟模型</string>
              </property>
             </widget>
            </item>
