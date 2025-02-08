@@ -87,7 +87,7 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(false);
 		ui->label_8->setText("buoyantBoussinesqPimpleFoam");
 		GlobalData::getInstance().getCaseData()->solverName = "buoyantBoussinesqPimpleFoam";
-		emit labelText_8_Changed("rhoSimpleFoam");
+		emit labelText_8_Changed("buoyantBoussinesqPimpleFoam");
 		return true;
 	}
 	else {

@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_FormPhysicalPropertyParameter.h"
 #include "FormSolver.h"
+#include "GlobalData.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPhysicalPropertyParameterClass; };
@@ -15,6 +16,9 @@ class FormPhysicalPropertyParameter : public QWidget
 public:
 	FormPhysicalPropertyParameter(QWidget *parent = nullptr);
 	~FormPhysicalPropertyParameter();
+	
+	bool importParameter();
+	bool exportParameter();
 
 public slots:
 	void solverChanged(const QString& newText);

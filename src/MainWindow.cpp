@@ -310,6 +310,7 @@ void MainWindow::handleAction10Triggered()
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
 		formTurbulence->importParameter();
+		formPhysicalPropertyParameter->importParameter();
 		//formBoundaryConditions->importParameter();
 		//formRun->importParameter();
 

@@ -29,6 +29,151 @@ FormPhysicalPropertyParameter::~FormPhysicalPropertyParameter()
 	delete ui;
 }
 
+bool FormPhysicalPropertyParameter::importParameter()
+{
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
+
+	if (solverName == "rhoSimpleFoam") {
+		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
+		QFile file(thermophysicalPropertiesPath);
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			return false;
+		}
+
+		QTextStream in(&file);
+		QStringList fields = { "type", "mixture", "transport", "thermo", "equationOfState", "specie", "energy" };
+		QMap<QString, QComboBox*> fieldToComboBox = {
+			{ "type", ui->comboBox },
+			{ "mixture", ui->comboBox_2 },
+			{ "transport", ui->comboBox_3 },
+			{ "thermo", ui->comboBox_4 },
+			{ "equationOfState", ui->comboBox_5 },
+			{ "specie", ui->comboBox_6 },
+			{ "energy", ui->comboBox_7 }
+		};
+
+		QMap<QString, QLineEdit*> fieldToLineEdit = {
+			{ "molWeight", ui->lineEdit },
+			{ "Cp", ui->lineEdit_2 },
+			{ "Hf", ui->lineEdit_3 },
+			{ "mu", ui->lineEdit_4 },
+			{ "Pr", ui->lineEdit_5 }
+		};
+
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			for (const QString& field : fields) {
+				if (line.trimmed().startsWith(field)) {
+					QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+					if (parts.size() >= 2) {
+						QString value = parts[1].trimmed();
+						if (value.endsWith(";")) {
+							value.chop(1);
+						}
+						QComboBox* comboBox = fieldToComboBox[field];
+						for (int i = 0; i < comboBox->count(); ++i) {
+							if (comboBox->itemText(i) == value) {
+								comboBox->setCurrentIndex(i);
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			for (const QString& field : fieldToLineEdit.keys()) {
+				if (line.trimmed().startsWith(field)) {
+					QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+					if (parts.size() >= 2) {
+						QString value = parts[1].trimmed();
+						if (value.endsWith(";")) {
+							value.chop(1);
+						}
+						QLineEdit* lineEdit = fieldToLineEdit[field];
+						lineEdit->setText(value);
+					}
+				}
+			}
+		}
+
+		file.close();
+		return true;
+	}
+	else if (solverName == "buoyantBoussinesqPimpleFoam") {
+		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
+		QFile file(transportPropertiesPath);
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			return false;
+		}
+
+		QTextStream in(&file);
+		QStringList fields = { "transportModel" };
+		QMap<QString, QComboBox*> fieldToComboBox = {
+			{ "transportModel", ui->comboBox_8 }
+		};
+
+		QMap<QString, QLineEdit*> fieldToLineEdit = {
+			{ "nu", ui->lineEdit_6 },
+			{ "beta", ui->lineEdit_7 },
+			{ "TRef", ui->lineEdit_8 },
+			{ "Pr", ui->lineEdit_9 },
+			{ "Prt", ui->lineEdit_10 }
+		};
+
+		while (!in.atEnd()) {
+			QString line = in.readLine();
+			for (const QString& field : fields) {
+				if (line.trimmed().startsWith(field)) {
+					QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+					if (parts.size() >= 2) {
+						QString value = parts[1].trimmed();
+						if (value.endsWith(";")) {
+							value.chop(1);
+						}
+						QComboBox* comboBox = fieldToComboBox[field];
+						for (int i = 0; i < comboBox->count(); ++i) {
+							if (comboBox->itemText(i) == value) {
+								comboBox->setCurrentIndex(i);
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			for (const QString& field : fieldToLineEdit.keys()) {
+				if (line.trimmed().startsWith(field)) {
+					QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+					if (parts.size() >= 2) {
+						QString value = parts[1].trimmed();
+						if (value.endsWith(";")) {
+							value.chop(1);
+						}
+						QLineEdit* lineEdit = fieldToLineEdit[field];
+						lineEdit->setText(value);
+					}
+				}
+			}
+		}
+
+		file.close();
+		return true;
+	}
+
+	return false;
+}
+
+bool FormPhysicalPropertyParameter::exportParameter()
+{
+	return false;
+}
+
 void FormPhysicalPropertyParameter::solverChanged(const QString& newText)
 {
 	if (newText == "rhoSimpleFoam") {
