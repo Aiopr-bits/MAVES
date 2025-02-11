@@ -84,8 +84,8 @@ bool FormTurbulence::importParameter()
 			}
 		}
 		for (int i = 0; i < ui->comboBox_4->count(); ++i) {
-			if (ui->comboBox_4->itemText(i) == RASModel) {
-				ui->comboBox_4->setCurrentIndex(i);
+			if (ui->comboBox_3->itemText(i) == RASModel) {
+				ui->comboBox_3->setCurrentIndex(i);
 				break;
 			}
 		}
@@ -230,7 +230,7 @@ bool FormTurbulence::exportParameter()
 
 	if (simulationType == "RAS") {
 		// Ìæ»» RASModel ×Ö¶Î
-		QString RASModel = ui->comboBox_4->currentText();
+		QString RASModel = ui->comboBox_3->currentText();
 		content.replace(QRegExp("RASModel\\s+\\w+;"), "RASModel " + RASModel + ";");
 
 		// Ìæ»» turbulence ×Ö¶Î

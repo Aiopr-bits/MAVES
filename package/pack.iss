@@ -3,7 +3,7 @@
 ; 有关创建 INNO SETUP 脚本文件的详细信息，请参阅帮助文件！!
 
 #define MyAppName "MAVES"
-#define MyAppVersion "20250205"
+#define MyAppVersion "20250210"
 #define MyAppExeName "MAVES.exe"
 
 [Setup]
@@ -23,7 +23,7 @@ ArchitecturesAllowed=x64compatible
 ; the 64-bit view of the registry.
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
-InfoAfterFile=..\README.txt
+;InfoAfterFile=..\README.txt
 ; 取消下列注释行，在非管理员安装模式下运行(仅为当前用户安装.)
 ;PrivilegesRequired=lowest
 OutputDir=..\package
