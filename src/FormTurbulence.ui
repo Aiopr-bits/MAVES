@@ -233,7 +233,7 @@ QTabBar::tab:selected {
 </string>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -249,13 +249,13 @@ QTabBar::tab:selected {
             <widget class="QLabel" name="label_6">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>130</width>
                <height>30</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>100</width>
+               <width>130</width>
                <height>30</height>
               </size>
              </property>
@@ -268,13 +268,13 @@ QTabBar::tab:selected {
             <widget class="QComboBox" name="comboBox_3">
              <property name="minimumSize">
               <size>
-               <width>220</width>
+               <width>190</width>
                <height>27</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>220</width>
+               <width>190</width>
                <height>30</height>
               </size>
              </property>
@@ -550,13 +550,13 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
             <widget class="QComboBox" name="comboBox_4">
              <property name="minimumSize">
               <size>
-               <width>220</width>
+               <width>190</width>
                <height>27</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>220</width>
+               <width>190</width>
                <height>30</height>
               </size>
              </property>
@@ -828,13 +828,13 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
             <widget class="QLabel" name="label_9">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>130</width>
                <height>30</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>100</width>
+               <width>130</width>
                <height>30</height>
               </size>
              </property>

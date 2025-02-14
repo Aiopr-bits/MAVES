@@ -3,7 +3,7 @@
 ; 有关创建 INNO SETUP 脚本文件的详细信息，请参阅帮助文件！!
 
 #define MyAppName "MAVES"
-#define MyAppVersion "20250210"
+#define MyAppVersion "20250214"
 #define MyAppExeName "MAVES.exe"
 
 [Setup]
