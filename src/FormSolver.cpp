@@ -8,7 +8,7 @@ FormSolver::FormSolver(QWidget* parent)
 	ui->setupUi(this);
 
 	QStringList items;
-	items << "buoyantBoussinesqPimpleFoam" << "rhoSimpleFoam";
+	items << "transientIncompressibleSolver" << "steadyCompressibleSolver";
 	for (const QString& itemText : items) {
 		QStandardItem* item = new QStandardItem(itemText);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable); 
@@ -65,29 +65,30 @@ bool FormSolver::importParameter()
 		QMessageBox::warning(this, tr("´íÎó"), tr("Î´ÕÒµ½ application ×Ö¶Î"));
 		return false;
 	}
+	application == "rhoSimpleFoam" ? application = "steadyCompressibleSolver" : (application == "buoyantBoussinesqPimpleFoam" ? application = "transientIncompressibleSolver" : application);
 
-	if (application == "rhoSimpleFoam" )
+	if (application == "steadyCompressibleSolver" )
 	{
 		ui->pushButton->setChecked(true);
 		ui->pushButton_2->setChecked(false);
 		ui->pushButton_3->setChecked(false);
 		ui->pushButton_4->setChecked(true);
 		ui->checkBox->setChecked(true);	
-		ui->label_8->setText("rhoSimpleFoam");
-		GlobalData::getInstance().getCaseData()->solverName = "rhoSimpleFoam";
-		emit labelText_8_Changed("rhoSimpleFoam");
+		ui->label_8->setText("steadyCompressibleSolver");
+		GlobalData::getInstance().getCaseData()->solverName = "steadyCompressibleSolver";
+		emit labelText_8_Changed("steadyCompressibleSolver");
 		return true;
 	}
-	else if (application == "buoyantBoussinesqPimpleFoam")
+	else if (application == "transientIncompressibleSolver")
 	{
 		ui->pushButton->setChecked(false);
 		ui->pushButton_2->setChecked(true);
 		ui->pushButton_3->setChecked(true);
 		ui->pushButton_4->setChecked(false);
 		ui->checkBox->setChecked(false);
-		ui->label_8->setText("buoyantBoussinesqPimpleFoam");
-		GlobalData::getInstance().getCaseData()->solverName = "buoyantBoussinesqPimpleFoam";
-		emit labelText_8_Changed("buoyantBoussinesqPimpleFoam");
+		ui->label_8->setText("transientIncompressibleSolver");
+		GlobalData::getInstance().getCaseData()->solverName = "transientIncompressibleSolver";
+		emit labelText_8_Changed("transientIncompressibleSolver");
 		return true;
 	}
 	else {
@@ -120,11 +121,12 @@ bool FormSolver::exportParameter()
 	controlDictFile.close();
 	// Ìæ»» controlDict ÎÄ¼þÖÐµÄ application ×Ö¶Î
 	QString application = ui->label_8->text();
-	if (application != "rhoSimpleFoam" && application != "buoyantBoussinesqPimpleFoam")
+	if (application != "steadyCompressibleSolver" && application != "transientIncompressibleSolver")
 	{
 		QMessageBox::warning(this, "´íÎó", "Çó½âÆ÷²ÎÊýÅäÖÃ´íÎó");
 		return false;
 	}
+	application == "steadyCompressibleSolver" ? application = "rhoSimpleFoam" : (application == "transientIncompressibleSolver" ? application = "buoyantBoussinesqPimpleFoam" : application);
 
 	QRegExp rx("application\\s+\\S+;");
 	rx.setMinimal(true);
@@ -219,7 +221,7 @@ void FormSolver::updateListView()
 	if (ui->pushButton->isChecked() && ui->pushButton_4->isChecked() && ui->checkBox->isChecked()) {
 		for (int i = 0; i < model->rowCount(); ++i) {
 			QStandardItem* item = model->item(i);
-			if (item->text() == "rhoSimpleFoam") {
+			if (item->text() == "steadyCompressibleSolver") {
 				item->setEnabled(true);
 			}
 			else {
@@ -230,7 +232,7 @@ void FormSolver::updateListView()
 	else if (ui->pushButton_2->isChecked() && ui->pushButton_3->isChecked() && !ui->checkBox->isChecked()) {
 		for (int i = 0; i < model->rowCount(); ++i) {
 			QStandardItem* item = model->item(i);
-			if (item->text() == "buoyantBoussinesqPimpleFoam") {
+			if (item->text() == "transientIncompressibleSolver") {
 				item->setEnabled(true);
 			}
 			else {
@@ -252,7 +254,7 @@ void FormSolver::on_pushButton_5_clicked()
 	if (!selectedIndexes.isEmpty()) {
 		QString selectedText = selectedIndexes.first().data().toString();
 		ui->label_8->setText(selectedText);
-		GlobalData::getInstance().getCaseData()->solverName = "selectedText";
+		GlobalData::getInstance().getCaseData()->solverName = selectedText.toStdString();
 		emit labelText_8_Changed(selectedText);
 	}
 }

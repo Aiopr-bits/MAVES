@@ -37,7 +37,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 	QString caseDir = fileInfo.path();
 	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
 
-	if (solverName == "rhoSimpleFoam") {
+	if (solverName == "steadyCompressibleSolver") {
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -104,7 +104,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 		file.close();
 		return true;
 	}
-	else if (solverName == "buoyantBoussinesqPimpleFoam") {
+	else if (solverName == "transientIncompressibleSolver") {
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -177,7 +177,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 	QString caseDir = fileInfo.path();
 	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
 
-	if (solverName == "rhoSimpleFoam") {
+	if (solverName == "steadyCompressibleSolver") {
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
@@ -219,7 +219,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 		file.close();
 		return true;
 	}
-	else if (solverName == "buoyantBoussinesqPimpleFoam") {
+	else if (solverName == "transientIncompressibleSolver") {
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
@@ -261,11 +261,11 @@ bool FormPhysicalPropertyParameter::exportParameter()
 
 void FormPhysicalPropertyParameter::solverChanged(const QString& newText)
 {
-	if (newText == "rhoSimpleFoam") {
+	if (newText == "steadyCompressibleSolver") {
 		ui->widget->show();
 		ui->widget_2->hide();
 	}
-	else if (newText == "buoyantBoussinesqPimpleFoam") {
+	else if (newText == "transientIncompressibleSolver") {
 		ui->widget->hide();
 		ui->widget_2->show();
 	}

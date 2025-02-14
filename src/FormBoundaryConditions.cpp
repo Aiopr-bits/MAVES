@@ -82,10 +82,10 @@ void FormBoundaryConditions::initBoundaryConditions()
 	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
 
 	std::vector<QString> physicalFields;
-	if (solverName == "rhoSimpleFoam") { // 外流场
+	if (solverName == "steadyCompressibleSolver") { // 外流场
 		physicalFields = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 	}
-	else if (solverName == "buoyantBoussinesqPimpleFoam") { // 内流场
+	else if (solverName == "transientIncompressibleSolver") { // 内流场
 		physicalFields = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
 	}
 
@@ -212,10 +212,10 @@ void FormBoundaryConditions::importParameter()
 
 	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
 	std::vector<QString> fileNames;
-	if (solverName == "rhoSimpleFoam") { // 外流场
+	if (solverName == "steadyCompressibleSolver") { // 外流场
 		fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 	}
-	else if (solverName == "buoyantBoussinesqPimpleFoam") { // 内流场
+	else if (solverName == "transientIncompressibleSolver") { // 内流场
 		fileNames = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
 	}
 
