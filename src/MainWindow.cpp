@@ -509,6 +509,7 @@ void MainWindow::updatePlaneRepModelClipValues()
 
 void MainWindow::formGeometry_import(const QString& filePath)
 {
+	render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
@@ -585,6 +586,7 @@ void MainWindow::formGeometry_import(const QString& filePath)
 
 void MainWindow::formMeshImport_import(const QString& filePath)
 {
+	render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
