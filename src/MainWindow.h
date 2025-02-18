@@ -107,6 +107,7 @@ QT_CHARTS_USE_NAMESPACE
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <vtkCompositeDataGeometryFilter.h>
 
 #ifdef _WIN32
 #include "qt_windows.h"

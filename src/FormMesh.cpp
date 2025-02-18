@@ -30,18 +30,19 @@ FormMesh::~FormMesh()
 
 void FormMesh::updateForm()
 {
-    // 获取全局数据实例
-    const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+    // 获取全局数据实例中的 meshPatchActors
+    const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
 
     // 清空现有的行
     listViewModel->clear();
 
-    // 遍历 meshFaceActors 并添加到 listView 中
-    for (const auto& actor : meshFaceActors)
+    // 遍历 meshPatchActors 并添加到 listView 中
+    for (const auto& actor : meshPatchActors)
     {
-        QStandardItem* item = new QStandardItem(actor.first);
+        QString actorName = QString::fromStdString(actor.first);
+        QStandardItem* item = new QStandardItem(actorName);
         item->setCheckable(true);
-        item->setCheckState(Qt::Checked);
+        if(actorName == "internalMesh") item->setCheckState(Qt::Checked);
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         item->setSizeHint(QSize(0, 40));
         listViewModel->appendRow(item);
@@ -55,6 +56,8 @@ void FormMesh::updateForm()
 
     // 设置 QListView 的高度
     ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
+
+    on_pushButton_clicked();
 }
 
 void FormMesh::on_pushButton_clicked()

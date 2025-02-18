@@ -584,6 +584,81 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	ui->openGLWidget->renderWindow()->Render();
 }
 
+std::map<std::string, vtkSmartPointer<vtkActor>> createPatchActorsFromOpenFOAM(const std::string& casePath)
+{
+	std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors;
+
+	// 创建 OpenFOAM 读取器
+	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
+		vtkSmartPointer<vtkOpenFOAMReader>::New();
+	openFOAMReader->SetFileName(casePath.c_str());
+	openFOAMReader->SetCreateCellToPoint(1);
+	openFOAMReader->SetSkipZeroTime(1);
+
+	// 更新信息以获取补丁名称
+	openFOAMReader->UpdateInformation();
+
+	// 获取所有补丁名称
+	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
+	if (numPatches == 0)
+	{
+		std::cerr << "没有找到任何补丁。" << std::endl;
+		return meshPatchActors;
+	}
+
+	// 禁用所有补丁
+	openFOAMReader->DisableAllPatchArrays();
+
+	// 遍历所有补丁并为每个补丁创建单独的Actor
+	for (int i = 0; i < numPatches; ++i)
+	{
+		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
+		if (std::string(currentPatchName).find("group") != std::string::npos) continue;
+
+		// 禁用所有补丁，只启用当前补丁
+		openFOAMReader->DisableAllPatchArrays();
+		openFOAMReader->SetPatchArrayStatus(currentPatchName, 1);
+
+		// 更新读取器
+		openFOAMReader->Update();
+
+		// 使用 vtkCompositeDataGeometryFilter 提取几何数据
+		vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
+			vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+		geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
+		geometryFilter->Update();
+
+		vtkPolyData* polyData = geometryFilter->GetOutput();
+		if (polyData && polyData->GetNumberOfPoints() > 0)
+		{
+			// 创建映射器
+			vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+			mapper->SetInputData(polyData);
+			mapper->ScalarVisibilityOff();
+
+			// 创建actor
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			actor->SetMapper(mapper);
+			actor->GetProperty()->SetColor(0, 221 / 255.0, 221 / 255.0);
+			actor->GetProperty()->EdgeVisibilityOn();
+			actor->GetProperty()->SetEdgeColor(0, 0, 0);
+			actor->GetProperty()->SetRepresentationToSurface();			
+
+			// 将actor添加到map中
+			if (std::string(currentPatchName).find("patch/") != std::string::npos)
+			{
+				meshPatchActors[std::string(currentPatchName).substr(6)] = actor;
+			}
+			else
+			{
+				meshPatchActors[std::string(currentPatchName)] = actor;
+			}
+		}
+	}
+
+	return meshPatchActors;
+}
+
 void MainWindow::formMeshImport_import(const QString& filePath)
 {
 	render->RemoveAllViewProps();
@@ -603,100 +678,8 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 
 	if (type == "foam")
 	{
-		QString casePath = fileInfo.path();
-		QString folderName = casePath.split("/").last();
-		QString vtpPath = casePath + "/VTK/" + folderName + "_0/boundary/";
-
-		//如果VTK网格文件不在则转换
-		QDir vtpDir(vtpPath);
-		if (!vtpDir.exists())
-		{
-			std::string command = "foamToVTK -time 0 -case " + casePath.toStdString();
-
-			process.setProgram("cmd.exe");
-			process.setArguments(QStringList() << "/C" << QString::fromStdString(command));
-			process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
-				args->flags |= CREATE_NO_WINDOW;
-				});
-			process.start();
-			process.waitForFinished();
-
-			// 等待文件写入完成
-			QString vtmFilePath = casePath + "/VTK/" + folderName + "_0.vtm";
-			QFile vtmFile(vtmFilePath);
-			while (!vtmFile.exists()) {
-				QThread::msleep(100);
-			}
-
-			// 检查所有引用的文件是否存在
-			QFile file(vtmFilePath);
-			if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				qWarning() << "无法打开文件:" << vtmFilePath;
-				return;
-			}
-
-			QXmlStreamReader xml(&file);
-			bool allFilesExist = true;
-			while (!xml.atEnd() && !xml.hasError()) {
-				QXmlStreamReader::TokenType token = xml.readNext();
-				if (token == QXmlStreamReader::StartElement) {
-					if (xml.name() == "DataSet") {
-						QString filePath = casePath + "/VTK/" + xml.attributes().value("file").toString();
-						if (!QFile::exists(filePath)) {
-							allFilesExist = false;
-							break;
-						}
-					}
-				}
-			}
-			file.close();
-
-			// 如果所有文件都存在，则继续
-			if (!allFilesExist) {
-				qWarning() << "部分文件不存在，等待中...";
-				QThread::msleep(100);
-			}
-		}
-
-		// 获取vtpPath文件夹下的所有.vtp文件路径
-		QDir dir(vtpPath);
-		QStringList vtpFiles = dir.entryList(QStringList() << "*.vtp", QDir::Files);
-
-		foreach(QString vtpFile, vtpFiles)
-		{
-			QString fullPath = dir.absoluteFilePath(vtpFile);
-			vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-			reader->SetFileName(fullPath.toStdString().c_str());
-			reader->Update();
-
-			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(reader->GetOutputPort());
-
-			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			actor->GetProperty()->SetColor(0, 221, 221);
-
-			render->AddActor(actor);
-
-			vtkSmartPointer<vtkExtractEdges> extractEdges = vtkSmartPointer<vtkExtractEdges>::New();
-			extractEdges->SetInputConnection(reader->GetOutputPort());
-			extractEdges->Update();
-
-			vtkSmartPointer<vtkPolyDataMapper> edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			edgeMapper->SetInputConnection(extractEdges->GetOutputPort());
-
-			vtkSmartPointer<vtkActor> edgeActor = vtkSmartPointer<vtkActor>::New();
-			edgeActor->SetMapper(edgeMapper);
-			edgeActor->GetProperty()->SetColor(0, 0, 0);
-
-			render->AddActor(edgeActor);
-
-			QString baseName = vtpFile.left(vtpFile.lastIndexOf('.'));
-			GlobalData::getInstance().getCaseData()->meshFaceActors.insert(std::make_pair(baseName, actor));
-			GlobalData::getInstance().getCaseData()->meshEdgeActors.insert(std::make_pair(baseName, edgeActor));
-		}
-		GlobalData::getInstance().getCaseData()->meshPath = fileInfo.path().toStdString();
-
+		std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors = createPatchActorsFromOpenFOAM(filePath.toStdString());
+		GlobalData::getInstance().getCaseData()->meshPatchActors = meshPatchActors;
 		formMesh->updateForm();
 		render->ResetCamera();
 		renderWindow->Render();
@@ -708,55 +691,61 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		lastClickedButton = ui->pushButton_2;
 
 		//网格导入成功,初始化参数配置页面(需补充)
-		formBoundaryConditions->onMeshImported();
+		//formBoundaryConditions->onMeshImported();
 	}
 }
 
 void MainWindow::formMesh_apply()
 {
+	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
-	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
-	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 
-	// 遍历 treeView 并更新 actor
- 	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
+	// 获取 meshPatchActors
+	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+
+	// 遍历 listViewModel 并根据选中状态添加对应的演员
+	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
 	{
 		QStandardItem* item = formMesh->listViewModel->item(i);
-		const auto& actor = meshFaceActors.find(item->text());
-		if (actor != meshFaceActors.end() && item->checkState() == Qt::Checked)
+		if (item->checkState() == Qt::Checked)
 		{
-			render->AddActor(actor->second);
-		}
+			// 将 QString 转换为 std::string
+			std::string key = item->text().toStdString();
 
-		const auto& edgeActor = meshEdgeActors.find(item->text());
-		if (edgeActor != meshEdgeActors.end() && item->checkState() == Qt::Checked)
-		{
-			render->AddActor(edgeActor->second);
+			// 查找对应的 vtkActor
+			auto actorIt = meshPatchActors.find(key);
+			if (actorIt != meshPatchActors.end())
+			{
+				render->AddActor(actorIt->second);
+			}
 		}
 	}
 
-	render->ResetCamera();
 	renderWindow->Render();
 }
 
 void MainWindow::formMesh_itemEntered(const QString& text)
 {
-	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
-	const auto& actor = meshFaceActors.find(text);
-	if (actor != meshFaceActors.end())
+	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+	// 将 QString 转换为 std::string
+	std::string key = text.toStdString();
+	auto actorIt = meshPatchActors.find(key);
+	if (actorIt != meshPatchActors.end())
 	{
-		actor->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
+		actorIt->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
 		renderWindow->Render();
 	}
 }
 
 void MainWindow::formMesh_itemExited(const QString& text)
 {
-	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
-	const auto& actor = meshFaceActors.find(text);
-	if (actor != meshFaceActors.end())
+	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+	// 将 QString 转换为 std::string
+	std::string key = text.toStdString();
+	auto actorIt = meshPatchActors.find(key);
+	if (actorIt != meshPatchActors.end())
 	{
-		actor->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+		actorIt->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
 		renderWindow->Render();
 	}
 }

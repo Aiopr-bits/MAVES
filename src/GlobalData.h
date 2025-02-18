@@ -17,8 +17,9 @@ struct CaseData
 	std::string solverName;                                                                             //求解器名称
     std::string geometryPath;                                                                           //导入的几何文件路径
     std::string meshPath;														                        //导入的网格文件路径
-    std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    // 网格边界actor
-    std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    // 网格面actor
+	std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors;					                //网格patch actor
+    std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    //网格边界actor
+    std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    //网格面actor
 
     std::string casePath; 														                        // case路径
 	QList<QPair<double, QStringList>> timeFilePairs; 													// 时间-VTK文件路径对
