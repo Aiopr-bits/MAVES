@@ -58,13 +58,14 @@ public slots:
 	void on_pushButton_7_clicked();									//下一帧
 	void on_pushButton_8_clicked();									//最后一帧
 	void on_pushButton_9_clicked();									//循环播放
+	void on_pushButton_10_clicked();								//加载数据
 	void on_pushButtonPlayTimerPause_clicked();						//播放暂停
-	void on_pushButtonReverseTimerPause_clicked();					//反向播放暂停
-	void on_pushButtonLoopPlayTimerPause_clicked();					//循环播放暂停
+	void on_pushButtonReverseTimerPause_clicked();					//反向播放
+	void on_pushButtonLoopPlayTimerPause_clicked();					//循环播放
 
 
 signals:
-	void resultDataLoaded(const QString& caseFilePath);
+	void loadData();
 	void apply();
 	void firstFrame();
 	void previousFrame();

@@ -201,6 +201,7 @@ public slots:
 	void formPostprocessing_playPause();																				//播放暂停
 	void formPostprocessing_reversePause();																				//反向播放暂停
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
+	void formPostprocessing_loadData();																					//加载数据
 	void formModelClip_checkBoxToggle();																				//模型切分页面CheckBox切换
 	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
 	void formModelClip_xPositive();																						//模型切分：X正向

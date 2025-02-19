@@ -143,6 +143,11 @@ void FormPostprocessing::on_pushButton_9_clicked()
 	emit loopPlay();
 }
 
+void FormPostprocessing::on_pushButton_10_clicked()
+{
+	emit loadData();
+}
+
 void FormPostprocessing::on_pushButtonPlayTimerPause_clicked()
 {
 	emit playPause();

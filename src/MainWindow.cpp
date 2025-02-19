@@ -165,8 +165,9 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);								//最后一帧
 	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);									//循环播放
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放暂停
-	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放暂停
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放
+	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);									//加载数据
 	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);									//模型切分页面CheckBox切换
 	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//模型切分页面LineEdit值改变
 	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);												//模型切分：X正向
@@ -1012,6 +1013,25 @@ void MainWindow::formPostprocessing_loopPlayPause()
 	loopPlayTimer->stop();
 	formPostprocessing->pushButtonLoopPlayTimerPause->hide();
 	formPostprocessing->ui->pushButton_9->show();
+}
+
+void MainWindow::formPostprocessing_loadData()
+{
+	QString caseFilePath;
+	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM 文件 (*.foam);;"));
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setViewMode(QFileDialog::Detail);
+
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setWindowFlags(dialog.windowFlags() | Qt::WindowStaysOnTopHint);
+
+	if (dialog.exec() == QDialog::Accepted) {
+		caseFilePath = dialog.selectedFiles().first();
+		if (caseFilePath.isEmpty()) return;
+		GlobalData::getInstance().clearAllData();
+		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
+		updatePostProcessingPage(caseFilePath);
+	}
 }
 
 void MainWindow::formModelClip_checkBoxToggle()
