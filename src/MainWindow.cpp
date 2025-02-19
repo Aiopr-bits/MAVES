@@ -299,11 +299,11 @@ void MainWindow::handleAction10Triggered()
 		GlobalData::getInstance().clearAllData();
 		ui->textBrowser->append("Load case：" + caseFilePath);
 
-		//更新后处理数据页面(需补充)
-		updatePostProcessingPage(caseFilePath);
-
 		//更新网格导入页面
 		formMeshImport_import(caseFilePath);
+
+		//更新后处理数据页面(需补充)
+		updatePostProcessingPage(caseFilePath);
 
 		//更新参数配置页面(需补充)
 		//formSolver->importParameter();
@@ -583,9 +583,68 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-std::map<std::string, vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(const std::string& casePath)
+vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
+	const std::string& casePath,
+	const std::vector<std::string>& patchGroup)
 {
-	std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors;
+	// 创建 OpenFOAM 读取器
+	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
+	openFOAMReader->SetFileName(casePath.c_str());
+	openFOAMReader->SetCreateCellToPoint(1);
+	openFOAMReader->SetSkipZeroTime(1);
+
+	// 更新信息以获取补丁名称
+	openFOAMReader->UpdateInformation();
+	openFOAMReader->DisableAllPatchArrays();
+
+	// 针对patchGroup启用对应的补丁
+	for (const auto& patchName : patchGroup)
+	{
+		if (patchName == "internalMesh")
+		{
+			openFOAMReader->SetPatchArrayStatus("internalMesh", 1);
+		}
+		else
+		{
+			std::string fullPatchName = "patch/" + patchName;
+			openFOAMReader->SetPatchArrayStatus(fullPatchName.c_str(), 1);
+		}
+	}
+
+	// 更新读取器
+	openFOAMReader->Update();
+
+	// 使用 vtkCompositeDataGeometryFilter 提取单一几何
+	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
+		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+	geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
+	geometryFilter->Update();
+
+	vtkPolyData* polyData = geometryFilter->GetOutput();
+	if (!polyData || polyData->GetNumberOfPoints() == 0)
+	{
+		return nullptr;
+	}
+
+	// 创建映射器
+	vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+	mapper->SetInputData(polyData);
+	mapper->ScalarVisibilityOff();
+
+	// 创建单一Actor
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+	actor->GetProperty()->EdgeVisibilityOn();
+	actor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
+	actor->GetProperty()->SetRepresentationToSurface();
+
+	return actor;
+}
+
+void MainWindow::getMeshPatchData(const std::string& casePath)
+{
+	std::vector<std::string> meshPatchNames;
 
 	// 创建 OpenFOAM 读取器
 	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
@@ -602,62 +661,30 @@ std::map<std::string, vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActo
 	if (numPatches == 0)
 	{
 		std::cerr << "没有找到任何补丁。" << std::endl;
-		return meshPatchActors;
+		return ;
 	}
 
 	// 禁用所有补丁
 	openFOAMReader->DisableAllPatchArrays();
 
-	// 遍历所有补丁并为每个补丁创建单独的Actor
+	// 遍历所有补丁并添加进meshPatchNames
 	for (int i = 0; i < numPatches; ++i)
 	{
 		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
-
 		if (std::string(currentPatchName).find("patch") == 0 || strcmp(currentPatchName, "internalMesh") == 0)
 		{
-			// 禁用所有补丁，只启用当前补丁
-			openFOAMReader->DisableAllPatchArrays();
-			openFOAMReader->SetPatchArrayStatus(currentPatchName, 1);
-
-			// 更新读取器
-			openFOAMReader->Update();
-
-			// 使用 vtkCompositeDataGeometryFilter 提取几何数据
-			vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
-				vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
-			geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
-			geometryFilter->Update();
-
-			vtkPolyData* polyData = geometryFilter->GetOutput();
-			if (polyData && polyData->GetNumberOfPoints() > 0)
+			if (std::string(currentPatchName).find("patch/") != std::string::npos)
 			{
-				// 创建映射器
-				vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-				mapper->SetInputData(polyData);
-				mapper->ScalarVisibilityOff();
-
-				// 创建actor
-				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-				actor->SetMapper(mapper);
-				actor->GetProperty()->SetColor(0, 221 / 255.0, 221 / 255.0);
-				actor->GetProperty()->EdgeVisibilityOn();
-				actor->GetProperty()->SetEdgeColor(0, 0, 0);
-				actor->GetProperty()->SetRepresentationToSurface();
-
-				// 将actor添加到map中
-				if (std::string(currentPatchName).find("patch/") != std::string::npos)
-				{
-					meshPatchActors[std::string(currentPatchName).substr(6)] = actor;
-				}
-				else
-				{
-					meshPatchActors[std::string(currentPatchName)] = actor;
-				}
+				meshPatchNames.push_back(std::string(currentPatchName).substr(6));
 			}
-		}		
-	}
+			else
+			{
+				meshPatchNames.push_back(std::string(currentPatchName));
+			}
 
-	return meshPatchActors;
+		}
+	}
+	GlobalData::getInstance().getCaseData()->meshPatchNames = meshPatchNames;
 }
 
 void MainWindow::formMeshImport_import(const QString& filePath)
@@ -679,9 +706,7 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 
 	if (type == "foam")
 	{
-		std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors = createMeshPatchActor(filePath.toStdString());
-
-		GlobalData::getInstance().getCaseData()->meshPatchActors = meshPatchActors;
+		getMeshPatchData(filePath.toStdString());
 		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
 		formMesh->updateForm();
 		render->ResetCamera();
@@ -703,54 +728,50 @@ void MainWindow::formMesh_apply()
 	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
 
-	// 获取 meshPatchActors
-	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-
-	// 遍历 listViewModel 并根据选中状态添加对应的演员
+	// 遍历 listViewModel 并根据选中状态添加到
+	std::vector<std::string> patchGroup;
 	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
 	{
 		QStandardItem* item = formMesh->listViewModel->item(i);
 		if (item->checkState() == Qt::Checked)
 		{
-			// 将 QString 转换为 std::string
-			std::string key = item->text().toStdString();
-
-			// 查找对应的 vtkActor
-			auto actorIt = meshPatchActors.find(key);
-			if (actorIt != meshPatchActors.end())
-			{
-				render->AddActor(actorIt->second);
-			}
+			patchGroup.push_back(item->text().toStdString());
 		}
 	}
 
-	renderWindow->Render();
+	// 创建 meshPatchActor
+	vtkSmartPointer<vtkActor> meshPatchActor = createMeshPatchActor(GlobalData::getInstance().getCaseData()->casePath, patchGroup);
+	if (meshPatchActor)
+	{
+		render->AddActor(meshPatchActor);
+		renderWindow->Render();
+	}
 }
 
 void MainWindow::formMesh_itemEntered(const QString& text)
 {
-	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	// 将 QString 转换为 std::string
-	std::string key = text.toStdString();
-	auto actorIt = meshPatchActors.find(key);
-	if (actorIt != meshPatchActors.end())
-	{
-		actorIt->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
-		renderWindow->Render();
-	}
+	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+	//// 将 QString 转换为 std::string
+	//std::string key = text.toStdString();
+	//auto actorIt = meshPatchActors.find(key);
+	//if (actorIt != meshPatchActors.end())
+	//{
+	//	actorIt->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
+	//	renderWindow->Render();
+	//}
 }
 
 void MainWindow::formMesh_itemExited(const QString& text)
 {
-	const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	// 将 QString 转换为 std::string
-	std::string key = text.toStdString();
-	auto actorIt = meshPatchActors.find(key);
-	if (actorIt != meshPatchActors.end())
-	{
-		actorIt->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
-		renderWindow->Render();
-	}
+	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+	//// 将 QString 转换为 std::string
+	//std::string key = text.toStdString();
+	//auto actorIt = meshPatchActors.find(key);
+	//if (actorIt != meshPatchActors.end())
+	//{
+	//	actorIt->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+	//	renderWindow->Render();
+	//}
 }
 
 void MainWindow::formRun_run()
@@ -1414,7 +1435,7 @@ void MainWindow::parseOutput(const QString& output)
 	}
 }
 
-void MainWindow::getFieldsScalarRangeFromOpenFOAM(
+void MainWindow::getNephogramPatchData(
 	const std::string& casePath)
 {
 	std::map<std::string, std::pair<double, double>> result;
@@ -1582,11 +1603,10 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 		GlobalData::getInstance().getCaseData()->casePath = casePath.toStdString();
 	}
 
-	getFieldsScalarRangeFromOpenFOAM(casePath.toStdString());
+	getNephogramPatchData(casePath.toStdString());
 	formPostprocessing->ui->comboBox->clear();
 	formPostprocessing->ui->comboBox_2->clear();
 	formPostprocessing->listViewModel->clear();
-	render->RemoveAllViewProps();
 
 	// 更新时间步和物理量下拉框
 	QStringList timeStepList;
@@ -1622,6 +1642,7 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	formPostprocessing->ui->listView->setFixedHeight(totalHeight + 2 * formPostprocessing->ui->listView->frameWidth());
 
 	//更新渲染窗口
+	render->RemoveAllViewProps();
 	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
 	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
 	std::vector<std::string> patchGroup;

@@ -30,16 +30,16 @@ FormMesh::~FormMesh()
 
 void FormMesh::updateForm()
 {
-    // 获取全局数据实例中的 meshPatchActors
-    const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
+    // 获取全局数据实例中的 meshPatch
+    const auto& meshPatchNames = GlobalData::getInstance().getCaseData()->meshPatchNames;
 
     // 清空现有的行
     listViewModel->clear();
 
-    // 遍历 meshPatchActors 并添加到 listView 中
-    for (const auto& actor : meshPatchActors)
+    // 遍历 meshPatchNames 并添加到 listView 中
+    for (const auto& meshPatchName : meshPatchNames)
     {
-        QString actorName = QString::fromStdString(actor.first);
+        QString actorName = QString::fromStdString(meshPatchName);
         QStandardItem* item = new QStandardItem(actorName);
         item->setCheckable(true);
         if(actorName != "internalMesh") item->setCheckState(Qt::Checked);

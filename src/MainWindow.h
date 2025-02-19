@@ -131,9 +131,14 @@ public:
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
 	void updatePostProcessingPage(const QString& casePath);																//更新后处理子页面信息
-	std::map<std::string, vtkSmartPointer<vtkActor>> createMeshPatchActor(const std::string& casePath); 				//创建网格patch actor
-	void getFieldsScalarRangeFromOpenFOAM(const std::string& casePath); 												//获取OpenFOAM中标量场的范围
-	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//创建矢量场patch actor
+	void getMeshPatchData(const std::string& casePath); 																//获取网格patch数据
+	void getNephogramPatchData(const std::string& casePath); 															//获取云图patch数据
+
+	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//创建网格patch actor
+		const std::string& casePath,
+		const std::vector<std::string>& patchGroup);
+
+	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//创建云图patch actor
 		const std::string& casePath,
 		double timeValue,
 		const std::string& fieldName,
