@@ -108,6 +108,8 @@ QT_CHARTS_USE_NAMESPACE
 #include <QJsonObject>
 #include <QJsonArray>
 #include <vtkCompositeDataGeometryFilter.h>
+#include <vtkStreamingDemandDrivenPipeline.h>
+#include <vtkInformation.h>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -129,6 +131,14 @@ public:
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
 	void updatePostProcessingPage(const QString& casePath);																//更新后处理子页面信息
+	std::map<std::string, vtkSmartPointer<vtkActor>> createMeshPatchActor(const std::string& casePath); 				//创建网格patch actor
+	void getFieldsScalarRangeFromOpenFOAM(const std::string& casePath); 												//获取OpenFOAM中标量场的范围
+	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//创建矢量场patch actor
+		const std::string& casePath,
+		double timeValue,
+		const std::string& fieldName,
+		const std::vector<std::string>& patchGroup,
+		const std::pair<double, double>& globalRange);
 
 public slots:
 	//工具栏信号处理
@@ -161,9 +171,7 @@ public slots:
 	void onLoopPlayTimerTimeout(); 																						//循环播放
 	void onButtonClicked();																								//控制面板按钮点击背景色调整
 	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
-	void onProcessFoamToVTKFinished(int exitCode, QProcess::ExitStatus exitStatus);										//foamToVTK进程结束
 	void onProcessRunOutput();																							//求解计算进程输出
-	void onprocessFoamToVTKOutput(); 																					//foamToVTK进程输出
 	void onProcessOutput(); 																							//进程输出
 	void onProcessError();																								//进程错误输出
 	void updateChart();											    													//更新残差图
@@ -206,7 +214,6 @@ public:
 	QPushButton* buttons[20];
 	QPushButton* lastClickedButton;
 	QProcess processRun;
-	QProcess processFoamToVTK;
 	QProcess process;
 
 	//渲染窗口

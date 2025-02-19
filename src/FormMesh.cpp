@@ -42,7 +42,7 @@ void FormMesh::updateForm()
         QString actorName = QString::fromStdString(actor.first);
         QStandardItem* item = new QStandardItem(actorName);
         item->setCheckable(true);
-        if(actorName == "internalMesh") item->setCheckState(Qt::Checked);
+        if(actorName != "internalMesh") item->setCheckState(Qt::Checked);
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         item->setSizeHint(QSize(0, 40));
         listViewModel->appendRow(item);
