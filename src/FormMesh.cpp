@@ -67,12 +67,12 @@ void FormMesh::on_pushButton_clicked()
 
 void FormMesh::onItemEntered(const QString& text)
 {
-	emit itemEntered(text);
+	//emit itemEntered(text);
 }
 
 void FormMesh::onItemExited(const QString& text)
 {
-	emit itemExited(text);
+	//emit itemExited(text);
 }
 
 bool FormMesh::eventFilter(QObject* watched, QEvent* event)

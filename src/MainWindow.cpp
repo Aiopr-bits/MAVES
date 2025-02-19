@@ -679,7 +679,9 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	if (type == "foam")
 	{
 		std::map<std::string, vtkSmartPointer<vtkActor>> meshPatchActors = createPatchActorsFromOpenFOAM(filePath.toStdString());
+
 		GlobalData::getInstance().getCaseData()->meshPatchActors = meshPatchActors;
+		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
 		formMesh->updateForm();
 		render->ResetCamera();
 		renderWindow->Render();

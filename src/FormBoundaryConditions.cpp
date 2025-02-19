@@ -79,7 +79,7 @@ void FormBoundaryConditions::initTabWidget()
 void FormBoundaryConditions::initBoundaryConditions()
 {
 	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
-	//const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
+	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
 
 	std::vector<QString> physicalFields;
 	if (solverName == "steadyCompressibleSolver") { // ÍâÁ÷³¡
