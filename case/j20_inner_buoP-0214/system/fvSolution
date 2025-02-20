@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "rho.*"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       0;
+        relTol          0;
+    }
+
+    p_rgh
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-8;
+        relTol          0.01;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0;
+    }
+
+    T
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-6;
+        relTol          0.05;
+    }
+
+
+    "(U|h|e|k|epsilon|R)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(U|h|e|k|epsilon|R)Final"
+    {
+        $U;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    momentumPredictor no;
+    nOuterCorrectors 2;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       1e5;
+}
+
+
+relaxationFactors
+{
+    fields
+    {
+        //p_rgh           0.3;  // 初始值0.3，收敛后可调至0.7
+        //p               0.3;  // 初始值0.3，收敛后可调至0.7
+        //U               0.3;
+        //T               0.5;
+//
+        p_rgh           0.7;  // 初始值0.3，收敛后可调至0.7
+        p               0.7;  // 初始值0.3，收敛后可调至0.7
+        U               0.7;
+        T               0.7;
+    }
+    equations
+    {
+        U               0.5;
+        e               0.5;
+        k               0.5;
+        epsilon         0.5;
+    }
+}
+
+// ************************************************************************* //
