@@ -1,0 +1,5 @@
+# etc/config.csh/prefs.openmpi-system
+#
+# Packaging configured value for openmpi-system
+setenv MPI_ARCH_PATH "/usr/lib64/mpi/gcc/openmpi2"
+#----

@@ -1,0 +1,78 @@
+#----------------------------------*-sh-*--------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# File
+#     etc/config/compiler
+#     - sourced by OpenFOAM-*/etc/config.sh/settings
+#
+# Description
+#     Setup for custom compiler versions for OpenFOAM
+#     Per-compiler overrides in "compiler-$WM_COMPILER" files
+#
+# Note
+#     The default values for gcc/clang are not a recommendation,
+#     but typically correspond to the minimum usable version.
+#
+#     I_MPI_CC, I_MPI_CXX environment variables may be defined for the
+#     Intel mpicc/mpicxx wrappers
+#
+#------------------------------------------------------------------------------
+
+[gcc]
+
+Gcc103  gcc-10.3.0
+Gcc102  gcc-10.2.0
+Gcc101  gcc-10.1.0
+Gcc93   gcc-9.3.0
+Gcc92   gcc-9.2.0
+Gcc91   gcc-9.1.0
+Gcc84   gcc-8.4.0
+Gcc83   gcc-8.3.0
+Gcc82   gcc-8.2.0
+Gcc81   gcc-8.1.0
+Gcc75   gcc-7.5.0
+Gcc74   gcc-7.4.0
+Gcc73   gcc-7.3.0
+Gcc72   gcc-7.2.0
+Gcc71   gcc-7.1.0
+
+# Older GCC series that receive no further bugfixes
+Gcc65   gcc-6.5.0
+Gcc64   gcc-6.4.0
+Gcc63   gcc-6.3.0
+Gcc62   gcc-6.2.0
+Gcc61   gcc-6.1.0
+Gcc55   gcc-5.5.0
+Gcc54   gcc-5.4.0
+Gcc53   gcc-5.3.0
+Gcc52   gcc-5.2.0
+Gcc51   gcc-5.1.0
+Gcc49   gcc-4.9.4
+Gcc48   gcc-4.8.5
+
+[clang]
+
+Clang111    llvm-11.1.0
+Clang110    llvm-11.0.1
+Clang100    llvm-10.0.1
+Clang90     llvm-9.0.1
+Clang80     llvm-8.0.1
+Clang71     llvm-7.1.0
+Clang70     llvm-7.0.1
+Clang60     llvm-6.0.1
+Clang50     llvm-5.0.2
+Clang40     llvm-4.0.1
+Clang39     llvm-3.9.1
+Clang38     llvm-3.8.1
+Clang37     llvm-3.7.1
+
+#------------------------------------------------------------------------------
