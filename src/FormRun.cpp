@@ -1,10 +1,12 @@
 #include "FormRun.h"
 #include <QRegularExpressionValidator> 
 #include <QThread>
+#include <qtabbar.h>
 
-FormRun::FormRun(QWidget *parent)
+FormRun::FormRun(QWidget* parent)
 	: QWidget(parent)
 	, ui(new Ui::FormRunClass())
+	, previousIndex(0)
 {
 	ui->setupUi(this);
 
@@ -19,13 +21,10 @@ FormRun::FormRun(QWidget *parent)
 	ui->lineEdit_2->setValidator(validator);
 	ui->lineEdit_3->setValidator(validator);
 
-	// 设置 lineEdit_4 只支持正整数输入
-	QIntValidator* intValidator = new QIntValidator(1, INT_MAX, this);
-	ui->lineEdit_4->setValidator(intValidator);
-
 	connect(ui->pushButton, &CustomHoverPushButton::cursorEnter, this, &FormRun::cursorEnterPushButton);
 	connect(ui->pushButton, &CustomHoverPushButton::cursorLeave, this, &FormRun::cursorLeavePushButton);
 	connect(ui->pushButton_2, &CustomHoverPushButton::clicked, this, &FormRun::on_pushButton_clicked_2);
+	connect(ui->radioButton_2, &QRadioButton::toggled, this, &FormRun::on_radioButton_2_toggled);
 }
 
 FormRun::~FormRun()
@@ -35,87 +34,86 @@ FormRun::~FormRun()
 
 void FormRun::importParameter()
 {
-	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
-	QString caseDirPath = QFileInfo(casePath).absolutePath();
-	QString filePath = caseDirPath + "/system/controlDict";
+	//QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	//QString caseDirPath = QFileInfo(casePath).absolutePath();
+	//QString filePath = caseDirPath + "/system/controlDict";
 
-	QFile file(filePath);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
-	}
+	//QFile file(filePath);
+	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+	//	return;
+	//}
 
-	QTextStream in(&file);
-	QString content = in.readAll();
-	file.close();
+	//QTextStream in(&file);
+	//QString content = in.readAll();
+	//file.close();
 
-	QRegularExpression startTimeRegex(R"(startTime\s+(\d*\.?\d+);)");
-	QRegularExpression endTimeRegex(R"(endTime\s+(\d*\.?\d+);)");
-	QRegularExpression deltaTRegex(R"(deltaT\s+(\d*\.?\d+);)");
-	QRegularExpression writeIntervalRegex(R"(writeInterval\s+(\d*\.?\d+);)");
+	//QRegularExpression startTimeRegex(R"(startTime\s+(\d*\.?\d+);)");
+	//QRegularExpression endTimeRegex(R"(endTime\s+(\d*\.?\d+);)");
+	//QRegularExpression deltaTRegex(R"(deltaT\s+(\d*\.?\d+);)");
+	//QRegularExpression writeIntervalRegex(R"(writeInterval\s+(\d*\.?\d+);)");
 
-	QRegularExpressionMatch startTimeMatch = startTimeRegex.match(content);
-	QRegularExpressionMatch endTimeMatch = endTimeRegex.match(content);
-	QRegularExpressionMatch deltaTMatch = deltaTRegex.match(content);
-	QRegularExpressionMatch writeIntervalMatch = writeIntervalRegex.match(content);
+	//QRegularExpressionMatch startTimeMatch = startTimeRegex.match(content);
+	//QRegularExpressionMatch endTimeMatch = endTimeRegex.match(content);
+	//QRegularExpressionMatch deltaTMatch = deltaTRegex.match(content);
+	//QRegularExpressionMatch writeIntervalMatch = writeIntervalRegex.match(content);
 
-	if (startTimeMatch.hasMatch()) {
-		ui->lineEdit->setText(startTimeMatch.captured(1));
-	}
-	if (endTimeMatch.hasMatch()) {
-		ui->lineEdit_2->setText(endTimeMatch.captured(1));
-	}
-	if (deltaTMatch.hasMatch()) {
-		ui->lineEdit_3->setText(deltaTMatch.captured(1));
-	}
-	if (writeIntervalMatch.hasMatch()) {
-		ui->lineEdit_4->setText(writeIntervalMatch.captured(1));
-	}
+	//if (startTimeMatch.hasMatch()) {
+	//	ui->lineEdit->setText(startTimeMatch.captured(1));
+	//}
+	//if (endTimeMatch.hasMatch()) {
+	//	ui->lineEdit_2->setText(endTimeMatch.captured(1));
+	//}
+	//if (deltaTMatch.hasMatch()) {
+	//	ui->lineEdit_3->setText(deltaTMatch.captured(1));
+	//}
+	//if (writeIntervalMatch.hasMatch()) {
+	//	ui->lineEdit_4->setText(writeIntervalMatch.captured(1));
+	//}
 }
 
 void FormRun::exportParameter()
 {
-	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
-	QString caseDirPath = QFileInfo(casePath).absolutePath();
-	QString filePath = caseDirPath + "/system/controlDict";
+	//QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	//QString caseDirPath = QFileInfo(casePath).absolutePath();
+	//QString filePath = caseDirPath + "/system/controlDict";
 
-	QFile file(filePath);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
-	}
+	//QFile file(filePath);
+	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+	//	return;
+	//}
 
-	QTextStream in(&file);
-	QString content = in.readAll();
-	file.close();
+	//QTextStream in(&file);
+	//QString content = in.readAll();
+	//file.close();
 
-	// 从界面上读取值
-	QString startTime = ui->lineEdit->text();
-	QString endTime = ui->lineEdit_2->text();
-	QString deltaT = ui->lineEdit_3->text();
-	QString writeInterval = ui->lineEdit_4->text();
+	//// 从界面上读取值
+	//QString startTime = ui->lineEdit->text();
+	//QString endTime = ui->lineEdit_2->text();
+	//QString deltaT = ui->lineEdit_3->text();
+	//QString writeInterval = ui->lineEdit_4->text();
 
-	// 使用正则表达式替换对应的数值
-	content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
-	content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
-	content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
-	content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + writeInterval + ";");
+	//// 使用正则表达式替换对应的数值
+	//content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
+	//content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
+	//content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
+	//content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + writeInterval + ";");
 
-	// 将修改后的内容写回文件
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
-	}
-	QTextStream out(&file);
-	out << content;
-	file.close();
+	//// 将修改后的内容写回文件
+	//if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+	//	return;
+	//}
+	//QTextStream out(&file);
+	//out << content;
+	//file.close();
 }
 
 void FormRun::cursorEnterPushButton()
 {
 	ui->label_6->show();
 }
-
 
 void FormRun::cursorLeavePushButton()
 {
@@ -131,4 +129,97 @@ void FormRun::on_pushButton_clicked_2()
 {
 	emit stopRun();
 }
+
+void FormRun::resizeEvent(QResizeEvent* event)
+{
+	ui->tabWidget->tabBar()->setFixedWidth(ui->tabWidget->width());
+}
+
+void FormRun::on_tabWidget_currentChanged(int index)
+{
+	QWidget* widget0 = ui->tabWidget->widget(0);
+	QWidget* widget1 = ui->tabWidget->widget(1);
+	QWidget* widget2 = ui->tabWidget->widget(2);
+	QPixmap pixmap0 = QPixmap::grabWidget(widget0);
+	QPixmap pixmap1 = QPixmap::grabWidget(widget1);
+	QPixmap pixmap2 = QPixmap::grabWidget(widget2);
+
+	int imageWidth = pixmap0.width() + pixmap1.width() + pixmap2.width();
+	int imageHeight = pixmap0.height();
+	QImage image(imageWidth, imageHeight, QImage::Format_ARGB32);
+	image.fill(QColor(Qt::black));
+
+	QPainter p;
+	p.begin(&image);
+	QBrush brush(QColor(255, 255, 0), Qt::Dense4Pattern);
+	p.setBrush(brush);
+	QPen pen;
+	pen.setColor(QColor(Qt::red));
+	p.setPen(pen);
+	p.drawPixmap(0, 0, pixmap0);
+	p.drawPixmap(pixmap0.width(), 0, pixmap1);
+	p.drawPixmap(pixmap0.width() + pixmap1.width(), 0, pixmap2);
+	p.end();
+
+	QLabel* animationWidget = new QLabel(ui->tabWidget);
+	animationWidget->setPixmap(QPixmap::fromImage(image));
+	QTabBar* bar = ui->tabWidget->tabBar();
+	QSize size1 = bar->size();
+	QSize size2 = ui->tabWidget->size();
+	int pixmapWidth = pixmap0.width();
+	int pixmapHeight = pixmap0.height();
+
+	animationWidget->show();
+	animationWidget->raise();
+	QPropertyAnimation* move = new QPropertyAnimation(animationWidget, "geometry");
+	move->setDuration(300);
+
+	if (previousIndex == 0) {
+		if (index == 1) {
+			move->setStartValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+			move->setEndValue(QRect(-pixmapWidth, bar->size().height()+10, pixmapWidth*2, pixmapHeight));
+		}
+		else if (index == 2) {
+			move->setStartValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+			move->setEndValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+		}
+	}
+	else if (previousIndex == 1) {
+		if (index == 0) {
+			move->setStartValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+			move->setEndValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+		}
+		else if (index == 2) {
+			move->setStartValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+			move->setEndValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+		}
+	}
+	else if (previousIndex == 2) {
+		if (index == 0) {
+			move->setStartValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+			move->setEndValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+		}
+		else if (index == 1) {
+			move->setStartValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+			move->setEndValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+		}
+	}
+
+	move->start();
+	connect(move, &QAbstractAnimation::finished, this, [=]() {
+		delete animationWidget;
+		delete move;
+		});
+
+	previousIndex = index;
+}
+
+void FormRun::on_radioButton_2_toggled(bool checked)
+{
+	ui->spinBox->setEnabled(checked);
+}
+
+
+
+
 

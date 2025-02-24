@@ -8,6 +8,9 @@
 #include "GlobalData.h"
 #include <QMessageBox>
 #include <QTextStream>
+#include <QTabWidget>
+#include <QPropertyAnimation>
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };
@@ -26,9 +29,11 @@ public:
 public slots:
 	void cursorEnterPushButton();
 	void cursorLeavePushButton();
-
-	void on_pushButton_clicked();				//开始计算
-	void on_pushButton_clicked_2();				//停止计算
+	void on_pushButton_clicked();					//开始计算
+	void on_pushButton_clicked_2();					//停止计算
+	void resizeEvent(QResizeEvent* event);			
+	void on_tabWidget_currentChanged(int index);	
+	void on_radioButton_2_toggled(bool checked);
 
 signals:
 	void run();
@@ -36,4 +41,5 @@ signals:
 
 public:
 	Ui::FormRunClass *ui;
+	int previousIndex;
 };
