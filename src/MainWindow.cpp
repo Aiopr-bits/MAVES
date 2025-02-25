@@ -8,8 +8,9 @@ MainWindow::MainWindow(QWidget* parent)
 	, reverseTimer(new QTimer(this))
 	, loopPlayTimer(new QTimer(this))
 	, lastClickedButton(nullptr)
-	, process(this)
+	, processReadOutput(this)
 	, processRun(this)
+	, processDecomposeMergeMeshes(this)
 	, chart(new QChart())
 	, axisX(new QValueAxis())
 	, axisY(new QLogValueAxis())
@@ -141,8 +142,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
 	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//求解计算进程输出
-	connect(&process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);													//进程输出
-	connect(&process, &QProcess::readyReadStandardError, this, &MainWindow::onProcessError);													//进程错误
+	connect(&processDecomposeMergeMeshes, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeMergeMeshes);				//分解合并网格进程输出
 	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//求解计算进程结束
 	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//更新残差图
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//更新模型切分平面选择器的值
@@ -662,7 +662,7 @@ void MainWindow::getMeshPatchData(const std::string& casePath)
 	if (numPatches == 0)
 	{
 		std::cerr << "没有找到任何补丁。" << std::endl;
-		return ;
+		return;
 	}
 
 	// 禁用所有补丁
@@ -813,16 +813,19 @@ void MainWindow::formRun_run()
 	QString controlDictPath = caseDir + "/system/controlDict";
 
 	// 删除原来的计算结果
-	QDir dir(caseDir);
-	QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	foreach(QString folder, folders)
+	if (formRun->ui->checkBox->isChecked())
 	{
-		bool ok;
-		double folderNumber = folder.toDouble(&ok);
-		if (ok && folderNumber != 0.0)
+		QDir dir(caseDir);
+		QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		foreach(QString folder, folders)
 		{
-			QDir folderDir(caseDir + "/" + folder);
-			folderDir.removeRecursively();
+			bool ok;
+			double folderNumber = folder.toDouble(&ok);
+			if (ok && folderNumber != 0.0)
+			{
+				QDir folderDir(caseDir + "/" + folder);
+				folderDir.removeRecursively();
+			}
 		}
 	}
 
@@ -856,15 +859,49 @@ void MainWindow::formRun_run()
 		return;
 	}
 
-	// 构建并执行命令
-	QString command = application + " -case " + caseDir;
+	//串行计算
+	if (formRun->ui->radioButton->isChecked())
+	{
+		QString command = application + " -case " + caseDir;
+		processRun.setProgram("cmd.exe");
+		processRun.setArguments(QStringList() << "/C" << command);
+		processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+			args->flags |= CREATE_NO_WINDOW;
+			});
+		processRun.start();
+	}
+	//并行计算
+	else
+	{
+		//分解网格
+		QDir dir(caseDir);
+		QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		foreach(QString folder, folders)
+		{
+			if (folder.startsWith("processor"))
+			{
+				QDir folderDir(caseDir + "/" + folder);
+				folderDir.removeRecursively();
+			}
+		}
+		QString commandDecomposePar = "decomposePar -case " + caseDir;
+		processDecomposeMergeMeshes.setProgram("cmd.exe");
+		processDecomposeMergeMeshes.setArguments(QStringList() << "/C" << commandDecomposePar);
+		processDecomposeMergeMeshes.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+			args->flags |= CREATE_NO_WINDOW;
+			});
+		processDecomposeMergeMeshes.start();
+		processDecomposeMergeMeshes.waitForFinished(-1);
 
-	processRun.setProgram("cmd.exe");
-	processRun.setArguments(QStringList() << "/C" << command);
-	processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
-		args->flags |= CREATE_NO_WINDOW;
-		});
-	processRun.start();
+		//计算
+		QString commandRun = "mpiexec -np " + QString::number(formRun->ui->spinBox->value()) + " " + application + " -parallel -case " + caseDir;
+		processRun	.setProgram("cmd.exe");
+		processRun.setArguments(QStringList() << "/C" << commandRun);
+		processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+			args->flags |= CREATE_NO_WINDOW;
+			});
+		processRun.start();
+	}
 }
 
 void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -872,6 +909,23 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
 	formRun->on_pushButton_clicked_2();
+
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+
+	if (formRun->ui->radioButton_2->isChecked()) {
+		QString comandReconstructPar = "reconstructPar -case " + caseDir;
+		processDecomposeMergeMeshes.setProgram("cmd.exe");
+		processDecomposeMergeMeshes.setArguments(QStringList() << "/C" << comandReconstructPar);
+		processDecomposeMergeMeshes.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+			args->flags |= CREATE_NO_WINDOW;
+			});
+		processDecomposeMergeMeshes.start();
+		processDecomposeMergeMeshes.waitForFinished(-1);
+	}
+
 	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
 	updatePostProcessingPage(caseFilePath);
 }
@@ -883,8 +937,17 @@ void MainWindow::formRun_stopRun()
 	formRun->ui->label_12->hide();
 	formRun->ui->pushButton->show();
 
-	if (processRun.state() == QProcess::Running) {
-		processRun.kill();
+	if (formRun->ui->radioButton->isChecked()==true) {
+		if(processRun.state() == QProcess::Running) processRun.kill();
+	}
+
+	if (formRun->ui->radioButton_2->isChecked() == true)
+	{
+		if (processRun.state() == QProcess::Running)
+		{
+			QString killCommand = QString("taskkill /PID %1 /F /T").arg(processRun.processId());
+			QProcess::execute(killCommand);
+		}
 	}
 }
 
@@ -1389,20 +1452,20 @@ void MainWindow::onProcessRunOutput()
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
-		// 解析输出信息并更新图表
+		// 解析输出信息
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
 	}
 }
 
-void MainWindow::onProcessOutput()
+void MainWindow::onProcessDecomposeMergeMeshes()
 {
-	while (process.canReadLine()) {
-		QByteArray output = process.readLine();
+	while (processDecomposeMergeMeshes.canReadLine()) {
+		QByteArray output = processDecomposeMergeMeshes.readLine();
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
-		// 解析输出信息并更新图表
+		// 解析输出信息
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
 	}
@@ -1472,7 +1535,7 @@ void MainWindow::getNephogramPatchData(
 	vtkSmartPointer<vtkDoubleArray> timeValues = reader->GetTimeValues();
 	if (!timeValues || timeValues->GetNumberOfValues() == 0) {
 		std::cerr << "没有找到可用的时间步。" << std::endl;
-		return ;
+		return;
 	}
 
 	for (int i = 0; i < timeValues->GetNumberOfValues(); ++i) {
@@ -1486,9 +1549,9 @@ void MainWindow::getNephogramPatchData(
 	int numPatches = reader->GetNumberOfPatchArrays();
 	for (int i = 0; i < numPatches; ++i) {
 		const char* patchName = reader->GetPatchArrayName(i);
-		if (std::string(patchName).find("patch/") == 0 ) {
+		if (std::string(patchName).find("patch/") == 0) {
 			patchName = patchName + 6;
-			patchGroup.push_back(patchName);			
+			patchGroup.push_back(patchName);
 		}
 
 		if (strcmp(patchName, "internalMesh") == 0) {
@@ -1508,7 +1571,7 @@ void MainWindow::getNephogramPatchData(
 	vtkPolyData* polyData = geometryFilter->GetOutput();
 	if (!polyData || polyData->GetNumberOfPoints() == 0) {
 		std::cerr << "无法提取几何数据。" << std::endl;
-		return ;
+		return;
 	}
 
 	// 收集标量数组的范围
@@ -1637,8 +1700,8 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 
 	// 更新物理量下拉框
 	QStringList fieldNameList;
-	std::vector<std::string> fieldName = GlobalData::getInstance().getCaseData()->fieldName;	
-	for (const std::string& field : fieldName) fieldNameList.append(QString::fromStdString(field));	
+	std::vector<std::string> fieldName = GlobalData::getInstance().getCaseData()->fieldName;
+	for (const std::string& field : fieldName) fieldNameList.append(QString::fromStdString(field));
 	if (fieldNameList.size() == 0) return;
 	formPostprocessing->ui->comboBox_2->addItems(fieldNameList);
 
@@ -1648,7 +1711,7 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	for (const std::string& patchName : meshPatchNames) {
 		QStandardItem* item = new QStandardItem(QString::fromStdString(patchName));
 		item->setCheckable(true);
-		if(patchName != "internalMesh") item->setCheckState(Qt::Checked);
+		if (patchName != "internalMesh") item->setCheckState(Qt::Checked);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 		item->setSizeHint(QSize(0, 40));
 		formPostprocessing->listViewModel->appendRow(item);
@@ -1669,7 +1732,7 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
 		QStandardItem* item = formPostprocessing->listViewModel->item(i);
 		if (item->checkState() == Qt::Checked) {
-			if(item->text().toStdString() == "internalMesh") patchGroup.push_back(item->text().toStdString());
+			if (item->text().toStdString() == "internalMesh") patchGroup.push_back(item->text().toStdString());
 			else patchGroup.push_back("patch/" + item->text().toStdString());
 		}
 	}
@@ -1719,12 +1782,12 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 		render->ResetCamera();
 		renderWindow->Render();
 	}
-	
+
 	//切换到后处理子页面
 	on_pushButton_17_clicked();
 	ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
-	lastClickedButton = ui->pushButton_17;	
+	lastClickedButton = ui->pushButton_17;
 }
 
 void MainWindow::updateChart()
@@ -1748,15 +1811,6 @@ void MainWindow::updateChart()
 
 	chart->legend()->setAlignment(Qt::AlignRight);
 	chart->update();
-}
-
-void MainWindow::onProcessError()
-{
-	//while (process.canReadLine()) {
-	//	QByteArray error = process.readLine();
-	//	ui->textBrowser->append(QString::fromLocal8Bit(error));
-	//	ui->textBrowser->repaint(); 
-	//}
 }
 
 void MainWindow::onPlayTimerTimeout()
