@@ -16,6 +16,9 @@ public:
     WorkSpaceWindow(QWidget *parent = nullptr);
     ~WorkSpaceWindow();
 
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
 private slots:
     void on_PushButton_3_DoubleClicked();
 

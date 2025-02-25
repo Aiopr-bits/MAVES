@@ -49,6 +49,16 @@ WorkSpaceWindow::~WorkSpaceWindow()
     delete ui;
 }
 
+void WorkSpaceWindow::resizeEvent(QResizeEvent* event)
+{
+    QMainWindow::resizeEvent(event);
+    QSize buttonSize = ui->pushButton_3->size();
+    QIcon icon = ui->pushButton_3->icon();
+    QSize iconSize(buttonSize.width() * 0.8, buttonSize.height() * 0.8); 
+    icon.actualSize(iconSize);
+    ui->pushButton_3->setIconSize(iconSize);
+}
+
 void WorkSpaceWindow::on_PushButton_3_DoubleClicked()
 {
 	mainWindow.show();
