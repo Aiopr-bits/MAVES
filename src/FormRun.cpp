@@ -34,80 +34,162 @@ FormRun::~FormRun()
 
 void FormRun::importParameter()
 {
-	//QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
-	//QString caseDirPath = QFileInfo(casePath).absolutePath();
-	//QString filePath = caseDirPath + "/system/controlDict";
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QString caseDirPath = QFileInfo(casePath).absolutePath();
 
-	//QFile file(filePath);
-	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-	//	return;
-	//}
+	// 解析controlDict文件
+	QString filePath = caseDirPath + "/system/controlDict";
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
 
-	//QTextStream in(&file);
-	//QString content = in.readAll();
-	//file.close();
+	QTextStream in(&file);
+	QString content = in.readAll();
+	file.close();
 
-	//QRegularExpression startTimeRegex(R"(startTime\s+(\d*\.?\d+);)");
-	//QRegularExpression endTimeRegex(R"(endTime\s+(\d*\.?\d+);)");
-	//QRegularExpression deltaTRegex(R"(deltaT\s+(\d*\.?\d+);)");
-	//QRegularExpression writeIntervalRegex(R"(writeInterval\s+(\d*\.?\d+);)");
+	QRegularExpression startTimeRegex(R"(startTime\s+(\d*\.?\d+);)");
+	QRegularExpression endTimeRegex(R"(endTime\s+(\d*\.?\d+);)");
+	QRegularExpression deltaTRegex(R"(deltaT\s+(\d*\.?\d+);)");
+	QRegularExpression writeIntervalRegex(R"(writeInterval\s+(\d*\.?\d+);)");
 
-	//QRegularExpressionMatch startTimeMatch = startTimeRegex.match(content);
-	//QRegularExpressionMatch endTimeMatch = endTimeRegex.match(content);
-	//QRegularExpressionMatch deltaTMatch = deltaTRegex.match(content);
-	//QRegularExpressionMatch writeIntervalMatch = writeIntervalRegex.match(content);
+	QRegularExpressionMatch startTimeMatch = startTimeRegex.match(content);
+	QRegularExpressionMatch endTimeMatch = endTimeRegex.match(content);
+	QRegularExpressionMatch deltaTMatch = deltaTRegex.match(content);
+	QRegularExpressionMatch writeIntervalMatch = writeIntervalRegex.match(content);
 
-	//if (startTimeMatch.hasMatch()) {
-	//	ui->lineEdit->setText(startTimeMatch.captured(1));
-	//}
-	//if (endTimeMatch.hasMatch()) {
-	//	ui->lineEdit_2->setText(endTimeMatch.captured(1));
-	//}
-	//if (deltaTMatch.hasMatch()) {
-	//	ui->lineEdit_3->setText(deltaTMatch.captured(1));
-	//}
-	//if (writeIntervalMatch.hasMatch()) {
-	//	ui->lineEdit_4->setText(writeIntervalMatch.captured(1));
-	//}
+	if (startTimeMatch.hasMatch()) {
+		ui->lineEdit->setText(startTimeMatch.captured(1));
+	}
+	if (endTimeMatch.hasMatch()) {
+		ui->lineEdit_2->setText(endTimeMatch.captured(1));
+	}
+	if (deltaTMatch.hasMatch()) {
+		ui->lineEdit_3->setText(deltaTMatch.captured(1));
+	}
+	if (writeIntervalMatch.hasMatch()) {
+		ui->spinBox_2->setValue(writeIntervalMatch.captured(1).toDouble() / deltaTMatch.captured(1).toDouble());
+	}
+
+	//解析decomposeParDict文件
+	filePath = caseDirPath + "/system/decomposeParDict";
+	file.setFileName(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	in.setDevice(&file);
+	content = in.readAll();
+	file.close();
+
+	QRegularExpression nProcsRegex(R"(numberOfSubdomains\s+(\d+);)");
+	QRegularExpressionMatch nProcsMatch = nProcsRegex.match(content);
+
+	if (nProcsMatch.hasMatch()) {
+		ui->spinBox->setValue(nProcsMatch.captured(1).toInt());
+	}
+}
+
+// 因式分解函数
+std::vector<int> factorizeToThree(int nProcs) {
+	std::vector<int> bestFactors{ 1, 1, nProcs };
+	int minDiff = INT_MAX;
+
+	for (int a = 1; a <= nProcs; ++a) {
+		if ((long long)a * a * a > nProcs) break;
+		if (nProcs % a != 0) continue;
+		int remainder = nProcs / a;
+
+		for (int b = a; b <= remainder; ++b) {
+			if ((long long)a * b > nProcs) break;
+			if (remainder % b != 0) continue;
+			int c = remainder / b;
+
+			// 此时 a * b * c == nProcs
+			std::vector<int> current{ a, b, c };
+			std::sort(current.begin(), current.end());
+			int diff = current[2] - current[0];
+
+			// 更新最优解
+			if (diff < minDiff) {
+				minDiff = diff;
+				bestFactors = current;
+			}
+		}
+	}
+
+	// 将结果按大到小排序
+	std::sort(bestFactors.begin(), bestFactors.end(), std::greater<int>());
+	return bestFactors;
 }
 
 void FormRun::exportParameter()
 {
-	//QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
-	//QString caseDirPath = QFileInfo(casePath).absolutePath();
-	//QString filePath = caseDirPath + "/system/controlDict";
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QString caseDirPath = QFileInfo(casePath).absolutePath();
 
-	//QFile file(filePath);
-	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-	//	return;
-	//}
+	// 从界面上读取值
+	QString startTime = ui->lineEdit->text();
+	QString endTime = ui->lineEdit_2->text();
+	QString deltaT = ui->lineEdit_3->text();
+	QString writeInterval = ui->spinBox_2->text();
+	QString nProcs = ui->spinBox->text();
 
-	//QTextStream in(&file);
-	//QString content = in.readAll();
-	//file.close();
+	// 更新controlDict文件
+	QString filePath = caseDirPath + "/system/controlDict";
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
 
-	//// 从界面上读取值
-	//QString startTime = ui->lineEdit->text();
-	//QString endTime = ui->lineEdit_2->text();
-	//QString deltaT = ui->lineEdit_3->text();
-	//QString writeInterval = ui->lineEdit_4->text();
+	QTextStream in(&file);
+	QString content = in.readAll();
+	file.close();
 
-	//// 使用正则表达式替换对应的数值
-	//content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
-	//content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
-	//content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
-	//content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + writeInterval + ";");
+	// 使用正则表达式替换对应的数值
+	content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
+	content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
+	content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
+	content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + QString::number(writeInterval.toDouble() * deltaT.toDouble()) + ";");
 
-	//// 将修改后的内容写回文件
-	//if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-	//	QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-	//	return;
-	//}
-	//QTextStream out(&file);
-	//out << content;
-	//file.close();
+	// 将修改后的内容写回文件
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+	QTextStream out(&file);
+	out << content;
+	file.close();
+
+	// 更新decomposeParDict文件
+	filePath = caseDirPath + "/system/decomposeParDict";
+	file.setFileName(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	in.setDevice(&file);
+	content = in.readAll();
+	file.close();
+
+	content.replace(QRegularExpression(R"(numberOfSubdomains\s+\d+;)"), "numberOfSubdomains " + nProcs + ";");
+	std::vector<int> factors = factorizeToThree(nProcs.toInt());
+	QString n = "(" + QString::number(factors[0]) + " " + QString::number(factors[1]) + " " + QString::number(factors[2]) + ")";
+	content.replace(QRegularExpression(R"(\bn\s+\(\d+\s+\d+\s+\d+\);)"), "n 			" + n + ";");
+
+	// 将修改后的内容写回文件
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	QTextStream out2(&file);
+	out2 << content;
+	file.close();
 }
 
 void FormRun::cursorEnterPushButton()

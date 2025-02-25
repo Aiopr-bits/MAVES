@@ -311,7 +311,7 @@ void MainWindow::handleAction10Triggered()
 		//formTurbulence->importParameter();
 		//formPhysicalPropertyParameter->importParameter();
 		////formBoundaryConditions->importParameter();
-		//formRun->importParameter();
+		formRun->importParameter();
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
@@ -787,7 +787,7 @@ void MainWindow::formRun_run()
 	//formTurbulence->exportParameter();
 	//formPhysicalPropertyParameter->exportParameter();
 	////formBoundaryConditions->exportParameter();
-	//formRun->exportParameter();
+	formRun->exportParameter();
 
 	//隐藏开始按钮，显示停止按钮
 	QThread::msleep(500);
