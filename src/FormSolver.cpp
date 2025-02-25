@@ -1,4 +1,4 @@
-#include "FormSolver.h"
+ï»¿#include "FormSolver.h"
 
 FormSolver::FormSolver(QWidget* parent)
 	: QWidget(parent)
@@ -30,20 +30,20 @@ FormSolver::~FormSolver()
 
 bool FormSolver::importParameter()
 {
-	//»ñÈ¡°¸ÀıÂ·¾¶
+	//è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
 	QString controlDictPath = caseDir + "/system/controlDict";
 
-	// ´ò¿ª controlDict ÎÄ¼ş
+	// æ‰“å¼€ controlDict æ–‡ä»¶
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎŞ·¨´ò¿ª controlDict ÎÄ¼ş"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ controlDict æ–‡ä»¶"));
 		return false;
 	}
 
-	// ¶ÁÈ¡ controlDict ÎÄ¼şÖĞµÄ application ×Ö¶Î
+	// è¯»å– controlDict æ–‡ä»¶ä¸­çš„ application å­—æ®µ
 	QString application;
 	QTextStream in(&controlDictFile);
 	while (!in.atEnd()) {
@@ -62,7 +62,7 @@ bool FormSolver::importParameter()
 	controlDictFile.close();
 
 	if (application.isEmpty()) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("Î´ÕÒµ½ application ×Ö¶Î"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æœªæ‰¾åˆ° application å­—æ®µ"));
 		return false;
 	}
 	application == "rhoSimpleFoam" ? application = "steadyCompressibleSolver" : (application == "buoyantBoussinesqPimpleFoam" ? application = "transientIncompressibleSolver" : application);
@@ -99,7 +99,7 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(false);
 		ui->label_8->setText("");
 		GlobalData::getInstance().getCaseData()->solverName = "";
-		QMessageBox::warning(this, tr("´íÎó"), tr("Ôİ²»Ö§³Ö¸ÃÀàĞÍ°¸Àı"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æš‚ä¸æ”¯æŒè¯¥ç±»å‹æ¡ˆä¾‹"));
 		return false;
 	}
 }
@@ -109,21 +109,21 @@ bool FormSolver::exportParameter()
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QString caseDirPath = QFileInfo(casePath).absolutePath();
 	QString controlDictPath = caseDirPath + "/system/controlDict";
-	// ´ò¿ª controlDict ÎÄ¼ş
+	// æ‰“å¼€ controlDict æ–‡ä»¶
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
-		QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + controlDictPath);
+		QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + controlDictPath);
 		return false;
 	}
-	// ¶ÁÈ¡ controlDict ÎÄ¼şÄÚÈİ
+	// è¯»å– controlDict æ–‡ä»¶å†…å®¹
 	QTextStream in(&controlDictFile);
 	QString content = in.readAll();
 	controlDictFile.close();
-	// Ìæ»» controlDict ÎÄ¼şÖĞµÄ application ×Ö¶Î
+	// æ›¿æ¢ controlDict æ–‡ä»¶ä¸­çš„ application å­—æ®µ
 	QString application = ui->label_8->text();
 	if (application != "steadyCompressibleSolver" && application != "transientIncompressibleSolver")
 	{
-		QMessageBox::warning(this, "´íÎó", "Çó½âÆ÷²ÎÊıÅäÖÃ´íÎó");
+		QMessageBox::warning(this, "é”™è¯¯", "æ±‚è§£å™¨å‚æ•°é…ç½®é”™è¯¯");
 		return false;
 	}
 	application == "steadyCompressibleSolver" ? application = "rhoSimpleFoam" : (application == "transientIncompressibleSolver" ? application = "buoyantBoussinesqPimpleFoam" : application);
@@ -132,9 +132,9 @@ bool FormSolver::exportParameter()
 	rx.setMinimal(true);
 	content.replace(rx, "application     " + application + ";");
 
-	// ½«ĞŞ¸ÄºóµÄÄÚÈİĞ´Èë controlDict ÎÄ¼ş
+	// å°†ä¿®æ”¹åçš„å†…å®¹å†™å…¥ controlDict æ–‡ä»¶
 	if (!controlDictFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + controlDictPath);
+		QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + controlDictPath);
 		return false;
 	}
 	QTextStream out(&controlDictFile);

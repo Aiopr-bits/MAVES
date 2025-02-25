@@ -1,4 +1,4 @@
-#include "FormRun.h"
+ï»¿#include "FormRun.h"
 #include <QRegularExpressionValidator> 
 #include <QThread>
 #include <qtabbar.h>
@@ -14,7 +14,7 @@ FormRun::FormRun(QWidget* parent)
 	ui->label_12->hide();
 	ui->pushButton_2->hide();
 
-	// ÉèÖÃ lineEdit Ö»Ö§³ÖÕûÊıºÍĞ¡ÊıÊäÈë
+	// è®¾ç½® lineEdit åªæ”¯æŒæ•´æ•°å’Œå°æ•°è¾“å…¥
 	QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
 	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regExp, this);
 	ui->lineEdit->setValidator(validator);
@@ -40,7 +40,7 @@ void FormRun::importParameter()
 
 	//QFile file(filePath);
 	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-	//	QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+	//	QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 	//	return;
 	//}
 
@@ -80,7 +80,7 @@ void FormRun::exportParameter()
 
 	//QFile file(filePath);
 	//if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-	//	QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+	//	QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 	//	return;
 	//}
 
@@ -88,21 +88,21 @@ void FormRun::exportParameter()
 	//QString content = in.readAll();
 	//file.close();
 
-	//// ´Ó½çÃæÉÏ¶ÁÈ¡Öµ
+	//// ä»ç•Œé¢ä¸Šè¯»å–å€¼
 	//QString startTime = ui->lineEdit->text();
 	//QString endTime = ui->lineEdit_2->text();
 	//QString deltaT = ui->lineEdit_3->text();
 	//QString writeInterval = ui->lineEdit_4->text();
 
-	//// Ê¹ÓÃÕıÔò±í´ïÊ½Ìæ»»¶ÔÓ¦µÄÊıÖµ
+	//// ä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼æ›¿æ¢å¯¹åº”çš„æ•°å€¼
 	//content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
 	//content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
 	//content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
 	//content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + writeInterval + ";");
 
-	//// ½«ĞŞ¸ÄºóµÄÄÚÈİĞ´»ØÎÄ¼ş
+	//// å°†ä¿®æ”¹åçš„å†…å®¹å†™å›æ–‡ä»¶
 	//if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-	//	QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+	//	QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 	//	return;
 	//}
 	//QTextStream out(&file);

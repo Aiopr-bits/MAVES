@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "MainWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
@@ -24,17 +24,17 @@ MainWindow::MainWindow(QWidget* parent)
 	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
 	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 {
-	//È·±£µ±Ç°´°¿ÚËõĞ¡µ½ÈÎÎñÀ¸
+	//ç¡®ä¿å½“å‰çª—å£ç¼©å°åˆ°ä»»åŠ¡æ 
 	setWindowFlags(Qt::Window);
 #ifdef _WIN32
 	SetWindowLong(HWND(this->winId()), GWL_EXSTYLE, WS_EX_APPWINDOW);
 #endif
 
-	//È«ÆÁ
+	//å…¨å±
 	this->setWindowState(Qt::WindowMaximized);
 	ui->setupUi(this);
 
-	//³õÊ¼»¯ÈıÎ¬´°¿Ú
+	//åˆå§‹åŒ–ä¸‰ç»´çª—å£
 	renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 	render = vtkSmartPointer<vtkRenderer>::New();
 	ui->openGLWidget->setRenderWindow(renderWindow);
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget* parent)
 	render->GradientBackgroundOn();
 	addCoordinateAxes();
 
-	// ³õÊ¼»¯°´Å¥
+	// åˆå§‹åŒ–æŒ‰é’®
 	QPushButton* buttons[] = {
 		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
 		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
@@ -55,12 +55,12 @@ MainWindow::MainWindow(QWidget* parent)
 		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
 	}
 
-	//²¼¾Ö¹ÜÀí
+	//å¸ƒå±€ç®¡ç†
 	QList<int> sizes;
 	sizes << 400 << 100;
 	ui->splitter->setSizes(sizes);
 
-	//´´½¨¸÷¸ö×ÓÃæ°å
+	//åˆ›å»ºå„ä¸ªå­é¢æ¿
 	formGeometry = new FormGeometry(this);
 	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
@@ -92,18 +92,18 @@ MainWindow::MainWindow(QWidget* parent)
 	formPostprocessing->hide();
 	formModelClip->hide();
 
-	//³ÌĞòÆô¶¯µã»÷¼¸ºÎÒ³Ãæ
+	//ç¨‹åºå¯åŠ¨ç‚¹å‡»å‡ ä½•é¡µé¢
 	on_pushButton_clicked();
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton = ui->pushButton;
 
-	//¶ÔĞÅÏ¢Êä³ö¿ò¹ö¶¯Ìõ½øĞĞpolishÅ×¹â
+	//å¯¹ä¿¡æ¯è¾“å‡ºæ¡†æ»šåŠ¨æ¡è¿›è¡ŒpolishæŠ›å…‰
 	ui->textBrowser->verticalScrollBar()->style()->polish(ui->textBrowser->verticalScrollBar());
 
-	// ³õÊ¼»¯Í¼±í
-	axisX->setTitleText("µü´ú´ÎÊı");
+	// åˆå§‹åŒ–å›¾è¡¨
+	axisX->setTitleText("è¿­ä»£æ¬¡æ•°");
 	axisX->setLabelFormat("%d");
-	axisY->setTitleText("²Ğ²î");
+	axisY->setTitleText("æ®‹å·®");
 	axisY->setBase(10);
 	axisY->setMin(axisMinY);
 	axisY->setMax(axisMaxY);
@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget* parent)
 	chart->addAxis(axisY, Qt::AlignLeft);
 	chart->setAnimationOptions(QChart::SeriesAnimations);
 
-	// ÉèÖÃÍ¼±íµÄÉÏ¿òÏßºÍÓÒ¿òÏß
+	// è®¾ç½®å›¾è¡¨çš„ä¸Šæ¡†çº¿å’Œå³æ¡†çº¿
 	QPen pen(QColor(196, 196, 196));
 	pen.setWidth(1);
 	chart->setPlotAreaBackgroundVisible(true);
@@ -122,61 +122,61 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->chartView->setChart(chart);
 	ui->chartView->setRenderHint(QPainter::Antialiasing);
 
-	// ³õÊ¼»¯²Ğ²îÍ¼Ë¢ĞÂ¶¨Ê±Æ÷
+	// åˆå§‹åŒ–æ®‹å·®å›¾åˆ·æ–°å®šæ—¶å™¨
 	chartUpdateTimer->start(100);
 
-	// ¹¤¾ßÀ¸ĞÅºÅ´¦Àí
-	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//ĞÅÏ¢¿ò
-	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//xÕıÏò
-	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//x¸ºÏò
-	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);														//yÕıÏò
-	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);														//y¸ºÏò
-	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);														//zÕıÏò
-	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z¸ºÏò
-	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//ÊÊÓ¦´°¿Ú
-	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//Ä£ĞÍÇĞ·Ö
-	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//µ¼Èë°¸Àı
+	// å·¥å…·æ ä¿¡å·å¤„ç†
+	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//ä¿¡æ¯æ¡†
+	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//xæ­£å‘
+	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//xè´Ÿå‘
+	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);														//yæ­£å‘
+	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);														//yè´Ÿå‘
+	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);														//zæ­£å‘
+	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//zè´Ÿå‘
+	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//é€‚åº”çª—å£
+	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//æ¨¡å‹åˆ‡åˆ†
+	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//å¯¼å…¥æ¡ˆä¾‹
 
-	//Ö÷½çÃæÆäËûÊÂ¼ş´¦Àí
-	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//²¥·Å
-	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//µ¹·Å
-	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//Ñ­»·²¥·Å
-	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//Çó½â¼ÆËã½ø³ÌÊä³ö
-	connect(&processDecomposeMergeMeshes, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeMergeMeshes);				//·Ö½âºÏ²¢Íø¸ñ½ø³ÌÊä³ö
-	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//Çó½â¼ÆËã½ø³Ì½áÊø
-	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//¸üĞÂ²Ğ²îÍ¼
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//¸üĞÂÄ£ĞÍÇĞ·ÖÆ½ÃæÑ¡ÔñÆ÷µÄÖµ
+	//ä¸»ç•Œé¢å…¶ä»–äº‹ä»¶å¤„ç†
+	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//æ’­æ”¾
+	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//å€’æ”¾
+	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//å¾ªç¯æ’­æ”¾
+	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//æ±‚è§£è®¡ç®—è¿›ç¨‹è¾“å‡º
+	connect(&processDecomposeMergeMeshes, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeMergeMeshes);				//åˆ†è§£åˆå¹¶ç½‘æ ¼è¿›ç¨‹è¾“å‡º
+	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//æ±‚è§£è®¡ç®—è¿›ç¨‹ç»“æŸ
+	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//æ›´æ–°æ®‹å·®å›¾
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//æ›´æ–°æ¨¡å‹åˆ‡åˆ†å¹³é¢é€‰æ‹©å™¨çš„å€¼
 
-	//¸±¿ØÖÆÃæ°åÊÂ¼ş´¦Àí
-	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//µ¼Èë¼¸ºÎ
-	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//µ¼ÈëÍø¸ñ
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//Íø¸ñÓ¦ÓÃ
-	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);															//Íø¸ñÒ³ÃæItem½øÈë
-	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);															//Íø¸ñÒ³ÃæItemÍË³ö
-	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);		//Çó½âÆ÷¸Ä±ä£¬ÎïĞÔ²ÎÊı¿ØÖÆÃæ°åµ÷Õû
-	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//Çó½â¼ÆËã
-	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//Í£Ö¹¼ÆËã
-	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//¸üĞÂäÖÈ¾´°¿Ú
-	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);								//µÚÒ»Ö¡
-	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);						//ÉÏÒ»Ö¡
-	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);									//ÖØĞÂ²¥·Å
-	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);											//²¥·Å
-	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);								//ÏÂÒ»Ö¡
-	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);								//×îºóÒ»Ö¡
-	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);									//Ñ­»·²¥·Å
-	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//²¥·ÅÔİÍ£
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//·´Ïò²¥·Å
-	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//Ñ­»·²¥·Å
-	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);									//¼ÓÔØÊı¾İ
-	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);									//Ä£ĞÍÇĞ·ÖÒ³ÃæCheckBoxÇĞ»»
-	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//Ä£ĞÍÇĞ·ÖÒ³ÃæLineEditÖµ¸Ä±ä
-	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);												//Ä£ĞÍÇĞ·Ö£ºXÕıÏò
-	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);												//Ä£ĞÍÇĞ·Ö£ºYÕıÏò
-	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);												//Ä£ĞÍÇĞ·Ö£ºZÕıÏò
-	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);									//Ä£ĞÍÇĞ·Ö£ºÏà»ú·½Ïò
-	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);												//Ä£ĞÍÇĞ·Ö£º¶ÔÆëÊÓ½Ç
-	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);											//Ä£ĞÍÇĞ·Ö£ºÖØÖÃÆ½Ãæ
-	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);														//Ä£ĞÍÇĞ·Ö£ºÓ¦ÓÃ
+	//å‰¯æ§åˆ¶é¢æ¿äº‹ä»¶å¤„ç†
+	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//å¯¼å…¥å‡ ä½•
+	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//å¯¼å…¥ç½‘æ ¼
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//ç½‘æ ¼åº”ç”¨
+	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);															//ç½‘æ ¼é¡µé¢Itemè¿›å…¥
+	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);															//ç½‘æ ¼é¡µé¢Itemé€€å‡º
+	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);		//æ±‚è§£å™¨æ”¹å˜ï¼Œç‰©æ€§å‚æ•°æ§åˆ¶é¢æ¿è°ƒæ•´
+	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//æ±‚è§£è®¡ç®—
+	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//åœæ­¢è®¡ç®—
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//æ›´æ–°æ¸²æŸ“çª—å£
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);								//ç¬¬ä¸€å¸§
+	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);						//ä¸Šä¸€å¸§
+	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);									//é‡æ–°æ’­æ”¾
+	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);											//æ’­æ”¾
+	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);								//ä¸‹ä¸€å¸§
+	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);								//æœ€åä¸€å¸§
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);									//å¾ªç¯æ’­æ”¾
+	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//æ’­æ”¾æš‚åœ
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//åå‘æ’­æ”¾
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//å¾ªç¯æ’­æ”¾
+	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);									//åŠ è½½æ•°æ®
+	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);									//æ¨¡å‹åˆ‡åˆ†é¡µé¢CheckBoxåˆ‡æ¢
+	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//æ¨¡å‹åˆ‡åˆ†é¡µé¢LineEditå€¼æ”¹å˜
+	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);												//æ¨¡å‹åˆ‡åˆ†ï¼šXæ­£å‘
+	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);												//æ¨¡å‹åˆ‡åˆ†ï¼šYæ­£å‘
+	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);												//æ¨¡å‹åˆ‡åˆ†ï¼šZæ­£å‘
+	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);									//æ¨¡å‹åˆ‡åˆ†ï¼šç›¸æœºæ–¹å‘
+	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);												//æ¨¡å‹åˆ‡åˆ†ï¼šå¯¹é½è§†è§’
+	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);											//æ¨¡å‹åˆ‡åˆ†ï¼šé‡ç½®å¹³é¢
+	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);														//æ¨¡å‹åˆ‡åˆ†ï¼šåº”ç”¨
 }
 
 MainWindow::~MainWindow()
@@ -287,7 +287,7 @@ void MainWindow::handleAction9Triggered()
 void MainWindow::handleAction10Triggered()
 {
 	QString caseFilePath;
-	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM ÎÄ¼ş (*.foam);;"));
+	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM æ–‡ä»¶ (*.foam);;"));
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setViewMode(QFileDialog::Detail);
 
@@ -298,15 +298,15 @@ void MainWindow::handleAction10Triggered()
 		caseFilePath = dialog.selectedFiles().first();
 		if (caseFilePath.isEmpty()) return;
 		GlobalData::getInstance().clearAllData();
-		ui->textBrowser->append("Load case£º" + caseFilePath);
+		ui->textBrowser->append("Load caseï¼š" + caseFilePath);
 
-		//¸üĞÂÍø¸ñµ¼ÈëÒ³Ãæ
+		//æ›´æ–°ç½‘æ ¼å¯¼å…¥é¡µé¢
 		formMeshImport_import(caseFilePath);
 
-		//¸üĞÂºó´¦ÀíÊı¾İÒ³Ãæ(Ğè²¹³ä)
+		//æ›´æ–°åå¤„ç†æ•°æ®é¡µé¢(éœ€è¡¥å……)
 		updatePostProcessingPage(caseFilePath);
 
-		//¸üĞÂ²ÎÊıÅäÖÃÒ³Ãæ(Ğè²¹³ä)
+		//æ›´æ–°å‚æ•°é…ç½®é¡µé¢(éœ€è¡¥å……)
 		//formSolver->importParameter();
 		//formTurbulence->importParameter();
 		//formPhysicalPropertyParameter->importParameter();
@@ -315,7 +315,7 @@ void MainWindow::handleAction10Triggered()
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
-		QMessageBox::information(this, "ÌáÊ¾", "°¸Àıµ¼Èë³É¹¦");
+		QMessageBox::information(this, "æç¤º", "æ¡ˆä¾‹å¯¼å…¥æˆåŠŸ");
 	}
 }
 
@@ -406,10 +406,10 @@ void MainWindow::on_pushButton_3_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	formModelClip->ui->checkBox->setChecked(true);
 
-	//°´Å¥ÑÕÉ«´¦Àí
+	//æŒ‰é’®é¢œè‰²å¤„ç†
 	QPushButton* clickedButton = ui->pushButton_3;
 	if (clickedButton) {
-		// »¹Ô­ÉÏÒ»¸öµã»÷µÄ°´Å¥±³¾°É«
+		// è¿˜åŸä¸Šä¸€ä¸ªç‚¹å‡»çš„æŒ‰é’®èƒŒæ™¯è‰²
 		if (lastClickedButton) {
 			lastClickedButton->setStyleSheet(
 				"QPushButton {"
@@ -423,7 +423,7 @@ void MainWindow::on_pushButton_3_clicked()
 				"}"
 			);
 		}
-		// ÉèÖÃµ±Ç°µã»÷µÄ°´Å¥±³¾°É«
+		// è®¾ç½®å½“å‰ç‚¹å‡»çš„æŒ‰é’®èƒŒæ™¯è‰²
 		clickedButton->setStyleSheet(
 			"QPushButton {"
 			"    background-color: rgb(232, 232, 232);"
@@ -432,11 +432,11 @@ void MainWindow::on_pushButton_3_clicked()
 			"	 padding-left: 50px;"
 			"}"
 		);
-		// ¸üĞÂÉÏÒ»¸öµã»÷µÄ°´Å¥
+		// æ›´æ–°ä¸Šä¸€ä¸ªç‚¹å‡»çš„æŒ‰é’®
 		lastClickedButton = clickedButton;
 	}
 
-	//Æ½ÃæÑ¡ÔñÆ÷
+	//å¹³é¢é€‰æ‹©å™¨
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
@@ -491,7 +491,7 @@ void MainWindow::updatePlaneRepModelClipValues()
 	planeRepModelClip->GetOrigin(origin);
 	planeRepModelClip->GetNormal(normal);
 
-	// ÁÙÊ±½ûÓÃĞÅºÅ
+	// ä¸´æ—¶ç¦ç”¨ä¿¡å·
 	QSignalBlocker blocker1(formModelClip->ui->lineEdit);
 	QSignalBlocker blocker2(formModelClip->ui->lineEdit_2);
 	QSignalBlocker blocker3(formModelClip->ui->lineEdit_3);
@@ -513,7 +513,7 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎÄ¼ş²»´æÔÚ"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ–‡ä»¶ä¸å­˜åœ¨"));
 		return;
 	}
 
@@ -572,7 +572,7 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	}
 	else
 	{
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎÄ¼ş¸ñÊ½²»Ö§³Ö"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ–‡ä»¶æ ¼å¼ä¸æ”¯æŒ"));
 		return;
 	}
 
@@ -588,17 +588,17 @@ vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 	const std::string& casePath,
 	const std::vector<std::string>& patchGroup)
 {
-	// ´´½¨ OpenFOAM ¶ÁÈ¡Æ÷
+	// åˆ›å»º OpenFOAM è¯»å–å™¨
 	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
 	openFOAMReader->SetFileName(casePath.c_str());
 	openFOAMReader->SetCreateCellToPoint(1);
 	openFOAMReader->SetSkipZeroTime(1);
 
-	// ¸üĞÂĞÅÏ¢ÒÔ»ñÈ¡²¹¶¡Ãû³Æ
+	// æ›´æ–°ä¿¡æ¯ä»¥è·å–è¡¥ä¸åç§°
 	openFOAMReader->UpdateInformation();
 	openFOAMReader->DisableAllPatchArrays();
 
-	// Õë¶ÔpatchGroupÆôÓÃ¶ÔÓ¦µÄ²¹¶¡
+	// é’ˆå¯¹patchGroupå¯ç”¨å¯¹åº”çš„è¡¥ä¸
 	for (const auto& patchName : patchGroup)
 	{
 		if (patchName == "internalMesh")
@@ -612,10 +612,10 @@ vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 		}
 	}
 
-	// ¸üĞÂ¶ÁÈ¡Æ÷
+	// æ›´æ–°è¯»å–å™¨
 	openFOAMReader->Update();
 
-	// Ê¹ÓÃ vtkCompositeDataGeometryFilter ÌáÈ¡µ¥Ò»¼¸ºÎ
+	// ä½¿ç”¨ vtkCompositeDataGeometryFilter æå–å•ä¸€å‡ ä½•
 	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
 		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
 	geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
@@ -627,12 +627,12 @@ vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 		return nullptr;
 	}
 
-	// ´´½¨Ó³ÉäÆ÷
+	// åˆ›å»ºæ˜ å°„å™¨
 	vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
 	mapper->SetInputData(polyData);
 	mapper->ScalarVisibilityOff();
 
-	// ´´½¨µ¥Ò»Actor
+	// åˆ›å»ºå•ä¸€Actor
 	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
@@ -647,28 +647,28 @@ void MainWindow::getMeshPatchData(const std::string& casePath)
 {
 	std::vector<std::string> meshPatchNames;
 
-	// ´´½¨ OpenFOAM ¶ÁÈ¡Æ÷
+	// åˆ›å»º OpenFOAM è¯»å–å™¨
 	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
 		vtkSmartPointer<vtkOpenFOAMReader>::New();
 	openFOAMReader->SetFileName(casePath.c_str());
 	openFOAMReader->SetCreateCellToPoint(1);
 	openFOAMReader->SetSkipZeroTime(1);
 
-	// ¸üĞÂĞÅÏ¢ÒÔ»ñÈ¡²¹¶¡Ãû³Æ
+	// æ›´æ–°ä¿¡æ¯ä»¥è·å–è¡¥ä¸åç§°
 	openFOAMReader->UpdateInformation();
 
-	// »ñÈ¡ËùÓĞ²¹¶¡Ãû³Æ
+	// è·å–æ‰€æœ‰è¡¥ä¸åç§°
 	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
 	if (numPatches == 0)
 	{
-		std::cerr << "Ã»ÓĞÕÒµ½ÈÎºÎ²¹¶¡¡£" << std::endl;
+		std::cerr << "æ²¡æœ‰æ‰¾åˆ°ä»»ä½•è¡¥ä¸ã€‚" << std::endl;
 		return;
 	}
 
-	// ½ûÓÃËùÓĞ²¹¶¡
+	// ç¦ç”¨æ‰€æœ‰è¡¥ä¸
 	openFOAMReader->DisableAllPatchArrays();
 
-	// ±éÀúËùÓĞ²¹¶¡²¢Ìí¼Ó½ømeshPatchNames
+	// éå†æ‰€æœ‰è¡¥ä¸å¹¶æ·»åŠ è¿›meshPatchNames
 	for (int i = 0; i < numPatches; ++i)
 	{
 		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
@@ -694,7 +694,7 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎÄ¼ş²»´æÔÚ"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ–‡ä»¶ä¸å­˜åœ¨"));
 		return;
 	}
 
@@ -713,23 +713,23 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		render->ResetCamera();
 		renderWindow->Render();
 
-		//Íø¸ñµ¼Èë³É¹¦Ö®ºó£¬×Ô¶¯Ìø×ªµ½Íø¸ñÒ³Ãæ
+		//ç½‘æ ¼å¯¼å…¥æˆåŠŸä¹‹åï¼Œè‡ªåŠ¨è·³è½¬åˆ°ç½‘æ ¼é¡µé¢
 		on_pushButton_2_clicked();
 		ui->pushButton_2->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
 		lastClickedButton = ui->pushButton_2;
 
-		//Íø¸ñµ¼Èë³É¹¦,³õÊ¼»¯²ÎÊıÅäÖÃÒ³Ãæ(Ğè²¹³ä)
+		//ç½‘æ ¼å¯¼å…¥æˆåŠŸ,åˆå§‹åŒ–å‚æ•°é…ç½®é¡µé¢(éœ€è¡¥å……)
 		//formBoundaryConditions->onMeshImported();
 	}
 }
 
 void MainWindow::formMesh_apply()
 {
-	// ÒÆ³ıËùÓĞÒÑÌí¼ÓµÄÑİÔ±
+	// ç§»é™¤æ‰€æœ‰å·²æ·»åŠ çš„æ¼”å‘˜
 	render->RemoveAllViewProps();
 
-	// ±éÀú listViewModel ²¢¸ù¾İÑ¡ÖĞ×´Ì¬Ìí¼Óµ½
+	// éå† listViewModel å¹¶æ ¹æ®é€‰ä¸­çŠ¶æ€æ·»åŠ åˆ°
 	std::vector<std::string> patchGroup;
 	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
 	{
@@ -740,7 +740,7 @@ void MainWindow::formMesh_apply()
 		}
 	}
 
-	// ´´½¨ meshPatchActor
+	// åˆ›å»º meshPatchActor
 	vtkSmartPointer<vtkActor> meshPatchActor = createMeshPatchActor(GlobalData::getInstance().getCaseData()->casePath, patchGroup);
 	if (meshPatchActor)
 	{
@@ -752,7 +752,7 @@ void MainWindow::formMesh_apply()
 void MainWindow::formMesh_itemEntered(const QString& text)
 {
 	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	//// ½« QString ×ª»»Îª std::string
+	//// å°† QString è½¬æ¢ä¸º std::string
 	//std::string key = text.toStdString();
 	//auto actorIt = meshPatchActors.find(key);
 	//if (actorIt != meshPatchActors.end())
@@ -765,7 +765,7 @@ void MainWindow::formMesh_itemEntered(const QString& text)
 void MainWindow::formMesh_itemExited(const QString& text)
 {
 	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	//// ½« QString ×ª»»Îª std::string
+	//// å°† QString è½¬æ¢ä¸º std::string
 	//std::string key = text.toStdString();
 	//auto actorIt = meshPatchActors.find(key);
 	//if (actorIt != meshPatchActors.end())
@@ -779,23 +779,23 @@ void MainWindow::formRun_run()
 {
 	if (GlobalData::getInstance().getCaseData()->casePath.empty())
 	{
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÇëÏÈµ¼ÈëÍø¸ñ"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("è¯·å…ˆå¯¼å…¥ç½‘æ ¼"));
 		return;
 	}
-	//±£´æ½çÃæÉÏËùÓĞµÄÅäÖÃ²ÎÊı£¬²¢Ğ£ÑéÊÇ·ñ·ûºÏÒªÇó(Ğè²¹³ä)
+	//ä¿å­˜ç•Œé¢ä¸Šæ‰€æœ‰çš„é…ç½®å‚æ•°ï¼Œå¹¶æ ¡éªŒæ˜¯å¦ç¬¦åˆè¦æ±‚(éœ€è¡¥å……)
 	//formSolver->exportParameter();
 	//formTurbulence->exportParameter();
 	//formPhysicalPropertyParameter->exportParameter();
 	////formBoundaryConditions->exportParameter();
 	//formRun->exportParameter();
 
-	//Òş²Ø¿ªÊ¼°´Å¥£¬ÏÔÊ¾Í£Ö¹°´Å¥
+	//éšè—å¼€å§‹æŒ‰é’®ï¼Œæ˜¾ç¤ºåœæ­¢æŒ‰é’®
 	QThread::msleep(500);
 	formRun->ui->pushButton->hide();
 	formRun->ui->pushButton_2->show();
 	formRun->ui->label_12->show();
 
-	//³õÊ¼»¯²Ğ²îÍ¼Êı¾İ
+	//åˆå§‹åŒ–æ®‹å·®å›¾æ•°æ®
 	residuals.clear();
 	seriesMap.clear();
 	seriesRangeMap.clear();
@@ -806,13 +806,13 @@ void MainWindow::formRun_run()
 	axisMaxX = 0;
 	ui->tabWidget->setCurrentIndex(1);
 
-	//»ñÈ¡°¸ÀıÂ·¾¶
+	//è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
 	QString controlDictPath = caseDir + "/system/controlDict";
 
-	// É¾³ıÔ­À´µÄ¼ÆËã½á¹û
+	// åˆ é™¤åŸæ¥çš„è®¡ç®—ç»“æœ
 	if (formRun->ui->checkBox->isChecked())
 	{
 		QDir dir(caseDir);
@@ -829,14 +829,14 @@ void MainWindow::formRun_run()
 		}
 	}
 
-	// ´ò¿ª controlDict ÎÄ¼ş
+	// æ‰“å¼€ controlDict æ–‡ä»¶
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎŞ·¨´ò¿ª controlDict ÎÄ¼ş"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ controlDict æ–‡ä»¶"));
 		return;
 	}
 
-	// ¶ÁÈ¡ controlDict ÎÄ¼şÖĞµÄ application ×Ö¶Î
+	// è¯»å– controlDict æ–‡ä»¶ä¸­çš„ application å­—æ®µ
 	QString application;
 	QTextStream in(&controlDictFile);
 	while (!in.atEnd()) {
@@ -846,7 +846,7 @@ void MainWindow::formRun_run()
 			if (parts.size() >= 2) {
 				application = parts[1].trimmed();
 				if (application.endsWith(";")) {
-					application.chop(1); // È¥³ıÄ©Î²µÄ·ÖºÅ
+					application.chop(1); // å»é™¤æœ«å°¾çš„åˆ†å·
 				}
 				break;
 			}
@@ -855,11 +855,11 @@ void MainWindow::formRun_run()
 	controlDictFile.close();
 
 	if (application.isEmpty()) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("Î´ÕÒµ½ application ×Ö¶Î"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æœªæ‰¾åˆ° application å­—æ®µ"));
 		return;
 	}
 
-	//´®ĞĞ¼ÆËã
+	//ä¸²è¡Œè®¡ç®—
 	if (formRun->ui->radioButton->isChecked())
 	{
 		QString command = application + " -case " + caseDir;
@@ -870,10 +870,10 @@ void MainWindow::formRun_run()
 			});
 		processRun.start();
 	}
-	//²¢ĞĞ¼ÆËã
+	//å¹¶è¡Œè®¡ç®—
 	else
 	{
-		//·Ö½âÍø¸ñ
+		//åˆ†è§£ç½‘æ ¼
 		QDir dir(caseDir);
 		QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 		foreach(QString folder, folders)
@@ -893,7 +893,7 @@ void MainWindow::formRun_run()
 		processDecomposeMergeMeshes.start();
 		processDecomposeMergeMeshes.waitForFinished(-1);
 
-		//¼ÆËã
+		//è®¡ç®—
 		QString commandRun = "mpiexec -np " + QString::number(formRun->ui->spinBox->value()) + " " + application + " -parallel -case " + caseDir;
 		processRun	.setProgram("cmd.exe");
 		processRun.setArguments(QStringList() << "/C" << commandRun);
@@ -910,7 +910,7 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	Q_UNUSED(exitStatus);
 	formRun->on_pushButton_clicked_2();
 
-	//»ñÈ¡°¸ÀıÂ·¾¶
+	//è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
@@ -953,7 +953,7 @@ void MainWindow::formRun_stopRun()
 
 void MainWindow::formPostprocessing_apply()
 {
-	//¸üĞÂäÖÈ¾´°¿Ú
+	//æ›´æ–°æ¸²æŸ“çª—å£
 	render->RemoveAllViewProps();
 	string casePath = GlobalData::getInstance().getCaseData()->casePath;
 	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
@@ -973,40 +973,40 @@ void MainWindow::formPostprocessing_apply()
 	{
 		render->AddActor(actor);
 
-		// ´´½¨ÑÕÉ«´«Êäº¯Êı
+		// åˆ›å»ºé¢œè‰²ä¼ è¾“å‡½æ•°
 		vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
 		colorTransferFunction->SetColorSpaceToRGB();
 
-		// Ìí¼ÓÑÕÉ«µã
-		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // À¶É«
-		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // °×É«
-		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // ºìÉ«
+		// æ·»åŠ é¢œè‰²ç‚¹
+		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // è“è‰²
+		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // ç™½è‰²
+		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // çº¢è‰²
 
-		// ´´½¨Í¼Àı
+		// åˆ›å»ºå›¾ä¾‹
 		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
 		scalarBar->SetLookupTable(colorTransferFunction);
 		scalarBar->SetNumberOfLabels(4);
 		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // ÉèÖÃÍ¼ÀıµÄÎ»ÖÃ
-		scalarBar->SetWidth(0.06); // ÉèÖÃÍ¼ÀıµÄ¿í¶È£¨Ïà¶ÔÓÚäÖÈ¾´°¿ÚµÄ±ÈÀı£©
-		scalarBar->SetHeight(0.3); // ÉèÖÃÍ¼ÀıµÄ¸ß¶È£¨Ïà¶ÔÓÚäÖÈ¾´°¿ÚµÄ±ÈÀı£©
-		scalarBar->SetLabelFormat("%1.2e"); // ÉèÖÃ±êÇ©¸ñÊ½Îª¿ÆÑ§¼ÆÊı·¨£¬±£ÁôÁ½Î»Ğ¡Êı
+		scalarBar->SetPosition(0.92, 0.01); // è®¾ç½®å›¾ä¾‹çš„ä½ç½®
+		scalarBar->SetWidth(0.06); // è®¾ç½®å›¾ä¾‹çš„å®½åº¦ï¼ˆç›¸å¯¹äºæ¸²æŸ“çª—å£çš„æ¯”ä¾‹ï¼‰
+		scalarBar->SetHeight(0.3); // è®¾ç½®å›¾ä¾‹çš„é«˜åº¦ï¼ˆç›¸å¯¹äºæ¸²æŸ“çª—å£çš„æ¯”ä¾‹ï¼‰
+		scalarBar->SetLabelFormat("%1.2e"); // è®¾ç½®æ ‡ç­¾æ ¼å¼ä¸ºç§‘å­¦è®¡æ•°æ³•ï¼Œä¿ç•™ä¸¤ä½å°æ•°
 
-		// ÉèÖÃÍ¼Àı±êÌâµÄÎÄ±¾ÊôĞÔ
+		// è®¾ç½®å›¾ä¾‹æ ‡é¢˜çš„æ–‡æœ¬å±æ€§
 		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24); // ÉèÖÃ±êÌâ×ÖÌå´óĞ¡
-		titleTextProperty->SetColor(1.0, 1.0, 1.0); // ÉèÖÃ±êÌâÑÕÉ«Îª°×É«
-		titleTextProperty->SetBold(1); // ÉèÖÃ±êÌâÎª´ÖÌå
-		titleTextProperty->SetJustificationToCentered(); // ÉèÖÃ±êÌâ¾ÓÖĞ¶ÔÆë
+		titleTextProperty->SetFontSize(24); // è®¾ç½®æ ‡é¢˜å­—ä½“å¤§å°
+		titleTextProperty->SetColor(1.0, 1.0, 1.0); // è®¾ç½®æ ‡é¢˜é¢œè‰²ä¸ºç™½è‰²
+		titleTextProperty->SetBold(1); // è®¾ç½®æ ‡é¢˜ä¸ºç²—ä½“
+		titleTextProperty->SetJustificationToCentered(); // è®¾ç½®æ ‡é¢˜å±…ä¸­å¯¹é½
 		scalarBar->SetTitleTextProperty(titleTextProperty);
 
-		// ÉèÖÃÍ¼Àı±êÇ©µÄÎÄ±¾ÊôĞÔ
+		// è®¾ç½®å›¾ä¾‹æ ‡ç­¾çš„æ–‡æœ¬å±æ€§
 		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18); // ÉèÖÃ±êÇ©×ÖÌå´óĞ¡
-		labelTextProperty->SetColor(0, 0, 0); // ÉèÖÃ±êÇ©ÑÕÉ«ÎªºÚÉ«
+		labelTextProperty->SetFontSize(18); // è®¾ç½®æ ‡ç­¾å­—ä½“å¤§å°
+		labelTextProperty->SetColor(0, 0, 0); // è®¾ç½®æ ‡ç­¾é¢œè‰²ä¸ºé»‘è‰²
 		scalarBar->SetLabelTextProperty(labelTextProperty);
 
-		// Ìí¼ÓÍ¼Àıµ½äÖÈ¾Æ÷
+		// æ·»åŠ å›¾ä¾‹åˆ°æ¸²æŸ“å™¨
 		render->AddActor2D(scalarBar);
 		renderWindow->Render();
 	}
@@ -1081,7 +1081,7 @@ void MainWindow::formPostprocessing_loopPlayPause()
 void MainWindow::formPostprocessing_loadData()
 {
 	QString caseFilePath;
-	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM ÎÄ¼ş (*.foam);;"));
+	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM æ–‡ä»¶ (*.foam);;"));
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setViewMode(QFileDialog::Detail);
 
@@ -1099,7 +1099,7 @@ void MainWindow::formPostprocessing_loadData()
 
 void MainWindow::formModelClip_checkBoxToggle()
 {
-	//Èç¹ûÃ»ÓĞ¿É¼ûÑİÔ±ÔòÖ±½Ó·µ»Ø
+	//å¦‚æœæ²¡æœ‰å¯è§æ¼”å‘˜åˆ™ç›´æ¥è¿”å›
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
 	}
@@ -1193,7 +1193,7 @@ void MainWindow::formModelClip_alignView()
 	const double* viewUpPtr = camera->GetViewUp();
 	double viewUp[3] = { viewUpPtr[0], viewUpPtr[1], viewUpPtr[2] };
 	if (normal[0] == 0.0 && normal[1] == 0.0) {
-		viewUp[1] = 1.0; // Èç¹û·¨ÏòÁ¿ÔÚZÖá·½ÏòÉÏ£¬ÉèÖÃYÖáÎªÉÏ·½Ïò
+		viewUp[1] = 1.0; // å¦‚æœæ³•å‘é‡åœ¨Zè½´æ–¹å‘ä¸Šï¼Œè®¾ç½®Yè½´ä¸ºä¸Šæ–¹å‘
 	}
 	camera->SetViewUp(viewUp);
 
@@ -1208,16 +1208,16 @@ void MainWindow::formModelClip_resetPlane()
 		return;
 	}
 
-	// ÖØĞÂ´´½¨Æ½ÃæÑ¡ÔñÆ÷ºÍ±íÊ¾¶ÔÏó
+	// é‡æ–°åˆ›å»ºå¹³é¢é€‰æ‹©å™¨å’Œè¡¨ç¤ºå¯¹è±¡
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
 	formModelClip->ui->checkBox->setChecked(true);
 
-	// ÉèÖÃÆ½ÃæÑ¡ÔñÆ÷µÄ·ÅÖÃÒò×Ó
+	// è®¾ç½®å¹³é¢é€‰æ‹©å™¨çš„æ”¾ç½®å› å­
 	planeRepModelClip->SetPlaceFactor(1.5);
 
-	// »ñÈ¡ËùÓĞÑİÔ±µÄ±ß½ç
+	// è·å–æ‰€æœ‰æ¼”å‘˜çš„è¾¹ç•Œ
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
 	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
@@ -1239,7 +1239,7 @@ void MainWindow::formModelClip_resetPlane()
 		actor = actors->GetNextProp();
 	}
 
-	// ¼ÆËãÆ½ÃæÑ¡ÔñÆ÷µÄÔ­µãºÍ·¨ÏòÁ¿
+	// è®¡ç®—å¹³é¢é€‰æ‹©å™¨çš„åŸç‚¹å’Œæ³•å‘é‡
 	double origin[3];
 	origin[0] = (bounds[0] + bounds[1]) / 2.0;
 	origin[1] = (bounds[2] + bounds[3]) / 2.0;
@@ -1247,17 +1247,17 @@ void MainWindow::formModelClip_resetPlane()
 
 	double normal[3] = { 1, 1, 0 };
 
-	// ÉèÖÃÆ½ÃæÑ¡ÔñÆ÷µÄÔ­µãºÍ·¨ÏòÁ¿
+	// è®¾ç½®å¹³é¢é€‰æ‹©å™¨çš„åŸç‚¹å’Œæ³•å‘é‡
 	planeRepModelClip->SetOrigin(origin);
 	planeRepModelClip->SetNormal(normal);
 	planeRepModelClip->PlaceWidget(bounds);
 
-	// ÆôÓÃÆ½ÃæÑ¡ÔñÆ÷
+	// å¯ç”¨å¹³é¢é€‰æ‹©å™¨
 	planeWidgetModelClip->SetRepresentation(planeRepModelClip);
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
 	planeWidgetModelClip->On();
 
-	// äÖÈ¾´°¿Ú
+	// æ¸²æŸ“çª—å£
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -1270,24 +1270,24 @@ void MainWindow::formModelClip_apply()
 	formModelClip->ui->checkBox->setChecked(false);
 	formModelClip->ui->checkBox->setChecked(true);
 
-	// »ñÈ¡Æ½ÃæÑ¡ÔñÆ÷µÄÔ­µãºÍ·¨ÏòÁ¿
+	// è·å–å¹³é¢é€‰æ‹©å™¨çš„åŸç‚¹å’Œæ³•å‘é‡
 	double origin[3];
 	double normal[3];
 	planeRepModelClip->GetOrigin(origin);
 	planeRepModelClip->GetNormal(normal);
 
-	// ´´½¨Ò»¸öÆ½Ãæ
+	// åˆ›å»ºä¸€ä¸ªå¹³é¢
 	vtkSmartPointer<vtkPlane> plane = vtkSmartPointer<vtkPlane>::New();
 	plane->SetOrigin(origin);
 	plane->SetNormal(normal);
 
-	// »ñÈ¡µ±Ç°Ñ¡ÖĞµÄ»î¶¯±êÁ¿
+	// è·å–å½“å‰é€‰ä¸­çš„æ´»åŠ¨æ ‡é‡
 	QString activeScalar = this->formPostprocessing->ui->comboBox_2->currentText();
 
-	// ´æ´¢ÇĞ·ÖºóµÄÑİÔ±
+	// å­˜å‚¨åˆ‡åˆ†åçš„æ¼”å‘˜
 	std::vector<vtkSmartPointer<vtkActor>> clippedActors;
 
-	// ±éÀúËùÓĞ¿É¼ûµÄÑİÔ±²¢½øĞĞÇĞ·Ö
+	// éå†æ‰€æœ‰å¯è§çš„æ¼”å‘˜å¹¶è¿›è¡Œåˆ‡åˆ†
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
 	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
@@ -1309,17 +1309,17 @@ void MainWindow::formModelClip_apply()
 
 				if (polyData)
 				{
-					// Ê¹ÓÃÆ½ÃæÇĞ·Ö¶à±ßĞÎÊı¾İ
+					// ä½¿ç”¨å¹³é¢åˆ‡åˆ†å¤šè¾¹å½¢æ•°æ®
 					vtkSmartPointer<vtkClipPolyData> clipper = vtkSmartPointer<vtkClipPolyData>::New();
 					clipper->SetInputData(polyData);
 					clipper->SetClipFunction(plane);
 					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
 					clipper->Update();
 
-					// »ñÈ¡ÇĞ·ÖºóµÄÊı¾İ
+					// è·å–åˆ‡åˆ†åçš„æ•°æ®
 					vtkSmartPointer<vtkPolyData> clippedPolyData = clipper->GetOutput();
 
-					// ´´½¨ĞÂµÄÓ³ÉäÆ÷ºÍÑİÔ±
+					// åˆ›å»ºæ–°çš„æ˜ å°„å™¨å’Œæ¼”å‘˜
 					vtkSmartPointer<vtkPolyDataMapper> clippedMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 					clippedMapper->SetInputData(clippedPolyData);
 					clippedMapper->SetLookupTable(colorTransferFunction);
@@ -1329,10 +1329,10 @@ void MainWindow::formModelClip_apply()
 					clippedActor->SetMapper(clippedMapper);
 					clippedActor->GetProperty()->SetColor(actor_->GetProperty()->GetColor());
 
-					// ´æ´¢ÇĞ·ÖºóµÄÑİÔ±
+					// å­˜å‚¨åˆ‡åˆ†åçš„æ¼”å‘˜
 					clippedActors.push_back(clippedActor);
 
-					// ÒÆ³ıÔ­Ê¼ÑİÔ±
+					// ç§»é™¤åŸå§‹æ¼”å‘˜
 					render->RemoveActor(actor_);
 				}
 			}
@@ -1345,39 +1345,39 @@ void MainWindow::formModelClip_apply()
 
 				if (dataSet)
 				{
-					// Ê¹ÓÃ vtkClipDataSet ¶ÔÔ­Ê¼Êı¾İ½øĞĞ¼ô²Ã
+					// ä½¿ç”¨ vtkClipDataSet å¯¹åŸå§‹æ•°æ®è¿›è¡Œå‰ªè£
 					vtkSmartPointer<vtkClipDataSet> clipper = vtkSmartPointer<vtkClipDataSet>::New();
 					clipper->SetInputData(dataSet);
 					clipper->SetClipFunction(plane);
 					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
 					clipper->Update();
 
-					// ÌáÈ¡¼ô²ÃºóµÄ±íÃæ
+					// æå–å‰ªè£åçš„è¡¨é¢
 					vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
 					surfaceFilter->SetInputConnection(clipper->GetOutputPort());
 					surfaceFilter->Update();
 
 					vtkSmartPointer<vtkPolyData> cutSurface = surfaceFilter->GetOutput();
 
-					// ¼ì²é½á¹ûÊÇ·ñÓĞĞ§
+					// æ£€æŸ¥ç»“æœæ˜¯å¦æœ‰æ•ˆ
 					if (cutSurface->GetNumberOfPoints() > 0)
 					{
-						// ÉèÖÃ»î¶¯±êÁ¿Îªµ±Ç°Ñ¡ÖĞµÄÎïÀíÁ¿
+						// è®¾ç½®æ´»åŠ¨æ ‡é‡ä¸ºå½“å‰é€‰ä¸­çš„ç‰©ç†é‡
 						if (cutSurface->GetPointData()->HasArray(activeScalar.toStdString().c_str()))
 						{
 							cutSurface->GetPointData()->SetActiveScalars(activeScalar.toStdString().c_str());
 						}
 						else
 						{
-							QMessageBox::warning(this, "¾¯¸æ", "¼ô²ÃºóµÄÊı¾İ²»°üº¬±êÁ¿ '" + activeScalar + "'¡£");
+							QMessageBox::warning(this, "è­¦å‘Š", "å‰ªè£åçš„æ•°æ®ä¸åŒ…å«æ ‡é‡ '" + activeScalar + "'ã€‚");
 							continue;
 						}
 
-						// »ñÈ¡±êÁ¿·¶Î§£¨ÓëÔ­Ê¼Êı¾İÒ»ÖÂ£©
+						// è·å–æ ‡é‡èŒƒå›´ï¼ˆä¸åŸå§‹æ•°æ®ä¸€è‡´ï¼‰
 						double scalarRange[2];
 						cutSurface->GetPointData()->GetArray(activeScalar.toStdString().c_str())->GetRange(scalarRange);
 
-						// ´´½¨Ó³ÉäÆ÷ºÍÑİÔ±£¨ÇĞ·ÖÃæ£©
+						// åˆ›å»ºæ˜ å°„å™¨å’Œæ¼”å‘˜ï¼ˆåˆ‡åˆ†é¢ï¼‰
 						vtkSmartPointer<vtkPolyDataMapper> cutMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 						cutMapper->SetInputData(cutSurface);
 						cutMapper->SetLookupTable(colorTransferFunction);
@@ -1387,15 +1387,15 @@ void MainWindow::formModelClip_apply()
 						vtkSmartPointer<vtkActor> cutActor = vtkSmartPointer<vtkActor>::New();
 						cutActor->SetMapper(cutMapper);
 
-						// ÉèÖÃÇĞ·ÖÃæÑİÔ±ÊôĞÔ
+						// è®¾ç½®åˆ‡åˆ†é¢æ¼”å‘˜å±æ€§
 						cutActor->GetProperty()->SetOpacity(1.0);
 						cutActor->GetProperty()->EdgeVisibilityOff();
 
-						// ´æ´¢ÇĞ·ÖºóµÄÑİÔ±
+						// å­˜å‚¨åˆ‡åˆ†åçš„æ¼”å‘˜
 						clippedActors.push_back(cutActor);
 					}
 
-					// ÒÆ³ıÔ­Ê¼ÑİÔ±
+					// ç§»é™¤åŸå§‹æ¼”å‘˜
 					render->RemoveActor(actor_);
 				}
 			}
@@ -1403,13 +1403,13 @@ void MainWindow::formModelClip_apply()
 		actor = actors->GetNextProp();
 	}
 
-	// ½«ÇĞ·ÖºóµÄÑİÔ±Ìí¼Óµ½äÖÈ¾Æ÷ÖĞ
+	// å°†åˆ‡åˆ†åçš„æ¼”å‘˜æ·»åŠ åˆ°æ¸²æŸ“å™¨ä¸­
 	for (auto& clippedActor : clippedActors)
 	{
 		render->AddActor(clippedActor);
 	}
 
-	// äÖÈ¾´°¿Ú
+	// æ¸²æŸ“çª—å£
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -1417,7 +1417,7 @@ void MainWindow::onButtonClicked()
 {
 	QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
 	if (clickedButton) {
-		// »¹Ô­ÉÏÒ»¸öµã»÷µÄ°´Å¥±³¾°É«
+		// è¿˜åŸä¸Šä¸€ä¸ªç‚¹å‡»çš„æŒ‰é’®èƒŒæ™¯è‰²
 		if (lastClickedButton) {
 			lastClickedButton->setStyleSheet(
 				"QPushButton {"
@@ -1431,7 +1431,7 @@ void MainWindow::onButtonClicked()
 				"}"
 			);
 		}
-		// ÉèÖÃµ±Ç°µã»÷µÄ°´Å¥±³¾°É«
+		// è®¾ç½®å½“å‰ç‚¹å‡»çš„æŒ‰é’®èƒŒæ™¯è‰²
 		clickedButton->setStyleSheet(
 			"QPushButton {"
 			"    background-color: rgb(232, 232, 232);"
@@ -1440,7 +1440,7 @@ void MainWindow::onButtonClicked()
 			"	 padding-left: 50px;"
 			"}"
 		);
-		// ¸üĞÂÉÏÒ»¸öµã»÷µÄ°´Å¥
+		// æ›´æ–°ä¸Šä¸€ä¸ªç‚¹å‡»çš„æŒ‰é’®
 		lastClickedButton = clickedButton;
 	}
 }
@@ -1452,7 +1452,7 @@ void MainWindow::onProcessRunOutput()
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
-		// ½âÎöÊä³öĞÅÏ¢
+		// è§£æè¾“å‡ºä¿¡æ¯
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
 	}
@@ -1465,7 +1465,7 @@ void MainWindow::onProcessDecomposeMergeMeshes()
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
-		// ½âÎöÊä³öĞÅÏ¢
+		// è§£æè¾“å‡ºä¿¡æ¯
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
 	}
@@ -1475,12 +1475,12 @@ void MainWindow::parseOutput(const QString& output)
 {
 	QRegExp regex("Solving for (\\w+), Initial residual = ([\\d\\.eE\\-]+), Final residual = ([\\d\\.eE\\-]+)");
 	if (output.startsWith("Time = ")) {
-		// Óöµ½ĞÂµÄÊ±¼ä²½£¬¸üĞÂ QLineSeries
+		// é‡åˆ°æ–°çš„æ—¶é—´æ­¥ï¼Œæ›´æ–° QLineSeries
 		for (auto it = residuals.begin(); it != residuals.end(); ++it) {
 			const QString& variable = it.key();
 			double initialResidual = it.value();
 
-			// Èç¹û¸Ã±äÁ¿µÄ QLineSeries ²»´æÔÚ£¬Ôò´´½¨Ò»¸öĞÂµÄ
+			// å¦‚æœè¯¥å˜é‡çš„ QLineSeries ä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»ºä¸€ä¸ªæ–°çš„
 			if (!seriesMap.contains(variable)) {
 				QLineSeries* newSeries = new QLineSeries();
 				newSeries->setName(variable);
@@ -1490,7 +1490,7 @@ void MainWindow::parseOutput(const QString& output)
 				seriesRangeMap.insert(variable, qMakePair(initialResidual, initialResidual));
 			}
 
-			// ¸üĞÂ QLineSeries
+			// æ›´æ–° QLineSeries
 			seriesMap[variable]->append(axisMaxX, initialResidual);
 
 			if (initialResidual < axisMinY) {
@@ -1501,10 +1501,10 @@ void MainWindow::parseOutput(const QString& output)
 			}
 		}
 
-		// Çå¿Õµ±Ç°Ê±¼ä²½µÄ²Ğ²îÊı¾İ
+		// æ¸…ç©ºå½“å‰æ—¶é—´æ­¥çš„æ®‹å·®æ•°æ®
 		residuals.clear();
 
-		// ¸üĞÂÊ±¼ä²½
+		// æ›´æ–°æ—¶é—´æ­¥
 		currentTimeStep = output.split("=").last().trimmed().toDouble();
 		axisMaxX++;
 	}
@@ -1513,7 +1513,7 @@ void MainWindow::parseOutput(const QString& output)
 		QString variable = regex.cap(1);
 		double initialResidual = regex.cap(2).toDouble();
 
-		// ´æ´¢µ±Ç°Ê±¼ä²½µÄ²Ğ²îÊı¾İ
+		// å­˜å‚¨å½“å‰æ—¶é—´æ­¥çš„æ®‹å·®æ•°æ®
 		residuals[variable] = initialResidual;
 	}
 }
@@ -1534,7 +1534,7 @@ void MainWindow::getNephogramPatchData(
 
 	vtkSmartPointer<vtkDoubleArray> timeValues = reader->GetTimeValues();
 	if (!timeValues || timeValues->GetNumberOfValues() == 0) {
-		std::cerr << "Ã»ÓĞÕÒµ½¿ÉÓÃµÄÊ±¼ä²½¡£" << std::endl;
+		std::cerr << "æ²¡æœ‰æ‰¾åˆ°å¯ç”¨çš„æ—¶é—´æ­¥ã€‚" << std::endl;
 		return;
 	}
 
@@ -1545,7 +1545,7 @@ void MainWindow::getNephogramPatchData(
 	double lastTime = timeSteps.back();
 	reader->SetTimeValue(lastTime);
 
-	//»ñÈ¡Ìî³äpatchGroup
+	//è·å–å¡«å……patchGroup
 	int numPatches = reader->GetNumberOfPatchArrays();
 	for (int i = 0; i < numPatches; ++i) {
 		const char* patchName = reader->GetPatchArrayName(i);
@@ -1570,11 +1570,11 @@ void MainWindow::getNephogramPatchData(
 
 	vtkPolyData* polyData = geometryFilter->GetOutput();
 	if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		std::cerr << "ÎŞ·¨ÌáÈ¡¼¸ºÎÊı¾İ¡£" << std::endl;
+		std::cerr << "æ— æ³•æå–å‡ ä½•æ•°æ®ã€‚" << std::endl;
 		return;
 	}
 
-	// ÊÕ¼¯±êÁ¿Êı×éµÄ·¶Î§
+	// æ”¶é›†æ ‡é‡æ•°ç»„çš„èŒƒå›´
 	int arrayCount = polyData->GetPointData()->GetNumberOfArrays();
 	for (int i = 0; i < arrayCount; ++i) {
 		vtkDataArray* arr = polyData->GetPointData()->GetArray(i);
@@ -1601,7 +1601,7 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	const std::vector<std::string>& patchGroup,
 	const std::pair<double, double>& globalRange)
 {
-	// ´´½¨ OpenFOAM ¶ÁÈ¡Æ÷
+	// åˆ›å»º OpenFOAM è¯»å–å™¨
 	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
 		vtkSmartPointer<vtkOpenFOAMReader>::New();
 	openFOAMReader->SetFileName(casePath.c_str());
@@ -1610,10 +1610,10 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	openFOAMReader->SetTimeValue(timeValue);
 	openFOAMReader->UpdateInformation();
 
-	// »ñÈ¡²¢½ûÓÃÈ«²¿²¹¶¡
+	// è·å–å¹¶ç¦ç”¨å…¨éƒ¨è¡¥ä¸
 	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
 	openFOAMReader->DisableAllPatchArrays();
-	// ÆôÓÃÖ¸¶¨²¹¶¡
+	// å¯ç”¨æŒ‡å®šè¡¥ä¸
 	for (int i = 0; i < numPatches; ++i) {
 		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
 		for (const auto& groupPatch : patchGroup) {
@@ -1624,14 +1624,14 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 		}
 	}
 
-	// ÉèÖÃUPDATE_TIME_STEP
+	// è®¾ç½®UPDATE_TIME_STEP
 	vtkInformation* outInfo = openFOAMReader->GetOutputInformation(0);
 	outInfo->Set(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP(), timeValue);
 
-	// ¸üĞÂ¶ÁÈ¡Æ÷
+	// æ›´æ–°è¯»å–å™¨
 	openFOAMReader->Update();
 
-	// Ê¹ÓÃ vtkCompositeDataGeometryFilter ÌáÈ¡¼¸ºÎÊı¾İ
+	// ä½¿ç”¨ vtkCompositeDataGeometryFilter æå–å‡ ä½•æ•°æ®
 	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
 		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
 	geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
@@ -1639,29 +1639,29 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 
 	vtkPolyData* polyData = geometryFilter->GetOutput();
 	if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		std::cerr << "ÎŞ·¨ÌáÈ¡²¹¶¡µÄ¼¸ºÎÊı¾İ¡£" << std::endl;
+		std::cerr << "æ— æ³•æå–è¡¥ä¸çš„å‡ ä½•æ•°æ®ã€‚" << std::endl;
 		return nullptr;
 	}
 
-	// ÉèÖÃ»î¶¯±êÁ¿
+	// è®¾ç½®æ´»åŠ¨æ ‡é‡
 	if (!polyData->GetPointData()->HasArray(fieldName.c_str())) {
-		std::cerr << "Ö¸¶¨µÄÎïÀíÁ¿²»´æÔÚ£º" << fieldName << std::endl;
+		std::cerr << "æŒ‡å®šçš„ç‰©ç†é‡ä¸å­˜åœ¨ï¼š" << fieldName << std::endl;
 		return nullptr;
 	}
 	polyData->GetPointData()->SetActiveScalars(fieldName.c_str());
 
-	// ´´½¨ÑÕÉ«´«Êäº¯Êı£¨Ê¹ÓÃ´«ÈëµÄglobalRange£©
+	// åˆ›å»ºé¢œè‰²ä¼ è¾“å‡½æ•°ï¼ˆä½¿ç”¨ä¼ å…¥çš„globalRangeï¼‰
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction =
 		vtkSmartPointer<vtkColorTransferFunction>::New();
 	colorTransferFunction->SetColorSpaceToRGB();
-	// Ìí¼ÓÑÕÉ«µã£¨À¶-°×-ºì£©
+	// æ·»åŠ é¢œè‰²ç‚¹ï¼ˆè“-ç™½-çº¢ï¼‰
 	colorTransferFunction->AddRGBPoint(globalRange.first, 0.0, 127.0 / 255.0, 1.0);
 	colorTransferFunction->AddRGBPoint(
 		(globalRange.first + globalRange.second) / 2.0,
 		234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
 	colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0.0, 0.0);
 
-	// ´´½¨Ó³ÉäÆ÷£¬Ê¹ÓÃ×Ô¶¨Òå·¶Î§
+	// åˆ›å»ºæ˜ å°„å™¨ï¼Œä½¿ç”¨è‡ªå®šä¹‰èŒƒå›´
 	vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
 	mapper->SetInputData(polyData);
 	mapper->SetLookupTable(colorTransferFunction);
@@ -1669,7 +1669,7 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	mapper->SetScalarRange(globalRange.first, globalRange.second);
 	mapper->ScalarVisibilityOn();
 
-	// ´´½¨actor
+	// åˆ›å»ºactor
 	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->EdgeVisibilityOff();
@@ -1680,7 +1680,7 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 
 void MainWindow::updatePostProcessingPage(const QString& casePath)
 {
-	//ĞèÒªÇå³ıÖ®Ç°°¸ÀıĞÅÏ¢£¨Ğè²¹³ä£©
+	//éœ€è¦æ¸…é™¤ä¹‹å‰æ¡ˆä¾‹ä¿¡æ¯ï¼ˆéœ€è¡¥å……ï¼‰
 	if (GlobalData::getInstance().getCaseData()->casePath != casePath.toStdString()) {
 		GlobalData::getInstance().clearAllData();
 		GlobalData::getInstance().getCaseData()->casePath = casePath.toStdString();
@@ -1691,21 +1691,21 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	formPostprocessing->ui->comboBox_2->clear();
 	formPostprocessing->listViewModel->clear();
 
-	// ¸üĞÂÊ±¼ä²½ºÍÎïÀíÁ¿ÏÂÀ­¿ò
+	// æ›´æ–°æ—¶é—´æ­¥å’Œç‰©ç†é‡ä¸‹æ‹‰æ¡†
 	QStringList timeStepList;
 	std::vector<double> timeSteps = GlobalData::getInstance().getCaseData()->timeSteps;
 	for (const double& timeStep : timeSteps) timeStepList.append(QString::number(timeStep));
 	if (timeStepList.size() == 0) return;
 	formPostprocessing->ui->comboBox->addItems(timeStepList);
 
-	// ¸üĞÂÎïÀíÁ¿ÏÂÀ­¿ò
+	// æ›´æ–°ç‰©ç†é‡ä¸‹æ‹‰æ¡†
 	QStringList fieldNameList;
 	std::vector<std::string> fieldName = GlobalData::getInstance().getCaseData()->fieldName;
 	for (const std::string& field : fieldName) fieldNameList.append(QString::fromStdString(field));
 	if (fieldNameList.size() == 0) return;
 	formPostprocessing->ui->comboBox_2->addItems(fieldNameList);
 
-	//¸üĞÂ²¹¶¡ÏÂÁĞ±í
+	//æ›´æ–°è¡¥ä¸ä¸‹åˆ—è¡¨
 	const std::vector<std::string>& meshPatchNames = GlobalData::getInstance().getCaseData()->meshPatchNames;
 	if (meshPatchNames.size() == 0) return;
 	for (const std::string& patchName : meshPatchNames) {
@@ -1717,14 +1717,14 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 		formPostprocessing->listViewModel->appendRow(item);
 	}
 
-	// ¼ÆËãËùÓĞ item µÄ×Ü¸ß¶È
+	// è®¡ç®—æ‰€æœ‰ item çš„æ€»é«˜åº¦
 	int totalHeight = 0;
 	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
 		totalHeight += formPostprocessing->ui->listView->sizeHintForRow(i);
 	}
 	formPostprocessing->ui->listView->setFixedHeight(totalHeight + 2 * formPostprocessing->ui->listView->frameWidth());
 
-	//¸üĞÂäÖÈ¾´°¿Ú
+	//æ›´æ–°æ¸²æŸ“çª—å£
 	render->RemoveAllViewProps();
 	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
 	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
@@ -1743,47 +1743,47 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	{
 		render->AddActor(actor);
 
-		// ´´½¨ÑÕÉ«´«Êäº¯Êı
+		// åˆ›å»ºé¢œè‰²ä¼ è¾“å‡½æ•°
 		vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
 		colorTransferFunction->SetColorSpaceToRGB();
 
-		// Ìí¼ÓÑÕÉ«µã
-		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // À¶É«
-		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // °×É«
-		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // ºìÉ«
+		// æ·»åŠ é¢œè‰²ç‚¹
+		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // è“è‰²
+		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // ç™½è‰²
+		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // çº¢è‰²
 
-		// ´´½¨Í¼Àı
+		// åˆ›å»ºå›¾ä¾‹
 		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
 		scalarBar->SetLookupTable(colorTransferFunction);
 		scalarBar->SetNumberOfLabels(4);
 		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // ÉèÖÃÍ¼ÀıµÄÎ»ÖÃ
-		scalarBar->SetWidth(0.06); // ÉèÖÃÍ¼ÀıµÄ¿í¶È£¨Ïà¶ÔÓÚäÖÈ¾´°¿ÚµÄ±ÈÀı£©
-		scalarBar->SetHeight(0.3); // ÉèÖÃÍ¼ÀıµÄ¸ß¶È£¨Ïà¶ÔÓÚäÖÈ¾´°¿ÚµÄ±ÈÀı£©
-		scalarBar->SetLabelFormat("%1.2e"); // ÉèÖÃ±êÇ©¸ñÊ½Îª¿ÆÑ§¼ÆÊı·¨£¬±£ÁôÁ½Î»Ğ¡Êı
+		scalarBar->SetPosition(0.92, 0.01); // è®¾ç½®å›¾ä¾‹çš„ä½ç½®
+		scalarBar->SetWidth(0.06); // è®¾ç½®å›¾ä¾‹çš„å®½åº¦ï¼ˆç›¸å¯¹äºæ¸²æŸ“çª—å£çš„æ¯”ä¾‹ï¼‰
+		scalarBar->SetHeight(0.3); // è®¾ç½®å›¾ä¾‹çš„é«˜åº¦ï¼ˆç›¸å¯¹äºæ¸²æŸ“çª—å£çš„æ¯”ä¾‹ï¼‰
+		scalarBar->SetLabelFormat("%1.2e"); // è®¾ç½®æ ‡ç­¾æ ¼å¼ä¸ºç§‘å­¦è®¡æ•°æ³•ï¼Œä¿ç•™ä¸¤ä½å°æ•°
 
-		// ÉèÖÃÍ¼Àı±êÌâµÄÎÄ±¾ÊôĞÔ
+		// è®¾ç½®å›¾ä¾‹æ ‡é¢˜çš„æ–‡æœ¬å±æ€§
 		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24); // ÉèÖÃ±êÌâ×ÖÌå´óĞ¡
-		titleTextProperty->SetColor(1.0, 1.0, 1.0); // ÉèÖÃ±êÌâÑÕÉ«Îª°×É«
-		titleTextProperty->SetBold(1); // ÉèÖÃ±êÌâÎª´ÖÌå
-		titleTextProperty->SetJustificationToCentered(); // ÉèÖÃ±êÌâ¾ÓÖĞ¶ÔÆë
+		titleTextProperty->SetFontSize(24); // è®¾ç½®æ ‡é¢˜å­—ä½“å¤§å°
+		titleTextProperty->SetColor(1.0, 1.0, 1.0); // è®¾ç½®æ ‡é¢˜é¢œè‰²ä¸ºç™½è‰²
+		titleTextProperty->SetBold(1); // è®¾ç½®æ ‡é¢˜ä¸ºç²—ä½“
+		titleTextProperty->SetJustificationToCentered(); // è®¾ç½®æ ‡é¢˜å±…ä¸­å¯¹é½
 		scalarBar->SetTitleTextProperty(titleTextProperty);
 
-		// ÉèÖÃÍ¼Àı±êÇ©µÄÎÄ±¾ÊôĞÔ
+		// è®¾ç½®å›¾ä¾‹æ ‡ç­¾çš„æ–‡æœ¬å±æ€§
 		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18); // ÉèÖÃ±êÇ©×ÖÌå´óĞ¡
-		labelTextProperty->SetColor(0, 0, 0); // ÉèÖÃ±êÇ©ÑÕÉ«ÎªºÚÉ«
+		labelTextProperty->SetFontSize(18); // è®¾ç½®æ ‡ç­¾å­—ä½“å¤§å°
+		labelTextProperty->SetColor(0, 0, 0); // è®¾ç½®æ ‡ç­¾é¢œè‰²ä¸ºé»‘è‰²
 		scalarBar->SetLabelTextProperty(labelTextProperty);
 
-		// Ìí¼ÓÍ¼Àıµ½äÖÈ¾Æ÷
+		// æ·»åŠ å›¾ä¾‹åˆ°æ¸²æŸ“å™¨
 		render->AddActor2D(scalarBar);
 
 		render->ResetCamera();
 		renderWindow->Render();
 	}
 
-	//ÇĞ»»µ½ºó´¦Àí×ÓÒ³Ãæ
+	//åˆ‡æ¢åˆ°åå¤„ç†å­é¡µé¢
 	on_pushButton_17_clicked();
 	ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
@@ -1792,18 +1792,18 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 
 void MainWindow::updateChart()
 {
-	chart->axisX()->setTitleText("µü´ú´ÎÊı");
+	chart->axisX()->setTitleText("è¿­ä»£æ¬¡æ•°");
 	chart->axisX()->setRange(axisMinX, axisMaxX - 1);
 
-	// È·±£ axisY ±£³ÖÎª¶ÔÊı×ø±êÏµ
+	// ç¡®ä¿ axisY ä¿æŒä¸ºå¯¹æ•°åæ ‡ç³»
 	QLogValueAxis* logAxisY = new QLogValueAxis();
-	logAxisY->setTitleText("²Ğ²î");
+	logAxisY->setTitleText("æ®‹å·®");
 	logAxisY->setBase(10);
 	logAxisY->setRange(axisMinY, axisMaxY);
 	logAxisY->setLabelFormat("%.1e");
 	chart->setAxisY(logAxisY);
 
-	// ÉèÖÃºá×ø±êÎªÕûÊı
+	// è®¾ç½®æ¨ªåæ ‡ä¸ºæ•´æ•°
 	QValueAxis* axisX = qobject_cast<QValueAxis*>(chart->axisX());
 	if (axisX) {
 		axisX->setLabelFormat("%d");

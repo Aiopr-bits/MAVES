@@ -1,4 +1,4 @@
-#include "FormPhysicalPropertyParameter.h"
+ï»¿#include "FormPhysicalPropertyParameter.h"
 #include "FormSolver.h"
 
 FormPhysicalPropertyParameter::FormPhysicalPropertyParameter(QWidget *parent)
@@ -31,7 +31,7 @@ FormPhysicalPropertyParameter::~FormPhysicalPropertyParameter()
 
 bool FormPhysicalPropertyParameter::importParameter()
 {
-	//»ñÈ¡°¸ÀýÂ·¾¶
+	//èŽ·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
@@ -41,7 +41,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª thermophysicalProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ thermophysicalProperties æ–‡ä»¶"));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª transportProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ transportProperties æ–‡ä»¶"));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 
 bool FormPhysicalPropertyParameter::exportParameter()
 {
-	//»ñÈ¡°¸ÀýÂ·¾¶
+	//èŽ·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
@@ -181,7 +181,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª thermophysicalProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ thermophysicalProperties æ–‡ä»¶"));
 			return false;
 		}
 
@@ -211,7 +211,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 		}
 
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª thermophysicalProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ thermophysicalProperties æ–‡ä»¶"));
 			return false;
 		}
 		QTextStream out(&file);
@@ -223,7 +223,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª transportProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ transportProperties æ–‡ä»¶"));
 			return false;
 		}
 
@@ -247,7 +247,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 		}
 
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-			QMessageBox::warning(this, tr("´íÎó"), tr("ÎÞ·¨´ò¿ª transportProperties ÎÄ¼þ"));
+			QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ transportProperties æ–‡ä»¶"));
 			return false;
 		}
 		QTextStream out(&file);

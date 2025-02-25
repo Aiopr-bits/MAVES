@@ -1,4 +1,4 @@
-#include "FormGeometry.h"
+ï»¿#include "FormGeometry.h"
 #include <QFileDialog>
 
 FormGeometry::FormGeometry(QWidget *parent)
@@ -21,17 +21,17 @@ void FormGeometry::on_pushButton_clicked()
 	QString text = ui->comboBox->currentText();
 	QString filePath;
 	
-	if (text == "STP ÎÄ¼þ") {
-		filePath = QFileDialog::getOpenFileName(this, tr("´ò¿ªÎÄ¼þ"), "",
-			tr("STP ÎÄ¼þ (*.stp *.step);;"));
+	if (text == "STP æ–‡ä»¶") {
+		filePath = QFileDialog::getOpenFileName(this, tr("æ‰“å¼€æ–‡ä»¶"), "",
+			tr("STP æ–‡ä»¶ (*.stp *.step);;"));
 	}
-	else if (text == "IGES ÎÄ¼þ") {
-		filePath = QFileDialog::getOpenFileName(this, tr("´ò¿ªÎÄ¼þ"), "",
-			tr("IGES ÎÄ¼þ (*.igs *.iges);;"));
+	else if (text == "IGES æ–‡ä»¶") {
+		filePath = QFileDialog::getOpenFileName(this, tr("æ‰“å¼€æ–‡ä»¶"), "",
+			tr("IGES æ–‡ä»¶ (*.igs *.iges);;"));
 	}
-	else if (text == "BREP ÎÄ¼þ") {
-		filePath = QFileDialog::getOpenFileName(this, tr("´ò¿ªÎÄ¼þ"), "",
-			tr("BREP ÎÄ¼þ (*.brep);;"));
+	else if (text == "BREP æ–‡ä»¶") {
+		filePath = QFileDialog::getOpenFileName(this, tr("æ‰“å¼€æ–‡ä»¶"), "",
+			tr("BREP æ–‡ä»¶ (*.brep);;"));
 	}
 	else {
 		return;

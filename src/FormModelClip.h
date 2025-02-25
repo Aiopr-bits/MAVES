@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormModelClip.h"
@@ -17,24 +17,24 @@ public:
 
 public slots:
 	void onLineEditChanged();
-	void on_pushButton_2_clicked();							//XÕıÏò
-	void on_pushButton_3_clicked();							//YÕıÏò
-	void on_pushButton_4_clicked();							//ZÕıÏò
-	void on_pushButton_5_clicked();							//Ïà»ú·½Ïò
-	void on_pushButton_6_clicked();							//¶ÔÆëÊÓ½Ç
-	void on_pushButton_7_clicked();							//ÖØÖÃÆ½Ãæ
-	void on_pushButton_clicked();							//Ó¦ÓÃ
+	void on_pushButton_2_clicked();							//Xæ­£å‘
+	void on_pushButton_3_clicked();							//Yæ­£å‘
+	void on_pushButton_4_clicked();							//Zæ­£å‘
+	void on_pushButton_5_clicked();							//ç›¸æœºæ–¹å‘
+	void on_pushButton_6_clicked();							//å¯¹é½è§†è§’
+	void on_pushButton_7_clicked();							//é‡ç½®å¹³é¢
+	void on_pushButton_clicked();							//åº”ç”¨
 
 signals:
 	void checkBoxToggled(bool checked);
 	void lineEditsChanged();
-	void xPositive();										//XÕıÏò
-	void yPositive();										//YÕıÏò
-	void zPositive();										//ZÕıÏò
-	void cameraDirection();									//Ïà»ú·½Ïò
-	void alignView();										//¶ÔÆëÊÓ½Ç
-	void resetPlane();										//ÖØÖÃÆ½Ãæ
-	void apply();											//Ó¦ÓÃ
+	void xPositive();										//Xæ­£å‘
+	void yPositive();										//Yæ­£å‘
+	void zPositive();										//Zæ­£å‘
+	void cameraDirection();									//ç›¸æœºæ–¹å‘
+	void alignView();										//å¯¹é½è§†è§’
+	void resetPlane();										//é‡ç½®å¹³é¢
+	void apply();											//åº”ç”¨
 
 
 

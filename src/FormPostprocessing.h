@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormPostprocessing.h"
@@ -50,18 +50,18 @@ public:
 	~FormPostprocessing();
 
 public slots:
-	void on_pushButton_2_clicked();									//Ó¦ÓÃ°´Å¥
-	void on_pushButton_3_clicked();									//µÚÒ»Ö¡
-	void on_pushButton_4_clicked();									//ÉÏÒ»Ö¡
-	void on_pushButton_5_clicked();									//ÖØĞÂ²¥·Å
-	void on_pushButton_6_clicked();									//²¥·Å
-	void on_pushButton_7_clicked();									//ÏÂÒ»Ö¡
-	void on_pushButton_8_clicked();									//×îºóÒ»Ö¡
-	void on_pushButton_9_clicked();									//Ñ­»·²¥·Å
-	void on_pushButton_10_clicked();								//¼ÓÔØÊı¾İ
-	void on_pushButtonPlayTimerPause_clicked();						//²¥·ÅÔİÍ£
-	void on_pushButtonReverseTimerPause_clicked();					//·´Ïò²¥·Å
-	void on_pushButtonLoopPlayTimerPause_clicked();					//Ñ­»·²¥·Å
+	void on_pushButton_2_clicked();									//åº”ç”¨æŒ‰é’®
+	void on_pushButton_3_clicked();									//ç¬¬ä¸€å¸§
+	void on_pushButton_4_clicked();									//ä¸Šä¸€å¸§
+	void on_pushButton_5_clicked();									//é‡æ–°æ’­æ”¾
+	void on_pushButton_6_clicked();									//æ’­æ”¾
+	void on_pushButton_7_clicked();									//ä¸‹ä¸€å¸§
+	void on_pushButton_8_clicked();									//æœ€åä¸€å¸§
+	void on_pushButton_9_clicked();									//å¾ªç¯æ’­æ”¾
+	void on_pushButton_10_clicked();								//åŠ è½½æ•°æ®
+	void on_pushButtonPlayTimerPause_clicked();						//æ’­æ”¾æš‚åœ
+	void on_pushButtonReverseTimerPause_clicked();					//åå‘æ’­æ”¾
+	void on_pushButtonLoopPlayTimerPause_clicked();					//å¾ªç¯æ’­æ”¾
 
 
 signals:

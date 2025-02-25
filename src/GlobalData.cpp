@@ -1,25 +1,25 @@
-#include "GlobalData.h"
+ï»¿#include "GlobalData.h"
 
-// »ñÈ¡µ¥ÀıÊµÀı
+// è·å–å•ä¾‹å®ä¾‹
 GlobalData& GlobalData::getInstance()
 {
     static GlobalData instance;
     return instance;
 }
 
-// Ë½ÓĞ¹¹Ôìº¯Êı
+// ç§æœ‰æ„é€ å‡½æ•°
 GlobalData::GlobalData() {
     m_caseData = new CaseData();
 	clearAllData();
 }
 
-// ÉèÖÃÈ«¾ÖÊı¾İ
+// è®¾ç½®å…¨å±€æ•°æ®
 void GlobalData::setCaseData(const CaseData& data)
 {
 
 }
 
-// »ñÈ¡È«¾ÖÊı¾İ
+// è·å–å…¨å±€æ•°æ®
 CaseData* GlobalData::getCaseData() const
 {
     return m_caseData;

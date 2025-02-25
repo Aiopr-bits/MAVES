@@ -1,4 +1,4 @@
-#include "FormMeshImport.h"
+ï»¿#include "FormMeshImport.h"
 #include <QFileDialog>
 
 FormMeshImport::FormMeshImport(QWidget* parent)
@@ -28,9 +28,9 @@ void FormMeshImport::on_pushButton_2_clicked()
 	QString text = ui->comboBox->currentText();
 	QString filePath;
 
-	if (text == "OpenFOAM ÎÄ¼þ") {
-		filePath = QFileDialog::getOpenFileName(this, tr("´ò¿ªÎÄ¼þ"), "",
-			tr("OpenFOAM ÎÄ¼þ (*.foam);;"));
+	if (text == "OpenFOAM æ–‡ä»¶") {
+		filePath = QFileDialog::getOpenFileName(this, tr("æ‰“å¼€æ–‡ä»¶"), "",
+			tr("OpenFOAM æ–‡ä»¶ (*.foam);;"));
 	}
 	else {
 		return;

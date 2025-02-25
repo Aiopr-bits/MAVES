@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormRun.h"
@@ -29,8 +29,8 @@ public:
 public slots:
 	void cursorEnterPushButton();
 	void cursorLeavePushButton();
-	void on_pushButton_clicked();					//¿ªÊ¼¼ÆËã
-	void on_pushButton_clicked_2();					//Í£Ö¹¼ÆËã
+	void on_pushButton_clicked();					//å¼€å§‹è®¡ç®—
+	void on_pushButton_clicked_2();					//åœæ­¢è®¡ç®—
 	void resizeEvent(QResizeEvent* event);			
 	void on_tabWidget_currentChanged(int index);	
 	void on_radioButton_2_toggled(bool checked);

@@ -1,4 +1,4 @@
-#include "FormBoundaryConditions.h"
+ï»¿#include "FormBoundaryConditions.h"
 #include <QTextStream>
 #include <qdebug.h>
 
@@ -44,7 +44,7 @@ void FormBoundaryConditions::initListView()
 		listViewModel->appendRow(item);
 	}
 
-	// ¼ÆËãËùÓĞ item µÄ×Ü¸ß¶È
+	// è®¡ç®—æ‰€æœ‰ item çš„æ€»é«˜åº¦
 	int totalHeight = 0;
 	for (int i = 0; i < listViewModel->rowCount(); ++i) {
 		totalHeight += ui->listView->sizeHintForRow(i);
@@ -54,19 +54,19 @@ void FormBoundaryConditions::initListView()
 
 void FormBoundaryConditions::initTabWidget()
 {
-	//ÒÆ³ı ui->tabWidget ÖĞµÄËùÓĞ tab
+	//ç§»é™¤ ui->tabWidget ä¸­çš„æ‰€æœ‰ tab
 	for (int i = ui->tabWidget->count() - 1; i >= 0; --i) {
 		ui->tabWidget->removeTab(i);
 	}
 
-	// »ñÈ¡ËùÓĞ meshEdgeActors µÄÃû³Æ
+	// è·å–æ‰€æœ‰ meshEdgeActors çš„åç§°
 	std::vector<QString> meshEdgeActorsName;
 	const auto& meshEdgeActors = GlobalData::getInstance().getCaseData()->meshEdgeActors;
 	for (const auto& pair : meshEdgeActors) {
 		meshEdgeActorsName.push_back(pair.first);
 	}
 
-	// ÎªÃ¿¸ö meshEdgeActor ´´½¨Ò»¸öĞÂµÄ tab£¬²¢½«ÆäÌí¼Óµ½ ui->tabWidget ÖĞ
+	// ä¸ºæ¯ä¸ª meshEdgeActor åˆ›å»ºä¸€ä¸ªæ–°çš„ tabï¼Œå¹¶å°†å…¶æ·»åŠ åˆ° ui->tabWidget ä¸­
 	for (int i = 0; i < meshEdgeActorsName.size(); ++i) {
 		QString meshPartName = meshEdgeActorsName[i];
 		QWidget* tabPage = new QWidget();
@@ -82,10 +82,10 @@ void FormBoundaryConditions::initBoundaryConditions()
 	const auto& meshFaceActors = GlobalData::getInstance().getCaseData()->meshFaceActors;
 
 	std::vector<QString> physicalFields;
-	if (solverName == "steadyCompressibleSolver") { // ÍâÁ÷³¡
+	if (solverName == "steadyCompressibleSolver") { // å¤–æµåœº
 		physicalFields = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 	}
-	else if (solverName == "transientIncompressibleSolver") { // ÄÚÁ÷³¡
+	else if (solverName == "transientIncompressibleSolver") { // å†…æµåœº
 		physicalFields = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
 	}
 
@@ -108,7 +108,7 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 {
 	QFile file(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+		QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 		return;
 	}
 
@@ -117,17 +117,17 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 	content.replace("uniform", "");
 	file.close();
 
-	// ÌáÈ¡ boundaryField Ö®Ç°µÄÄÚÈİ
+	// æå– boundaryField ä¹‹å‰çš„å†…å®¹
 	QRegularExpression boundaryFieldRegex(R"(boundaryField\s*\{)");
 	QRegularExpressionMatch boundaryFieldMatch = boundaryFieldRegex.match(content);
 	if (!boundaryFieldMatch.hasMatch()) {
-		QMessageBox::warning(this, "´íÎó", "ÎŞ·¨½âÎöÎÄ¼ş: " + filePath);
+		QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•è§£ææ–‡ä»¶: " + filePath);
 		return;
 	}
 
 	QString preBoundaryFieldContent = content.left(boundaryFieldMatch.capturedStart());
 
-	// ÌáÈ¡±äÁ¿¶¨Òå
+	// æå–å˜é‡å®šä¹‰
 	QMap<QString, QString> variables;
 	QRegularExpression variableRegex(R"((\w+)\s+([\w\d\.\+\-eE\(\)\s\$]+);)");
 	QRegularExpressionMatchIterator varIt = variableRegex.globalMatch(preBoundaryFieldContent);
@@ -138,7 +138,7 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 		variables[varName] = varValue;
 	}
 
-	// µİ¹é½âÎö±äÁ¿Öµ
+	// é€’å½’è§£æå˜é‡å€¼
 	auto resolveVariable = [&variables](const QString& value) -> QString {
 		QString resolvedValue = value;
 		QRegularExpression varRefRegex(R"(\$(\w+))");
@@ -153,7 +153,7 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 		return resolvedValue;
 		};
 
-	// ½âÎöËùÓĞ±äÁ¿µÄÖµ
+	// è§£ææ‰€æœ‰å˜é‡çš„å€¼
 	for (auto it = variables.begin(); it != variables.end(); ++it) {
 		it.value() = resolveVariable(it.value());
 	}
@@ -161,7 +161,7 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 	QRegularExpression boundaryFieldRegex2(R"(boundaryField\s*\{([\s\S]*?)\n\})");
 	QRegularExpressionMatch match = boundaryFieldRegex2.match(content);
 	if (!match.hasMatch()) {
-		QMessageBox::warning(this, "´íÎó", "ÎŞ·¨½âÎöÎÄ¼ş: " + filePath);
+		QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•è§£ææ–‡ä»¶: " + filePath);
 		return;
 	}
 
@@ -193,7 +193,7 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 		QString type = typeMatch.hasMatch() ? typeMatch.captured(1) : "";
 		QString value = valueMatch.hasMatch() ? valueMatch.captured(1) : "";
 
-		//ÌØÊâ´¦Àí
+		//ç‰¹æ®Šå¤„ç†
 		if (type == "compressible::alphatWallFunction")type = "alphatWallFunction";
 		if (type == "externalWallHeatFluxTemperature")type = "heatFluxTemperature";
 
@@ -206,29 +206,29 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 
 void FormBoundaryConditions::importParameter()
 {
-	// »ñÈ¡°¸ÀıÂ·¾¶
+	// è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QString caseDirPath = QFileInfo(casePath).absolutePath();
 
 	std::string solverName = GlobalData::getInstance().getCaseData()->solverName;
 	std::vector<QString> fileNames;
-	if (solverName == "steadyCompressibleSolver") { // ÍâÁ÷³¡
+	if (solverName == "steadyCompressibleSolver") { // å¤–æµåœº
 		fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 	}
-	else if (solverName == "transientIncompressibleSolver") { // ÄÚÁ÷³¡
+	else if (solverName == "transientIncompressibleSolver") { // å†…æµåœº
 		fileNames = { "p", "T", "U", "p_rgh", "nut", "k", "epsilon", "alphat" };
 	}
 
-	// ³õÊ¼»¯±ß½çÌõ¼ş
+	// åˆå§‹åŒ–è¾¹ç•Œæ¡ä»¶
 	initBoundaryConditions();
 
-	// ½âÎöÃ¿¸öÎÄ¼ş²¢¸üĞÂ±ß½çÌõ¼ş
+	// è§£ææ¯ä¸ªæ–‡ä»¶å¹¶æ›´æ–°è¾¹ç•Œæ¡ä»¶
 	for (const QString& fileName : fileNames) {
 		QString filePath = caseDirPath + "/0/" + fileName;
 		parseBoundaryFile(filePath, fileName);
 	}
 
-	// ¸üĞÂÃ¿¸ö tab Ò³µÄ comboBox Ñ¡ÔñÏî
+	// æ›´æ–°æ¯ä¸ª tab é¡µçš„ comboBox é€‰æ‹©é¡¹
 	for (int i = 0; i < ui->tabWidget->count(); ++i) {
 		QString tabName = ui->tabWidget->tabText(i);
 		FormBoundaryConditionsTabWidget* tabWidget = qobject_cast<FormBoundaryConditionsTabWidget*>(ui->tabWidget->widget(i));
@@ -284,12 +284,12 @@ void FormBoundaryConditions::importParameter()
 
 void FormBoundaryConditions::exportParameter()
 {
-	// »ñÈ¡°¸ÀıÂ·¾¶
+	// è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QString caseDirPath = QFileInfo(casePath).absolutePath();
 	QStringList fileNames = { "p", "T", "U", "k", "nut", "omega", "alphat" };
 
-	// ½«½çÃæÉÏµÄĞŞ¸ÄĞ´Èë boundaryConditions ÖĞ
+	// å°†ç•Œé¢ä¸Šçš„ä¿®æ”¹å†™å…¥ boundaryConditions ä¸­
 	for (int i = 0; i < ui->tabWidget->count(); ++i) {
 		QString tabName = ui->tabWidget->tabText(i);
 		FormBoundaryConditionsTabWidget* tabWidget = qobject_cast<FormBoundaryConditionsTabWidget*>(ui->tabWidget->widget(i));
@@ -297,7 +297,7 @@ void FormBoundaryConditions::exportParameter()
 		auto updateBoundaryConditions = [&](QComboBox* comboBox, QLineEdit* lineEdit, const QString& field) {
 			boundaryConditions[field][tabName][0] = comboBox->currentText();
 
-			// ÌØÊâ´¦Àí
+			// ç‰¹æ®Šå¤„ç†
 			if (boundaryConditions[field][tabName][0] == "alphatWallFunction") boundaryConditions[field][tabName][0] = "compressible::alphatWallFunction";
 			if (boundaryConditions[field][tabName][0] == "heatFluxTemperature") boundaryConditions[field][tabName][0] = "externalWallHeatFluxTemperature";
 
@@ -319,12 +319,12 @@ void FormBoundaryConditions::exportParameter()
 		updateBoundaryConditions(tabWidget->ui->comboBox_7, tabWidget->ui->lineEdit_7, "alphat");
 	}
 
-	// ±éÀúÃ¿¸öÎïÀí³¡ÎÄ¼ş
+	// éå†æ¯ä¸ªç‰©ç†åœºæ–‡ä»¶
 	for (const QString& fileName : fileNames) {
 		QString filePath = caseDirPath + "/0/" + fileName;
 		QFile file(filePath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-			QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+			QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 			continue;
 		}
 
@@ -332,16 +332,16 @@ void FormBoundaryConditions::exportParameter()
 		QString content = in.readAll();
 		file.close();
 
-		// ÌáÈ¡ boundaryField Ö®Ç°µÄÄÚÈİ
+		// æå– boundaryField ä¹‹å‰çš„å†…å®¹
 		QRegularExpression boundaryFieldRegex(R"(boundaryField\s*\{)");
 		QRegularExpressionMatch boundaryFieldMatch = boundaryFieldRegex.match(content);
 		if (!boundaryFieldMatch.hasMatch()) {
-			QMessageBox::warning(this, "´íÎó", "ÎŞ·¨½âÎöÎÄ¼ş: " + filePath);
+			QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•è§£ææ–‡ä»¶: " + filePath);
 			return;
 		}
 		QString preBoundaryFieldContent = content.left(boundaryFieldMatch.capturedStart());
 
-		// Ïò preBoundaryFieldContent ÖĞĞ´Èë boundaryField µÄ²¿·Ö
+		// å‘ preBoundaryFieldContent ä¸­å†™å…¥ boundaryField çš„éƒ¨åˆ†
 		QStringList specialTypes = { "fixedValue", "externalWallHeatFluxTemperature", "inletOutlet", "kqRWallFunction", "nutkWallFunction", "omegaWallFunction", "compressible::alphatWallFunction", "calculated" };
 		preBoundaryFieldContent += "boundaryField\n{\n";
 		const auto& boundaryField = boundaryConditions[fileName];
@@ -367,9 +367,9 @@ void FormBoundaryConditions::exportParameter()
 		}
 		preBoundaryFieldContent += "}\n";
 
-		// ½« preBoundaryFieldContent Ğ´ÈëÎÄ¼ş£¬Ìæ»»Ô­À´µÄÎÄ¼şÄÚÈİ
+		// å°† preBoundaryFieldContent å†™å…¥æ–‡ä»¶ï¼Œæ›¿æ¢åŸæ¥çš„æ–‡ä»¶å†…å®¹
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-			QMessageBox::warning(this, "´íÎó", "ÎŞ·¨´ò¿ªÎÄ¼ş: " + filePath);
+			QMessageBox::warning(this, "é”™è¯¯", "æ— æ³•æ‰“å¼€æ–‡ä»¶: " + filePath);
 			continue;
 		}
 		QTextStream out(&file);
@@ -393,6 +393,6 @@ void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
 		}
 	}
 
-	//ui->verticalSpacer_3Òş²Ø
+	//ui->verticalSpacer_3éšè—
 	ui->verticalSpacer_3->changeSize(20, 0, QSizePolicy::Minimum, QSizePolicy::Fixed);
 }

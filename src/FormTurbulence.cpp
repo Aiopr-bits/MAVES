@@ -1,4 +1,4 @@
-#include "FormTurbulence.h"
+ï»¿#include "FormTurbulence.h"
 #include <QRegularExpression>
 
 FormTurbulence::FormTurbulence(QWidget *parent)
@@ -23,20 +23,20 @@ FormTurbulence::~FormTurbulence()
 
 bool FormTurbulence::importParameter()
 {
-	//»ñÈ¡°¸ÀıÂ·¾¶
+	//è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
 	QString turbulencePropertiesPath = caseDir + "/constant/turbulenceProperties";
 
-	// ´ò¿ª turbulencePropertiesPath ÎÄ¼ş
+	// æ‰“å¼€ turbulencePropertiesPath æ–‡ä»¶
 	QFile turbulencePropertiesFile(turbulencePropertiesPath);
 	if (!turbulencePropertiesFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎŞ·¨´ò¿ª turbulenceProperties ÎÄ¼ş"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ turbulenceProperties æ–‡ä»¶"));
 		return false;
 	}
 
-	// ¶ÁÈ¡ turbulenceProperties ÎÄ¼şÖĞµÄ simulationType ×Ö¶Î
+	// è¯»å– turbulenceProperties æ–‡ä»¶ä¸­çš„ simulationType å­—æ®µ
 	QString simulationType;
 	QTextStream in(&turbulencePropertiesFile);
 	while (!in.atEnd()) {
@@ -55,12 +55,12 @@ bool FormTurbulence::importParameter()
 
 
 	if (simulationType.isEmpty()) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("Î´ÕÒµ½ simulationType ×Ö¶Î"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æœªæ‰¾åˆ° simulationType å­—æ®µ"));
 		return false;
 	}
 
 	if (simulationType == "RAS") {
-		//ÇĞ»»µ½ RAS Ä£ĞÍ
+		//åˆ‡æ¢åˆ° RAS æ¨¡å‹
 		for (int i = 0; i < ui->comboBox->count(); ++i) {
 			if (ui->comboBox->itemText(i) == "RAS") {
 				ui->comboBox->setCurrentIndex(i);
@@ -68,7 +68,7 @@ bool FormTurbulence::importParameter()
 			}
 		}
 
-		// ¶ÁÈ¡ turbulenceProperties ÎÄ¼şÖĞµÄRASModel×Ö¶Î
+		// è¯»å– turbulenceProperties æ–‡ä»¶ä¸­çš„RASModelå­—æ®µ
 		QString RASModel;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -90,7 +90,7 @@ bool FormTurbulence::importParameter()
 			}
 		}
 
-		//¶ÁÈ¡turbulenceProperties ÎÄ¼şÖĞµÄturbulence×Ö¶Î
+		//è¯»å–turbulenceProperties æ–‡ä»¶ä¸­çš„turbulenceå­—æ®µ
 		QString turbulence;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -107,7 +107,7 @@ bool FormTurbulence::importParameter()
 		}
 		ui->checkBox_3->setChecked(turbulence == "on" ? true : false);
 
-		//¶ÁÈ¡turbulenceProperties ÎÄ¼şÖĞµÄprintCoeffs×Ö¶Î
+		//è¯»å–turbulenceProperties æ–‡ä»¶ä¸­çš„printCoeffså­—æ®µ
 		QString printCoeffs;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -133,7 +133,7 @@ bool FormTurbulence::importParameter()
 			}
 		}
 
-		// ¶ÁÈ¡ turbulenceProperties ÎÄ¼şÖĞµÄLESModel×Ö¶Î
+		// è¯»å– turbulenceProperties æ–‡ä»¶ä¸­çš„LESModelå­—æ®µ
 		QString LESModel;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -155,7 +155,7 @@ bool FormTurbulence::importParameter()
 			}
 		}
 
-		//¶ÁÈ¡turbulenceProperties ÎÄ¼şÖĞµÄturbulence×Ö¶Î
+		//è¯»å–turbulenceProperties æ–‡ä»¶ä¸­çš„turbulenceå­—æ®µ
 		QString turbulence;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -172,7 +172,7 @@ bool FormTurbulence::importParameter()
 		}
 		ui->checkBox_5->setChecked(turbulence == "on" ? true : false);
 
-		//¶ÁÈ¡turbulenceProperties ÎÄ¼şÖĞµÄprintCoeffs×Ö¶Î
+		//è¯»å–turbulenceProperties æ–‡ä»¶ä¸­çš„printCoeffså­—æ®µ
 		QString printCoeffs;
 		while (!in.atEnd()) {
 			QString line = in.readLine();
@@ -206,58 +206,58 @@ bool FormTurbulence::importParameter()
 
 bool FormTurbulence::exportParameter()
 {
-	// »ñÈ¡°¸ÀıÂ·¾¶
+	// è·å–æ¡ˆä¾‹è·¯å¾„
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
 	QString turbulencePropertiesPath = caseDir + "/constant/turbulenceProperties";
 
-	// ´ò¿ª turbulencePropertiesPath ÎÄ¼ş
+	// æ‰“å¼€ turbulencePropertiesPath æ–‡ä»¶
 	QFile turbulencePropertiesFile(turbulencePropertiesPath);
 	if (!turbulencePropertiesFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎŞ·¨´ò¿ª turbulenceProperties ÎÄ¼ş"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ turbulenceProperties æ–‡ä»¶"));
 		return false;
 	}
 
-	// ¶ÁÈ¡ÎÄ¼şÄÚÈİ
+	// è¯»å–æ–‡ä»¶å†…å®¹
 	QTextStream in(&turbulencePropertiesFile);
 	QString content = in.readAll();
 	turbulencePropertiesFile.close();
 
-	// Ìæ»» simulationType ×Ö¶Î
+	// æ›¿æ¢ simulationType å­—æ®µ
 	QString simulationType = ui->comboBox->currentText();
 	content.replace(QRegExp("simulationType\\s+\\w+;"), "simulationType " + simulationType + ";");
 
 	if (simulationType == "RAS") {
-		// Ìæ»» RASModel ×Ö¶Î
+		// æ›¿æ¢ RASModel å­—æ®µ
 		QString RASModel = ui->comboBox_3->currentText();
 		content.replace(QRegExp("RASModel\\s+\\w+;"), "RASModel " + RASModel + ";");
 
-		// Ìæ»» turbulence ×Ö¶Î
+		// æ›¿æ¢ turbulence å­—æ®µ
 		QString turbulence = ui->checkBox_3->isChecked() ? "on" : "off";
 		content.replace(QRegExp("turbulence\\s+\\w+;"), "turbulence " + turbulence + ";");
 
-		// Ìæ»» printCoeffs ×Ö¶Î
+		// æ›¿æ¢ printCoeffs å­—æ®µ
 		QString printCoeffs = ui->checkBox_4->isChecked() ? "on" : "off";
 		content.replace(QRegExp("printCoeffs\\s+\\w+;"), "printCoeffs " + printCoeffs + ";");
 	}
 	else if (simulationType == "LES") {
-		// Ìæ»» LESModel ×Ö¶Î
+		// æ›¿æ¢ LESModel å­—æ®µ
 		QString LESModel = ui->comboBox_4->currentText();
 		content.replace(QRegExp("LESModel\\s+\\w+;"), "LESModel " + LESModel + ";");
 
-		// Ìæ»» turbulence ×Ö¶Î
+		// æ›¿æ¢ turbulence å­—æ®µ
 		QString turbulence = ui->checkBox_5->isChecked() ? "on" : "off";
 		content.replace(QRegExp("turbulence\\s+\\w+;"), "turbulence " + turbulence + ";");
 
-		// Ìæ»» printCoeffs ×Ö¶Î
+		// æ›¿æ¢ printCoeffs å­—æ®µ
 		QString printCoeffs = ui->checkBox_6->isChecked() ? "on" : "off";
 		content.replace(QRegExp("printCoeffs\\s+\\w+;"), "printCoeffs " + printCoeffs + ";");
 	}
 
-	// ½«ĞŞ¸ÄºóµÄÄÚÈİĞ´»ØÎÄ¼ş
+	// å°†ä¿®æ”¹åçš„å†…å®¹å†™å›æ–‡ä»¶
 	if (!turbulencePropertiesFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, tr("´íÎó"), tr("ÎŞ·¨´ò¿ª turbulenceProperties ÎÄ¼ş"));
+		QMessageBox::warning(this, tr("é”™è¯¯"), tr("æ— æ³•æ‰“å¼€ turbulenceProperties æ–‡ä»¶"));
 		return false;
 	}
 	QTextStream out(&turbulencePropertiesFile);
@@ -272,7 +272,7 @@ void FormTurbulence::onComboBoxTextChanged(const QString& text)
 	if (text == "RAS") {
 		ui->tabWidget->show();
 		for (int i = 0; i < ui->tabWidget->count(); ++i) {
-			if (ui->tabWidget->tabText(i) == "RAS²ÎÊı") {
+			if (ui->tabWidget->tabText(i) == "RASå‚æ•°") {
 				ui->tabWidget->setTabVisible(i, true);
 				ui->tabWidget->setCurrentIndex(i);
 			}
@@ -284,7 +284,7 @@ void FormTurbulence::onComboBoxTextChanged(const QString& text)
 	else if (text == "LES") {
 		ui->tabWidget->show();
 		for (int i = 0; i < ui->tabWidget->count(); ++i) {
-			if (ui->tabWidget->tabText(i) == "LES²ÎÊı") {
+			if (ui->tabWidget->tabText(i) == "LESå‚æ•°") {
 				ui->tabWidget->setTabVisible(i, true);
 				ui->tabWidget->setCurrentIndex(i);
 			}

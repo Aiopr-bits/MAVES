@@ -1,4 +1,4 @@
-#include "FormModelClip.h"
+ï»¿#include "FormModelClip.h"
 #include <QRegularExpressionValidator> 
 
 FormModelClip::FormModelClip(QWidget *parent)
@@ -7,7 +7,7 @@ FormModelClip::FormModelClip(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	// ÉèÖÃ lineEdit Ö»Ö§³ÖÕûÊýºÍÐ¡ÊýÊäÈë
+	// è®¾ç½® lineEdit åªæ”¯æŒæ•´æ•°å’Œå°æ•°è¾“å…¥
 	QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
 	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regExp, this);
 	ui->lineEdit->setValidator(validator);

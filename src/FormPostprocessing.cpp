@@ -1,4 +1,4 @@
-#include "FormPostprocessing.h"
+ï»¿#include "FormPostprocessing.h"
 #include <QSvgRenderer>
 #include <QPixmap>
 #include <QPainter>
@@ -21,9 +21,9 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
 	ui->listView->setItemDelegate(new CustomCheckBoxDelegate(this));
 
-	// ´´½¨²¢ÉèÖÃ pushButtonLoopPlayTimerPause
+	// åˆ›å»ºå¹¶è®¾ç½® pushButtonLoopPlayTimerPause
 	pushButtonLoopPlayTimerPause = new CustomHoverPushButton(this);
-	pushButtonLoopPlayTimerPause->setToolTip("Í£Ö¹²¥·Å");
+	pushButtonLoopPlayTimerPause->setToolTip("åœæ­¢æ’­æ”¾");
 	pushButtonLoopPlayTimerPause->setStyleSheet(
 		"QPushButton {"
 		"    background-color: rgb(255, 255, 255);"
@@ -37,9 +37,9 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->horizontalLayout_6->insertWidget(6, pushButtonLoopPlayTimerPause);
 	pushButtonLoopPlayTimerPause->hide();
 
-	// ´´½¨²¢ÉèÖÃ pushButtonPlayTimerPause
+	// åˆ›å»ºå¹¶è®¾ç½® pushButtonPlayTimerPause
 	pushButtonPlayTimerPause = new CustomHoverPushButton(this);
-	pushButtonPlayTimerPause->setToolTip("Í£Ö¹²¥·Å");
+	pushButtonPlayTimerPause->setToolTip("åœæ­¢æ’­æ”¾");
 	pushButtonPlayTimerPause->setStyleSheet(
 		"QPushButton {"
 		"    background-color: rgb(255, 255, 255);"
@@ -52,9 +52,9 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->horizontalLayout_6->insertWidget(3, pushButtonPlayTimerPause);
 	pushButtonPlayTimerPause->hide();
 
-	// ´´½¨²¢ÉèÖÃ pushButtonreverseTimerPause
+	// åˆ›å»ºå¹¶è®¾ç½® pushButtonreverseTimerPause
 	pushButtonReverseTimerPause = new CustomHoverPushButton(this);
-	pushButtonReverseTimerPause->setToolTip("Í£Ö¹²¥·Å");
+	pushButtonReverseTimerPause->setToolTip("åœæ­¢æ’­æ”¾");
 	pushButtonReverseTimerPause->setStyleSheet(
 		"QPushButton {"
 		"    background-color: rgb(255, 255, 255);"
@@ -67,7 +67,7 @@ FormPostprocessing::FormPostprocessing(QWidget* parent)
 	ui->horizontalLayout_6->insertWidget(2, pushButtonReverseTimerPause);
 	pushButtonReverseTimerPause->hide();
 
-	//Êó±êÌ§Æð
+	//é¼ æ ‡æŠ¬èµ·
 	connect(pushButtonPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonPlayTimerPause_clicked);
 	connect(pushButtonReverseTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonReverseTimerPause_clicked);
 	connect(pushButtonLoopPlayTimerPause, &QPushButton::released, this, &FormPostprocessing::on_pushButtonLoopPlayTimerPause_clicked);

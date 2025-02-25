@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+﻿#include "MainWindow.h"
 #include "WorkSpaceWindow.h"
 #include <QtWidgets/QApplication>
 #include <cstdlib>

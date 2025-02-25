@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QString>
 #include <QMap>
@@ -14,21 +14,21 @@ using namespace std;
 
 struct CaseData
 {
-    std::string casePath; 														                        // caseÂ·¾¶
-	std::string solverName;                                                                             //Çó½âÆ÷Ãû³Æ
+    std::string casePath; 														                        // caseè·¯å¾„
+	std::string solverName;                                                                             //æ±‚è§£å™¨åç§°
 
-	std::vector<double> timeSteps; 																		// Ê±¼ä²½
-	std::vector<std::string> fieldName; 																// ÎïÀíÁ¿Ãû³Æ
-	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // ÎïÀíÁ¿·¶Î§
-	std::vector<std::string> meshPatchNames; 															// Íø¸ñpatchÃû³Æ
+	std::vector<double> timeSteps; 																		// æ—¶é—´æ­¥
+	std::vector<std::string> fieldName; 																// ç‰©ç†é‡åç§°
+	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // ç‰©ç†é‡èŒƒå›´
+	std::vector<std::string> meshPatchNames; 															// ç½‘æ ¼patchåç§°
 
 
-    std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    //Íø¸ñ±ß½çactor
-    std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    //Íø¸ñÃæactor
+    std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    //ç½‘æ ¼è¾¹ç•Œactor
+    std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    //ç½‘æ ¼é¢actor
 
-	QList<QPair<double, QStringList>> timeFilePairs; 													// Ê±¼ä-VTKÎÄ¼şÂ·¾¶¶Ô
-	QStringList fieldNames; 																			// ÎïÀíÁ¿Ãû³Æ
-    QMap<QString, vtkSmartPointer<vtkScalarBarActor>> scalarBars;                                       // ÎïÀíÁ¿¶ÔÓ¦µÄÍ¼Àı
+	QList<QPair<double, QStringList>> timeFilePairs; 													// æ—¶é—´-VTKæ–‡ä»¶è·¯å¾„å¯¹
+	QStringList fieldNames; 																			// ç‰©ç†é‡åç§°
+    QMap<QString, vtkSmartPointer<vtkScalarBarActor>> scalarBars;                                       // ç‰©ç†é‡å¯¹åº”çš„å›¾ä¾‹
 
 
 };
@@ -36,17 +36,17 @@ struct CaseData
 class GlobalData
 {
 public:
-    static GlobalData& getInstance();                                                   // »ñÈ¡µ¥ÀıÊµÀı
+    static GlobalData& getInstance();                                                   // è·å–å•ä¾‹å®ä¾‹
 
-    GlobalData(const GlobalData&) = delete;                                             // ½ûÖ¹¿½±´¹¹Ôì
-    GlobalData& operator=(const GlobalData&) = delete;                                  // ½ûÖ¹¸³Öµ¹¹Ôì
+    GlobalData(const GlobalData&) = delete;                                             // ç¦æ­¢æ‹·è´æ„é€ 
+    GlobalData& operator=(const GlobalData&) = delete;                                  // ç¦æ­¢èµ‹å€¼æ„é€ 
 
-    void setCaseData(const CaseData& data);                                             // ÉèÖÃÈ«¾ÖÊı¾İ                                      
-	CaseData* getCaseData() const;													    // »ñÈ¡È«¾ÖÊı¾İ
-	void clearAllData(); 															    // Çå¿ÕÈ«¾ÖÊı¾İ
+    void setCaseData(const CaseData& data);                                             // è®¾ç½®å…¨å±€æ•°æ®                                      
+	CaseData* getCaseData() const;													    // è·å–å…¨å±€æ•°æ®
+	void clearAllData(); 															    // æ¸…ç©ºå…¨å±€æ•°æ®
 
 private:
-    GlobalData();                                                                       // Ë½ÓĞ¹¹Ôìº¯Êı                
-    CaseData* m_caseData;                                                               // È«¾ÖÊı¾İ                 
+    GlobalData();                                                                       // ç§æœ‰æ„é€ å‡½æ•°                
+    CaseData* m_caseData;                                                               // å…¨å±€æ•°æ®                 
 };
 

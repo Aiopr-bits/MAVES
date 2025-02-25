@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <QStyledItemDelegate>
 #include <QMouseEvent>
 #include <QApplication>
@@ -16,16 +16,16 @@ public:
         {
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
 
-            // »ñÈ¡ CheckBox µÄÇøÓò
+            // è·å– CheckBox çš„åŒºåŸŸ
             QStyleOptionViewItem viewOption(option);
             QRect checkRect = QApplication::style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOption, nullptr);
 
-            // ½«×ø±ê×ª»»ÎªÏà¶ÔÓÚÏîµÄ×ø±ê
+            // å°†åæ ‡è½¬æ¢ä¸ºç›¸å¯¹äºé¡¹çš„åæ ‡
             QPoint point = mouseEvent->pos() - option.rect.topLeft();
 
             if (!checkRect.contains(point))
             {
-                // µã»÷ÔÚ CheckBox Ö®Íâ£¬ÊÖ¶¯ÇĞ»»×´Ì¬
+                // ç‚¹å‡»åœ¨ CheckBox ä¹‹å¤–ï¼Œæ‰‹åŠ¨åˆ‡æ¢çŠ¶æ€
                 Qt::CheckState state = static_cast<Qt::CheckState>(index.data(Qt::CheckStateRole).toInt());
                 state = (state == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
                 model->setData(index, state, Qt::CheckStateRole);
@@ -33,7 +33,7 @@ public:
             }
         }
 
-        // ¶ÔÓÚÆäËûÊÂ¼ş£¬Ê¹ÓÃÄ¬ÈÏ´¦Àí
+        // å¯¹äºå…¶ä»–äº‹ä»¶ï¼Œä½¿ç”¨é»˜è®¤å¤„ç†
         return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 };

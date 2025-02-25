@@ -1,4 +1,4 @@
-#include "WorkSpaceWindow.h"
+ï»¿#include "WorkSpaceWindow.h"
 #include <QScreen>
 #include <QStandardItemModel>
 #include <QMessageBox>
@@ -20,10 +20,10 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
     //treeview
     QStandardItemModel* model = new QStandardItemModel(this);
     model->setColumnCount(1);
-    QStandardItem* parentItem = new QStandardItem("¹¤×÷Çø");
+    QStandardItem* parentItem = new QStandardItem("å·¥ä½œåŒº");
     model->appendRow(parentItem);
     for (int i = 0; i < 3; ++i) {
-        QStandardItem* subItem = new QStandardItem(QString("°¸Àý%1").arg(i + 1));
+        QStandardItem* subItem = new QStandardItem(QString("æ¡ˆä¾‹%1").arg(i + 1));
         parentItem->appendRow(subItem);
     }
     ui->treeView->setModel(model);

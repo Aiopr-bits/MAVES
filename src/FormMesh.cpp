@@ -1,4 +1,4 @@
-#include "FormMesh.h"
+ï»¿#include "FormMesh.h"
 #include <QCheckBox>
 #include <QLabel>
 #include <QComboBox>
@@ -30,13 +30,13 @@ FormMesh::~FormMesh()
 
 void FormMesh::updateForm()
 {
-    // »ñÈ¡È«¾ÖÊý¾ÝÊµÀýÖÐµÄ meshPatch
+    // èŽ·å–å…¨å±€æ•°æ®å®žä¾‹ä¸­çš„ meshPatch
     const auto& meshPatchNames = GlobalData::getInstance().getCaseData()->meshPatchNames;
 
-    // Çå¿ÕÏÖÓÐµÄÐÐ
+    // æ¸…ç©ºçŽ°æœ‰çš„è¡Œ
     listViewModel->clear();
 
-    // ±éÀú meshPatchNames ²¢Ìí¼Óµ½ listView ÖÐ
+    // éåŽ† meshPatchNames å¹¶æ·»åŠ åˆ° listView ä¸­
     for (const auto& meshPatchName : meshPatchNames)
     {
         QString actorName = QString::fromStdString(meshPatchName);
@@ -48,13 +48,13 @@ void FormMesh::updateForm()
         listViewModel->appendRow(item);
     }
 
-    // ¼ÆËãËùÓÐ item µÄ×Ü¸ß¶È
+    // è®¡ç®—æ‰€æœ‰ item çš„æ€»é«˜åº¦
     int totalHeight = 0;
     for (int i = 0; i < listViewModel->rowCount(); ++i) {
         totalHeight += ui->listView->sizeHintForRow(i);
     }
 
-    // ÉèÖÃ QListView µÄ¸ß¶È
+    // è®¾ç½® QListView çš„é«˜åº¦
     ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
 
     on_pushButton_clicked();
@@ -105,7 +105,7 @@ bool FormMesh::eventFilter(QObject* watched, QEvent* event)
                     lastIndex = QModelIndex();
                 }
             }
-            return false; // ¼ÌÐø´¦ÀíÆäËûÊÂ¼þ
+            return false; // ç»§ç»­å¤„ç†å…¶ä»–äº‹ä»¶
         }
         else if (event->type() == QEvent::Leave)
         {

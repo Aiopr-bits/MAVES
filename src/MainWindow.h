@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QMainWindow>
 #include <QMap>
@@ -127,18 +127,18 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-	void addCoordinateAxes();									    													//Ìí¼Ó×óÏÂ½ÇÈıÎ¬×ø±êÖá
-	void hideAllSubForm();										    													//Òş²ØËùÓĞ×Ó´°¿Ú
-	void parseOutput(const QString& output);																			//½âÎöÊä³ö
-	void updatePostProcessingPage(const QString& casePath);																//¸üĞÂºó´¦Àí×ÓÒ³ÃæĞÅÏ¢
-	void getMeshPatchData(const std::string& casePath); 																//»ñÈ¡Íø¸ñpatchÊı¾İ
-	void getNephogramPatchData(const std::string& casePath); 															//»ñÈ¡ÔÆÍ¼patchÊı¾İ
+	void addCoordinateAxes();									    													//æ·»åŠ å·¦ä¸‹è§’ä¸‰ç»´åæ ‡è½´
+	void hideAllSubForm();										    													//éšè—æ‰€æœ‰å­çª—å£
+	void parseOutput(const QString& output);																			//è§£æè¾“å‡º
+	void updatePostProcessingPage(const QString& casePath);																//æ›´æ–°åå¤„ç†å­é¡µé¢ä¿¡æ¯
+	void getMeshPatchData(const std::string& casePath); 																//è·å–ç½‘æ ¼patchæ•°æ®
+	void getNephogramPatchData(const std::string& casePath); 															//è·å–äº‘å›¾patchæ•°æ®
 
-	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//´´½¨Íø¸ñpatch actor
+	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//åˆ›å»ºç½‘æ ¼patch actor
 		const std::string& casePath,
 		const std::vector<std::string>& patchGroup);
 
-	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//´´½¨ÔÆÍ¼patch actor
+	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//åˆ›å»ºäº‘å›¾patch actor
 		const std::string& casePath,
 		double timeValue,
 		const std::string& fieldName,
@@ -146,70 +146,70 @@ public:
 		const std::pair<double, double>& globalRange);
 
 public slots:
-	//¹¤¾ßÀ¸ĞÅºÅ´¦Àí
-	void handleAction1Triggered();								    													//ĞÅÏ¢¿ò
-	void handleAction2Triggered();								    													//xÕıÏò
-	void handleAction3Triggered();								    													//x¸ºÏò
-	void handleAction4Triggered();								    													//yÕıÏò
-	void handleAction5Triggered();								    													//y¸ºÏò
-	void handleAction6Triggered();								    													//zÕıÏò
-	void handleAction7Triggered();								    													//z¸ºÏò
-	void handleAction8Triggered();								    													//ÊÊÓ¦´°¿Ú
-	void handleAction9Triggered();								    													//Ä£ĞÍÇĞ·Ö
-	void handleAction10Triggered();								    													//µ¼Èë°¸Àı
+	//å·¥å…·æ ä¿¡å·å¤„ç†
+	void handleAction1Triggered();								    													//ä¿¡æ¯æ¡†
+	void handleAction2Triggered();								    													//xæ­£å‘
+	void handleAction3Triggered();								    													//xè´Ÿå‘
+	void handleAction4Triggered();								    													//yæ­£å‘
+	void handleAction5Triggered();								    													//yè´Ÿå‘
+	void handleAction6Triggered();								    													//zæ­£å‘
+	void handleAction7Triggered();								    													//zè´Ÿå‘
+	void handleAction8Triggered();								    													//é€‚åº”çª—å£
+	void handleAction9Triggered();								    													//æ¨¡å‹åˆ‡åˆ†
+	void handleAction10Triggered();								    													//å¯¼å…¥æ¡ˆä¾‹
 
-	//¿ØÖÆÃæ°å°´Å¥µã»÷ÊÂ¼ş´¦Àí
-	void on_pushButton_clicked();								    													//¼¸ºÎÒ³Ãæ
-	void on_pushButton_4_clicked();								    													//Íø¸ñµ¼ÈëÒ³Ãæ
-	void on_pushButton_2_clicked();								   														//Íø¸ñÒ³Ãæ
-	void on_pushButton_5_clicked();								    													//Çó½âÆ÷Ò³Ãæ
-	void on_pushButton_6_clicked();								    													//ÍÄÁ÷Ä£ĞÍÒ³Ãæ
-	void on_pushButton_7_clicked();								    													//ÎïÀí²ÎÊıÒ³Ãæ
-	void on_pushButton_13_clicked();								    												//±ß½çÌõ¼şÒ³Ãæ
-	void on_pushButton_16_clicked();																					//Çó½â¼ÆËãÒ³Ãæ
-	void on_pushButton_17_clicked();																					//ºó´¦ÀíÒ³Ãæ
-	void on_pushButton_3_clicked();								    													//Ä£ĞÍÇĞ·Ö
+	//æ§åˆ¶é¢æ¿æŒ‰é’®ç‚¹å‡»äº‹ä»¶å¤„ç†
+	void on_pushButton_clicked();								    													//å‡ ä½•é¡µé¢
+	void on_pushButton_4_clicked();								    													//ç½‘æ ¼å¯¼å…¥é¡µé¢
+	void on_pushButton_2_clicked();								   														//ç½‘æ ¼é¡µé¢
+	void on_pushButton_5_clicked();								    													//æ±‚è§£å™¨é¡µé¢
+	void on_pushButton_6_clicked();								    													//æ¹æµæ¨¡å‹é¡µé¢
+	void on_pushButton_7_clicked();								    													//ç‰©ç†å‚æ•°é¡µé¢
+	void on_pushButton_13_clicked();								    												//è¾¹ç•Œæ¡ä»¶é¡µé¢
+	void on_pushButton_16_clicked();																					//æ±‚è§£è®¡ç®—é¡µé¢
+	void on_pushButton_17_clicked();																					//åå¤„ç†é¡µé¢
+	void on_pushButton_3_clicked();								    													//æ¨¡å‹åˆ‡åˆ†
 
-	//Ö÷½çÃæÆäËûÊÂ¼ş´¦Àí
-	void onPlayTimerTimeout();																							//²¥·Å
-	void onReverseTimerTimeout(); 																						//µ¹·Å
-	void onLoopPlayTimerTimeout(); 																						//Ñ­»·²¥·Å
-	void onButtonClicked();																								//¿ØÖÆÃæ°å°´Å¥µã»÷±³¾°É«µ÷Õû
-	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//Çó½â¼ÆËã½ø³Ì½áÊø
-	void onProcessRunOutput();																							//Çó½â¼ÆËã½ø³ÌÊä³ö
-	void onProcessDecomposeMergeMeshes();																				//·Ö½âºÏ²¢Íø¸ñ½ø³ÌÊä³ö
-	void updateChart();											    													//¸üĞÂ²Ğ²îÍ¼
-	void updatePlaneRepModelClipValues();								    											//¸üĞÂÄ£ĞÍÇĞ·ÖÆ½ÃæÑ¡ÔñÆ÷µÄÖµ
+	//ä¸»ç•Œé¢å…¶ä»–äº‹ä»¶å¤„ç†
+	void onPlayTimerTimeout();																							//æ’­æ”¾
+	void onReverseTimerTimeout(); 																						//å€’æ”¾
+	void onLoopPlayTimerTimeout(); 																						//å¾ªç¯æ’­æ”¾
+	void onButtonClicked();																								//æ§åˆ¶é¢æ¿æŒ‰é’®ç‚¹å‡»èƒŒæ™¯è‰²è°ƒæ•´
+	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//æ±‚è§£è®¡ç®—è¿›ç¨‹ç»“æŸ
+	void onProcessRunOutput();																							//æ±‚è§£è®¡ç®—è¿›ç¨‹è¾“å‡º
+	void onProcessDecomposeMergeMeshes();																				//åˆ†è§£åˆå¹¶ç½‘æ ¼è¿›ç¨‹è¾“å‡º
+	void updateChart();											    													//æ›´æ–°æ®‹å·®å›¾
+	void updatePlaneRepModelClipValues();								    											//æ›´æ–°æ¨¡å‹åˆ‡åˆ†å¹³é¢é€‰æ‹©å™¨çš„å€¼
 
-	//¸±¿ØÖÆÃæ°åÊÂ¼ş´¦Àí
-	void formGeometry_import(const QString& filePath);																	//¼¸ºÎµ¼Èë
-	void formMeshImport_import(const QString& filePath);																//Íø¸ñµ¼Èë
-	void formMesh_apply(); 																								//¸üĞÂäÖÈ¾´°¿Ú	
-	void formMesh_itemEntered(const QString& text);																		//Íø¸ñÒ³ÃæItem½øÈë
-	void formMesh_itemExited(const QString& text);																		//Íø¸ñÒ³ÃæItemÍË³ö
-	void formRun_run();																									//Çó½â¼ÆËã
-	void formRun_stopRun();																								//Í£Ö¹¼ÆËã
-	void formPostprocessing_apply();																					//Ó¦ÓÃ	
-	void formPostprocessing_firstFrame();																				//µÚÒ»Ö¡
-	void formPostprocessing_previousFrame();																			//ÉÏÒ»Ö¡
-	void formPostprocessing_reverse();																					//ÖØĞÂ²¥·Å
-	void formPostprocessing_play();																						//²¥·Å
-	void formPostprocessing_nextFrame();																				//ÏÂÒ»Ö¡
-	void formPostprocessing_lastFrame();																				//×îºóÒ»Ö¡
-	void formPostprocessing_loopPlay();																					//Ñ­»·²¥·Å
-	void formPostprocessing_playPause();																				//²¥·ÅÔİÍ£
-	void formPostprocessing_reversePause();																				//·´Ïò²¥·ÅÔİÍ£
-	void formPostprocessing_loopPlayPause();																			//Ñ­»·²¥·ÅÔİÍ£
-	void formPostprocessing_loadData();																					//¼ÓÔØÊı¾İ
-	void formModelClip_checkBoxToggle();																				//Ä£ĞÍÇĞ·ÖÒ³ÃæCheckBoxÇĞ»»
-	void formModelClip_lineEditsChanged();																				//Ä£ĞÍÇĞ·ÖÒ³ÃæLineEditÖµ¸Ä±ä
-	void formModelClip_xPositive();																						//Ä£ĞÍÇĞ·Ö£ºXÕıÏò
-	void formModelClip_yPositive();																						//Ä£ĞÍÇĞ·Ö£ºYÕıÏò
-	void formModelClip_zPositive();																						//Ä£ĞÍÇĞ·Ö£ºZÕıÏò
-	void formModelClip_cameraDirection();																				//Ä£ĞÍÇĞ·Ö£ºÏà»ú·½Ïò
-	void formModelClip_alignView();																						//Ä£ĞÍÇĞ·Ö£º¶ÔÆëÊÓ½Ç
-	void formModelClip_resetPlane();																					//Ä£ĞÍÇĞ·Ö£ºÖØÖÃÆ½Ãæ
-	void formModelClip_apply();																							//Ä£ĞÍÇĞ·Ö£ºÓ¦ÓÃ
+	//å‰¯æ§åˆ¶é¢æ¿äº‹ä»¶å¤„ç†
+	void formGeometry_import(const QString& filePath);																	//å‡ ä½•å¯¼å…¥
+	void formMeshImport_import(const QString& filePath);																//ç½‘æ ¼å¯¼å…¥
+	void formMesh_apply(); 																								//æ›´æ–°æ¸²æŸ“çª—å£	
+	void formMesh_itemEntered(const QString& text);																		//ç½‘æ ¼é¡µé¢Itemè¿›å…¥
+	void formMesh_itemExited(const QString& text);																		//ç½‘æ ¼é¡µé¢Itemé€€å‡º
+	void formRun_run();																									//æ±‚è§£è®¡ç®—
+	void formRun_stopRun();																								//åœæ­¢è®¡ç®—
+	void formPostprocessing_apply();																					//åº”ç”¨	
+	void formPostprocessing_firstFrame();																				//ç¬¬ä¸€å¸§
+	void formPostprocessing_previousFrame();																			//ä¸Šä¸€å¸§
+	void formPostprocessing_reverse();																					//é‡æ–°æ’­æ”¾
+	void formPostprocessing_play();																						//æ’­æ”¾
+	void formPostprocessing_nextFrame();																				//ä¸‹ä¸€å¸§
+	void formPostprocessing_lastFrame();																				//æœ€åä¸€å¸§
+	void formPostprocessing_loopPlay();																					//å¾ªç¯æ’­æ”¾
+	void formPostprocessing_playPause();																				//æ’­æ”¾æš‚åœ
+	void formPostprocessing_reversePause();																				//åå‘æ’­æ”¾æš‚åœ
+	void formPostprocessing_loopPlayPause();																			//å¾ªç¯æ’­æ”¾æš‚åœ
+	void formPostprocessing_loadData();																					//åŠ è½½æ•°æ®
+	void formModelClip_checkBoxToggle();																				//æ¨¡å‹åˆ‡åˆ†é¡µé¢CheckBoxåˆ‡æ¢
+	void formModelClip_lineEditsChanged();																				//æ¨¡å‹åˆ‡åˆ†é¡µé¢LineEditå€¼æ”¹å˜
+	void formModelClip_xPositive();																						//æ¨¡å‹åˆ‡åˆ†ï¼šXæ­£å‘
+	void formModelClip_yPositive();																						//æ¨¡å‹åˆ‡åˆ†ï¼šYæ­£å‘
+	void formModelClip_zPositive();																						//æ¨¡å‹åˆ‡åˆ†ï¼šZæ­£å‘
+	void formModelClip_cameraDirection();																				//æ¨¡å‹åˆ‡åˆ†ï¼šç›¸æœºæ–¹å‘
+	void formModelClip_alignView();																						//æ¨¡å‹åˆ‡åˆ†ï¼šå¯¹é½è§†è§’
+	void formModelClip_resetPlane();																					//æ¨¡å‹åˆ‡åˆ†ï¼šé‡ç½®å¹³é¢
+	void formModelClip_apply();																							//æ¨¡å‹åˆ‡åˆ†ï¼šåº”ç”¨
 
 public:
 	Ui::MainWindowClass *ui;
@@ -222,12 +222,12 @@ public:
 	QProcess processReadOutput;
 	QProcess processDecomposeMergeMeshes;
 
-	//äÖÈ¾´°¿Ú
+	//æ¸²æŸ“çª—å£
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
 	vtkSmartPointer<vtkRenderer> render;
-	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();		//×óÏÂ½ÇÈıÎ¬×ø±êÖá
+	vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();		//å·¦ä¸‹è§’ä¸‰ç»´åæ ‡è½´
 
-	//¸±¿ØÖÆÃæ°å
+	//å‰¯æ§åˆ¶é¢æ¿
 	FormGeometry* formGeometry;
 	FormMesh* formMesh;
 	FormMeshImport* formMeshImport;
@@ -239,21 +239,21 @@ public:
 	FormPostprocessing* formPostprocessing;
 	FormModelClip* formModelClip;
 
-	//²Ğ²îÍ¼Ïà¹Ø±äÁ¿
+	//æ®‹å·®å›¾ç›¸å…³å˜é‡
 	QChart* chart;
 	QValueAxis* axisX;
 	QLogValueAxis* axisY;
 	QMap<QString, QLineSeries*> seriesMap;
 	QMap<QString, QPair<double, double>> seriesRangeMap;
 	QTimer* chartUpdateTimer;
-	QMap<QString, double> residuals;																				// ÓÃÓÚ´æ´¢µ±Ç°Ê±¼ä²½µÄ²Ğ²îÊı¾İ
+	QMap<QString, double> residuals;																				// ç”¨äºå­˜å‚¨å½“å‰æ—¶é—´æ­¥çš„æ®‹å·®æ•°æ®
 	double currentTimeStep;
 	int axisMinX;
 	int axisMaxX;
 	double axisMinY;
 	double axisMaxY;
 
-	//Æ½ÃæÑ¡ÔñÆ÷Ïà¹Ø±äÁ¿
+	//å¹³é¢é€‰æ‹©å™¨ç›¸å…³å˜é‡
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
 };
