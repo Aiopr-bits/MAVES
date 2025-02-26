@@ -132,61 +132,61 @@ MainWindow::MainWindow(QWidget* parent)
 	chartUpdateTimer->start(100);
 
 	// 工具栏信号处理
-	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);														//信息框
-	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);														//x正向
-	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);														//x负向
-	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);														//y正向
-	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);														//y负向
-	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);														//z正向
-	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);														//z负向
-	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);														//适应窗口
-	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);														//模型切分
-	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);														//导入案例
+	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);																//信息框
+	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);																//x正向
+	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);																//x负向
+	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);																//y正向
+	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);																//y负向
+	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);																//z正向
+	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);																//z负向
+	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);																//适应窗口
+	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);																//模型切分
+	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);																//导入案例
 
 	//主界面其他事件处理
-	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																//播放
-	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
-	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
-	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//求解计算进程输出
-	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeParOutput);							//分解网格进程输出
-	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessReconstructParOutput);						//合并网格进程输出
-	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//求解计算进程结束
-	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);	//分解网格进程结束
+	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																		//播放
+	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);																	//倒放
+	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);																//循环播放
+	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);													//求解计算进程输出
+	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeParOutput);									//分解网格进程输出
+	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessReconstructParOutput);								//合并网格进程输出
+	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);						//求解计算进程结束
+	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);		//分解网格进程结束
 	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);	//重构网格进程结束
-	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//更新残差图
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//更新模型切分平面选择器的值
+	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																		//更新残差图
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 						//更新模型切分平面选择器的值
 
 	//副控制面板事件处理
-	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);												//导入几何
-	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);											//导入网格
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);														//网格应用
-	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);															//网格页面Item进入
-	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);															//网格页面Item退出
-	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);		//求解器改变，物性参数控制面板调整
-	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																			//求解计算
-	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																	//停止计算
-	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);										//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);								//第一帧
-	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);						//上一帧
-	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);									//重新播放
-	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);											//播放
-	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);								//下一帧
-	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);								//最后一帧
-	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);									//循环播放
-	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);								//播放暂停
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);							//反向播放
-	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);						//循环播放
-	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);									//加载数据
-	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);									//模型切分页面CheckBox切换
-	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);								//模型切分页面LineEdit值改变
-	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);												//模型切分：X正向
-	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);												//模型切分：Y正向
-	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);												//模型切分：Z正向
-	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);									//模型切分：相机方向
-	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);												//模型切分：对齐视角
-	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);											//模型切分：重置平面
-	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);														//模型切分：应用
-	connect(dialogResultMerge, &DialogResultMerge::interrupt, this, &MainWindow::dialogResultMerge_interrupt);									//结果合并弹窗:中断
+	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);														//导入几何
+	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);													//导入网格
+	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);																//网格应用
+	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
+	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
+	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);				//求解器改变，物性参数控制面板调整
+	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
+	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);												//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);										//第一帧
+	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);								//上一帧
+	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);											//重新播放
+	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);													//播放
+	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);										//下一帧
+	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);										//最后一帧
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);											//循环播放
+	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);										//播放暂停
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);									//反向播放
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);								//循环播放
+	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);											//加载数据
+	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);											//模型切分页面CheckBox切换
+	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);										//模型切分页面LineEdit值改变
+	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);														//模型切分：X正向
+	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);														//模型切分：Y正向
+	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);														//模型切分：Z正向
+	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);											//模型切分：相机方向
+	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);														//模型切分：对齐视角
+	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);													//模型切分：重置平面
+	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);																//模型切分：应用
+	connect(dialogResultMerge, &DialogResultMerge::interrupt, this, &MainWindow::dialogResultMerge_interrupt);											//结果合并弹窗:中断
 }
 
 MainWindow::~MainWindow()
@@ -491,11 +491,6 @@ void MainWindow::on_pushButton_3_clicked()
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
 	planeWidgetModelClip->On();
 	ui->openGLWidget->renderWindow()->Render();
-}
-
-void MainWindow::on_pushButton_18_clicked()
-{
-	dialogResultMerge->show();
 }
 
 void MainWindow::updatePlaneRepModelClipValues()

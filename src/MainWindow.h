@@ -170,7 +170,6 @@ public slots:
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
-	void on_pushButton_18_clicked();								    												//计算
 
 	//主界面其他事件处理
 	void onPlayTimerTimeout();																							//播放
