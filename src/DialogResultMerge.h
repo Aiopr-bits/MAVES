@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "ui_DialogResultMerge.h"
 #include <QMouseEvent>
+#include <QTimer> 
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DialogResultMergeClass; };
@@ -23,6 +24,7 @@ protected:
 
 private slots:
 	void on_pushButton_clicked();
+	void updateLabelText();						
 
 signals:
 	void interruptMerge();
@@ -31,4 +33,6 @@ private:
 	Ui::DialogResultMergeClass *ui;
 	QPoint m_mousePosition; 
 	bool m_isMousePressed; 
+	QTimer* m_timer;
+	int m_textIndex; // 当前文本索引
 };
