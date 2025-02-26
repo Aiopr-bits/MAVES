@@ -27,7 +27,7 @@ private slots:
 	void updateLabelText();						
 
 signals:
-	void interruptMerge();
+	void interrupt();
 
 public:
 	Ui::DialogResultMergeClass *ui;

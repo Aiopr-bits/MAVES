@@ -184,6 +184,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);												//模型切分：对齐视角
 	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);											//模型切分：重置平面
 	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);														//模型切分：应用
+	connect(dialogResultMerge, &DialogResultMerge::interrupt, this, &MainWindow::dialogResultMerge_interrupt);									//结果合并弹窗:中断
 }
 
 MainWindow::~MainWindow()
@@ -1480,6 +1481,14 @@ void MainWindow::formModelClip_apply()
 
 	// 渲染窗口
 	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::dialogResultMerge_interrupt()
+{
+	if (processReconstructPar.state() == QProcess::Running) {
+		processReconstructPar.kill();
+	}
+	dialogResultMerge->hide();
 }
 
 void MainWindow::onButtonClicked()

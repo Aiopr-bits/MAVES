@@ -78,6 +78,6 @@ void DialogResultMerge::updateLabelText()
 
 void DialogResultMerge::on_pushButton_clicked()
 {
-	emit interruptMerge();
+	emit interrupt();
 	this->hide();
 }

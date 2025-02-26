@@ -215,6 +215,7 @@ public slots:
 	void formModelClip_alignView();																						//模型切分：对齐视角
 	void formModelClip_resetPlane();																					//模型切分：重置平面
 	void formModelClip_apply();																							//模型切分：应用
+	void dialogResultMerge_interrupt();																					//结果合并弹窗:中断
 
 public:
 	Ui::MainWindowClass *ui;
