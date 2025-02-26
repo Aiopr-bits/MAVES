@@ -29,7 +29,7 @@ private slots:
 signals:
 	void interruptMerge();
 
-private:
+public:
 	Ui::DialogResultMergeClass *ui;
 	QPoint m_mousePosition; 
 	bool m_isMousePressed; 

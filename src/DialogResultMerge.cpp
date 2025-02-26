@@ -72,10 +72,7 @@ void DialogResultMerge::updateLabelText()
         "结果合并中 . . ."
     };
 
-    // 更新标签文本
     ui->label_2->setText(texts[m_textIndex]);
-
-    // 更新索引
     m_textIndex = (m_textIndex + 1) % texts.size();
 }
 

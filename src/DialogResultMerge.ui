@@ -242,13 +242,13 @@
             <property name="minimumSize">
              <size>
               <width>180</width>
-              <height>25</height>
+              <height>15</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>180</width>
-              <height>25</height>
+              <height>15</height>
              </size>
             </property>
             <property name="value">
@@ -309,15 +309,20 @@
            <widget class="QPushButton" name="pushButton">
             <property name="minimumSize">
              <size>
-              <width>100</width>
-              <height>25</height>
+              <width>120</width>
+              <height>30</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>100</width>
-              <height>25</height>
+              <width>120</width>
+              <height>30</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
@@ -339,7 +344,7 @@ QPushButton:pressed {
 </string>
             </property>
             <property name="text">
-             <string>  中断</string>
+             <string>   中断</string>
             </property>
             <property name="icon">
              <iconset>

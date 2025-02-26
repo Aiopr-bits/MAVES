@@ -8,9 +8,9 @@ MainWindow::MainWindow(QWidget* parent)
 	, reverseTimer(new QTimer(this))
 	, loopPlayTimer(new QTimer(this))
 	, lastClickedButton(nullptr)
-	, processReadOutput(this)
 	, processRun(this)
-	, processDecomposeMergeMeshes(this)
+	, processDecomposePar(this)
+	, processReconstructPar(this)
 	, chart(new QChart())
 	, axisX(new QValueAxis())
 	, axisY(new QLogValueAxis())
@@ -146,8 +146,11 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);															//倒放
 	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);														//循环播放
 	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);											//求解计算进程输出
-	connect(&processDecomposeMergeMeshes, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeMergeMeshes);				//分解合并网格进程输出
+	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeParOutput);							//分解网格进程输出
+	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessReconstructParOutput);						//合并网格进程输出
 	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);				//求解计算进程结束
+	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);	//分解网格进程结束
+	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);	//重构网格进程结束
 	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																//更新残差图
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 				//更新模型切分平面选择器的值
 
@@ -869,6 +872,7 @@ void MainWindow::formRun_run()
 	}
 
 	//串行计算
+	nWriteResults = 0;
 	if (formRun->ui->radioButton->isChecked())
 	{
 		QString command = application + " -case " + caseDir;
@@ -894,23 +898,61 @@ void MainWindow::formRun_run()
 			}
 		}
 		QString commandDecomposePar = "decomposePar -case " + caseDir;
-		processDecomposeMergeMeshes.setProgram("cmd.exe");
-		processDecomposeMergeMeshes.setArguments(QStringList() << "/C" << commandDecomposePar);
-		processDecomposeMergeMeshes.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		processDecomposePar.setProgram("cmd.exe");
+		processDecomposePar.setArguments(QStringList() << "/C" << commandDecomposePar);
+		processDecomposePar.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
 			args->flags |= CREATE_NO_WINDOW;
 			});
-		processDecomposeMergeMeshes.start();
-		processDecomposeMergeMeshes.waitForFinished(-1);
-
-		//计算
-		QString commandRun = "mpiexec -np " + QString::number(formRun->ui->spinBox->value()) + " " + application + " -parallel -case " + caseDir;
-		processRun	.setProgram("cmd.exe");
-		processRun.setArguments(QStringList() << "/C" << commandRun);
-		processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
-			args->flags |= CREATE_NO_WINDOW;
-			});
-		processRun.start();
+		processDecomposePar.start();
 	}
+}
+
+void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+	//获取案例路径
+	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
+	QFileInfo fileInfo(casePath);
+	QString caseDir = fileInfo.path();
+	QString controlDictPath = caseDir + "/system/controlDict";
+
+	// 打开 controlDict 文件
+	QFile controlDictFile(controlDictPath);
+	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		return;
+	}
+
+	// 读取 controlDict 文件中的 application 字段
+	QString application;
+	QTextStream in(&controlDictFile);
+	while (!in.atEnd()) {
+		QString line = in.readLine();
+		if (line.trimmed().startsWith("application")) {
+			QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+			if (parts.size() >= 2) {
+				application = parts[1].trimmed();
+				if (application.endsWith(";")) {
+					application.chop(1); // 去除末尾的分号
+				}
+				break;
+			}
+		}
+	}
+	controlDictFile.close();
+
+	if (application.isEmpty()) {
+		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		return;
+	}
+
+	//计算
+	QString commandRun = "mpiexec -np " + QString::number(formRun->ui->spinBox->value()) + " " + application + " -parallel -case " + caseDir;
+	processRun.setProgram("cmd.exe");
+	processRun.setArguments(QStringList() << "/C" << commandRun);
+	processRun.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		args->flags |= CREATE_NO_WINDOW;
+		});
+	processRun.start();
 }
 
 void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -919,22 +961,40 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	Q_UNUSED(exitStatus);
 	formRun->on_pushButton_clicked_2();
 
-	//获取案例路径
+	// 获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
 	QFileInfo fileInfo(casePath);
 	QString caseDir = fileInfo.path();
 
+	// 并行计算需要合并网格
 	if (formRun->ui->radioButton_2->isChecked()) {
+		dialogResultMerge->ui->progressBar->setValue(0);
+		dialogResultMerge->show();
+
 		QString comandReconstructPar = "reconstructPar -case " + caseDir;
-		processDecomposeMergeMeshes.setProgram("cmd.exe");
-		processDecomposeMergeMeshes.setArguments(QStringList() << "/C" << comandReconstructPar);
-		processDecomposeMergeMeshes.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		processReconstructPar.setProgram("cmd.exe");
+		processReconstructPar.setArguments(QStringList() << "/C" << comandReconstructPar);
+		processReconstructPar.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
 			args->flags |= CREATE_NO_WINDOW;
 			});
-		processDecomposeMergeMeshes.start();
-		processDecomposeMergeMeshes.waitForFinished(-1);
-	}
 
+		processReconstructPar.start();
+	}
+	else {
+		QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
+		updatePostProcessingPage(caseFilePath);
+	}
+}
+
+void MainWindow::onProcessReconstructParFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+	Q_UNUSED(exitCode);
+	Q_UNUSED(exitStatus);
+
+	dialogResultMerge->ui->progressBar->setValue(100);
+	dialogResultMerge->hide();
+
+	// 更新后处理页面
 	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
 	updatePostProcessingPage(caseFilePath);
 }
@@ -1464,19 +1524,35 @@ void MainWindow::onProcessRunOutput()
 		// 解析输出信息
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
+
+		//如果输出信息中包含"ExecutionTime"，则更新时间步
+		if (output.contains("ExecutionTime") && (currentTimeStep % formRun->ui->spinBox_2->value() == 0)) {
+			nWriteResults++;
+		}
 	}
 }
 
-void MainWindow::onProcessDecomposeMergeMeshes()
+void MainWindow::onProcessDecomposeParOutput()
 {
-	while (processDecomposeMergeMeshes.canReadLine()) {
-		QByteArray output = processDecomposeMergeMeshes.readLine();
+	while (processDecomposePar.canReadLine()) {
+		QByteArray output = processDecomposePar.readLine();
+		ui->textBrowser->append(QString::fromLocal8Bit(output));
+		ui->textBrowser->repaint();
+	}
+}
+
+void MainWindow::onProcessReconstructParOutput()
+{
+
+	while (processReconstructPar.canReadLine()) {
+		QByteArray output = processReconstructPar.readLine();
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
-		// 解析输出信息
-		parseOutput(QString::fromLocal8Bit(output));
-		ui->tab_2->repaint();
+		//如果输出信息中以“Time =”开始，则更新进度条
+		if (output.startsWith("Time =")) {
+			dialogResultMerge->ui->progressBar->setValue(dialogResultMerge->ui->progressBar->value() + 1.0 / (nWriteResults + 1) * 100);
+		}
 	}
 }
 

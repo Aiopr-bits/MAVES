@@ -178,8 +178,11 @@ public slots:
 	void onLoopPlayTimerTimeout(); 																						//循环播放
 	void onButtonClicked();																								//控制面板按钮点击背景色调整
 	void onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus);											//求解计算进程结束
+	void onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatus exitStatus);									//分解网格进程结束
+	void onProcessReconstructParFinished(int exitCode, QProcess::ExitStatus exitStatus);								//重构网格进程结束
 	void onProcessRunOutput();																							//求解计算进程输出
-	void onProcessDecomposeMergeMeshes();																				//分解合并网格进程输出
+	void onProcessDecomposeParOutput();																					//分解网格进程输出
+	void onProcessReconstructParOutput();																				//重构网格进程输出
 	void updateChart();											    													//更新残差图
 	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
 
@@ -221,8 +224,8 @@ public:
 	QPushButton* buttons[20];
 	QPushButton* lastClickedButton;
 	QProcess processRun;
-	QProcess processReadOutput;
-	QProcess processDecomposeMergeMeshes;
+	QProcess processDecomposePar;
+	QProcess processReconstructPar;
 
 	//渲染窗口
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
@@ -252,7 +255,7 @@ public:
 	QMap<QString, QPair<double, double>> seriesRangeMap;
 	QTimer* chartUpdateTimer;
 	QMap<QString, double> residuals;																				// 用于存储当前时间步的残差数据
-	double currentTimeStep;
+	int currentTimeStep;
 	int axisMinX;
 	int axisMaxX;
 	double axisMinY;
@@ -261,4 +264,7 @@ public:
 	//平面选择器相关变量
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
+
+	//计算结果时间步
+	int nWriteResults;
 };
