@@ -110,6 +110,7 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkCompositeDataGeometryFilter.h>
 #include <vtkStreamingDemandDrivenPipeline.h>
 #include <vtkInformation.h>
+#include "DialogResultMerge.h"
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -169,6 +170,7 @@ public slots:
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
+	void on_pushButton_18_clicked();								    												//计算
 
 	//主界面其他事件处理
 	void onPlayTimerTimeout();																							//播放
@@ -238,6 +240,9 @@ public:
 	FormRun* formRun;
 	FormPostprocessing* formPostprocessing;
 	FormModelClip* formModelClip;
+
+	//弹出窗口
+	DialogResultMerge* dialogResultMerge;
 
 	//残差图相关变量
 	QChart* chart;

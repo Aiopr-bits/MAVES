@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtUic Include="DialogResultMerge.ui" />
     <QtUic Include="FormBoundaryConditions.ui" />
     <QtUic Include="FormBoundaryConditionsTabWidget.ui" />
     <QtUic Include="FormGeometry.ui" />
@@ -113,6 +114,7 @@
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
+    <ClCompile Include="DialogResultMerge.cpp" />
     <ClCompile Include="FormBoundaryConditions.cpp" />
     <ClCompile Include="FormBoundaryConditionsTabWidget.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
@@ -146,6 +148,7 @@
     <QtMoc Include="FormPhysicalPropertyParameter.h" />
     <QtMoc Include="FormSolver.h" />
     <QtMoc Include="FormTurbulence.h" />
+    <QtMoc Include="DialogResultMerge.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

@@ -92,6 +92,10 @@ MainWindow::MainWindow(QWidget* parent)
 	formPostprocessing->hide();
 	formModelClip->hide();
 
+	//弹窗
+	dialogResultMerge = new DialogResultMerge(this);
+	dialogResultMerge->setWindowModality(Qt::WindowModal);
+
 	//程序启动点击几何页面
 	on_pushButton_clicked();
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
@@ -481,6 +485,11 @@ void MainWindow::on_pushButton_3_clicked()
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
 	planeWidgetModelClip->On();
 	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_18_clicked()
+{
+	dialogResultMerge->show();
 }
 
 void MainWindow::updatePlaneRepModelClipValues()

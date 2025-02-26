@@ -65,6 +65,9 @@
     <QtUic Include="FormTurbulence.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="DialogResultMerge.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -107,6 +110,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FormTurbulence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogResultMerge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -157,6 +163,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormTurbulence.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogResultMerge.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
