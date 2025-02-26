@@ -185,6 +185,8 @@ public slots:
 	void onProcessReconstructParOutput();																				//重构网格进程输出
 	void updateChart();											    													//更新残差图
 	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
+	void resizeEvent(QResizeEvent* event);																				//窗口大小改变事件
+	void on_tabWidget_currentChanged(int index);																		//tabWidget切换事件
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
@@ -266,6 +268,7 @@ public:
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
 
-	//计算结果时间步
+	//全局变量
 	int nWriteResults;
+	int previousTabWidgetIndex;
 };

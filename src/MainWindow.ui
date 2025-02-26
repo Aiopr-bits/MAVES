@@ -1123,7 +1123,63 @@ QPushButton:pressed {
         </property>
         <widget class="QTabWidget" name="tabWidget">
          <property name="styleSheet">
-          <string notr="true">QWidget { background-color: white;}</string>
+          <string notr="true">QWidget { background-color: white;}
+
+QTabWidget {
+    background: transparent;
+    border: none;
+}
+
+QTabWidget::pane {
+    background: #ffffff;
+    border: none;
+    padding: 10px;
+}
+
+QTabBar::tab {
+    min-height: 20px;
+    padding: 5px 15px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+}
+
+QTabBar::tab:hover {
+    color: #333333;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+QTabBar::tab:selected {
+    color: #000000;
+    font-weight: bold;
+    background: transparent;
+    border-bottom: 2px solid #aaaaaa;
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QTabWidget::tab-bar {
+    alignment: left;
+    background: transparent;
+}
+
+QTabBar {
+    qproperty-drawBase: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+QTabBar::close-button {
+    image: url(close.png);
+    background: transparent;
+    margin: 2px;
+}
+
+QTabBar::close-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+}</string>
          </property>
          <property name="currentIndex">
           <number>0</number>

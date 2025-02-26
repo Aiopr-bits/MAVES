@@ -23,16 +23,18 @@ MainWindow::MainWindow(QWidget* parent)
 	, axisMaxY(1)
 	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
 	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
+	, previousTabWidgetIndex(0)
 {
+	ui->setupUi(this);
+
+	//全屏
+	this->setWindowState(Qt::WindowMaximized);
+
 	//确保当前窗口缩小到任务栏
 	setWindowFlags(Qt::Window);
 #ifdef _WIN32
 	SetWindowLong(HWND(this->winId()), GWL_EXSTYLE, WS_EX_APPWINDOW);
 #endif
-
-	//全屏
-	this->setWindowState(Qt::WindowMaximized);
-	ui->setupUi(this);
 
 	//初始化三维窗口
 	renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
@@ -518,6 +520,71 @@ void MainWindow::updatePlaneRepModelClipValues()
 	formModelClip->ui->lineEdit_4->setText(QString::number(normal[0]));
 	formModelClip->ui->lineEdit_5->setText(QString::number(normal[1]));
 	formModelClip->ui->lineEdit_6->setText(QString::number(normal[2]));
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+	if (ui->tabWidget->tabBar()) {
+		ui->tabWidget->tabBar()->setFixedWidth(ui->tabWidget->width());
+	}
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+	QWidget* widget0 = ui->tabWidget->widget(0);
+	QWidget* widget1 = ui->tabWidget->widget(1);
+	QPixmap pixmap0 = QPixmap::grabWidget(widget0);
+	QPixmap pixmap1 = QPixmap::grabWidget(widget1);
+
+	int imageWidth = pixmap0.width() + pixmap1.width();
+	int imageHeight = pixmap0.height();
+	QImage image(imageWidth, imageHeight, QImage::Format_ARGB32);
+	image.fill(QColor(Qt::black));
+
+	QPainter p;
+	p.begin(&image);
+	QBrush brush(QColor(255, 255, 0), Qt::Dense4Pattern);
+	p.setBrush(brush);
+	QPen pen;
+	pen.setColor(QColor(Qt::red));
+	p.setPen(pen);
+	p.drawPixmap(0, 0, pixmap0);
+	p.drawPixmap(pixmap0.width(), 0, pixmap1);
+	p.end();
+
+	QLabel* animationWidget = new QLabel(ui->tabWidget);
+	animationWidget->setPixmap(QPixmap::fromImage(image));
+	QTabBar* bar = ui->tabWidget->tabBar();
+	QSize size1 = bar->size();
+	QSize size2 = ui->tabWidget->size();
+	int pixmapWidth = pixmap0.width();
+	int pixmapHeight = pixmap0.height();
+
+	animationWidget->show();
+	animationWidget->raise();
+	QPropertyAnimation* move = new QPropertyAnimation(animationWidget, "geometry");
+	move->setDuration(300);
+
+	if (previousTabWidgetIndex == 0) {
+		if (index == 1) {
+			move->setStartValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+			move->setEndValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+		}
+	}
+	else if (previousTabWidgetIndex == 1) {
+		if (index == 0) {
+			move->setStartValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+			move->setEndValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+		}
+	}
+
+	move->start();
+	connect(move, &QAbstractAnimation::finished, this, [=]() {
+		delete animationWidget;
+		delete move;
+		});
+
+	previousTabWidgetIndex = index;
 }
 
 void MainWindow::formGeometry_import(const QString& filePath)
