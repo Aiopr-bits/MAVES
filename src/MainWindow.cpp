@@ -875,6 +875,9 @@ void MainWindow::formRun_run()
 	formRun->ui->pushButton_2->show();
 	formRun->ui->label_12->show();
 
+	//移除三维窗口中的所有Actor
+	render->RemoveAllViewProps();
+
 	//初始化残差图数据
 	residuals.clear();
 	seriesMap.clear();

@@ -196,7 +196,7 @@ public slots:
 	void formMesh_itemExited(const QString& text);																		//网格页面Item退出
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
-	void formPostprocessing_apply();																					//应用	
+	void formPostprocessing_apply();																					//应用
 	void formPostprocessing_firstFrame();																				//第一帧
 	void formPostprocessing_previousFrame();																			//上一帧
 	void formPostprocessing_reverse();																					//重新播放
