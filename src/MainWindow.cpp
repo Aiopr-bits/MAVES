@@ -1111,11 +1111,12 @@ void MainWindow::formRun_stopRun()
 
 void MainWindow::formPostprocessing_apply()
 {
-	//更新渲染窗口
 	render->RemoveAllViewProps();
+
 	string casePath = GlobalData::getInstance().getCaseData()->casePath;
 	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
 	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
+
 	std::vector<std::string> patchGroup;
 	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
 		QStandardItem* item = formPostprocessing->listViewModel->item(i);
@@ -1124,7 +1125,9 @@ void MainWindow::formPostprocessing_apply()
 			else patchGroup.push_back("patch/" + item->text().toStdString());
 		}
 	}
+
 	std::pair<double, double> globalRange = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
+
 	vtkSmartPointer<vtkActor> actor = createNephogramPatchActor(casePath, timeValue, fieldNameValue, patchGroup, globalRange);
 
 	if (actor)
@@ -1784,18 +1787,16 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	const std::pair<double, double>& globalRange)
 {
 	// 创建 OpenFOAM 读取器
-	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
-		vtkSmartPointer<vtkOpenFOAMReader>::New();
+	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
 	openFOAMReader->SetFileName(casePath.c_str());
 	openFOAMReader->SetCreateCellToPoint(1);
 	openFOAMReader->SetSkipZeroTime(1);
 	openFOAMReader->SetTimeValue(timeValue);
 	openFOAMReader->UpdateInformation();
 
-	// 获取并禁用全部补丁
-	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
+	// 禁用所有补丁数组
 	openFOAMReader->DisableAllPatchArrays();
-	// 启用指定补丁
+	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
 	for (int i = 0; i < numPatches; ++i) {
 		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
 		for (const auto& groupPatch : patchGroup) {
@@ -1806,52 +1807,68 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 		}
 	}
 
-	// 设置UPDATE_TIME_STEP
+	// 更新读取器
 	vtkInformation* outInfo = openFOAMReader->GetOutputInformation(0);
 	outInfo->Set(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP(), timeValue);
-
-	// 更新读取器
 	openFOAMReader->Update();
 
-	// 使用 vtkCompositeDataGeometryFilter 提取几何数据
-	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
-		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
-	geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
-	geometryFilter->Update();
+	// 判断是否包含 internalMesh
+	bool isInternalMesh = (std::find(patchGroup.begin(), patchGroup.end(), "internalMesh") != patchGroup.end());
 
-	vtkPolyData* polyData = geometryFilter->GetOutput();
-	if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		std::cerr << "无法提取补丁的几何数据。" << std::endl;
-		return nullptr;
+	vtkSmartPointer<vtkDataSet> dataSet;
+	if (isInternalMesh) {
+		// 获取 MultiBlock 数据集
+		vtkSmartPointer<vtkMultiBlockDataSet> multiBlockDataSet = openFOAMReader->GetOutput();
+
+		// 创建 AppendFilter
+		vtkSmartPointer<vtkAppendFilter> appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
+		unsigned int numBlocks = multiBlockDataSet->GetNumberOfBlocks();
+		for (unsigned int i = 0; i < numBlocks; ++i) {
+			vtkDataObject* block = multiBlockDataSet->GetBlock(i);
+			if (block && block->IsA("vtkDataSet")) {
+				appendFilter->AddInputData(static_cast<vtkDataSet*>(block));
+			}
+		}
+
+		// 更新 AppendFilter
+		appendFilter->Update();
+		dataSet = appendFilter->GetOutput();
+	}
+	else {
+		// 提取 polyData
+		auto geometryFilter = vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+		geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
+		geometryFilter->Update();
+
+		vtkPolyData* polyData = geometryFilter->GetOutput();
+		if (!polyData || !polyData->GetPointData()->HasArray(fieldName.c_str())) {
+			return nullptr;
+		}
+		polyData->GetPointData()->SetActiveScalars(fieldName.c_str());
+		dataSet = polyData;
 	}
 
-	// 设置活动标量
-	if (!polyData->GetPointData()->HasArray(fieldName.c_str())) {
-		std::cerr << "指定的物理量不存在：" << fieldName << std::endl;
+	if (!dataSet || !dataSet->GetPointData()->HasArray(fieldName.c_str())) {
 		return nullptr;
 	}
-	polyData->GetPointData()->SetActiveScalars(fieldName.c_str());
+	dataSet->GetPointData()->SetActiveScalars(fieldName.c_str());
 
-	// 创建颜色传输函数（使用传入的globalRange）
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction =
-		vtkSmartPointer<vtkColorTransferFunction>::New();
+	// 创建颜色传输函数
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
 	colorTransferFunction->SetColorSpaceToRGB();
-	// 添加颜色点（蓝-白-红）
 	colorTransferFunction->AddRGBPoint(globalRange.first, 0.0, 127.0 / 255.0, 1.0);
-	colorTransferFunction->AddRGBPoint(
-		(globalRange.first + globalRange.second) / 2.0,
-		234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
+	colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
 	colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0.0, 0.0);
 
-	// 创建映射器，使用自定义范围
+	// 创建映射器
 	vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-	mapper->SetInputData(polyData);
+	mapper->SetInputData(dataSet);
 	mapper->SetLookupTable(colorTransferFunction);
 	mapper->UseLookupTableScalarRangeOn();
 	mapper->SetScalarRange(globalRange.first, globalRange.second);
 	mapper->ScalarVisibilityOn();
 
-	// 创建actor
+	// 创建 actor
 	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->EdgeVisibilityOff();
@@ -1907,63 +1924,8 @@ void MainWindow::updatePostProcessingPage(const QString& casePath)
 	formPostprocessing->ui->listView->setFixedHeight(totalHeight + 2 * formPostprocessing->ui->listView->frameWidth());
 
 	//更新渲染窗口
-	render->RemoveAllViewProps();
-	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
-	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
-	std::vector<std::string> patchGroup;
-	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
-		QStandardItem* item = formPostprocessing->listViewModel->item(i);
-		if (item->checkState() == Qt::Checked) {
-			if (item->text().toStdString() == "internalMesh") patchGroup.push_back(item->text().toStdString());
-			else patchGroup.push_back("patch/" + item->text().toStdString());
-		}
-	}
-	std::pair<double, double> globalRange = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
-	vtkSmartPointer<vtkActor> actor = createNephogramPatchActor(casePath.toStdString(), timeValue, fieldNameValue, patchGroup, globalRange);
-
-	if (actor)
-	{
-		render->AddActor(actor);
-
-		// 创建颜色传输函数
-		vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-		colorTransferFunction->SetColorSpaceToRGB();
-
-		// 添加颜色点
-		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
-		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
-		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
-
-		// 创建图例
-		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-		scalarBar->SetLookupTable(colorTransferFunction);
-		scalarBar->SetNumberOfLabels(4);
-		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
-		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
-		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
-		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
-
-		// 设置图例标题的文本属性
-		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24); // 设置标题字体大小
-		titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
-		titleTextProperty->SetBold(1); // 设置标题为粗体
-		titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
-		scalarBar->SetTitleTextProperty(titleTextProperty);
-
-		// 设置图例标签的文本属性
-		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18); // 设置标签字体大小
-		labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为黑色
-		scalarBar->SetLabelTextProperty(labelTextProperty);
-
-		// 添加图例到渲染器
-		render->AddActor2D(scalarBar);
-
-		render->ResetCamera();
-		renderWindow->Render();
-	}
+	formPostprocessing_apply();
+	handleAction8Triggered();
 
 	//切换到后处理子页面
 	on_pushButton_17_clicked();
