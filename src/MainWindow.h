@@ -111,6 +111,8 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkStreamingDemandDrivenPipeline.h>
 #include <vtkInformation.h>
 #include "DialogResultMerge.h"
+#include <vtkAppendFilter.h>
+#include <vtkMultiBlockDataSet.h>
 
 #ifdef _WIN32
 #include "qt_windows.h"
