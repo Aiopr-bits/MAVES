@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
     _putenv("WM_PROJECT_DIR=../solver/of2406/");
     _putenv("MPI_BUFFER_SIZE=20000000");
 
+    vtkObject::GlobalWarningDisplayOff();
+
     QApplication a(argc, argv);
     WorkSpaceWindow w;
     w.show();
