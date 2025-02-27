@@ -834,7 +834,12 @@ void MainWindow::formMesh_apply()
 		QStandardItem* item = formMesh->listViewModel->item(i);
 		if (item->checkState() == Qt::Checked)
 		{
-			patchGroup.push_back(item->text().toStdString());
+			if (item->text().toStdString() != "internalMesh") {
+				patchGroup.push_back("patch/" + item->text().toStdString());
+			}
+			else {
+				patchGroup.push_back(item->text().toStdString());
+			}
 		}
 	}
 
@@ -1021,7 +1026,7 @@ void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatu
 			if (parts.size() >= 2) {
 				application = parts[1].trimmed();
 				if (application.endsWith(";")) {
-					application.chop(1); // 去除末尾的分号
+					application.chop(1);
 				}
 				break;
 			}
@@ -1134,41 +1139,9 @@ void MainWindow::formPostprocessing_apply()
 	{
 		render->AddActor(actor);
 
-		// 创建颜色传输函数
-		vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-		colorTransferFunction->SetColorSpaceToRGB();
-
-		// 添加颜色点
-		colorTransferFunction->AddRGBPoint(globalRange.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
-		colorTransferFunction->AddRGBPoint((globalRange.first + globalRange.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
-		colorTransferFunction->AddRGBPoint(globalRange.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
-
-		// 创建图例
-		vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-		scalarBar->SetLookupTable(colorTransferFunction);
-		scalarBar->SetNumberOfLabels(4);
-		scalarBar->SetOrientationToVertical();
-		scalarBar->SetPosition(0.92, 0.01); // 设置图例的位置
-		scalarBar->SetWidth(0.06); // 设置图例的宽度（相对于渲染窗口的比例）
-		scalarBar->SetHeight(0.3); // 设置图例的高度（相对于渲染窗口的比例）
-		scalarBar->SetLabelFormat("%1.2e"); // 设置标签格式为科学计数法，保留两位小数
-
-		// 设置图例标题的文本属性
-		vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		titleTextProperty->SetFontSize(24); // 设置标题字体大小
-		titleTextProperty->SetColor(1.0, 1.0, 1.0); // 设置标题颜色为白色
-		titleTextProperty->SetBold(1); // 设置标题为粗体
-		titleTextProperty->SetJustificationToCentered(); // 设置标题居中对齐
-		scalarBar->SetTitleTextProperty(titleTextProperty);
-
-		// 设置图例标签的文本属性
-		vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-		labelTextProperty->SetFontSize(18); // 设置标签字体大小
-		labelTextProperty->SetColor(0, 0, 0); // 设置标签颜色为黑色
-		scalarBar->SetLabelTextProperty(labelTextProperty);
-
-		// 添加图例到渲染器
+		vtkSmartPointer<vtkScalarBarActor> scalarBar = createScalarBarActor(globalRange);
 		render->AddActor2D(scalarBar);
+
 		renderWindow->Render();
 	}
 }
@@ -1354,7 +1327,7 @@ void MainWindow::formModelClip_alignView()
 	const double* viewUpPtr = camera->GetViewUp();
 	double viewUp[3] = { viewUpPtr[0], viewUpPtr[1], viewUpPtr[2] };
 	if (normal[0] == 0.0 && normal[1] == 0.0) {
-		viewUp[1] = 1.0; // 如果法向量在Z轴方向上，设置Y轴为上方向
+		viewUp[1] = 1.0; 
 	}
 	camera->SetViewUp(viewUp);
 
@@ -1424,13 +1397,6 @@ void MainWindow::formModelClip_resetPlane()
 
 void MainWindow::formModelClip_apply()
 {
-	if (render->GetActors()->GetNumberOfItems() == 0) {
-		return;
-	}
-
-	formModelClip->ui->checkBox->setChecked(false);
-	formModelClip->ui->checkBox->setChecked(true);
-
 	// 获取平面选择器的原点和法向量
 	double origin[3];
 	double normal[3];
@@ -1442,135 +1408,123 @@ void MainWindow::formModelClip_apply()
 	plane->SetOrigin(origin);
 	plane->SetNormal(normal);
 
-	// 获取当前选中的活动标量
-	QString activeScalar = this->formPostprocessing->ui->comboBox_2->currentText();
+	// 获取 render 中所有可见的 actor
+	formModelClip->ui->checkBox->setChecked(false);
+	vtkActorCollection* actors = render->GetActors();
 
-	// 存储切分后的演员
-	std::vector<vtkSmartPointer<vtkActor>> clippedActors;
+	render->RemoveAllViewProps();
+	if (!actors)
+	{
+		return ;
+	}
 
-	// 遍历所有可见的演员并进行切分
-	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
+	// 用于合并切分后的 polyData
+	auto appendFilter = vtkSmartPointer<vtkAppendPolyData>::New();
+	bool anyCloudModel = false;
+
 	actors->InitTraversal();
-	vtkSmartPointer<vtkProp> actor = actors->GetNextProp();
-
-	while (actor)
+	for (vtkActor* actor = actors->GetNextActor(); actor != nullptr; actor = actors->GetNextActor())
 	{
-		vtkSmartPointer<vtkActor> actor_ = vtkActor::SafeDownCast(actor);
-		if (actor_ && actor_->GetVisibility())
+		if (!actor->GetVisibility())
 		{
-			vtkSmartPointer<vtkPolyDataMapper> polyDataMapper = vtkPolyDataMapper::SafeDownCast(actor_->GetMapper());
-			vtkSmartPointer<vtkDataSetMapper> dataSetMapper = vtkDataSetMapper::SafeDownCast(actor_->GetMapper());
-
-			if (polyDataMapper)
-			{
-				vtkSmartPointer<vtkPolyData> polyData = vtkPolyData::SafeDownCast(polyDataMapper->GetInput());
-				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkColorTransferFunction::SafeDownCast(polyDataMapper->GetLookupTable());
-				double range[2] = { 0.0, 1.0 };
-				polyDataMapper->GetScalarRange(range);
-
-				if (polyData)
-				{
-					// 使用平面切分多边形数据
-					vtkSmartPointer<vtkClipPolyData> clipper = vtkSmartPointer<vtkClipPolyData>::New();
-					clipper->SetInputData(polyData);
-					clipper->SetClipFunction(plane);
-					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
-					clipper->Update();
-
-					// 获取切分后的数据
-					vtkSmartPointer<vtkPolyData> clippedPolyData = clipper->GetOutput();
-
-					// 创建新的映射器和演员
-					vtkSmartPointer<vtkPolyDataMapper> clippedMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-					clippedMapper->SetInputData(clippedPolyData);
-					clippedMapper->SetLookupTable(colorTransferFunction);
-					clippedMapper->SetScalarRange(range);
-
-					vtkSmartPointer<vtkActor> clippedActor = vtkSmartPointer<vtkActor>::New();
-					clippedActor->SetMapper(clippedMapper);
-					clippedActor->GetProperty()->SetColor(actor_->GetProperty()->GetColor());
-
-					// 存储切分后的演员
-					clippedActors.push_back(clippedActor);
-
-					// 移除原始演员
-					render->RemoveActor(actor_);
-				}
-			}
-			else if (dataSetMapper)
-			{
-				vtkSmartPointer<vtkDataSet> dataSet = vtkDataSet::SafeDownCast(dataSetMapper->GetInput());
-				vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkColorTransferFunction::SafeDownCast(dataSetMapper->GetLookupTable());
-				double range[2] = { 0.0, 1.0 };
-				dataSetMapper->GetScalarRange(range);
-
-				if (dataSet)
-				{
-					// 使用 vtkClipDataSet 对原始数据进行剪裁
-					vtkSmartPointer<vtkClipDataSet> clipper = vtkSmartPointer<vtkClipDataSet>::New();
-					clipper->SetInputData(dataSet);
-					clipper->SetClipFunction(plane);
-					clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
-					clipper->Update();
-
-					// 提取剪裁后的表面
-					vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
-					surfaceFilter->SetInputConnection(clipper->GetOutputPort());
-					surfaceFilter->Update();
-
-					vtkSmartPointer<vtkPolyData> cutSurface = surfaceFilter->GetOutput();
-
-					// 检查结果是否有效
-					if (cutSurface->GetNumberOfPoints() > 0)
-					{
-						// 设置活动标量为当前选中的物理量
-						if (cutSurface->GetPointData()->HasArray(activeScalar.toStdString().c_str()))
-						{
-							cutSurface->GetPointData()->SetActiveScalars(activeScalar.toStdString().c_str());
-						}
-						else
-						{
-							QMessageBox::warning(this, "警告", "剪裁后的数据不包含标量 '" + activeScalar + "'。");
-							continue;
-						}
-
-						// 获取标量范围（与原始数据一致）
-						double scalarRange[2];
-						cutSurface->GetPointData()->GetArray(activeScalar.toStdString().c_str())->GetRange(scalarRange);
-
-						// 创建映射器和演员（切分面）
-						vtkSmartPointer<vtkPolyDataMapper> cutMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-						cutMapper->SetInputData(cutSurface);
-						cutMapper->SetLookupTable(colorTransferFunction);
-						cutMapper->SetScalarRange(scalarRange);
-						cutMapper->SetScalarModeToUsePointData();
-
-						vtkSmartPointer<vtkActor> cutActor = vtkSmartPointer<vtkActor>::New();
-						cutActor->SetMapper(cutMapper);
-
-						// 设置切分面演员属性
-						cutActor->GetProperty()->SetOpacity(1.0);
-						cutActor->GetProperty()->EdgeVisibilityOff();
-
-						// 存储切分后的演员
-						clippedActors.push_back(cutActor);
-					}
-
-					// 移除原始演员
-					render->RemoveActor(actor_);
-				}
-			}
+			continue;
 		}
-		actor = actors->GetNextProp();
+
+		vtkMapper* srcMapper = actor->GetMapper();
+		if (!srcMapper)
+		{
+			continue;
+		}
+
+		// 判断是否激活标量
+		if (srcMapper->GetScalarVisibility() &&
+			srcMapper->GetInput() &&
+			srcMapper->GetInput()->GetPointData() &&
+			srcMapper->GetInput()->GetPointData()->GetScalars())
+		{
+			anyCloudModel = true;
+		}
+
+		vtkDataSet* inputDS = vtkDataSet::SafeDownCast(srcMapper->GetInput());
+		if (!inputDS)
+		{
+			continue;
+		}
+
+		// 创建共同的切割平面
+		auto plane = vtkSmartPointer<vtkPlane>::New();
+		plane->SetOrigin(origin[0], origin[1], origin[2]);
+		plane->SetNormal(normal[0], normal[1], normal[2]);
+
+		vtkSmartPointer<vtkPolyData> clippedPolyData;
+		vtkSmartPointer<vtkTableBasedClipDataSet> clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+		clipper->SetInputData(inputDS);
+		clipper->SetClipFunction(plane);
+		clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
+		clipper->Update();
+
+		vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+		surfaceFilter->SetInputConnection(clipper->GetOutputPort());
+		surfaceFilter->Update();
+
+		clippedPolyData = surfaceFilter->GetOutput();
+
+		if (clippedPolyData && clippedPolyData->GetNumberOfPoints() > 0)
+		{
+			appendFilter->AddInputData(clippedPolyData);
+		}
 	}
 
-	// 将切分后的演员添加到渲染器中
-	for (auto& clippedActor : clippedActors)
+	appendFilter->Update();
+	vtkPolyData* mergedPolyData = appendFilter->GetOutput();
+	if (!mergedPolyData || mergedPolyData->GetNumberOfPoints() == 0)
 	{
-		render->AddActor(clippedActor);
+		return ;
 	}
 
-	// 渲染窗口
+	// 创建新的 mapper 和 actor
+	auto newMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+	newMapper->SetInputData(mergedPolyData);
+	auto newActor = vtkSmartPointer<vtkActor>::New();
+	newActor->SetMapper(newMapper);
+
+	if (anyCloudModel)
+	{
+		// 云图模型
+		newMapper->ScalarVisibilityOn();
+		std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
+		std::pair<double, double> range = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
+		newMapper->SetScalarRange(range.first, range.second);
+
+		auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+		colorTransferFunction->SetColorSpaceToRGB();
+		colorTransferFunction->AddRGBPoint(range.first, 0.0, 127.0 / 255.0, 1.0);
+		colorTransferFunction->AddRGBPoint((range.first + range.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
+		colorTransferFunction->AddRGBPoint(range.second, 180.0 / 255.0, 0.0, 0.0);
+
+		newMapper->SetLookupTable(colorTransferFunction);
+		newMapper->UseLookupTableScalarRangeOn();
+
+		newActor->GetProperty()->EdgeVisibilityOff();
+		newActor->GetProperty()->SetRepresentationToSurface();
+
+		vtkSmartPointer<vtkScalarBarActor> scalarBar = createScalarBarActor(range);
+
+		// 添加图例到渲染器
+		render->AddActor2D(scalarBar);
+	}
+	else
+	{
+		// 网格模型
+		newMapper->ScalarVisibilityOff();
+		newActor->GetProperty()->EdgeVisibilityOn();
+		newActor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
+		newActor->GetProperty()->SetRepresentationToSurface();
+		newActor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+	}
+
+	render->AddActor(newActor);
+	formModelClip->ui->checkBox->setChecked(true);
 	ui->openGLWidget->renderWindow()->Render();
 }
 
@@ -1875,6 +1829,44 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	actor->GetProperty()->SetRepresentationToSurface();
 
 	return actor;
+}
+
+vtkSmartPointer<vtkScalarBarActor> MainWindow::createScalarBarActor(const std::pair<double, double>& range)
+{
+	// 创建颜色传输函数
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	colorTransferFunction->SetColorSpaceToRGB();
+
+	// 添加颜色点
+	colorTransferFunction->AddRGBPoint(range.first, 0 / 255.0, 127 / 255.0, 255 / 255.0); // 蓝色
+	colorTransferFunction->AddRGBPoint((range.first + range.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0); // 白色
+	colorTransferFunction->AddRGBPoint(range.second, 180.0 / 255.0, 0 / 255.0, 0 / 255.0); // 红色
+
+	// 创建图例
+	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+	scalarBar->SetLookupTable(colorTransferFunction);
+	scalarBar->SetNumberOfLabels(4);
+	scalarBar->SetOrientationToVertical();
+	scalarBar->SetPosition(0.92, 0.01); 
+	scalarBar->SetWidth(0.06); 
+	scalarBar->SetHeight(0.3); 
+	scalarBar->SetLabelFormat("%1.2e"); 
+
+	// 设置图例标题的文本属性
+	vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+	titleTextProperty->SetFontSize(24);
+	titleTextProperty->SetColor(1.0, 1.0, 1.0); 
+	titleTextProperty->SetBold(1);
+	titleTextProperty->SetJustificationToCentered(); 
+	scalarBar->SetTitleTextProperty(titleTextProperty);
+
+	// 设置图例标签的文本属性
+	vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
+	labelTextProperty->SetFontSize(18); 
+	labelTextProperty->SetColor(0, 0, 0); 
+	scalarBar->SetLabelTextProperty(labelTextProperty);
+
+	return scalarBar;
 }
 
 void MainWindow::updatePostProcessingPage(const QString& casePath)

@@ -113,6 +113,8 @@ QT_CHARTS_USE_NAMESPACE
 #include "DialogResultMerge.h"
 #include <vtkAppendFilter.h>
 #include <vtkMultiBlockDataSet.h>
+#include <vtkTableBasedClipDataSet.h>
+#include <vtkAppendPolyData.h>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -147,6 +149,8 @@ public:
 		const std::string& fieldName,
 		const std::vector<std::string>& patchGroup,
 		const std::pair<double, double>& globalRange);
+
+	vtkSmartPointer<vtkScalarBarActor> createScalarBarActor(const std::pair<double, double>& range); 					//创建图例actor
 
 public slots:
 	//工具栏信号处理
