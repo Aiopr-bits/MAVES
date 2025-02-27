@@ -1415,12 +1415,14 @@ void MainWindow::formModelClip_apply()
 	render->RemoveAllViewProps();
 	if (!actors)
 	{
-		return ;
+		return;
 	}
 
 	// 用于合并切分后的 polyData
 	auto appendFilter = vtkSmartPointer<vtkAppendPolyData>::New();
 	bool anyCloudModel = false;
+	bool isGeometryModel = false;
+	double geometryColor[3] = { 97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0 }; // 几何模型默认颜色
 
 	actors->InitTraversal();
 	for (vtkActor* actor = actors->GetNextActor(); actor != nullptr; actor = actors->GetNextActor())
@@ -1434,6 +1436,17 @@ void MainWindow::formModelClip_apply()
 		if (!srcMapper)
 		{
 			continue;
+		}
+
+		// 获取当前actor的颜色
+		double* actorColor = actor->GetProperty()->GetColor();
+
+		// 判断是否为几何模型（基于颜色判断）
+		if (fabs(actorColor[0] - geometryColor[0]) < 0.01 &&
+			fabs(actorColor[1] - geometryColor[1]) < 0.01 &&
+			fabs(actorColor[2] - geometryColor[2]) < 0.01)
+		{
+			isGeometryModel = true;
 		}
 
 		// 判断是否激活标量
@@ -1479,7 +1492,7 @@ void MainWindow::formModelClip_apply()
 	vtkPolyData* mergedPolyData = appendFilter->GetOutput();
 	if (!mergedPolyData || mergedPolyData->GetNumberOfPoints() == 0)
 	{
-		return ;
+		return;
 	}
 
 	// 创建新的 mapper 和 actor
@@ -1512,6 +1525,14 @@ void MainWindow::formModelClip_apply()
 
 		// 添加图例到渲染器
 		render->AddActor2D(scalarBar);
+	}
+	else if (isGeometryModel)
+	{
+		// 几何模型
+		newMapper->ScalarVisibilityOff();
+		newActor->GetProperty()->EdgeVisibilityOff();
+		newActor->GetProperty()->SetRepresentationToSurface();
+		newActor->GetProperty()->SetColor(geometryColor[0], geometryColor[1], geometryColor[2]);
 	}
 	else
 	{

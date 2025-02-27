@@ -22,7 +22,7 @@ struct CaseData
 	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // 物理量范围
 	std::vector<std::string> meshPatchNames; 															// 网格patch名称
 
-
+    //以下变量后续需要删除
     std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    //网格边界actor
     std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    //网格面actor
 
