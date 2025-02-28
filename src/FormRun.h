@@ -16,6 +16,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };
 QT_END_NAMESPACE
 
+/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
+
 class FormRun : public QWidget
 {
 	Q_OBJECT

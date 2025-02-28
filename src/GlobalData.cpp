@@ -1,4 +1,11 @@
-﻿#include "GlobalData.h"
+﻿/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
+
+#include "GlobalData.h"
 
 // 获取单例实例
 GlobalData& GlobalData::getInstance()

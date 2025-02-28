@@ -1,4 +1,11 @@
-﻿#include "FormPostprocessing.h"
+﻿/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
+
+#include "FormPostprocessing.h"
 #include <QSvgRenderer>
 #include <QPixmap>
 #include <QPainter>

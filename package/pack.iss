@@ -1,9 +1,12 @@
-; 汉化：MonKeyDu QQ:565887
-; 由 Inno Setup 脚本向导 v6.3.1 生成的脚本.
-; 有关创建 INNO SETUP 脚本文件的详细信息，请参阅帮助文件！!
+ ;/*--------------------------------*- C++ -*----------------------------------*\
+ ;| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+ ;| Author: Zhiyong Zeng                                                        |
+ ;| Date: December 01, 2024                                                     |
+ ;| Email: mailzengzhiyong@gamil.com                                            |
+ ;\*---------------------------------------------------------------------------*/
 
 #define MyAppName "MAVES"
-#define MyAppVersion "20250214"
+#define MyAppVersion "20250228"
 #define MyAppExeName "MAVES.exe"
 
 [Setup]
