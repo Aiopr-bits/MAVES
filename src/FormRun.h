@@ -1,4 +1,11 @@
-﻿#pragma once
+﻿/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
+
+#pragma once
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormRun.h"
@@ -15,13 +22,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };
 QT_END_NAMESPACE
-
-/*--------------------------------*- C++ -*----------------------------------*\
-| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
-| Author: Zhiyong Zeng                                                        |
-| Date: December 01, 2024                                                     |
-| Email: mailzengzhiyong@gamil.com                                            |
-\*---------------------------------------------------------------------------*/
 
 class FormRun : public QWidget
 {

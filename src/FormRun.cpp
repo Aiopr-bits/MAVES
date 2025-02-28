@@ -39,6 +39,25 @@ FormRun::~FormRun()
 	delete ui;
 }
 
+int getWriteInterval(const std::string& writeControl, int writeInterval, int deltaT) {
+	if (writeControl == "timeStep") {
+		return writeInterval;
+	}
+	else if (writeControl == "runTime") {
+		return writeInterval / deltaT;
+	}
+	else if (writeControl == "adjustableRunTime") {
+		return writeInterval / deltaT;
+	}
+	else if (writeControl == "clockTime") {
+		return writeInterval / deltaT;
+	}
+	else {
+		std::cerr << "Unknown writeControl type: " << writeControl << std::endl;
+		return 0;
+	}
+}
+
 void FormRun::importParameter()
 {
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -59,12 +78,16 @@ void FormRun::importParameter()
 	QRegularExpression startTimeRegex(R"(startTime\s+(\d*\.?\d+);)");
 	QRegularExpression endTimeRegex(R"(endTime\s+(\d*\.?\d+);)");
 	QRegularExpression deltaTRegex(R"(deltaT\s+(\d*\.?\d+);)");
+	QRegularExpression writeControlRegex(R"(writeControl\s+(\w+);)");
 	QRegularExpression writeIntervalRegex(R"(writeInterval\s+(\d*\.?\d+);)");
 
 	QRegularExpressionMatch startTimeMatch = startTimeRegex.match(content);
 	QRegularExpressionMatch endTimeMatch = endTimeRegex.match(content);
 	QRegularExpressionMatch deltaTMatch = deltaTRegex.match(content);
+	QRegularExpressionMatch writeControlMatch = writeControlRegex.match(content);
 	QRegularExpressionMatch writeIntervalMatch = writeIntervalRegex.match(content);
+
+	int numIteration = getWriteInterval(writeControlMatch.captured(1).toStdString(), writeIntervalMatch.captured(1).toInt(), deltaTMatch.captured(1).toInt());
 
 	if (startTimeMatch.hasMatch()) {
 		ui->lineEdit->setText(startTimeMatch.captured(1));
@@ -76,7 +99,7 @@ void FormRun::importParameter()
 		ui->lineEdit_3->setText(deltaTMatch.captured(1));
 	}
 	if (writeIntervalMatch.hasMatch()) {
-		ui->spinBox_2->setValue(writeIntervalMatch.captured(1).toDouble() / deltaTMatch.captured(1).toDouble());
+		ui->spinBox_2->setValue(numIteration);
 	}
 
 	//解析decomposeParDict文件
@@ -160,7 +183,8 @@ void FormRun::exportParameter()
 	content.replace(QRegularExpression(R"(startTime\s+\d*\.?\d+;)"), "startTime       " + startTime + ";");
 	content.replace(QRegularExpression(R"(endTime\s+\d*\.?\d+;)"), "endTime         " + endTime + ";");
 	content.replace(QRegularExpression(R"(deltaT\s+\d*\.?\d+;)"), "deltaT          " + deltaT + ";");
-	content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + QString::number(writeInterval.toDouble() * deltaT.toDouble()) + ";");
+	content.replace(QRegularExpression(R"(writeControl\s+(\w+);)"), "writeControl    timeStep;");
+	content.replace(QRegularExpression(R"(writeInterval\s+\d*\.?\d+;)"), "writeInterval   " + QString::number(writeInterval.toDouble()) + ";");
 
 	// 将修改后的内容写回文件
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
