@@ -131,6 +131,14 @@ MainWindow::MainWindow(QWidget* parent)
 	// 初始化残差图刷新定时器
 	chartUpdateTimer->start(100);
 
+	//初始化previousSubPanelPixmap	
+	QTimer::singleShot(100, this, [this]() {
+		if (formGeometry) {
+			previousSubPanelPixmap = QPixmap::grabWidget(formGeometry);
+		}
+		});
+	previousPanelButton = "几何";
+
 	// 工具栏信号处理
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);																//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);																//x正向
@@ -155,6 +163,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);	//重构网格进程结束
 	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																		//更新残差图
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 						//更新模型切分平面选择器的值
+	connect(this, &MainWindow::panelPushButtonClicked, this, &MainWindow::on_panelPushButton_clicked);													//控制面板按钮点击
 
 	//副控制面板事件处理
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);														//导入几何
@@ -329,6 +338,60 @@ void MainWindow::handleAction10Triggered()
 	}
 }
 
+void MainWindow::on_panelPushButton_clicked(string text)
+{
+	QWidget* widget = nullptr;
+	if (previousPanelButton == "几何") {
+		widget = formGeometry;
+	}
+	else if (previousPanelButton == "网格") {
+		widget = formMesh;
+	}
+	else if (previousPanelButton == "导入") {
+		widget = formMeshImport;
+	}
+	else if (previousPanelButton == "求解器") {
+		widget = formSolver;
+	}
+	else if (previousPanelButton == "湍流") {
+		widget = formTurbulence;
+	}
+	else if (previousPanelButton == "物性参数") {
+		widget = formPhysicalPropertyParameter;
+	}
+	else if (previousPanelButton == "边界条件") {
+		widget = formBoundaryConditions;
+	}
+	else if (previousPanelButton == "求解计算") {
+		widget = formRun;
+	}
+	else if (previousPanelButton == "后处理") {
+		widget = formPostprocessing;
+	}
+	else if (previousPanelButton == "模型切分") {
+		widget = formModelClip;
+	}
+	QPixmap previousSubPanelPixmap = QPixmap::grabWidget(widget);
+
+	if (widget && previousSubPanelPixmap.size().width() > 0) {
+		
+		QLabel* pixmapLabel = new QLabel(this);
+		pixmapLabel->setPixmap(previousSubPanelPixmap);
+		pixmapLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
+		ui->gridLayout_3->addWidget(pixmapLabel, 0, 0, 1, 1);
+
+		QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(pixmapLabel);
+		pixmapLabel->setGraphicsEffect(opacityEffect);
+		QPropertyAnimation* animation = new QPropertyAnimation(opacityEffect, "opacity");
+		animation->setDuration(150);
+		animation->setStartValue(1.0);
+		animation->setEndValue(0.0);
+		connect(animation, &QPropertyAnimation::finished, pixmapLabel, &QLabel::deleteLater);
+		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	}
+	previousPanelButton = text;
+}
+
 void MainWindow::on_pushButton_clicked()
 {
 	hideAllSubForm();
@@ -336,6 +399,7 @@ void MainWindow::on_pushButton_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("几何");
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -345,6 +409,7 @@ void MainWindow::on_pushButton_4_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("导入");
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -354,6 +419,7 @@ void MainWindow::on_pushButton_2_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("网格");
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -363,6 +429,7 @@ void MainWindow::on_pushButton_5_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("求解器");
 }
 
 void MainWindow::on_pushButton_6_clicked()
@@ -372,6 +439,7 @@ void MainWindow::on_pushButton_6_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("湍流");
 }
 
 void MainWindow::on_pushButton_7_clicked()
@@ -381,6 +449,7 @@ void MainWindow::on_pushButton_7_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("物性参数");
 }
 
 void MainWindow::on_pushButton_13_clicked()
@@ -390,6 +459,7 @@ void MainWindow::on_pushButton_13_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("边界条件");
 }
 
 void MainWindow::on_pushButton_16_clicked()
@@ -398,6 +468,7 @@ void MainWindow::on_pushButton_16_clicked()
 	formRun->show();
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("求解计算");
 }
 
 void MainWindow::on_pushButton_17_clicked()
@@ -407,6 +478,7 @@ void MainWindow::on_pushButton_17_clicked()
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("后处理");
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -415,6 +487,7 @@ void MainWindow::on_pushButton_3_clicked()
 	formModelClip->show();
 	ui->tabWidget->setCurrentIndex(0);
 	formModelClip->ui->checkBox->setChecked(true);
+	emit panelPushButtonClicked("模型切分");
 
 	//按钮颜色处理
 	QPushButton* clickedButton = ui->pushButton_3;
@@ -558,7 +631,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 	animationWidget->show();
 	animationWidget->raise();
 	QPropertyAnimation* move = new QPropertyAnimation(animationWidget, "geometry");
-	move->setDuration(300);
+	move->setDuration(200);
 
 	if (previousTabWidgetIndex == 0) {
 		if (index == 1) {

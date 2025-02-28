@@ -115,6 +115,8 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkMultiBlockDataSet.h>
 #include <vtkTableBasedClipDataSet.h>
 #include <vtkAppendPolyData.h>
+#include <Qpixmap>
+#include <QGraphicsOpacityEffect>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -166,6 +168,7 @@ public slots:
 	void handleAction10Triggered();								    													//导入案例
 
 	//控制面板按钮点击事件处理
+	void on_panelPushButton_clicked(string text);								    									//控制面板按钮点击
 	void on_pushButton_clicked();								    													//几何页面
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
@@ -224,6 +227,9 @@ public slots:
 	void formModelClip_apply();																							//模型切分：应用
 	void dialogResultMerge_interrupt();																					//结果合并弹窗:中断
 
+signals:
+	void panelPushButtonClicked(string text);																			//控制面板按钮点击
+
 public:
 	Ui::MainWindowClass *ui;
 	QTimer* playTimer;
@@ -276,4 +282,6 @@ public:
 	//全局变量
 	int nWriteResults;
 	int previousTabWidgetIndex;
+	QPixmap previousSubPanelPixmap;
+	string previousPanelButton;
 };
