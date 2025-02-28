@@ -129,14 +129,9 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->chartView->setRenderHint(QPainter::Antialiasing);
 
 	// 初始化残差图刷新定时器
-	chartUpdateTimer->start(100);
+	chartUpdateTimer->start(500);
 
-	//初始化previousSubPanelPixmap	
-	QTimer::singleShot(100, this, [this]() {
-		if (formGeometry) {
-			previousSubPanelPixmap = QPixmap::grabWidget(formGeometry);
-		}
-		});
+	//初始化previousPanelButton	
 	previousPanelButton = "几何";
 
 	// 工具栏信号处理
@@ -1672,6 +1667,8 @@ void MainWindow::onProcessRunOutput()
 		// 解析输出信息
 		parseOutput(QString::fromLocal8Bit(output));
 		ui->tab_2->repaint();
+		ui->chartView->update();
+		ui->chartView->repaint();
 
 		//如果输出信息中包含"ExecutionTime"，则更新时间步
 		if (output.contains("ExecutionTime") && (currentTimeStep % formRun->ui->spinBox_2->value() == 0)) {

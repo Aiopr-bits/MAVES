@@ -282,6 +282,5 @@ public:
 	//全局变量
 	int nWriteResults;
 	int previousTabWidgetIndex;
-	QPixmap previousSubPanelPixmap;
 	string previousPanelButton;
 };
