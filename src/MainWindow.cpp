@@ -735,6 +735,33 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	ui->openGLWidget->renderWindow()->Render();
 }
 
+// 递归函数，用于遍历 MultiBlock 并将所有 DataSet 添加到 AppendFilter
+static void AddDataSetsToAppendFilter(vtkDataObject* dataObj, vtkAppendFilter* appendFilter)
+{
+	if (!dataObj)
+		return;
+
+	// 如果是单一的 vtkDataSet，则直接添加
+	if (dataObj->IsA("vtkDataSet"))
+	{
+		appendFilter->AddInputData(vtkDataSet::SafeDownCast(dataObj));
+	}
+	// 如果是 vtkMultiBlockDataSet，则递归遍历其下所有 block
+	else if (dataObj->IsA("vtkMultiBlockDataSet"))
+	{
+		vtkMultiBlockDataSet* mbds = vtkMultiBlockDataSet::SafeDownCast(dataObj);
+		if (!mbds)
+			return;
+
+		unsigned int numBlocks = mbds->GetNumberOfBlocks();
+		for (unsigned int i = 0; i < numBlocks; ++i)
+		{
+			vtkDataObject* block = mbds->GetBlock(i);
+			AddDataSetsToAppendFilter(block, appendFilter);
+		}
+	}
+}
+
 vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 	const std::string& casePath,
 	const std::vector<std::string>& patchGroup)
@@ -768,18 +795,9 @@ vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 
 	vtkSmartPointer<vtkDataSet> dataSet;
 	if (isInternalMesh) {
-		// 获取 MultiBlock 数据集
 		vtkSmartPointer<vtkMultiBlockDataSet> multiBlockDataSet = openFOAMReader->GetOutput();
-
-		// 创建 AppendFilter
 		vtkSmartPointer<vtkAppendFilter> appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
-		unsigned int numBlocks = multiBlockDataSet->GetNumberOfBlocks();
-		for (unsigned int i = 0; i < numBlocks; ++i) {
-			vtkDataObject* block = multiBlockDataSet->GetBlock(i);
-			if (block && block->IsA("vtkDataSet")) {
-				appendFilter->AddInputData(static_cast<vtkDataSet*>(block));
-			}
-		}
+		AddDataSetsToAppendFilter(multiBlockDataSet, appendFilter);
 
 		// 更新 AppendFilter
 		appendFilter->Update();
@@ -1949,18 +1967,9 @@ vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 
 	vtkSmartPointer<vtkDataSet> dataSet;
 	if (isInternalMesh) {
-		// 获取 MultiBlock 数据集
 		vtkSmartPointer<vtkMultiBlockDataSet> multiBlockDataSet = openFOAMReader->GetOutput();
-
-		// 创建 AppendFilter
 		vtkSmartPointer<vtkAppendFilter> appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
-		unsigned int numBlocks = multiBlockDataSet->GetNumberOfBlocks();
-		for (unsigned int i = 0; i < numBlocks; ++i) {
-			vtkDataObject* block = multiBlockDataSet->GetBlock(i);
-			if (block && block->IsA("vtkDataSet")) {
-				appendFilter->AddInputData(static_cast<vtkDataSet*>(block));
-			}
-		}
+		AddDataSetsToAppendFilter(multiBlockDataSet, appendFilter);
 
 		// 更新 AppendFilter
 		appendFilter->Update();
