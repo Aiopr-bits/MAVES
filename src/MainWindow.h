@@ -161,6 +161,8 @@ public:
 
 	vtkSmartPointer<vtkScalarBarActor> createScalarBarActor(const std::pair<double, double>& range); 					//创建图例actor
 
+	vtkSmartPointer<vtkActor> createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside);		//创建切分actor
+
 public slots:
 	//工具栏信号处理
 	void handleAction1Triggered();								    													//信息框

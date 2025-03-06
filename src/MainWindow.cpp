@@ -1532,27 +1532,13 @@ void MainWindow::formModelClip_resetPlane()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_apply()
+vtkSmartPointer<vtkActor> MainWindow::createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside)
 {
-	// 获取平面选择器的原点和法向量
-	double origin[3];
-	double normal[3];
-	planeRepModelClip->GetOrigin(origin);
-	planeRepModelClip->GetNormal(normal);
-
-	// 创建一个平面
-	vtkSmartPointer<vtkPlane> plane = vtkSmartPointer<vtkPlane>::New();
-	plane->SetOrigin(origin);
-	plane->SetNormal(normal);
-
 	// 获取 render 中所有可见的 actor
-	formModelClip->ui->checkBox->setChecked(false);
 	vtkActorCollection* actors = render->GetActors();
-
-	render->RemoveAllViewProps();
 	if (!actors)
 	{
-		return;
+		return nullptr;
 	}
 
 	// 用于合并切分后的 polyData
@@ -1560,6 +1546,11 @@ void MainWindow::formModelClip_apply()
 	bool anyCloudModel = false;
 	bool isGeometryModel = false;
 	double geometryColor[3] = { 97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0 }; // 几何模型默认颜色
+
+	// 创建平面
+	auto plane = vtkSmartPointer<vtkPlane>::New();
+	plane->SetOrigin(origin[0], origin[1], origin[2]);
+	plane->SetNormal(normal[0], normal[1], normal[2]);
 
 	actors->InitTraversal();
 	for (vtkActor* actor = actors->GetNextActor(); actor != nullptr; actor = actors->GetNextActor())
@@ -1601,24 +1592,19 @@ void MainWindow::formModelClip_apply()
 			continue;
 		}
 
-		// 创建共同的切割平面
-		auto plane = vtkSmartPointer<vtkPlane>::New();
-		plane->SetOrigin(origin[0], origin[1], origin[2]);
-		plane->SetNormal(normal[0], normal[1], normal[2]);
-
-		vtkSmartPointer<vtkPolyData> clippedPolyData;
+		// 切割数据
 		vtkSmartPointer<vtkTableBasedClipDataSet> clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
 		clipper->SetInputData(inputDS);
 		clipper->SetClipFunction(plane);
-		clipper->SetInsideOut(!formModelClip->ui->checkBox_2->isChecked());
+		clipper->SetInsideOut(!keepInside);
 		clipper->Update();
 
+		// 转换为表面
 		vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
 		surfaceFilter->SetInputConnection(clipper->GetOutputPort());
 		surfaceFilter->Update();
 
-		clippedPolyData = surfaceFilter->GetOutput();
-
+		vtkSmartPointer<vtkPolyData> clippedPolyData = surfaceFilter->GetOutput();
 		if (clippedPolyData && clippedPolyData->GetNumberOfPoints() > 0)
 		{
 			appendFilter->AddInputData(clippedPolyData);
@@ -1629,7 +1615,7 @@ void MainWindow::formModelClip_apply()
 	vtkPolyData* mergedPolyData = appendFilter->GetOutput();
 	if (!mergedPolyData || mergedPolyData->GetNumberOfPoints() == 0)
 	{
-		return;
+		return nullptr;
 	}
 
 	// 创建新的 mapper 和 actor
@@ -1638,6 +1624,7 @@ void MainWindow::formModelClip_apply()
 	auto newActor = vtkSmartPointer<vtkActor>::New();
 	newActor->SetMapper(newMapper);
 
+	// 根据模型类型设置属性
 	if (anyCloudModel)
 	{
 		// 云图模型
@@ -1657,11 +1644,6 @@ void MainWindow::formModelClip_apply()
 
 		newActor->GetProperty()->EdgeVisibilityOff();
 		newActor->GetProperty()->SetRepresentationToSurface();
-
-		vtkSmartPointer<vtkScalarBarActor> scalarBar = createScalarBarActor(range);
-
-		// 添加图例到渲染器
-		render->AddActor2D(scalarBar);
 	}
 	else if (isGeometryModel)
 	{
@@ -1681,9 +1663,45 @@ void MainWindow::formModelClip_apply()
 		newActor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
 	}
 
-	render->AddActor(newActor);
-	formModelClip->ui->checkBox->setChecked(true);
-	ui->openGLWidget->renderWindow()->Render();
+	return newActor;
+}
+
+void MainWindow::formModelClip_apply()
+{
+	// 获取平面选择器的原点和法向量
+	double origin[3];
+	double normal[3];
+	planeRepModelClip->GetOrigin(origin);
+	planeRepModelClip->GetNormal(normal);
+
+	// 隐藏平面选择器
+	formModelClip->ui->checkBox->setChecked(false);
+
+	// 创建切割后的Actor
+	bool keepInside = !formModelClip->ui->checkBox_2->isChecked();
+	vtkSmartPointer<vtkActor> slicedActor = createSlicedActorFromRenderer(origin, normal, keepInside);
+
+	// 清除原有演员
+	render->RemoveAllViewProps();
+
+	if (slicedActor)
+	{
+		render->AddActor(slicedActor);
+
+		// 如果是云图模型，添加颜色图例
+		vtkMapper* mapper = slicedActor->GetMapper();
+		if (mapper && mapper->GetScalarVisibility())
+		{
+			std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
+			std::pair<double, double> range = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
+			vtkSmartPointer<vtkScalarBarActor> scalarBar = createScalarBarActor(range);
+			render->AddActor2D(scalarBar);
+		}
+
+		// 重新显示平面选择器
+		formModelClip->ui->checkBox->setChecked(true);
+		ui->openGLWidget->renderWindow()->Render();
+	}
 }
 
 void MainWindow::dialogResultMerge_interrupt()
