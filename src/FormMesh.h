@@ -39,7 +39,7 @@ public slots:
     void onToggleRegionSecondAnimation();
 
 signals:
-    void meshVisibilityChanged();
+    void apply(std::vector<QListView*> listViewBoundaries);
 	void itemEntered(const QString& text);
 	void itemExited(const QString& text);
     void toggleRegionSecondAnimation();

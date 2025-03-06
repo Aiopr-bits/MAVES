@@ -170,7 +170,7 @@ MainWindow::MainWindow(QWidget* parent)
 	//副控制面板事件处理
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);														//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);													//导入网格
-	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);																//网格应用
+	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
 	connect(formMesh, &FormMesh::clickMainWindowMeshButton, this, &MainWindow::formMesh_clickMainWindowMeshButton);										//点击主窗口网格按钮
@@ -937,23 +937,35 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	}
 }
 
-void MainWindow::formMesh_apply()
+void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
 {
 	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
 
+	//获取region名称
+	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model());
+	QStringList items;
+	for (int i = 0; i < model->rowCount(); ++i) {
+		items << model->item(i)->text();
+	}
+	
 	// 遍历 listViewModel 并根据选中状态添加到
 	std::vector<std::string> patchGroup;
-	for (int i = 0; i < formMesh->listViewModel->rowCount(); ++i)
-	{
-		QStandardItem* item = formMesh->listViewModel->item(i);
-		if (item->checkState() == Qt::Checked)
-		{
-			if (item->text().toStdString() != "internalMesh") {
-				patchGroup.push_back("patch/" + item->text().toStdString());
+	for (int i = listViewBoundaries.size() - 1; i >= 0; --i) {
+		auto* model = qobject_cast<QStandardItemModel*>(listViewBoundaries[i]->model());
+		bool isDefault = (items[items.size() - i - 1] == "default");
+
+		for (int j = 0; j < model->rowCount(); ++j) {
+			QStandardItem* item = model->item(j);
+			if (!item || item->checkState() != Qt::Checked) continue;
+
+			const std::string text = item->text().toStdString();
+			if (isDefault) {
+				patchGroup.push_back((text == "internalMesh") ? text : "patch/" + text);
 			}
 			else {
-				patchGroup.push_back(item->text().toStdString());
+				std::string prefix = "/" + items[items.size() - i - 1].toStdString() + "/";
+				patchGroup.push_back(prefix + ((text == "internalMesh") ? text : "patch/" + text));
 			}
 		}
 	}

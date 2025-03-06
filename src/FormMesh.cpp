@@ -231,7 +231,7 @@ void FormMesh::onListViewClicked(const QModelIndex& index)
 
 void FormMesh::on_pushButton_clicked()
 {
-	emit meshVisibilityChanged();
+	emit apply(listViewBoundaries);
 }
 
 void FormMesh::onItemEntered(const QString& text)
