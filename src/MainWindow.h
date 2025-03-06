@@ -209,6 +209,7 @@ public slots:
 	void formMesh_apply(); 																								//更新渲染窗口	
 	void formMesh_itemEntered(const QString& text);																		//网格页面Item进入
 	void formMesh_itemExited(const QString& text);																		//网格页面Item退出
+	void formMesh_clickMainWindowMeshButton();																			//点击主窗口网格按钮
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
 	void formPostprocessing_apply();																					//应用

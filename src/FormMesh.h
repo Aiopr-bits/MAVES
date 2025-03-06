@@ -12,6 +12,9 @@
 #include "GlobalData.h"
 #include <QStandardItemModel.h>
 #include "CustomCheckBoxDelegate.h"
+#include <QPropertyAnimation.h>
+#include <QThread.h>
+#include <QSequentialAnimationGroup>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormMeshClass; };
@@ -25,16 +28,22 @@ public:
     FormMesh(QWidget* parent = nullptr);
     ~FormMesh();
 
+	QListView* createBoundariesListView(std::string regionName, std::vector<std::string> patchNames);
+
 public slots:
     void updateForm();
+    void onListViewClicked(const QModelIndex& index);
     void on_pushButton_clicked();
     void onItemEntered(const QString& text);
     void onItemExited(const QString& text);
+    void onToggleRegionSecondAnimation();
 
 signals:
     void meshVisibilityChanged();
 	void itemEntered(const QString& text);
 	void itemExited(const QString& text);
+    void toggleRegionSecondAnimation();
+	void clickMainWindowMeshButton();
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -43,4 +52,5 @@ public:
     Ui::FormMeshClass* ui;
     QStandardItemModel* listViewModel;
     QModelIndex lastIndex;
+	std::vector<QListView*> listViewBoundaries;
 };

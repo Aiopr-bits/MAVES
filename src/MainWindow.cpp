@@ -173,6 +173,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::meshVisibilityChanged, this, &MainWindow::formMesh_apply);																//网格应用
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
+	connect(formMesh, &FormMesh::clickMainWindowMeshButton, this, &MainWindow::formMesh_clickMainWindowMeshButton);										//点击主窗口网格按钮
 	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);				//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
@@ -376,7 +377,7 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	QPixmap previousSubPanelPixmap = QPixmap::grabWidget(widget);
 
 	if (widget && previousSubPanelPixmap.size().width() > 0) {
-		
+
 		QLabel* pixmapLabel = new QLabel(this);
 		pixmapLabel->setPixmap(previousSubPanelPixmap);
 		pixmapLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -817,6 +818,59 @@ vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
 	return actor;
 }
 
+void split(const std::string& s, char delimiter, std::vector<std::string>& tokens) {
+	// 如果s以/开头，删除第一个字符
+	std::string str = s;
+	if (str[0] == delimiter) {
+		str.erase(str.begin());
+	}
+
+	std::string token;
+	std::istringstream tokenStream(str);
+	while (std::getline(tokenStream, token, delimiter)) {
+		tokens.push_back(token);
+	}
+}
+
+std::unordered_map<std::string, std::vector<std::string>> analysismeshPatchNames(const std::vector<std::string>& meshPatchNames)
+{
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap;
+	for (const auto& name : meshPatchNames)
+	{
+		std::vector<std::string> tokens;
+		split(name, '/', tokens);
+		if ((tokens.size() == 2 && tokens[0] == "group") || (tokens.size() == 3 && tokens[1] == "group"))
+			continue;
+
+		//区域名称和边界名称
+		std::string region, patch;
+		if (tokens[0] == "internalMesh" || tokens[0] == "patch") {
+			region = "default";
+			patch = tokens[tokens.size() - 1];
+		}
+		else {
+			region = tokens[0];
+			patch = tokens[tokens.size() - 1];
+		}
+
+		meshPatchNamesMap[region].push_back(patch);
+	}
+
+	//将key==default的元素放到第一个
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMapTemp;
+	for (const auto& item : meshPatchNamesMap) {
+		if (item.first == "default") {
+			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.begin(), item);
+		}
+		else {
+			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.end(), item);
+		}
+	}
+	meshPatchNamesMap = meshPatchNamesMapTemp;
+
+	return meshPatchNamesMap;
+}
+
 void MainWindow::getMeshPatchData(const std::string& casePath)
 {
 	std::vector<std::string> meshPatchNames;
@@ -842,23 +896,15 @@ void MainWindow::getMeshPatchData(const std::string& casePath)
 	// 禁用所有补丁
 	openFOAMReader->DisableAllPatchArrays();
 
-	// 遍历所有补丁并添加进meshPatchNames
+	// 遍历所有补丁
 	for (int i = 0; i < numPatches; ++i)
 	{
 		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
-		if (std::string(currentPatchName).find("patch") == 0 || strcmp(currentPatchName, "internalMesh") == 0)
-		{
-			if (std::string(currentPatchName).find("patch/") != std::string::npos)
-			{
-				meshPatchNames.push_back(std::string(currentPatchName).substr(6));
-			}
-			else
-			{
-				meshPatchNames.push_back(std::string(currentPatchName));
-			}
-		}
+		meshPatchNames.push_back(std::string(currentPatchName));
 	}
-	GlobalData::getInstance().getCaseData()->meshPatchNames = meshPatchNames;
+
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap = analysismeshPatchNames(meshPatchNames);
+	GlobalData::getInstance().getCaseData()->meshPatchNamesMap = meshPatchNamesMap;
 }
 
 void MainWindow::formMeshImport_import(const QString& filePath)
@@ -885,12 +931,6 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 		formMesh->updateForm();
 		render->ResetCamera();
 		renderWindow->Render();
-
-		//网格导入成功之后，自动跳转到网格页面
-		on_pushButton_2_clicked();
-		ui->pushButton_2->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
-		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
-		lastClickedButton = ui->pushButton_2;
 
 		//网格导入成功,初始化参数配置页面(需补充)
 		//formBoundaryConditions->onMeshImported();
@@ -951,6 +991,16 @@ void MainWindow::formMesh_itemExited(const QString& text)
 	//	actorIt->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
 	//	renderWindow->Render();
 	//}
+}
+
+void MainWindow::formMesh_clickMainWindowMeshButton()
+{
+	if (lastClickedButton != ui->pushButton_2) {
+		on_pushButton_2_clicked();
+		ui->pushButton_2->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
+		lastClickedButton = ui->pushButton_2;
+	}
 }
 
 void MainWindow::formRun_run()
@@ -1175,8 +1225,8 @@ void MainWindow::formRun_stopRun()
 	formRun->ui->label_12->hide();
 	formRun->ui->pushButton->show();
 
-	if (formRun->ui->radioButton->isChecked()==true) {
-		if(processRun.state() == QProcess::Running) processRun.kill();
+	if (formRun->ui->radioButton->isChecked() == true) {
+		if (processRun.state() == QProcess::Running) processRun.kill();
 	}
 
 	if (formRun->ui->radioButton_2->isChecked() == true)
@@ -1402,7 +1452,7 @@ void MainWindow::formModelClip_alignView()
 	const double* viewUpPtr = camera->GetViewUp();
 	double viewUp[3] = { viewUpPtr[0], viewUpPtr[1], viewUpPtr[2] };
 	if (normal[0] == 0.0 && normal[1] == 0.0) {
-		viewUp[1] = 1.0; 
+		viewUp[1] = 1.0;
 	}
 	camera->SetViewUp(viewUp);
 
@@ -1945,23 +1995,23 @@ vtkSmartPointer<vtkScalarBarActor> MainWindow::createScalarBarActor(const std::p
 	scalarBar->SetLookupTable(colorTransferFunction);
 	scalarBar->SetNumberOfLabels(4);
 	scalarBar->SetOrientationToVertical();
-	scalarBar->SetPosition(0.92, 0.01); 
-	scalarBar->SetWidth(0.06); 
-	scalarBar->SetHeight(0.3); 
-	scalarBar->SetLabelFormat("%1.2e"); 
+	scalarBar->SetPosition(0.92, 0.01);
+	scalarBar->SetWidth(0.06);
+	scalarBar->SetHeight(0.3);
+	scalarBar->SetLabelFormat("%1.2e");
 
 	// 设置图例标题的文本属性
 	vtkSmartPointer<vtkTextProperty> titleTextProperty = vtkSmartPointer<vtkTextProperty>::New();
 	titleTextProperty->SetFontSize(24);
-	titleTextProperty->SetColor(1.0, 1.0, 1.0); 
+	titleTextProperty->SetColor(1.0, 1.0, 1.0);
 	titleTextProperty->SetBold(1);
-	titleTextProperty->SetJustificationToCentered(); 
+	titleTextProperty->SetJustificationToCentered();
 	scalarBar->SetTitleTextProperty(titleTextProperty);
 
 	// 设置图例标签的文本属性
 	vtkSmartPointer<vtkTextProperty> labelTextProperty = vtkSmartPointer<vtkTextProperty>::New();
-	labelTextProperty->SetFontSize(18); 
-	labelTextProperty->SetColor(0, 0, 0); 
+	labelTextProperty->SetFontSize(18);
+	labelTextProperty->SetColor(0, 0, 0);
 	scalarBar->SetLabelTextProperty(labelTextProperty);
 
 	return scalarBar;

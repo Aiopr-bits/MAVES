@@ -285,7 +285,7 @@ void FormRun::on_tabWidget_currentChanged(int index)
 	animationWidget->show();
 	animationWidget->raise();
 	QPropertyAnimation* move = new QPropertyAnimation(animationWidget, "geometry");
-	move->setDuration(300);
+	move->setDuration(200);
 
 	if (previousIndex == 0) {
 		if (index == 1) {

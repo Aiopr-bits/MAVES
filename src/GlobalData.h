@@ -24,6 +24,9 @@ struct CaseData
     std::string casePath; 														                        // case路径
 	std::string solverName;                                                                             //求解器名称
 
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap;                        // 网格patch名称
+
+    //有可能删除
 	std::vector<double> timeSteps; 																		// 时间步
 	std::vector<std::string> fieldName; 																// 物理量名称
 	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // 物理量范围
