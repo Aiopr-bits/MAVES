@@ -150,13 +150,13 @@ public:
 
 	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//创建网格patch actor
 		const std::string& casePath,
-		const std::vector<std::string>& patchGroup);
+		std::vector<std::string>& patchGroup);
 
 	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//创建云图patch actor
 		const std::string& casePath,
 		double timeValue,
 		const std::string& fieldName,
-		const std::vector<std::string>& patchGroup,
+		std::vector<std::string>& patchGroup,
 		const std::pair<double, double>& globalRange);
 
 	vtkSmartPointer<vtkScalarBarActor> createScalarBarActor(const std::pair<double, double>& range); 					//创建图例actor
