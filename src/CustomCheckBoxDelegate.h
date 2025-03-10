@@ -43,4 +43,24 @@ public:
         // 对于其他事件，使用默认处理
         return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
+
+    void paint(QPainter* painter,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index) const
+    {
+        // 先调用基类进行默认绘制（包含文本和复选框等）
+        QStyledItemDelegate::paint(painter, option, index);
+
+        // 获取item文本，判断使用不同图标
+        QString text = index.data(Qt::DisplayRole).toString();
+        QIcon icon = (text == "internalMesh")
+            ? QIcon("..\\res\\internalMesh.png")
+            : QIcon("..\\res\\patch.png");
+
+        // 在右侧绘制图标
+        QPixmap pixmap = icon.pixmap(QSize(16, 16));
+        int x = option.rect.right() - pixmap.width() - 8;  // 向内缩进一点
+        int y = option.rect.center().y() - pixmap.height() / 2;
+        painter->drawPixmap(x, y, pixmap);
+    }
 };
