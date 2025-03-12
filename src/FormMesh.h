@@ -15,6 +15,8 @@
 #include <QPropertyAnimation.h>
 #include <QThread.h>
 #include <QSequentialAnimationGroup>
+#include <vtkOpenFOAMReader.h>
+#include <sstream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormMeshClass; };
@@ -28,7 +30,16 @@ public:
     FormMesh(QWidget* parent = nullptr);
     ~FormMesh();
 
-	QListView* createBoundariesListView(std::string regionName, std::vector<std::string> patchNames);
+	QListView* createBoundariesListView(std::string regionName,
+        std::vector<std::string> patchNames);
+
+    void split(const std::string& s, char delimiter,
+        std::vector<std::string>& tokens);
+
+    std::unordered_map<std::string, std::vector<std::string>> 
+        analysismeshPatchNames(const std::vector<std::string>& meshPatchNames);
+
+    void getMeshPatchData(const std::string& casePath); 								//获取网格patch数据
 
 public slots:
     void updateForm();

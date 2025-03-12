@@ -144,7 +144,6 @@ public:
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
-	void getMeshPatchData(const std::string& casePath); 																//获取网格patch数据
 
 	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//创建网格patch actor
 		const std::string& casePath,

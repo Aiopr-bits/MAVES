@@ -45,7 +45,7 @@
 #include "CustomCheckBoxDelegate.h"
 #include <vtkCompositeDataGeometryFilter.h>
 #include <vtkOpenFOAMReader.h>
-#include<sstream>
+#include <sstream>
 #include <QPropertyAnimation>
 
 QT_BEGIN_NAMESPACE
@@ -70,7 +70,6 @@ public:
 
 	QListView* createBoundariesListView(std::string regionName,		//创建边界listView
 		std::vector<std::string> patchNames);
-
 
 	void getMeshPatchData(const std::string& casePath); 			//获取网格patch数据
 	void getNephogramPatchData(const std::string& casePath);		//获取云图patch数据

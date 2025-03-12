@@ -119,8 +119,99 @@ QListView* FormMesh::createBoundariesListView(std::string regionName, std::vecto
 	return listView;
 }
 
+void FormMesh::split(const std::string& s, char delimiter, std::vector<std::string>& tokens) {
+	// 如果s以/开头，删除第一个字符
+	std::string str = s;
+	if (str[0] == delimiter) {
+		str.erase(str.begin());
+	}
+
+	std::string token;
+	std::istringstream tokenStream(str);
+	while (std::getline(tokenStream, token, delimiter)) {
+		tokens.push_back(token);
+	}
+}
+
+std::unordered_map<std::string, std::vector<std::string>>FormMesh:: analysismeshPatchNames(const std::vector<std::string>& meshPatchNames)
+{
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap;
+	for (const auto& name : meshPatchNames)
+	{
+		std::vector<std::string> tokens;
+		split(name, '/', tokens);
+		if ((tokens.size() == 2 && tokens[0] == "group") || (tokens.size() == 3 && tokens[1] == "group"))
+			continue;
+
+		//区域名称和边界名称
+		std::string region, patch;
+		if (tokens[0] == "internalMesh" || tokens[0] == "patch") {
+			region = "default";
+			patch = tokens[tokens.size() - 1];
+		}
+		else {
+			region = tokens[0];
+			patch = tokens[tokens.size() - 1];
+		}
+
+		meshPatchNamesMap[region].push_back(patch);
+	}
+
+	//将key==default的元素放到第一个
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMapTemp;
+	for (const auto& item : meshPatchNamesMap) {
+		if (item.first == "default") {
+			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.begin(), item);
+		}
+		else {
+			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.end(), item);
+		}
+	}
+	meshPatchNamesMap = meshPatchNamesMapTemp;
+
+	return meshPatchNamesMap;
+}
+
+void FormMesh::getMeshPatchData(const std::string& casePath)
+{
+	std::vector<std::string> meshPatchNames;
+
+	// 创建 OpenFOAM 读取器
+	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
+		vtkSmartPointer<vtkOpenFOAMReader>::New();
+	openFOAMReader->SetFileName(casePath.c_str());
+	openFOAMReader->SetCreateCellToPoint(1);
+	openFOAMReader->SetSkipZeroTime(1);
+
+	// 更新信息以获取补丁名称
+	openFOAMReader->UpdateInformation();
+
+	// 获取所有补丁名称
+	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
+	if (numPatches == 0)
+	{
+		std::cerr << "没有找到任何补丁。" << std::endl;
+		return;
+	}
+
+	// 禁用所有补丁
+	openFOAMReader->DisableAllPatchArrays();
+
+	// 遍历所有补丁
+	for (int i = 0; i < numPatches; ++i)
+	{
+		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
+		meshPatchNames.push_back(std::string(currentPatchName));
+	}
+
+	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap = analysismeshPatchNames(meshPatchNames);
+	GlobalData::getInstance().getCaseData()->meshPatchNamesMap = meshPatchNamesMap;
+}
+
 void FormMesh::updateForm()
 {
+	getMeshPatchData(GlobalData::getInstance().getCaseData()->casePath);
+
 	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap =GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
 	listViewModel->clear();
 
