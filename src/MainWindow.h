@@ -144,9 +144,7 @@ public:
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
-	void updatePostProcessingPage(const QString& casePath);																//更新后处理子页面信息
 	void getMeshPatchData(const std::string& casePath); 																//获取网格patch数据
-	void getNephogramPatchData(const std::string& casePath); 															//获取云图patch数据
 
 	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//创建网格patch actor
 		const std::string& casePath,
@@ -211,7 +209,7 @@ public slots:
 	void formMesh_apply(std::vector<QListView*> listViewBoundaries); 													//更新渲染窗口	
 	void formMesh_itemEntered(const QString& text);																		//网格页面Item进入
 	void formMesh_itemExited(const QString& text);																		//网格页面Item退出
-	void formMesh_clickMainWindowMeshButton();																			//点击主窗口网格按钮
+	void formMesh_updateFormFinished();																					//更新界面完成
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
 	void formPostprocessing_apply();																					//应用
@@ -226,6 +224,7 @@ public slots:
 	void formPostprocessing_reversePause();																				//反向播放暂停
 	void formPostprocessing_loopPlayPause();																			//循环播放暂停
 	void formPostprocessing_loadData();																					//加载数据
+	void formPostprocessing_updateFormFinished();																		//更新界面完成
 	void formModelClip_checkBoxToggle();																				//模型切分页面CheckBox切换
 	void formModelClip_lineEditsChanged();																				//模型切分页面LineEdit值改变
 	void formModelClip_xPositive();																						//模型切分：X正向

@@ -43,6 +43,10 @@
 #include "CustomHoverPushButton.h"
 #include "QListView.h"
 #include "CustomCheckBoxDelegate.h"
+#include <vtkCompositeDataGeometryFilter.h>
+#include <vtkOpenFOAMReader.h>
+#include<sstream>
+#include <QPropertyAnimation>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };
@@ -55,6 +59,22 @@ class FormPostprocessing : public QWidget
 public:
 	FormPostprocessing(QWidget *parent = nullptr);
 	~FormPostprocessing();
+
+	void split(const std::string& s,								//字符串分割
+		char delimiter, 
+		std::vector<std::string>& tokens);
+
+	std::unordered_map<std::string, std::vector<std::string>>		//解析网格patch名称
+		analysismeshPatchNames
+		(const std::vector<std::string>& meshPatchNames);
+
+	QListView* createBoundariesListView(std::string regionName,		//创建边界listView
+		std::vector<std::string> patchNames);
+
+
+	void getMeshPatchData(const std::string& casePath); 			//获取网格patch数据
+	void getNephogramPatchData(const std::string& casePath);		//获取云图patch数据
+	void updateForm();												//更新界面listView
 
 public slots:
 	void on_pushButton_2_clicked();									//应用按钮
@@ -70,6 +90,8 @@ public slots:
 	void on_pushButtonReverseTimerPause_clicked();					//反向播放
 	void on_pushButtonLoopPlayTimerPause_clicked();					//循环播放
 
+	void onListViewClicked(const QModelIndex& index); 				//listView点击事件
+	void onToggleRegionSecondAnimation();							//切换区域第二动画	
 
 signals:
 	void loadData();
@@ -84,10 +106,14 @@ signals:
 	void playPause();
 	void reversePause();
 	void loopPlayPause();
+	void toggleRegionSecondAnimation();
+	void updateFormFinished();
 
 public:
 	Ui::FormPostprocessingClass *ui;
 	QStandardItemModel* listViewModel;
+	QModelIndex lastIndex;
+	std::vector<QListView*> listViewBoundaries;
 
 	CustomHoverPushButton* pushButtonPlayTimerPause;
 	CustomHoverPushButton* pushButtonReverseTimerPause;

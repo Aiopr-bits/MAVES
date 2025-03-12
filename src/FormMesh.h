@@ -43,7 +43,7 @@ signals:
 	void itemEntered(const QString& text);
 	void itemExited(const QString& text);
     void toggleRegionSecondAnimation();
-	void clickMainWindowMeshButton();
+	void updateFormFinished();
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;

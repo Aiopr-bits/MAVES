@@ -285,7 +285,7 @@ void FormMesh::onToggleRegionSecondAnimation()
 	connect(animation2, &QAbstractAnimation::finished, this, [=]() {
 		delete animationLabel2;
 		delete animation2;
-		emit clickMainWindowMeshButton();
+		emit updateFormFinished();
 		});
 }
 

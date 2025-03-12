@@ -173,7 +173,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
-	connect(formMesh, &FormMesh::clickMainWindowMeshButton, this, &MainWindow::formMesh_clickMainWindowMeshButton);										//点击主窗口网格按钮
+	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
 	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);				//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
@@ -189,6 +189,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);									//反向播放
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);								//循环播放
 	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);											//加载数据
+	connect(formPostprocessing, &FormPostprocessing::updateFormFinished, this, &MainWindow::formPostprocessing_updateFormFinished);						//更新界面完成
 	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);											//模型切分页面CheckBox切换
 	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);										//模型切分页面LineEdit值改变
 	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);														//模型切分：X正向
@@ -326,7 +327,7 @@ void MainWindow::handleAction10Triggered()
 		formMeshImport_import(caseFilePath);
 
 		//更新后处理数据页面(需补充)
-		updatePostProcessingPage(caseFilePath);
+		formPostprocessing->updateForm();
 
 		//更新参数配置页面(需补充)
 		//formSolver->importParameter();
@@ -1022,7 +1023,7 @@ void MainWindow::formMesh_itemExited(const QString& text)
 	//}
 }
 
-void MainWindow::formMesh_clickMainWindowMeshButton()
+void MainWindow::formMesh_updateFormFinished()
 {
 	if (lastClickedButton != ui->pushButton_2) {
 		on_pushButton_2_clicked();
@@ -1230,7 +1231,7 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	}
 	else {
 		QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
-		updatePostProcessingPage(caseFilePath);
+		formPostprocessing->updateForm();
 	}
 }
 
@@ -1244,7 +1245,7 @@ void MainWindow::onProcessReconstructParFinished(int exitCode, QProcess::ExitSta
 
 	// 更新后处理页面
 	QString caseFilePath = QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath);
-	updatePostProcessingPage(caseFilePath);
+	formPostprocessing->updateForm();
 }
 
 void MainWindow::formRun_stopRun()
@@ -1381,8 +1382,22 @@ void MainWindow::formPostprocessing_loadData()
 		if (caseFilePath.isEmpty()) return;
 		GlobalData::getInstance().clearAllData();
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
-		updatePostProcessingPage(caseFilePath);
+		formPostprocessing->updateForm();
 	}
+}
+
+void MainWindow::formPostprocessing_updateFormFinished()
+{
+	//切换到后处理子页面
+	if (lastClickedButton != ui->pushButton_17) {
+		on_pushButton_17_clicked();
+		ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
+		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
+		lastClickedButton = ui->pushButton_17;
+	}
+
+	formPostprocessing_apply();
+	handleAction8Triggered();
 }
 
 void MainWindow::formModelClip_checkBoxToggle()
@@ -1852,82 +1867,6 @@ void MainWindow::parseOutput(const QString& output)
 	}
 }
 
-void MainWindow::getNephogramPatchData(
-	const std::string& casePath)
-{
-	std::map<std::string, std::pair<double, double>> result;
-	std::vector<double> timeSteps;
-	std::vector<std::string> fieldName;
-	std::vector<std::string> patchGroup;
-
-	vtkSmartPointer<vtkOpenFOAMReader> reader = vtkSmartPointer<vtkOpenFOAMReader>::New();
-	reader->SetFileName(casePath.c_str());
-	reader->SetCreateCellToPoint(1);
-	reader->SetSkipZeroTime(1);
-	reader->UpdateInformation();
-
-	vtkSmartPointer<vtkDoubleArray> timeValues = reader->GetTimeValues();
-	if (!timeValues || timeValues->GetNumberOfValues() == 0) {
-		std::cerr << "没有找到可用的时间步。" << std::endl;
-		return;
-	}
-
-	for (int i = 0; i < timeValues->GetNumberOfValues(); ++i) {
-		timeSteps.push_back(timeValues->GetValue(i));
-	}
-
-	double lastTime = timeSteps.back();
-	reader->SetTimeValue(lastTime);
-
-	//获取填充patchGroup
-	int numPatches = reader->GetNumberOfPatchArrays();
-	for (int i = 0; i < numPatches; ++i) {
-		const char* patchName = reader->GetPatchArrayName(i);
-		if (std::string(patchName).find("patch/") == 0) {
-			patchName = patchName + 6;
-			patchGroup.push_back(patchName);
-		}
-
-		if (strcmp(patchName, "internalMesh") == 0) {
-			patchGroup.push_back(patchName);
-		}
-	}
-
-	reader->DisableAllPatchArrays();
-	reader->EnableAllPatchArrays();
-	reader->Update();
-
-	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
-		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
-	geometryFilter->SetInputConnection(reader->GetOutputPort());
-	geometryFilter->Update();
-
-	vtkPolyData* polyData = geometryFilter->GetOutput();
-	if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		std::cerr << "无法提取几何数据。" << std::endl;
-		return;
-	}
-
-	// 收集标量数组的范围
-	int arrayCount = polyData->GetPointData()->GetNumberOfArrays();
-	for (int i = 0; i < arrayCount; ++i) {
-		vtkDataArray* arr = polyData->GetPointData()->GetArray(i);
-		if (!arr) continue;
-		std::string arrayName = arr->GetName() ? arr->GetName() : "";
-		if (arrayName != "p" && arrayName != "U" && arrayName != "T")continue;
-
-		double range[2];
-		arr->GetRange(range);
-		result[arrayName] = std::make_pair(range[0], range[1]);
-		fieldName.push_back(arrayName);
-	}
-
-	GlobalData::getInstance().getCaseData()->timeSteps = timeSteps;
-	GlobalData::getInstance().getCaseData()->fieldName = fieldName;
-	GlobalData::getInstance().getCaseData()->meshPatchNames = patchGroup;
-	GlobalData::getInstance().getCaseData()->fieldsScalarRange = result;
-}
-
 vtkSmartPointer<vtkActor> MainWindow::createNephogramPatchActor(
 	const std::string& casePath,
 	double timeValue,
@@ -2057,63 +1996,6 @@ vtkSmartPointer<vtkScalarBarActor> MainWindow::createScalarBarActor(const std::p
 	scalarBar->SetLabelTextProperty(labelTextProperty);
 
 	return scalarBar;
-}
-
-void MainWindow::updatePostProcessingPage(const QString& casePath)
-{
-	//需要清除之前案例信息（需补充）
-	if (GlobalData::getInstance().getCaseData()->casePath != casePath.toStdString()) {
-		GlobalData::getInstance().clearAllData();
-		GlobalData::getInstance().getCaseData()->casePath = casePath.toStdString();
-	}
-
-	getNephogramPatchData(casePath.toStdString());
-	formPostprocessing->ui->comboBox->clear();
-	formPostprocessing->ui->comboBox_2->clear();
-	formPostprocessing->listViewModel->clear();
-
-	// 更新时间步和物理量下拉框
-	QStringList timeStepList;
-	std::vector<double> timeSteps = GlobalData::getInstance().getCaseData()->timeSteps;
-	for (const double& timeStep : timeSteps) timeStepList.append(QString::number(timeStep));
-	if (timeStepList.size() == 0) return;
-	formPostprocessing->ui->comboBox->addItems(timeStepList);
-
-	// 更新物理量下拉框
-	QStringList fieldNameList;
-	std::vector<std::string> fieldName = GlobalData::getInstance().getCaseData()->fieldName;
-	for (const std::string& field : fieldName) fieldNameList.append(QString::fromStdString(field));
-	if (fieldNameList.size() == 0) return;
-	formPostprocessing->ui->comboBox_2->addItems(fieldNameList);
-
-	//更新补丁下列表
-	const std::vector<std::string>& meshPatchNames = GlobalData::getInstance().getCaseData()->meshPatchNames;
-	if (meshPatchNames.size() == 0) return;
-	for (const std::string& patchName : meshPatchNames) {
-		QStandardItem* item = new QStandardItem(QString::fromStdString(patchName));
-		item->setCheckable(true);
-		if (patchName != "internalMesh") item->setCheckState(Qt::Checked);
-		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-		item->setSizeHint(QSize(0, 40));
-		formPostprocessing->listViewModel->appendRow(item);
-	}
-
-	// 计算所有 item 的总高度
-	int totalHeight = 0;
-	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
-		totalHeight += formPostprocessing->ui->listView->sizeHintForRow(i);
-	}
-	formPostprocessing->ui->listView->setFixedHeight(totalHeight + 2 * formPostprocessing->ui->listView->frameWidth());
-
-	//更新渲染窗口
-	formPostprocessing_apply();
-	handleAction8Triggered();
-
-	//切换到后处理子页面
-	on_pushButton_17_clicked();
-	ui->pushButton_17->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
-	lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
-	lastClickedButton = ui->pushButton_17;
 }
 
 void MainWindow::updateChart()
