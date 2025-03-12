@@ -414,7 +414,7 @@ void FormPostprocessing::on_pushButton_2_clicked()
 		return;
 	}
 
-	emit apply();
+	emit apply(listViewBoundaries);
 }
 
 void FormPostprocessing::on_pushButton_3_clicked()

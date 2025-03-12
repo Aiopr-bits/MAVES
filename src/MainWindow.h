@@ -211,7 +211,7 @@ public slots:
 	void formMesh_updateFormFinished();																					//更新界面完成
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
-	void formPostprocessing_apply();																					//应用
+	void formPostprocessing_apply(std::vector<QListView*> listViewBoundaries);											//应用
 	void formPostprocessing_firstFrame();																				//第一帧
 	void formPostprocessing_previousFrame();																			//上一帧
 	void formPostprocessing_reverse();																					//重新播放

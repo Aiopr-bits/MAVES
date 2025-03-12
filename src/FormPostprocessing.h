@@ -94,7 +94,7 @@ public slots:
 
 signals:
 	void loadData();
-	void apply();
+	void apply(std::vector<QListView*> listViewBoundaries);
 	void firstFrame();
 	void previousFrame();
 	void reverse();

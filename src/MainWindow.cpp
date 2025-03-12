@@ -1179,20 +1179,40 @@ void MainWindow::formRun_stopRun()
 	}
 }
 
-void MainWindow::formPostprocessing_apply()
+void MainWindow::formPostprocessing_apply(std::vector<QListView*> listViewBoundaries)
 {
+	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
 
 	string casePath = GlobalData::getInstance().getCaseData()->casePath;
 	double timeValue = formPostprocessing->ui->comboBox->currentText().toDouble();
 	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
 
+	//获取region名称
+	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model());
+	QStringList items;
+	for (int i = 0; i < model->rowCount(); ++i) {
+		items << model->item(i)->text();
+	}
+
+	// 遍历 listViewModel 并根据选中状态添加到
 	std::vector<std::string> patchGroup;
-	for (int i = 0; i < formPostprocessing->listViewModel->rowCount(); ++i) {
-		QStandardItem* item = formPostprocessing->listViewModel->item(i);
-		if (item->checkState() == Qt::Checked) {
-			if (item->text().toStdString() == "internalMesh") patchGroup.push_back(item->text().toStdString());
-			else patchGroup.push_back("patch/" + item->text().toStdString());
+	for (int i = listViewBoundaries.size() - 1; i >= 0; --i) {
+		auto* model = qobject_cast<QStandardItemModel*>(listViewBoundaries[i]->model());
+		bool isDefault = (items[items.size() - i - 1] == "default");
+
+		for (int j = 0; j < model->rowCount(); ++j) {
+			QStandardItem* item = model->item(j);
+			if (!item || item->checkState() != Qt::Checked) continue;
+
+			const std::string text = item->text().toStdString();
+			if (isDefault) {
+				patchGroup.push_back((text == "internalMesh") ? text : "patch/" + text);
+			}
+			else {
+				std::string prefix = "/" + items[items.size() - i - 1].toStdString() + "/";
+				patchGroup.push_back(prefix + ((text == "internalMesh") ? text : "patch/" + text));
+			}
 		}
 	}
 
@@ -1203,10 +1223,8 @@ void MainWindow::formPostprocessing_apply()
 	if (actor)
 	{
 		render->AddActor(actor);
-
 		vtkSmartPointer<vtkScalarBarActor> scalarBar = createScalarBarActor(globalRange);
 		render->AddActor2D(scalarBar);
-
 		renderWindow->Render();
 	}
 }
@@ -1214,7 +1232,7 @@ void MainWindow::formPostprocessing_apply()
 void MainWindow::formPostprocessing_firstFrame()
 {
 	formPostprocessing->ui->comboBox->setCurrentIndex(0);
-	formPostprocessing_apply();
+	formPostprocessing->on_pushButton_2_clicked();
 }
 
 void MainWindow::formPostprocessing_previousFrame()
@@ -1222,7 +1240,7 @@ void MainWindow::formPostprocessing_previousFrame()
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index > 0) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index - 1);
-		formPostprocessing_apply();
+		formPostprocessing->on_pushButton_2_clicked();
 	}
 }
 
@@ -1241,14 +1259,14 @@ void MainWindow::formPostprocessing_nextFrame()
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
-		formPostprocessing_apply();
+		formPostprocessing->on_pushButton_2_clicked();
 	}
 }
 
 void MainWindow::formPostprocessing_lastFrame()
 {
 	formPostprocessing->ui->comboBox->setCurrentIndex(formPostprocessing->ui->comboBox->count() - 1);
-	formPostprocessing_apply();
+	formPostprocessing->on_pushButton_2_clicked();
 }
 
 void MainWindow::formPostprocessing_loopPlay()
@@ -1306,7 +1324,7 @@ void MainWindow::formPostprocessing_updateFormFinished()
 		lastClickedButton = ui->pushButton_17;
 	}
 
-	formPostprocessing_apply();
+	formPostprocessing->on_pushButton_2_clicked();
 	handleAction8Triggered();
 }
 
@@ -1936,7 +1954,7 @@ void MainWindow::onPlayTimerTimeout()
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index + 1);
-		formPostprocessing_apply();
+		formPostprocessing->on_pushButton_2_clicked();
 		formPostprocessing->pushButtonPlayTimerPause->show();
 		formPostprocessing->ui->pushButton_6->hide();
 	}
@@ -1952,7 +1970,7 @@ void MainWindow::onReverseTimerTimeout()
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index > 0) {
 		formPostprocessing->ui->comboBox->setCurrentIndex(index - 1);
-		formPostprocessing_apply();
+		formPostprocessing->on_pushButton_2_clicked();
 		formPostprocessing->pushButtonReverseTimerPause->show();
 		formPostprocessing->ui->pushButton_5->hide();
 	}
@@ -1973,7 +1991,7 @@ void MainWindow::onLoopPlayTimerTimeout()
 	else {
 		formPostprocessing->ui->comboBox->setCurrentIndex(0);
 	}
-	formPostprocessing_apply();
+	formPostprocessing->on_pushButton_2_clicked();
 	formPostprocessing->pushButtonLoopPlayTimerPause->show();
 	formPostprocessing->ui->pushButton_9->hide();
 }
