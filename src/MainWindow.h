@@ -145,7 +145,7 @@ public:
 	void hideAllSubForm();										    													//隐藏所有子窗口
 	void parseOutput(const QString& output);																			//解析输出
 
-	vtkSmartPointer<vtkActor> createMeshPatchActor( 																	//创建网格patch actor
+	std::vector<vtkSmartPointer<vtkActor>> createMeshPatchActor( 														//创建网格patch actor
 		const std::string& casePath,
 		std::vector<std::string>& patchGroup);
 

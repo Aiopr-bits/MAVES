@@ -338,7 +338,7 @@ void MainWindow::handleAction10Triggered()
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
-		QMessageBox::information(this, "提示", "案例导入成功");
+		//QMessageBox::information(this, "提示", "案例导入成功");
 	}
 }
 
@@ -753,87 +753,77 @@ static void AddDataSetsToAppendFilter(vtkDataObject* dataObj,
 	}
 }
 
-vtkSmartPointer<vtkActor> MainWindow::createMeshPatchActor(
+std::vector<vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(
 	const std::string& casePath,
 	std::vector<std::string>& patchGroup)
 {
-	auto openFOAMReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
-	openFOAMReader->SetFileName(casePath.c_str());
-	openFOAMReader->SetCreateCellToPoint(1);
-	openFOAMReader->SetSkipZeroTime(1);
-	openFOAMReader->UpdateInformation();
+	std::vector<vtkSmartPointer<vtkActor>> actorList;
+	actorList.reserve(patchGroup.size());
 
-	openFOAMReader->DisableAllPatchArrays();
-	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
-	for (int i = 0; i < numPatches; ++i) {
-		const char* name = openFOAMReader->GetPatchArrayName(i);
-		for (auto& grp : patchGroup) {
-			if (grp == name) {
-				openFOAMReader->SetPatchArrayStatus(name, 1);
-				break;
+	// 逐个patch独立读取并生成Actor
+	for (const auto& singlePatch : patchGroup)
+	{
+		// 创建并配置OpenFOAMReader
+		auto openFOAMReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
+		openFOAMReader->SetFileName(casePath.c_str());
+		openFOAMReader->SetCreateCellToPoint(1);
+		openFOAMReader->SetSkipZeroTime(1);
+		openFOAMReader->UpdateInformation();
+
+		// 仅启用当前patch
+		openFOAMReader->DisableAllPatchArrays();
+		openFOAMReader->SetPatchArrayStatus(singlePatch.c_str(), 1);
+		openFOAMReader->Update();
+
+		// 判断是否是internalMesh
+		bool isInternalMesh = (singlePatch.find("internalMesh") != std::string::npos);
+
+		vtkSmartPointer<vtkDataSet> dataSet;
+		if (isInternalMesh)
+		{
+			auto multiBlockDataSet = openFOAMReader->GetOutput();
+			auto appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
+			AddDataSetsToAppendFilter(multiBlockDataSet, appendFilter);
+			appendFilter->Update();
+			dataSet = appendFilter->GetOutput();
+		}
+		else
+		{
+			auto geometryFilter = vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+			geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
+			geometryFilter->Update();
+			if (auto polyData = geometryFilter->GetOutput())
+			{
+				dataSet = polyData;
+			}
+			else
+			{
+				// 若读取不到有效数据则跳过
+				continue;
 			}
 		}
-	}
-	openFOAMReader->Update();
 
-	bool isInternalMesh = (std::find(patchGroup.begin(), patchGroup.end(), "internalMesh") != patchGroup.end());
-	if (isInternalMesh) {
-		patchGroup.clear();
-		int total = openFOAMReader->GetNumberOfPatchArrays();
-		for (int i = 0; i < total; ++i) {
-			const char* name = openFOAMReader->GetPatchArrayName(i);
-			std::string patch(name ? name : "");
-			if (!patch.empty() && patch.find("internalMesh") != std::string::npos
-				&& patch.size() > std::string("internalMesh").size()) {
-				patchGroup.push_back(patch);
-				openFOAMReader->SetPatchArrayStatus(name, 1);
-			}
+		if (!dataSet)
+		{
+			continue;
 		}
-		auto actor = createMeshPatchActor(casePath, patchGroup);
-		if (actor) return actor;
-	}
 
-	bool isSubDomainInternalMesh = std::any_of(patchGroup.begin(), patchGroup.end(),
-		[](const std::string& patch) {
-			static const std::string suffix = "internalMesh";
-			return patch.size() >= suffix.size()
-				&& patch.compare(patch.size() - suffix.size(), suffix.size(), suffix) == 0;
-		}
-	);
+		// 创建对应Actor
+		auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+		mapper->SetInputData(dataSet);
+		mapper->ScalarVisibilityOff();
 
-	vtkSmartPointer<vtkDataSet> dataSet;
-	if (isSubDomainInternalMesh) {
-		auto multiBlockDataSet = openFOAMReader->GetOutput();
-		auto appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
-		AddDataSetsToAppendFilter(multiBlockDataSet, appendFilter);
-		appendFilter->Update();
-		dataSet = appendFilter->GetOutput();
-	}
-	else {
-		auto geometryFilter = vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
-		geometryFilter->SetInputConnection(openFOAMReader->GetOutputPort());
-		geometryFilter->Update();
-		if (auto polyData = geometryFilter->GetOutput()) {
-			dataSet = polyData;
-		}
-		else {
-			return nullptr;
-		}
+		auto actor = vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+		actor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+		actor->GetProperty()->SetRepresentationToSurface();
+		actor->GetProperty()->EdgeVisibilityOn();
+		actor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
+
+		actorList.push_back(actor);
 	}
 
-	if (!dataSet) return nullptr;
-
-	auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-	mapper->SetInputData(dataSet);
-	mapper->ScalarVisibilityOff();
-
-	auto actor = vtkSmartPointer<vtkActor>::New();
-	actor->SetMapper(mapper);
-	actor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
-	actor->GetProperty()->EdgeVisibilityOn();
-	actor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
-	actor->GetProperty()->SetRepresentationToSurface();
-	return actor;
+	return actorList;
 }
 
 void MainWindow::formMeshImport_import(const QString& filePath)
@@ -899,12 +889,13 @@ void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
 	}
 
 	// 创建 meshPatchActor
-	vtkSmartPointer<vtkActor> meshPatchActor = createMeshPatchActor(GlobalData::getInstance().getCaseData()->casePath, patchGroup);
-	if (meshPatchActor)
+	std::vector<vtkSmartPointer<vtkActor>> meshPatchActorList = createMeshPatchActor(GlobalData::getInstance().getCaseData()->casePath, patchGroup);
+	for (const auto& meshPatchActor : meshPatchActorList)
 	{
 		render->AddActor(meshPatchActor);
-		renderWindow->Render();
 	}
+	renderWindow->Render();
+
 }
 
 void MainWindow::formMesh_itemEntered(const QString& text)
