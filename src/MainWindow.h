@@ -149,7 +149,7 @@ public:
 		const std::string& casePath,
 		std::vector<std::string>& patchGroup);
 
-	vtkSmartPointer<vtkActor> createNephogramPatchActor( 																//创建云图patch actor
+	std::vector<vtkSmartPointer<vtkActor>> createNephogramPatchActor( 													//创建云图patch actor
 		const std::string& casePath,
 		double timeValue,
 		const std::string& fieldName,
