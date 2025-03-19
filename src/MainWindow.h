@@ -204,7 +204,7 @@ public slots:
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
-	void formMeshImport_import(const QString& filePath);																//网格导入
+	void formMeshImport_import(const QString& filePath, bool isRender);													//网格导入
 	void formMesh_apply(std::vector<QListView*> listViewBoundaries); 													//更新渲染窗口	
 	void formMesh_itemEntered(const QString& text);																		//网格页面Item进入
 	void formMesh_itemExited(const QString& text);																		//网格页面Item退出

@@ -28,7 +28,8 @@ private slots:
 	void on_pushButton_2_clicked();
 
 signals:
-	void meshImported(const QString& filePath);
+	void meshImported(const QString& filePath, bool isRender);
+
 
 public:
 	Ui::FormMeshImportClass *ui;

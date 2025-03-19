@@ -208,7 +208,7 @@ void FormMesh::getMeshPatchData(const std::string& casePath)
 	GlobalData::getInstance().getCaseData()->meshPatchNamesMap = meshPatchNamesMap;
 }
 
-void FormMesh::updateForm()
+void FormMesh::updateForm(bool isRender)
 {
 	getMeshPatchData(GlobalData::getInstance().getCaseData()->casePath);
 
@@ -262,7 +262,10 @@ void FormMesh::updateForm()
 	ui->listView->setCurrentIndex(index);
 	onListViewClicked(index);
 
-	on_pushButton_clicked();
+	if (isRender) {
+		on_pushButton_clicked();
+		updateFormFinished();
+	}	
 }
 
 void FormMesh::onListViewClicked(const QModelIndex& index)
@@ -376,7 +379,6 @@ void FormMesh::onToggleRegionSecondAnimation()
 	connect(animation2, &QAbstractAnimation::finished, this, [=]() {
 		delete animationLabel2;
 		delete animation2;
-		emit updateFormFinished();
 		});
 }
 

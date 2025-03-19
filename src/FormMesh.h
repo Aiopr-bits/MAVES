@@ -42,7 +42,7 @@ public:
     void getMeshPatchData(const std::string& casePath); 								//获取网格patch数据
 
 public slots:
-    void updateForm();
+    void updateForm(bool isRender);
     void onListViewClicked(const QModelIndex& index);
     void on_pushButton_clicked();
     void onItemEntered(const QString& text);

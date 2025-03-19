@@ -26,7 +26,7 @@ FormMeshImport::~FormMeshImport()
 void FormMeshImport::on_pushButton_clicked()
 {
 	QString filePath = ui->lineEdit->text();
-	emit meshImported(filePath);
+	emit meshImported(filePath,true);
 	ui->lineEdit->clear();
 }
 

@@ -324,7 +324,10 @@ void MainWindow::handleAction10Triggered()
 		ui->textBrowser->append("Load case：" + caseFilePath);
 
 		//更新网格导入页面
-		formMeshImport_import(caseFilePath);
+		if(GlobalData::getInstance().getCaseData()->timeSteps.size() > 0)
+			formMeshImport_import(caseFilePath, false);
+		else
+			formMeshImport_import(caseFilePath, true);
 
 		//更新后处理数据页面(需补充)
 		formPostprocessing->updateForm();
@@ -826,7 +829,7 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(
 	return actorList;
 }
 
-void MainWindow::formMeshImport_import(const QString& filePath)
+void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 {
 	render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
@@ -846,13 +849,14 @@ void MainWindow::formMeshImport_import(const QString& filePath)
 	if (type == "foam")
 	{
 		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
-		formMesh->updateForm();
-		render->ResetCamera();
-		renderWindow->Render();
+		formMesh->updateForm(isRender);
 
 		//网格导入成功,初始化参数配置页面(需补充)
 		//formBoundaryConditions->onMeshImported();
 	}
+
+	render->ResetCamera();
+	renderWindow->Render();
 }
 
 void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
@@ -932,6 +936,9 @@ void MainWindow::formMesh_updateFormFinished()
 		lastClickedButton->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); border: none; text-align: left; padding-left: 50px; } QPushButton:hover { background-color: rgb(242, 242, 242); }");
 		lastClickedButton = ui->pushButton_2;
 	}
+
+	formMesh->on_pushButton_clicked();
+	handleAction8Triggered();
 }
 
 void MainWindow::formRun_run()

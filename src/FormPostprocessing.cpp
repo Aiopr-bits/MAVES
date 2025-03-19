@@ -157,6 +157,8 @@ void FormPostprocessing::updateForm()
 	QModelIndex index = listViewModel->index(0, 0);
 	ui->listView->setCurrentIndex(index);
 	onListViewClicked(index);
+
+	emit updateFormFinished();
 }
 
 void FormPostprocessing::split(const std::string& s, char delimiter, std::vector<std::string>& tokens) {
@@ -395,7 +397,7 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 		vtkDataArray* arr = polyData->GetPointData()->GetArray(i);
 		if (!arr) continue;
 		std::string arrayName = arr->GetName() ? arr->GetName() : "";
-		if (arrayName != "p" && arrayName != "U" && arrayName != "T")continue;
+		//if (arrayName != "p" && arrayName != "U" && arrayName != "T")continue;
 
 		double range[2];
 		arr->GetRange(range);
@@ -589,6 +591,5 @@ void FormPostprocessing::onToggleRegionSecondAnimation()
 	connect(animation2, &QAbstractAnimation::finished, this, [=]() {
 		delete animationLabel2;
 		delete animation2;
-		emit updateFormFinished();
 		});
 }
