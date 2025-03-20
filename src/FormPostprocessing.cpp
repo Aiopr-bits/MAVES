@@ -356,6 +356,13 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 		return;
 	}
 
+	if (timeValues->GetNumberOfValues() == 1 && timeValues->GetValue(0) == 0) {
+		GlobalData::getInstance().getCaseData()->timeSteps = timeSteps;
+		GlobalData::getInstance().getCaseData()->fieldName = fieldName;
+		GlobalData::getInstance().getCaseData()->fieldsScalarRange = fieldsScalarRange;
+		return;
+	}
+
 	for (int i = 0; i < timeValues->GetNumberOfValues(); ++i) {
 		timeSteps.push_back(timeValues->GetValue(i));
 	}

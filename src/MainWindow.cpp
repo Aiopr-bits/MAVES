@@ -322,15 +322,16 @@ void MainWindow::handleAction10Triggered()
 		if (caseFilePath.isEmpty()) return;
 		GlobalData::getInstance().clearAllData();
 		ui->textBrowser->append("Load case：" + caseFilePath);
+		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
+
+		//更新后处理数据页面(需补充)
+		formPostprocessing->updateForm();
 
 		//更新网格导入页面
 		if(GlobalData::getInstance().getCaseData()->timeSteps.size() > 0)
 			formMeshImport_import(caseFilePath, false);
 		else
 			formMeshImport_import(caseFilePath, true);
-
-		//更新后处理数据页面(需补充)
-		formPostprocessing->updateForm();
 
 		//更新参数配置页面(需补充)
 		//formSolver->importParameter();
@@ -831,7 +832,7 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(
 
 void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 {
-	render->RemoveAllViewProps();
+	if (isRender)render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
@@ -1187,7 +1188,7 @@ void MainWindow::formPostprocessing_apply(std::vector<QListView*> listViewBounda
 	std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
 
 	//获取region名称
-	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model());
+	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formPostprocessing->ui->listView->model());
 	QStringList items;
 	for (int i = 0; i < model->rowCount(); ++i) {
 		items << model->item(i)->text();
