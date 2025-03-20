@@ -47,6 +47,7 @@
 #include <vtkOpenFOAMReader.h>
 #include <sstream>
 #include <QPropertyAnimation>
+#include <unordered_set>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormPostprocessingClass; };

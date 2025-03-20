@@ -370,46 +370,101 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 	double lastTime = timeSteps.back();
 	reader->SetTimeValue(lastTime);
 
-	reader->DisableAllPatchArrays();
 	auto meshPatchNamesMap = GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
-	if (meshPatchNamesMap.size() > 1) {//多域情况
+	if (meshPatchNamesMap.size() > 1) {
+		// 多域情况下，对各子域分别进行读取并记录其标量并集
+		fieldsScalarRange.clear();
+		fieldName.clear();
+		std::unordered_set<std::string> fieldNameSet;
+
 		for (const auto& kv : meshPatchNamesMap) {
+			vtkSmartPointer<vtkOpenFOAMReader> subdomainReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
+			subdomainReader->SetFileName(casePath.c_str());
+			subdomainReader->SetCreateCellToPoint(1);
+			subdomainReader->SetSkipZeroTime(1);
+			subdomainReader->UpdateInformation();
+			subdomainReader->SetTimeValue(lastTime);
+
+			subdomainReader->DisableAllPatchArrays();
 			for (const auto& patch : kv.second) {
-				if (kv.first != "default"&& patch=="internalMesh") {
-					std::string patchName = "/" + kv.first + "/" + patch;
-					reader->SetPatchArrayStatus(patchName.c_str(), 1);
+				std::string patchPath = "/" + kv.first + "/" + patch;
+				subdomainReader->SetPatchArrayStatus(patchPath.c_str(), 1);
+			}
+			subdomainReader->Update();
+
+			vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
+				vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+			geometryFilter->SetInputConnection(subdomainReader->GetOutputPort());
+			geometryFilter->Update();
+
+			vtkPolyData* polyDataTemp = geometryFilter->GetOutput();
+			if (!polyDataTemp) continue;
+
+			int arrayCountTemp = polyDataTemp->GetPointData()->GetNumberOfArrays();
+			for (int i = 0; i < arrayCountTemp; ++i) {
+				vtkDataArray* arr = polyDataTemp->GetPointData()->GetArray(i);
+				if (!arr) continue;
+				std::string arrName = arr->GetName() ? arr->GetName() : "";
+				double rangeTemp[2];
+				arr->GetRange(rangeTemp);
+
+				// 如果是新标量就插入fieldsScalarRange，否则更新其范围
+				if (fieldNameSet.find(arrName) == fieldNameSet.end()) {
+					fieldsScalarRange[arrName] = std::make_pair(rangeTemp[0], rangeTemp[1]);
+					fieldNameSet.insert(arrName);
+				} else {
+					auto& rangeRef = fieldsScalarRange[arrName];
+					rangeRef.first = std::min(rangeRef.first, rangeTemp[0]);
+					rangeRef.second = std::max(rangeRef.second, rangeTemp[1]);
 				}
 			}
 		}
-	}
-	else if (meshPatchNamesMap.size() == 1) {
-		reader->SetPatchArrayStatus("internalMesh", 1);
-	}
-	reader->Update();
+		// 将结果写入向量
+		for (const auto& fn : fieldNameSet) {
+			fieldName.push_back(fn);
+		}
+	} else {
+		// 单域情况
+		reader->DisableAllPatchArrays();
+		if (meshPatchNamesMap.size() > 1) {//多域情况
+			for (const auto& kv : meshPatchNamesMap) {
+				for (const auto& patch : kv.second) {
+					if (kv.first != "default"&& patch=="internalMesh") {
+						std::string patchName = "/" + kv.first + "/" + patch;
+						reader->SetPatchArrayStatus(patchName.c_str(), 1);
+					}
+				}
+			}
+		}
+		else if (meshPatchNamesMap.size() == 1) {
+			reader->SetPatchArrayStatus("internalMesh", 1);
+		}
+		reader->Update();
 
-	vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
-		vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
-	geometryFilter->SetInputConnection(reader->GetOutputPort());
-	geometryFilter->Update();
+		vtkSmartPointer<vtkCompositeDataGeometryFilter> geometryFilter =
+			vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+		geometryFilter->SetInputConnection(reader->GetOutputPort());
+		geometryFilter->Update();
 
-	vtkPolyData* polyData = geometryFilter->GetOutput();
-	if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		std::cerr << "无法提取几何数据。" << std::endl;
-		return;
-	}
+		vtkPolyData* polyData = geometryFilter->GetOutput();
+		if (!polyData || polyData->GetNumberOfPoints() == 0) {
+			std::cerr << "无法提取几何数据。" << std::endl;
+			return;
+		}
 
-	// 收集标量数组的范围
-	int arrayCount = polyData->GetPointData()->GetNumberOfArrays();
-	for (int i = 0; i < arrayCount; ++i) {
-		vtkDataArray* arr = polyData->GetPointData()->GetArray(i);
-		if (!arr) continue;
-		std::string arrayName = arr->GetName() ? arr->GetName() : "";
-		//if (arrayName != "p" && arrayName != "U" && arrayName != "T")continue;
+		// 收集标量数组的范围
+		int arrayCount = polyData->GetPointData()->GetNumberOfArrays();
+		for (int i = 0; i < arrayCount; ++i) {
+			vtkDataArray* arr = polyData->GetPointData()->GetArray(i);
+			if (!arr) continue;
+			std::string arrayName = arr->GetName() ? arr->GetName() : "";
+			//if (arrayName != "p" && arrayName != "U" && arrayName != "T")continue;
 
-		double range[2];
-		arr->GetRange(range);
-		fieldsScalarRange[arrayName] = std::make_pair(range[0], range[1]);
-		fieldName.push_back(arrayName);
+			double range[2];
+			arr->GetRange(range);
+			fieldsScalarRange[arrayName] = std::make_pair(range[0], range[1]);
+			fieldName.push_back(arrayName);
+		}
 	}
 
 	GlobalData::getInstance().getCaseData()->timeSteps = timeSteps;
