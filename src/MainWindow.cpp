@@ -1490,138 +1490,135 @@ void MainWindow::formModelClip_resetPlane()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-vtkSmartPointer<vtkActor> MainWindow::createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside)
+std::vector<vtkSmartPointer<vtkActor>> MainWindow::createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside)
 {
-	// 获取 render 中所有可见的 actor
+	// 保存切分后的各个模型
+	std::vector<vtkSmartPointer<vtkActor>> slicedActors;
+
+	// 获取场景中的 actor 集合
 	vtkActorCollection* actors = render->GetActors();
 	if (!actors)
-	{
-		return nullptr;
-	}
+		return slicedActors;
 
-	// 用于合并切分后的 polyData
-	auto appendFilter = vtkSmartPointer<vtkAppendPolyData>::New();
-	bool anyCloudModel = false;
-	bool isGeometryModel = false;
-	double geometryColor[3] = { 97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0 }; // 几何模型默认颜色
+	// 定义一个默认的几何模型判断颜色（与原函数一致）
+	double geometryColor[3] = { 97.0 / 255.0, 111.0 / 255.0, 125.0 / 255.0 };
 
-	// 创建平面
+	// 创建切分平面
 	auto plane = vtkSmartPointer<vtkPlane>::New();
-	plane->SetOrigin(origin[0], origin[1], origin[2]);
-	plane->SetNormal(normal[0], normal[1], normal[2]);
+	plane->SetOrigin(origin);
+	plane->SetNormal(normal);
 
 	actors->InitTraversal();
 	for (vtkActor* actor = actors->GetNextActor(); actor != nullptr; actor = actors->GetNextActor())
 	{
+		// 不可见时跳过
 		if (!actor->GetVisibility())
-		{
 			continue;
-		}
 
 		vtkMapper* srcMapper = actor->GetMapper();
 		if (!srcMapper)
-		{
 			continue;
-		}
 
-		// 获取当前actor的颜色
+		// 判断当前 actor 类型
+		bool isCloudModel = false;
+		bool isGeometryModel = false;
+		bool isMeshModel = false;
 		double* actorColor = actor->GetProperty()->GetColor();
 
-		// 判断是否为几何模型（基于颜色判断）
+		// 是否为几何模型（颜色判断）
 		if (fabs(actorColor[0] - geometryColor[0]) < 0.01 &&
 			fabs(actorColor[1] - geometryColor[1]) < 0.01 &&
 			fabs(actorColor[2] - geometryColor[2]) < 0.01)
 		{
 			isGeometryModel = true;
 		}
-
-		// 判断是否激活标量
+		// 是否云图模型（是否开启了 ScalarVisibility 等）
 		if (srcMapper->GetScalarVisibility() &&
 			srcMapper->GetInput() &&
 			srcMapper->GetInput()->GetPointData() &&
 			srcMapper->GetInput()->GetPointData()->GetScalars())
 		{
-			anyCloudModel = true;
+			isCloudModel = true;
+		}
+		//判断EdgeVisibility是否打开
+		if (actor->GetProperty()->GetEdgeVisibility())
+		{
+			isMeshModel = true;
 		}
 
+		// 执行切分
 		vtkDataSet* inputDS = vtkDataSet::SafeDownCast(srcMapper->GetInput());
 		if (!inputDS)
-		{
 			continue;
-		}
 
-		// 切割数据
-		vtkSmartPointer<vtkTableBasedClipDataSet> clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+		auto clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
 		clipper->SetInputData(inputDS);
 		clipper->SetClipFunction(plane);
 		clipper->SetInsideOut(!keepInside);
 		clipper->Update();
 
-		// 转换为表面
-		vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
-		surfaceFilter->SetInputConnection(clipper->GetOutputPort());
-		surfaceFilter->Update();
+		// 直接保存 clipper 的输出数据（原始3D数据），不做 vtkDataSetSurfaceFilter 处理
+		vtkSmartPointer<vtkDataSet> clippedData3D = clipper->GetOutput();
+		if (!clippedData3D || clippedData3D->GetNumberOfPoints() == 0)
+			continue;
 
-		vtkSmartPointer<vtkPolyData> clippedPolyData = surfaceFilter->GetOutput();
-		if (clippedPolyData && clippedPolyData->GetNumberOfPoints() > 0)
+		// 为当前模型创建新的 mapper 和 actor，后续若需要切分，可以基于保存的 clippedData3D 进行进一步处理
+		auto newMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+		newMapper->SetInputData(clippedData3D);
+		auto newActor = vtkSmartPointer<vtkActor>::New();
+		newActor->SetMapper(newMapper);
+
+		// 根据类型设置属性
+		if (isCloudModel)
 		{
-			appendFilter->AddInputData(clippedPolyData);
+			// 云图模型
+			newMapper->ScalarVisibilityOn();
+			std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
+			std::pair<double, double> range = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
+			newMapper->SetScalarRange(range.first, range.second);
+
+			auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+			colorTransferFunction->SetColorSpaceToRGB();
+			colorTransferFunction->AddRGBPoint(range.first, 0.0, 127.0 / 255.0, 1.0);
+			colorTransferFunction->AddRGBPoint((range.first + range.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
+			colorTransferFunction->AddRGBPoint(range.second, 180.0 / 255.0, 0.0, 0.0);
+
+			newMapper->SetLookupTable(colorTransferFunction);
+			newMapper->UseLookupTableScalarRangeOn();
+
+			newActor->GetProperty()->EdgeVisibilityOff();
+			newActor->GetProperty()->SetRepresentationToSurface();
 		}
+		else if (isGeometryModel)
+		{
+			// 几何模型
+			newMapper->ScalarVisibilityOff();
+			newActor->GetProperty()->EdgeVisibilityOff();
+			newActor->GetProperty()->SetRepresentationToSurface();
+			newActor->GetProperty()->SetColor(geometryColor);
+		}
+		else if(isMeshModel)
+		{		
+			// 网格模型
+			newMapper->ScalarVisibilityOff();
+			newActor->GetProperty()->EdgeVisibilityOn();
+			newActor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
+			newActor->GetProperty()->SetRepresentationToSurface();
+			newActor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
+		}
+		else {
+			// 其他模型
+			newMapper->ScalarVisibilityOff();
+			newActor->GetProperty()->EdgeVisibilityOff();
+			newActor->GetProperty()->SetRepresentationToSurface();
+			newActor->GetProperty()->SetColor(200.0 / 255.0, 197.0 / 255.0, 189.0 / 255.0);
+		}
+
+		// 收集到返回向量中
+		slicedActors.push_back(newActor);
 	}
 
-	appendFilter->Update();
-	vtkPolyData* mergedPolyData = appendFilter->GetOutput();
-	if (!mergedPolyData || mergedPolyData->GetNumberOfPoints() == 0)
-	{
-		return nullptr;
-	}
-
-	// 创建新的 mapper 和 actor
-	auto newMapper = vtkSmartPointer<vtkDataSetMapper>::New();
-	newMapper->SetInputData(mergedPolyData);
-	auto newActor = vtkSmartPointer<vtkActor>::New();
-	newActor->SetMapper(newMapper);
-
-	// 根据模型类型设置属性
-	if (anyCloudModel)
-	{
-		// 云图模型
-		newMapper->ScalarVisibilityOn();
-		std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();
-		std::pair<double, double> range = GlobalData::getInstance().getCaseData()->fieldsScalarRange[fieldNameValue];
-		newMapper->SetScalarRange(range.first, range.second);
-
-		auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-		colorTransferFunction->SetColorSpaceToRGB();
-		colorTransferFunction->AddRGBPoint(range.first, 0.0, 127.0 / 255.0, 1.0);
-		colorTransferFunction->AddRGBPoint((range.first + range.second) / 2.0, 234.0 / 255.0, 213.0 / 255.0, 201.0 / 255.0);
-		colorTransferFunction->AddRGBPoint(range.second, 180.0 / 255.0, 0.0, 0.0);
-
-		newMapper->SetLookupTable(colorTransferFunction);
-		newMapper->UseLookupTableScalarRangeOn();
-
-		newActor->GetProperty()->EdgeVisibilityOff();
-		newActor->GetProperty()->SetRepresentationToSurface();
-	}
-	else if (isGeometryModel)
-	{
-		// 几何模型
-		newMapper->ScalarVisibilityOff();
-		newActor->GetProperty()->EdgeVisibilityOff();
-		newActor->GetProperty()->SetRepresentationToSurface();
-		newActor->GetProperty()->SetColor(geometryColor[0], geometryColor[1], geometryColor[2]);
-	}
-	else
-	{
-		// 网格模型
-		newMapper->ScalarVisibilityOff();
-		newActor->GetProperty()->EdgeVisibilityOn();
-		newActor->GetProperty()->SetEdgeColor(0.0, 0.0, 0.0);
-		newActor->GetProperty()->SetRepresentationToSurface();
-		newActor->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
-	}
-
-	return newActor;
+	return slicedActors;
 }
 
 void MainWindow::formModelClip_apply()
@@ -1637,17 +1634,20 @@ void MainWindow::formModelClip_apply()
 
 	// 创建切割后的Actor
 	bool keepInside = !formModelClip->ui->checkBox_2->isChecked();
-	vtkSmartPointer<vtkActor> slicedActor = createSlicedActorFromRenderer(origin, normal, keepInside);
+	std::vector<vtkSmartPointer<vtkActor>> slicedActorList = createSlicedActorFromRenderer(origin, normal, keepInside);
 
 	// 清除原有演员
 	render->RemoveAllViewProps();
 
-	if (slicedActor)
+	if (slicedActorList.size()>0)
 	{
-		render->AddActor(slicedActor);
+		for (const auto& slicedActor : slicedActorList)
+		{
+			render->AddActor(slicedActor);
+		}
 
 		// 如果是云图模型，添加颜色图例
-		vtkMapper* mapper = slicedActor->GetMapper();
+		vtkMapper* mapper = slicedActorList[0]->GetMapper();
 		if (mapper && mapper->GetScalarVisibility())
 		{
 			std::string fieldNameValue = formPostprocessing->ui->comboBox_2->currentText().toStdString();

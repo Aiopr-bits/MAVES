@@ -158,7 +158,8 @@ public:
 
 	vtkSmartPointer<vtkScalarBarActor> createScalarBarActor(const std::pair<double, double>& range); 					//创建图例actor
 
-	vtkSmartPointer<vtkActor> createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside);		//创建切分actor
+	std::vector<vtkSmartPointer<vtkActor>> createSlicedActorFromRenderer												//创建切分actor
+		(double origin[3], double normal[3], bool keepInside);		
 
 public slots:
 	//工具栏信号处理
