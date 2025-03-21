@@ -124,6 +124,7 @@ QT_CHARTS_USE_NAMESPACE
 #include <vtkAppendPolyData.h>
 #include <Qpixmap>
 #include <QGraphicsOpacityEffect>
+#include "initialize.h"
 
 #ifdef _WIN32
 #include "qt_windows.h"

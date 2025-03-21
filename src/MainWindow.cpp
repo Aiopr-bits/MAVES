@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, previousTabWidgetIndex(0)
 {
 	ui->setupUi(this);
+	initialize();
 
 	//全屏
 	this->setWindowState(Qt::WindowMaximized);
