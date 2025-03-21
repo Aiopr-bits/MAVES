@@ -149,7 +149,6 @@
     <QtMoc Include="FormSolver.h" />
     <QtMoc Include="FormTurbulence.h" />
     <QtMoc Include="DialogResultMerge.h" />
-    <ClInclude Include="initialize.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
