@@ -103,7 +103,7 @@ QListView* FormMesh::createBoundariesListView(std::string regionName, std::vecto
 		QString actorName = QString::fromStdString(patchName);
 		QStandardItem* item = new QStandardItem(actorName);
 		item->setCheckable(true);
-		if (regionName == "default" && actorName != "internalMesh") item->setCheckState(Qt::Checked);
+		if (actorName.endsWith("internalMesh"))item->setCheckState(Qt::Checked);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 		item->setSizeHint(QSize(0, 30));
 		listViewModel->appendRow(item);
