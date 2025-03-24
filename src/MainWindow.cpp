@@ -106,6 +106,9 @@ MainWindow::MainWindow(QWidget* parent)
 	dialogResultMerge = new DialogResultMerge(this);
 	dialogResultMerge->setWindowModality(Qt::WindowModal);
 
+	dialogInformationPrompt = new DialogInformationPrompt(this);
+	dialogInformationPrompt->setWindowModality(Qt::WindowModal);
+
 	//程序启动点击几何页面
 	on_pushButton_clicked();
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
@@ -343,7 +346,6 @@ void MainWindow::handleAction10Triggered()
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
-		//QMessageBox::information(this, "提示", "案例导入成功");
 	}
 }
 
@@ -872,7 +874,7 @@ void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
 	for (int i = 0; i < model->rowCount(); ++i) {
 		items << model->item(i)->text();
 	}
-	
+
 	// 遍历 listViewModel 并根据选中状态添加到
 	std::vector<std::string> patchGroup;
 	for (int i = listViewBoundaries.size() - 1; i >= 0; --i) {
@@ -1598,8 +1600,8 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createSlicedActorFromRenderer
 			newActor->GetProperty()->SetRepresentationToSurface();
 			newActor->GetProperty()->SetColor(geometryColor);
 		}
-		else if(isMeshModel)
-		{		
+		else if (isMeshModel)
+		{
 			// 网格模型
 			newMapper->ScalarVisibilityOff();
 			newActor->GetProperty()->EdgeVisibilityOn();
@@ -1640,7 +1642,7 @@ void MainWindow::formModelClip_apply()
 	// 清除原有演员
 	render->RemoveAllViewProps();
 
-	if (slicedActorList.size()>0)
+	if (slicedActorList.size() > 0)
 	{
 		for (const auto& slicedActor : slicedActorList)
 		{

@@ -32,7 +32,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.15.2_msvc2019_64</QtInstall>
-    <QtModules>core;opengl;gui;svg;widgets;openglextensions;charts</QtModules>
+    <QtModules>core;opengl;gui;svg;widgets;concurrent;openglextensions;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtPlugin>false</QtPlugin>
   </PropertyGroup>
@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtUic Include="DialogInformationPrompt.ui" />
     <QtUic Include="DialogResultMerge.ui" />
     <QtUic Include="FormBoundaryConditions.ui" />
     <QtUic Include="FormBoundaryConditionsTabWidget.ui" />
@@ -114,6 +115,7 @@
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
+    <ClCompile Include="DialogInformationPrompt.cpp" />
     <ClCompile Include="DialogResultMerge.cpp" />
     <ClCompile Include="FormBoundaryConditions.cpp" />
     <ClCompile Include="FormBoundaryConditionsTabWidget.cpp" />
@@ -149,6 +151,7 @@
     <QtMoc Include="FormSolver.h" />
     <QtMoc Include="FormTurbulence.h" />
     <QtMoc Include="DialogResultMerge.h" />
+    <QtMoc Include="DialogInformationPrompt.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

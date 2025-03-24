@@ -125,6 +125,10 @@ QT_CHARTS_USE_NAMESPACE
 #include <Qpixmap>
 #include <QGraphicsOpacityEffect>
 #include <initialize.h>
+#include "DialogInformationPrompt.h"
+#include <QtConcurrent/QtConcurrentRun>
+#include <QFuture>
+#include <QFutureWatcher>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -270,6 +274,7 @@ public:
 
 	//弹出窗口
 	DialogResultMerge* dialogResultMerge;
+	DialogInformationPrompt* dialogInformationPrompt;
 
 	//残差图相关变量
 	QChart* chart;
