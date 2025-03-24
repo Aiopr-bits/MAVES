@@ -268,16 +268,19 @@ bool FormPhysicalPropertyParameter::exportParameter()
 
 void FormPhysicalPropertyParameter::solverChanged(const QString& newText)
 {
-	if (newText == "steadyCompressibleSolver") {
+	if (newText == "rhoSimpleFoam") {
 		ui->widget->show();
 		ui->widget_2->hide();
 	}
-	else if (newText == "transientIncompressibleSolver") {
+	else if (newText == "buoyantBoussinesqPimpleFoam") {
 		ui->widget->hide();
 		ui->widget_2->show();
 	}
+	else if (newText == "chtMultiRegionFoam") {
+		
+	}
 	else {
-		ui->widget->hide();
+		ui->widget->show();
 		ui->widget_2->hide();
 	}
 }

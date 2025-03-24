@@ -15,7 +15,7 @@ FormSolver::FormSolver(QWidget* parent)
 	ui->setupUi(this);
 
 	QStringList items;
-	items << "transientIncompressibleSolver" << "steadyCompressibleSolver";
+	items << "transientIncompressibleSolver" << "steadyCompressibleSolver" << "multiRegionSolver";
 	for (const QString& itemText : items) {
 		QStandardItem* item = new QStandardItem(itemText);
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable); 
@@ -27,7 +27,8 @@ FormSolver::FormSolver(QWidget* parent)
 	connect(ui->pushButton_2, &QPushButton::clicked, this, &FormSolver::handleButtonGroup1);
 	connect(ui->pushButton_3, &QPushButton::clicked, this, &FormSolver::handleButtonGroup2);
 	connect(ui->pushButton_4, &QPushButton::clicked, this, &FormSolver::handleButtonGroup2);
-	connect(ui->checkBox, &QCheckBox::stateChanged, this, &FormSolver::handleCheckBoxGroup);
+	connect(ui->checkBox, &QCheckBox::stateChanged, this, &FormSolver::updateListView);
+	connect(ui->checkBox_2, &QCheckBox::stateChanged, this, &FormSolver::updateListView);
 }
 
 FormSolver::~FormSolver()
@@ -72,30 +73,44 @@ bool FormSolver::importParameter()
 		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
 		return false;
 	}
-	application == "rhoSimpleFoam" ? application = "steadyCompressibleSolver" : (application == "buoyantBoussinesqPimpleFoam" ? application = "transientIncompressibleSolver" : application);
 
-	if (application == "steadyCompressibleSolver" )
+	if (application == "rhoSimpleFoam")
 	{
 		ui->pushButton->setChecked(true);
 		ui->pushButton_2->setChecked(false);
 		ui->pushButton_3->setChecked(false);
 		ui->pushButton_4->setChecked(true);
-		ui->checkBox->setChecked(true);	
+		ui->checkBox->setChecked(true);
+		ui->checkBox_2->setChecked(true);
 		ui->label_8->setText("steadyCompressibleSolver");
-		GlobalData::getInstance().getCaseData()->solverName = "steadyCompressibleSolver";
-		emit labelText_8_Changed("steadyCompressibleSolver");
+		GlobalData::getInstance().getCaseData()->solverName = "rhoSimpleFoam";
+		emit labelText_8_Changed("rhoSimpleFoam");
 		return true;
 	}
-	else if (application == "transientIncompressibleSolver")
+	else if (application == "buoyantBoussinesqPimpleFoam")
 	{
 		ui->pushButton->setChecked(false);
 		ui->pushButton_2->setChecked(true);
 		ui->pushButton_3->setChecked(true);
 		ui->pushButton_4->setChecked(false);
 		ui->checkBox->setChecked(false);
+		ui->checkBox_2->setChecked(true);
 		ui->label_8->setText("transientIncompressibleSolver");
-		GlobalData::getInstance().getCaseData()->solverName = "transientIncompressibleSolver";
-		emit labelText_8_Changed("transientIncompressibleSolver");
+		GlobalData::getInstance().getCaseData()->solverName = "buoyantBoussinesqPimpleFoam";
+		emit labelText_8_Changed("buoyantBoussinesqPimpleFoam");
+		return true;
+	}
+	else if (application == "chtMultiRegionFoam")
+	{
+		ui->pushButton->setChecked(false);
+		ui->pushButton_2->setChecked(true);
+		ui->pushButton_3->setChecked(false);
+		ui->pushButton_4->setChecked(true);
+		ui->checkBox->setChecked(true);
+		ui->checkBox_2->setChecked(true);
+		ui->label_8->setText("multiRegionSolver");
+		GlobalData::getInstance().getCaseData()->solverName = "chtMultiRegionFoam";
+		emit labelText_8_Changed("chtMultiRegionFoam");
 		return true;
 	}
 	else {
@@ -128,12 +143,24 @@ bool FormSolver::exportParameter()
 	controlDictFile.close();
 	// 替换 controlDict 文件中的 application 字段
 	QString application = ui->label_8->text();
-	if (application != "steadyCompressibleSolver" && application != "transientIncompressibleSolver")
+	if (application != "steadyCompressibleSolver" && application != "transientIncompressibleSolver" && application != "multiRegionSolver")
 	{
 		QMessageBox::warning(this, "错误", "求解器参数配置错误");
 		return false;
 	}
-	application == "steadyCompressibleSolver" ? application = "rhoSimpleFoam" : (application == "transientIncompressibleSolver" ? application = "buoyantBoussinesqPimpleFoam" : application);
+
+	if (application == "steadyCompressibleSolver")
+	{
+		application = "rhoSimpleFoam";
+	}
+	else if (application == "transientIncompressibleSolver")
+	{
+		application = "buoyantBoussinesqPimpleFoam";
+	}
+	else if (application == "multiRegionSolver")
+	{
+		application = "chtMultiRegionFoam";
+	}
 
 	QRegExp rx("application\\s+\\S+;");
 	rx.setMinimal(true);
@@ -155,25 +182,12 @@ void FormSolver::handleButtonGroup1()
 	QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
 	if (senderButton == ui->pushButton) {
 		if (ui->pushButton->isChecked()) {
-			ui->pushButton_4->setChecked(true);
 			ui->pushButton_2->setChecked(false);
-			ui->pushButton_3->setChecked(false);
-			ui->checkBox->setChecked(true);
-		}
-		else {
-			ui->pushButton_4->setChecked(false);
-			ui->checkBox->setChecked(false);
 		}
 	}
 	else if (senderButton == ui->pushButton_2) {
 		if (ui->pushButton_2->isChecked()) {
-			ui->pushButton_3->setChecked(true);
 			ui->pushButton->setChecked(false);
-			ui->pushButton_4->setChecked(false);
-			ui->checkBox->setChecked(false);
-		}
-		else {
-			ui->pushButton_3->setChecked(false);
 		}
 	}
 	updateListView();
@@ -184,74 +198,72 @@ void FormSolver::handleButtonGroup2()
 	QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
 	if (senderButton == ui->pushButton_3) {
 		if (ui->pushButton_3->isChecked()) {
-			ui->pushButton_2->setChecked(true);
-			ui->pushButton->setChecked(false);
 			ui->pushButton_4->setChecked(false);
-			ui->checkBox->setChecked(false);
-		}
-		else {
-			ui->pushButton_2->setChecked(false);
 		}
 	}
 	else if (senderButton == ui->pushButton_4) {
 		if (ui->pushButton_4->isChecked()) {
-			ui->pushButton->setChecked(true);
-			ui->pushButton_2->setChecked(false);
 			ui->pushButton_3->setChecked(false);
-			ui->checkBox->setChecked(true);
 		}
-		else {
-			ui->pushButton->setChecked(false);
-			ui->checkBox->setChecked(false);
-		}
-	}
-	updateListView();
-}
-
-void FormSolver::handleCheckBoxGroup(int state)
-{
-	if (state == Qt::Checked) {
-		ui->pushButton->setChecked(true);
-		ui->pushButton_4->setChecked(true);
-		ui->pushButton_2->setChecked(false);
-		ui->pushButton_3->setChecked(false);
-	}
-	else {
-		ui->pushButton->setChecked(false);
-		ui->pushButton_4->setChecked(false);
 	}
 	updateListView();
 }
 
 void FormSolver::updateListView()
 {
-	if (ui->pushButton->isChecked() && ui->pushButton_4->isChecked() && ui->checkBox->isChecked()) {
+	//所有item均设置为可用
+	for (int i = 0; i < model->rowCount(); ++i) {
+		QStandardItem* item = model->item(i);
+		item->setEnabled(true);
+	}
+
+	if (ui->pushButton->isChecked()) {
 		for (int i = 0; i < model->rowCount(); ++i) {
 			QStandardItem* item = model->item(i);
-			if (item->text() == "steadyCompressibleSolver") {
-				item->setEnabled(true);
-			}
-			else {
+			if (item->text() == "transientIncompressibleSolver" || item->text() == "multiRegionSolver") {
 				item->setEnabled(false);
 			}
 		}
 	}
-	else if (ui->pushButton_2->isChecked() && ui->pushButton_3->isChecked() && !ui->checkBox->isChecked()) {
+
+	if (ui->pushButton_2->isChecked()) {
+		for (int i = 0; i < model->rowCount(); ++i) {
+			QStandardItem* item = model->item(i);
+			if (item->text() == "steadyCompressibleSolver" ) {
+				item->setEnabled(false);
+			}
+		}
+	}
+
+	if (ui->pushButton_3->isChecked()) {
+		for (int i = 0; i < model->rowCount(); ++i) {
+			QStandardItem* item = model->item(i);
+			if (item->text() == "steadyCompressibleSolver" || item->text() == "multiRegionSolver") {
+				item->setEnabled(false);
+			}
+		}
+	}
+
+	if (ui->pushButton_4->isChecked()) {
 		for (int i = 0; i < model->rowCount(); ++i) {
 			QStandardItem* item = model->item(i);
 			if (item->text() == "transientIncompressibleSolver") {
-				item->setEnabled(true);
-			}
-			else {
 				item->setEnabled(false);
 			}
 		}
 	}
-	else {
+
+	if (ui->checkBox->isChecked()) {
 		for (int i = 0; i < model->rowCount(); ++i) {
 			QStandardItem* item = model->item(i);
-			item->setEnabled(true);
+			if (item->text() == "steadyCompressibleSolver") {
+				item->setEnabled(false);
+			}
 		}
+	}
+
+	if (ui->checkBox_2->isChecked()) {
+
 	}
 }
 

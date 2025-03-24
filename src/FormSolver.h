@@ -30,13 +30,12 @@ public:
 
 	bool importParameter();
 	bool exportParameter();
-	void updateListView();
 
 public slots:
 	void on_pushButton_5_clicked();
 	void handleButtonGroup1();
 	void handleButtonGroup2();
-	void handleCheckBoxGroup(int state);
+	void updateListView();
 
 signals:
 	void labelText_8_Changed(const QString& newText);
