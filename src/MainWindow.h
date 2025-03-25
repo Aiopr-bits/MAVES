@@ -129,6 +129,7 @@ QT_CHARTS_USE_NAMESPACE
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QFutureWatcher>
+#include "FormBoundaryConditionsTabWidget.h"
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -191,6 +192,7 @@ public slots:
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
+	void on_pushButton_20_clicked();								    												//概览（测试）
 
 	//主界面其他事件处理
 	void onPlayTimerTimeout();																							//播放

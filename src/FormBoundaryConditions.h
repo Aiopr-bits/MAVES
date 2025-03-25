@@ -15,6 +15,7 @@
 #include "FormBoundaryConditionsTabWidget.h"
 #include <vector>
 #include <QFileInfo>
+#include <QModelIndex>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormBoundaryConditionsClass; };
@@ -29,18 +30,23 @@ public:
 	~FormBoundaryConditions();
 	void onMeshImported();
 	void initListView();
-	void initTabWidget();
+	void initSubWidget();
 	void importParameter();
 	void exportParameter();
 	void initBoundaryConditions();
-
 	void parseBoundaryFile(const QString& filePath, const QString& fieldName);
 
 private slots:
     void onListViewItemClicked(const QModelIndex& index);
+	void onToggleRegionSecondAnimation();
+
+signals:
+	void toggleRegionSecondAnimation();
 
 private:
 	Ui::FormBoundaryConditionsClass *ui;
 	QStandardItemModel* listViewModel;
-	QMap<QString, QMap<QString, QVector<QString>>> boundaryConditions;
+	//QMap<QString, QMap<QString, QVector<QString>>> boundaryConditions;
+	std::vector<QString> patchName;
+	std::vector<FormBoundaryConditionsTabWidget*> tabWidgetsGroup;
 };

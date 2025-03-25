@@ -49,7 +49,7 @@
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>10</height>
+         <height>13</height>
         </size>
        </property>
       </spacer>
@@ -101,19 +101,16 @@
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">QListView {
-    background-color: white; /* 设置元素背景颜色为白色 */
-    border: 1px solid rgb(230, 230, 230); /* 设置边框颜色 */
-    show-decoration-selected: 1; /* 显示选中项的装饰 */
+          <string notr="true">QListView::item {
+    padding: 11px;
+}
+
+QListView {
+    border: none;
 }
 
 QListView::item {
-    border-bottom: 1px solid rgb(230, 230, 230); /* 设置元素之间的横线颜色 */
-}
-
-QHeaderView::section {
-    background-color: rgb(230, 230, 230); /* 设置标题背景颜色 */
-    border: 1px solid rgb(230, 230, 230); /* 设置标题边框颜色 */
+    background: #FFFFFF;
 }
 
 QListView::item:hover {
@@ -124,66 +121,89 @@ QListView::item:selected {
     background: #EEEEEE;
 }
 
-</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QTabWidget" name="tabWidget">
-         <property name="styleSheet">
-          <string notr="true">QTabWidget::pane {
-    border-top: 1px solid #dcdcdc;
-    position: relative;
-    top: -1px;
-}
-QTabBar::tab {
-    font-family: 'Microsoft YaHei';
-    font-size: 12px;
-    min-height: 20px;
-    min-width: 80px;
+QListView QScrollBar:vertical {
     border: 1px solid #dcdcdc;
-    border-bottom: none;
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
 }
-QTabBar::tab:selected {
-    border-bottom: 1px solid #ffffff;
+
+QListView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QListView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QListView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QListView QScrollBar::up-arrow:vertical,
+QListView QScrollBar::down-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QListView QScrollBar::add-page:vertical,
+QListView QScrollBar::sub-page:vertical {
+    background: none;
 }
 </string>
          </property>
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget" native="true"/>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>13</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>

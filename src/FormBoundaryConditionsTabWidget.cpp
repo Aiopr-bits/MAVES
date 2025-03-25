@@ -10,6 +10,7 @@
 FormBoundaryConditionsTabWidget::FormBoundaryConditionsTabWidget(QWidget *parent)
 	: QWidget(parent)
 	, ui(new Ui::FormBoundaryConditionsTabWidgetClass())
+	, previousIndex(0)
 {
 	ui->setupUi(this);
 
@@ -102,7 +103,7 @@ void FormBoundaryConditionsTabWidget::onComboBox_3CurrentIndexChanged(int index)
 {
 	QString boundaryConditionType = ui->comboBox_3->currentText();
 	bool visible = (boundaryConditionType == "fixedValue");
-	updateLayoutVisibility(ui->gridLayout_3, visible);
+	updateLayoutVisibility(ui->gridLayout_8, visible);
 }
 
 void FormBoundaryConditionsTabWidget::onComboBox_4CurrentIndexChanged(int index)
@@ -131,4 +132,88 @@ void FormBoundaryConditionsTabWidget::onComboBox_7CurrentIndexChanged(int index)
 	QString boundaryConditionType = ui->comboBox_7->currentText();
 	bool visible = (boundaryConditionType == "calculated" || boundaryConditionType == "alphatWallFunction");
 	updateLayoutVisibility(ui->gridLayout_7, visible);
+}
+
+void FormBoundaryConditionsTabWidget::resizeEvent(QResizeEvent* event)
+{
+	ui->tabWidget->tabBar()->setFixedWidth(ui->tabWidget->width());
+}
+
+void FormBoundaryConditionsTabWidget::on_tabWidget_currentChanged(int index)
+{
+	QWidget* widget0 = ui->tabWidget->widget(0);
+	QWidget* widget1 = ui->tabWidget->widget(1);
+	QWidget* widget2 = ui->tabWidget->widget(2);
+	QPixmap pixmap0 = QPixmap::grabWidget(widget0);
+	QPixmap pixmap1 = QPixmap::grabWidget(widget1);
+	QPixmap pixmap2 = QPixmap::grabWidget(widget2);
+
+	int imageWidth = pixmap0.width() + pixmap1.width() + pixmap2.width();
+	int imageHeight = pixmap0.height();
+	QImage image(imageWidth, imageHeight, QImage::Format_ARGB32);
+	image.fill(QColor(Qt::black));
+
+	QPainter p;
+	p.begin(&image);
+	QBrush brush(QColor(255, 255, 0), Qt::Dense4Pattern);
+	p.setBrush(brush);
+	QPen pen;
+	pen.setColor(QColor(Qt::red));
+	p.setPen(pen);
+	p.drawPixmap(0, 0, pixmap0);
+	p.drawPixmap(pixmap0.width(), 0, pixmap1);
+	p.drawPixmap(pixmap0.width() + pixmap1.width(), 0, pixmap2);
+	p.end();
+
+	QLabel* animationWidget = new QLabel(ui->tabWidget);
+	animationWidget->setPixmap(QPixmap::fromImage(image));
+	QTabBar* bar = ui->tabWidget->tabBar();
+	QSize size1 = bar->size();
+	QSize size2 = ui->tabWidget->size();
+	int pixmapWidth = pixmap0.width();
+	int pixmapHeight = pixmap0.height();
+
+	animationWidget->show();
+	animationWidget->raise();
+	QPropertyAnimation* move = new QPropertyAnimation(animationWidget, "geometry");
+	move->setDuration(200);
+
+	if (previousIndex == 0) {
+		if (index == 1) {
+			move->setStartValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+			move->setEndValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+		}
+		else if (index == 2) {
+			move->setStartValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+			move->setEndValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+		}
+	}
+	else if (previousIndex == 1) {
+		if (index == 0) {
+			move->setStartValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+			move->setEndValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+		}
+		else if (index == 2) {
+			move->setStartValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+			move->setEndValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+		}
+	}
+	else if (previousIndex == 2) {
+		if (index == 0) {
+			move->setStartValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+			move->setEndValue(QRect(0, bar->size().height() + 10, pixmapWidth, pixmapHeight));
+		}
+		else if (index == 1) {
+			move->setStartValue(QRect(-2 * pixmapWidth, bar->size().height() + 10, pixmapWidth * 3, pixmapHeight));
+			move->setEndValue(QRect(-pixmapWidth, bar->size().height() + 10, pixmapWidth * 2, pixmapHeight));
+		}
+	}
+
+	move->start();
+	connect(move, &QAbstractAnimation::finished, this, [=]() {
+		delete animationWidget;
+		delete move;
+		});
+
+	previousIndex = index;
 }

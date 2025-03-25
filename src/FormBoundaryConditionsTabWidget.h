@@ -10,6 +10,8 @@
 #include <QWidget>
 #include "ui_FormBoundaryConditionsTabWidget.h"
 #include <QMessageBox>
+#include <QPropertyAnimation.h>
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormBoundaryConditionsTabWidgetClass; };
@@ -33,7 +35,10 @@ public slots:
 	void onComboBox_5CurrentIndexChanged(int index);
 	void onComboBox_6CurrentIndexChanged(int index);
 	void onComboBox_7CurrentIndexChanged(int index);
+	void resizeEvent(QResizeEvent* event);
+	void on_tabWidget_currentChanged(int index);
 
 public:
 	Ui::FormBoundaryConditionsTabWidgetClass *ui;
+	int previousIndex;
 };

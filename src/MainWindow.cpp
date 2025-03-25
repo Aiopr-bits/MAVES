@@ -338,10 +338,10 @@ void MainWindow::handleAction10Triggered()
 			formMeshImport_import(caseFilePath, true);
 
 		//更新参数配置页面(需补充)
-		//formSolver->importParameter();
+		formSolver->importParameter();
 		//formTurbulence->importParameter();
 		//formPhysicalPropertyParameter->importParameter();
-		////formBoundaryConditions->importParameter();
+		formBoundaryConditions->importParameter();
 		formRun->importParameter();
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
@@ -575,6 +575,11 @@ void MainWindow::on_pushButton_3_clicked()
 	planeWidgetModelClip->SetInteractor(ui->openGLWidget->renderWindow()->GetInteractor());
 	planeWidgetModelClip->On();
 	ui->openGLWidget->renderWindow()->Render();
+}
+
+void MainWindow::on_pushButton_20_clicked()
+{
+
 }
 
 void MainWindow::updatePlaneRepModelClipValues()
@@ -856,7 +861,7 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 		formMesh->updateForm(isRender);
 
 		//网格导入成功,初始化参数配置页面(需补充)
-		//formBoundaryConditions->onMeshImported();
+		formBoundaryConditions->onMeshImported();
 	}
 
 	render->ResetCamera();
