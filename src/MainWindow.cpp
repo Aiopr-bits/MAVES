@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, planeRepModelClip(vtkSmartPointer<vtkImplicitPlaneRepresentation>::New())
 	, planeWidgetModelClip(vtkSmartPointer<vtkImplicitPlaneWidget2>::New())
 	, previousTabWidgetIndex(0)
+	, m_currentFrame(0)
 {
 	ui->setupUi(this);
 	initialize();
@@ -238,72 +239,146 @@ void MainWindow::hideAllSubForm()
 	formModelClip->hide();
 }
 
+void MainWindow::onCameraAnimationTimeout()
+{
+	m_camera->SetClippingRange(0.01, 10000.0);
+	double t = m_currentFrame / static_cast<double>(m_totalFrames);
+	double pos[3], focal[3], up[3];
+	for (int i = 0; i < 3; i++) {
+		pos[i] = m_startPos[i] * (1 - t) + m_endPos[i] * t;
+		focal[i] = m_startFocal[i] * (1 - t) + m_endFocal[i] * t;
+		up[i] = m_startUp[i] * (1 - t) + m_endUp[i] * t;
+	}
+
+	m_camera->SetPosition(pos);
+	m_camera->SetFocalPoint(focal);
+	m_camera->SetViewUp(up);
+	ui->openGLWidget->renderWindow()->Render();
+
+	m_currentFrame++;
+	if (m_currentFrame > m_totalFrames) {
+		m_animationTimer->stop();
+		m_animationTimer->deleteLater();
+
+		ui->action2->setEnabled(true);
+		ui->action3->setEnabled(true);
+		ui->action4->setEnabled(true);
+		ui->action5->setEnabled(true);
+		ui->action6->setEnabled(true);
+		ui->action7->setEnabled(true);
+		ui->action8->setEnabled(true);
+	}
+}
+
+void MainWindow::startCameraAnimation()
+{
+	ui->action2->setEnabled(false);
+	ui->action3->setEnabled(false);
+	ui->action4->setEnabled(false);
+	ui->action5->setEnabled(false);
+	ui->action6->setEnabled(false);
+	ui->action7->setEnabled(false);
+	ui->action8->setEnabled(false);
+
+	m_totalFrames = 30;
+	int intervalMs = 100 / m_totalFrames;
+	m_currentFrame = 0;
+
+	m_animationTimer = new QTimer(this);
+	connect(m_animationTimer, &QTimer::timeout, this, &MainWindow::onCameraAnimationTimeout);
+	m_animationTimer->start(intervalMs);
+}
+
+void MainWindow::setupCameraAnimation(double posX, double posY, double posZ,
+	double focalX, double focalY, double focalZ,
+	double upX, double upY, double upZ,
+	bool resetCamera)
+{
+	// 获取开始位置
+	m_camera = render->GetActiveCamera();
+	m_camera->GetPosition(m_startPos);
+	m_camera->GetFocalPoint(m_startFocal);
+	m_camera->GetViewUp(m_startUp);
+
+	// 获取终点位置
+	m_camera->SetPosition(posX, posY, posZ);
+	m_camera->SetFocalPoint(focalX, focalY, focalZ);
+	m_camera->SetViewUp(upX, upY, upZ);
+
+	if (resetCamera) {
+		render->ResetCamera();
+	}
+
+	m_camera->GetPosition(m_endPos);
+	m_camera->GetFocalPoint(m_endFocal);
+	m_camera->GetViewUp(m_endUp);
+
+	// 恢复初始相机位置
+	m_camera->SetPosition(m_startPos);
+	m_camera->SetFocalPoint(m_startFocal);
+	m_camera->SetViewUp(m_startUp);
+
+	// 启动动画
+	startCameraAnimation();
+}
+
 void MainWindow::handleAction2Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(1, 0, 0);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	render->ResetCamera();
-	renderWindow->Render();
+	// X正向视图
+	setupCameraAnimation(1, 0, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
 void MainWindow::handleAction3Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(-1, 0, 0);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	render->ResetCamera();
-	ui->openGLWidget->renderWindow()->Render();
+	// X负向视图
+	setupCameraAnimation(-1, 0, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
 void MainWindow::handleAction4Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(0, 1, 0);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	render->ResetCamera();
-	ui->openGLWidget->renderWindow()->Render();
+	// Y正向视图
+	setupCameraAnimation(0, 1, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
 void MainWindow::handleAction5Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(0, -1, 0);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	render->ResetCamera();
-	ui->openGLWidget->renderWindow()->Render();
+	// Y负向视图
+	setupCameraAnimation(0, -1, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
 void MainWindow::handleAction6Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(0, 0, 1);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 1, 0);
-	render->ResetCamera();
-	ui->openGLWidget->renderWindow()->Render();
+	// Z正向视图
+	setupCameraAnimation(0, 0, 1, 0, 0, 0, 0, 1, 0, true);
 }
 
 void MainWindow::handleAction7Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
-	camera->SetPosition(0, 0, -1);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 1, 0);
-	render->ResetCamera();
-	ui->openGLWidget->renderWindow()->Render();
+	// Z负向视图
+	setupCameraAnimation(0, 0, -1, 0, 0, 0, 0, 1, 0, true);
 }
 
 void MainWindow::handleAction8Triggered()
 {
-	vtkSmartPointer<vtkCamera> camera = render->GetActiveCamera();
+	// 适应窗口
+	m_camera = render->GetActiveCamera();
+	m_camera->GetPosition(m_startPos);
+	m_camera->GetFocalPoint(m_startFocal);
+	m_camera->GetViewUp(m_startUp);
+
+	// 获取终点位置
 	render->ResetCamera();
-	camera->Zoom(1);
-	ui->openGLWidget->renderWindow()->Render();
+	m_camera->GetPosition(m_endPos);
+	m_camera->GetFocalPoint(m_endFocal);
+	m_camera->GetViewUp(m_endUp);
+
+	// 恢复初始相机位置
+	m_camera->SetPosition(m_startPos);
+	m_camera->SetFocalPoint(m_startFocal);
+	m_camera->SetViewUp(m_startUp);
+
+	// 启动动画
+	startCameraAnimation();
 }
 
 void MainWindow::handleAction9Triggered()

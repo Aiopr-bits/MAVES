@@ -148,7 +148,9 @@ public:
 	~MainWindow();
 
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
+
 	void hideAllSubForm();										    													//隐藏所有子窗口
+
 	void parseOutput(const QString& output);																			//解析输出
 
 	std::vector<vtkSmartPointer<vtkActor>> createMeshPatchActor( 														//创建网格patch actor
@@ -167,9 +169,15 @@ public:
 	std::vector<vtkSmartPointer<vtkActor>> createSlicedActorFromRenderer												//创建切分actor
 		(double origin[3], double normal[3], bool keepInside);		
 
+	void startCameraAnimation();								    													//开始相机动画
+
+	void setupCameraAnimation(double posX, double posY, double posZ, 													//设置相机动画
+		double focalX, double focalY, double focalZ, double upX, double upY, 
+		double upZ, bool resetCamera);
+
 public slots:
 	//工具栏信号处理
-	void handleAction1Triggered();								    													//信息框
+	void handleAction1Triggered();																						//信息框
 	void handleAction2Triggered();								    													//x正向
 	void handleAction3Triggered();								    													//x负向
 	void handleAction4Triggered();								    													//y正向
@@ -209,6 +217,7 @@ public slots:
 	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
 	void resizeEvent(QResizeEvent* event);																				//窗口大小改变事件
 	void on_tabWidget_currentChanged(int index);																		//tabWidget切换事件
+	void onCameraAnimationTimeout();																					//相机动画
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
@@ -295,6 +304,14 @@ public:
 	//平面选择器相关变量
 	vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidgetModelClip;
 	vtkSmartPointer<vtkImplicitPlaneRepresentation> planeRepModelClip;
+
+	//相机动画相关变量
+	vtkCamera* m_camera = nullptr;
+	double m_startPos[3], m_startFocal[3], m_startUp[3];
+	double m_endPos[3], m_endFocal[3], m_endUp[3];
+	int m_currentFrame = 0;
+	int m_totalFrames = 0;
+	QTimer* m_animationTimer = nullptr;
 
 	//全局变量
 	int nWriteResults;
