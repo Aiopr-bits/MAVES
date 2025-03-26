@@ -239,22 +239,102 @@ void MainWindow::hideAllSubForm()
 	formModelClip->hide();
 }
 
+// 二次贝塞尔曲线函数
+static void quadraticBezier3D(double t, const double p0[3], const double p1[3],
+	const double p2[3], double out[3])
+{
+	double u = 1.0 - t;
+	double b0 = u * u;
+	double b1 = 2.0 * u * t;
+	double b2 = t * t;
+	for (int i = 0; i < 3; i++) {
+		out[i] = p0[i] * b0 + p1[i] * b1 + p2[i] * b2;
+	}
+}
+
 void MainWindow::onCameraAnimationTimeout()
 {
 	m_camera->SetClippingRange(0.01, 10000.0);
+
+	// 计算动画进度
 	double t = m_currentFrame / static_cast<double>(m_totalFrames);
-	double pos[3], focal[3], up[3];
+
+	// 计算 focal 和 up 向量
+	double focal[3], up[3];
 	for (int i = 0; i < 3; i++) {
-		pos[i] = m_startPos[i] * (1 - t) + m_endPos[i] * t;
-		focal[i] = m_startFocal[i] * (1 - t) + m_endFocal[i] * t;
-		up[i] = m_startUp[i] * (1 - t) + m_endUp[i] * t;
+		focal[i] = m_startFocal[i] * (1.0 - t) + m_endFocal[i] * t;
+		up[i] = m_startUp[i] * (1.0 - t) + m_endUp[i] * t;
 	}
 
-	m_camera->SetPosition(pos);
+	// 计算控制点
+	double center[3] = { 0.5 * (m_startPos[0] + m_endPos[0]),
+		0.5 * (m_startPos[1] + m_endPos[1]),
+		0.5 * (m_startPos[2] + m_endPos[2]) };
+	double control[3] = { center[0], center[1], center[2] };
+
+	// 计算m_startPos和m_endPos关于center的向量
+	double v1[3] = { m_startPos[0] - center[0],
+	m_startPos[1] - center[1],
+	m_startPos[2] - center[2] };
+	double v2[3] = { m_endPos[0] - center[0],
+	m_endPos[1] - center[1],
+	m_endPos[2] - center[2] };
+
+	double d1 = sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2]);
+	double d2 = sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2]);
+	double avgDist = 0.5 * (d1 + d2);
+
+	// 当两个向量的夹角小于170度时，沿原来control（这里取v1方向，若d1为0则用v2）方向
+	// 否则，将控制点移动到center + (avgDist, 0, 0)
+	double dot = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+	double angle = 0.0;
+	if (d1 > 1e-6 && d2 > 1e-6)
+	{
+		angle = acos(dot / (d1 * d2)) * 180.0 / M_PI;
+	}
+	if (angle < 170.0)
+	{
+		double dir[3] = { 0.0, 0.0, 0.0 };
+		if (d1 > 1e-6)
+		{
+			dir[0] = v1[0] / d1;
+			dir[1] = v1[1] / d1;
+			dir[2] = v1[2] / d1;
+		}
+		else if (d2 > 1e-6)
+		{
+			dir[0] = v2[0] / d2;
+			dir[1] = v2[1] / d2;
+			dir[2] = v2[2] / d2;
+		}
+		control[0] = center[0] + dir[0] * avgDist * 1.73;
+		control[1] = center[1] + dir[1] * avgDist * 1.73;
+		control[2] = center[2] + dir[2] * avgDist * 1.73;
+	}
+	else
+	{
+		// 若夹角>=170度，则沿x轴正方向赋值
+		control[0] = center[0] + avgDist * 1.73;
+		control[1] = center[1] + avgDist * 1.73;
+		control[2] = center[2];
+	}
+
+	// 定义曲线三个控制点：起点、中间控制点和终点
+	double p0[3] = { m_startPos[0], m_startPos[1], m_startPos[2] };
+	double p1[3] = { control[0], control[1], control[2] };
+	double p2[3] = { m_endPos[0], m_endPos[1], m_endPos[2] };
+
+	// 通过二次贝塞尔曲线计算新的相机位置
+	double newPos[3];
+	quadraticBezier3D(t, p0, p1, p2, newPos);
+
+	// 更新相机相关参数
+	m_camera->SetPosition(newPos);
 	m_camera->SetFocalPoint(focal);
 	m_camera->SetViewUp(up);
 	ui->openGLWidget->renderWindow()->Render();
 
+	// 帧数控制
 	m_currentFrame++;
 	if (m_currentFrame > m_totalFrames) {
 		m_animationTimer->stop();
