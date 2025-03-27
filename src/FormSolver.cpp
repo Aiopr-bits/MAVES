@@ -47,7 +47,8 @@ bool FormSolver::importParameter()
 	// 打开 controlDict 文件
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 controlDict 文件!" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -70,7 +71,8 @@ bool FormSolver::importParameter()
 	controlDictFile.close();
 
 	if (application.isEmpty()) {
-		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "未找到 application 字段!" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -121,7 +123,9 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(false);
 		ui->label_8->setText("");
 		GlobalData::getInstance().getCaseData()->solverName = "";
-		QMessageBox::warning(this, tr("错误"), tr("暂不支持该类型案例"));
+
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "暂不支持该类型案例!" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 }
@@ -134,7 +138,8 @@ bool FormSolver::exportParameter()
 	// 打开 controlDict 文件
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + controlDictPath);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + controlDictPath });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 	// 读取 controlDict 文件内容
@@ -145,7 +150,8 @@ bool FormSolver::exportParameter()
 	QString application = ui->label_8->text();
 	if (application != "steadyCompressibleSolver" && application != "transientIncompressibleSolver" && application != "multiRegionSolver")
 	{
-		QMessageBox::warning(this, "错误", "求解器参数配置错误");
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "求解器参数配置错误!" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -168,7 +174,8 @@ bool FormSolver::exportParameter()
 
 	// 将修改后的内容写入 controlDict 文件
 	if (!controlDictFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + controlDictPath);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + controlDictPath });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 	QTextStream out(&controlDictFile);
@@ -271,8 +278,7 @@ void FormSolver::on_pushButton_5_clicked()
 {
 	if(GlobalData::getInstance().getCaseData()->meshPatchNamesMap.empty())
 	{
-		//新建一个DialogInformationPrompt窗口并弹出
-		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this,{ "请先导入网格!"}, true);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "信息提示", { "请先导入网格!" });
 		dialogInformationPrompt->exec();
 		return;
 	}

@@ -890,7 +890,8 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
-		QMessageBox::warning(this, tr("错误"), tr("文件不存在"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "文件不存在!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -949,7 +950,8 @@ void MainWindow::formGeometry_import(const QString& filePath)
 	}
 	else
 	{
-		QMessageBox::warning(this, tr("错误"), tr("文件格式不支持"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "文件格式不支持!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -1057,7 +1059,8 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 	QFileInfo fileInfo(filePath);
 	if (!fileInfo.exists())
 	{
-		QMessageBox::warning(this, tr("错误"), tr("文件不存在"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "文件不存在!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -1250,7 +1253,8 @@ void MainWindow::formRun_run()
 {
 	if (GlobalData::getInstance().getCaseData()->casePath.empty())
 	{
-		QMessageBox::warning(this, tr("错误"), tr("请先导入网格"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "请先导入网格!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
@@ -1308,7 +1312,8 @@ void MainWindow::formRun_run()
 	// 打开 controlDict 文件
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 controlDict 文件!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -1331,7 +1336,8 @@ void MainWindow::formRun_run()
 	controlDictFile.close();
 
 	if (application.isEmpty()) {
-		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "未找到 application 字段!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -1382,7 +1388,8 @@ void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatu
 	// 打开 controlDict 文件
 	QFile controlDictFile(controlDictPath);
 	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 controlDict 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 controlDict 文件!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -1405,7 +1412,8 @@ void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatu
 	controlDictFile.close();
 
 	if (application.isEmpty()) {
-		QMessageBox::warning(this, tr("错误"), tr("未找到 application 字段"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "未找到 application 字段!" });
+		dialogInformationPrompt->exec();
 		return;
 	}
 

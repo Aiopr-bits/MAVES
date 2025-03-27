@@ -67,8 +67,9 @@ void FormRun::importParameter()
 	QString filePath = caseDirPath + "/system/controlDict";
 	QFile file(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
+		return ;
 	}
 
 	QTextStream in(&file);
@@ -106,8 +107,9 @@ void FormRun::importParameter()
 	filePath = caseDirPath + "/system/decomposeParDict";
 	file.setFileName(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
+		return ;
 	}
 
 	in.setDevice(&file);
@@ -171,8 +173,9 @@ void FormRun::exportParameter()
 	QString filePath = caseDirPath + "/system/controlDict";
 	QFile file(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
-		return;
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
+		return ;
 	}
 
 	QTextStream in(&file);
@@ -188,7 +191,8 @@ void FormRun::exportParameter()
 
 	// 将修改后的内容写回文件
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
 		return;
 	}
 	QTextStream out(&file);
@@ -199,7 +203,8 @@ void FormRun::exportParameter()
 	filePath = caseDirPath + "/system/decomposeParDict";
 	file.setFileName(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
 		return;
 	}
 
@@ -214,7 +219,8 @@ void FormRun::exportParameter()
 
 	// 将修改后的内容写回文件
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, "错误", "无法打开文件: " + filePath);
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
+		dialogInformationPrompt->exec();
 		return;
 	}
 

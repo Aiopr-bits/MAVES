@@ -48,7 +48,8 @@ bool FormThermo::importParameter()
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 thermophysicalProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 
@@ -115,7 +116,8 @@ bool FormThermo::importParameter()
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 transportProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 
@@ -188,7 +190,8 @@ bool FormThermo::exportParameter()
 		QString thermophysicalPropertiesPath = caseDir + "/constant/thermophysicalProperties";
 		QFile file(thermophysicalPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 thermophysicalProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 
@@ -218,7 +221,8 @@ bool FormThermo::exportParameter()
 		}
 
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 thermophysicalProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 thermophysicalProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 		QTextStream out(&file);
@@ -230,7 +234,8 @@ bool FormThermo::exportParameter()
 		QString transportPropertiesPath = caseDir + "/constant/transportProperties";
 		QFile file(transportPropertiesPath);
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 transportProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 
@@ -254,7 +259,8 @@ bool FormThermo::exportParameter()
 		}
 
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-			QMessageBox::warning(this, tr("错误"), tr("无法打开 transportProperties 文件"));
+			DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 transportProperties 文件" });
+			dialogInformationPrompt->exec();
 			return false;
 		}
 		QTextStream out(&file);

@@ -18,6 +18,7 @@
 #include <QTabWidget>
 #include <QPropertyAnimation>
 #include <QPainter>
+#include "DialogInformationPrompt.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormRunClass; };

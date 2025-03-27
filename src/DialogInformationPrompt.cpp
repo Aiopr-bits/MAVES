@@ -10,7 +10,7 @@
 #include <qmessagebox.h>
 #include <QGraphicsDropShadowEffect>
 
-DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QStringList& texts, bool isRollText)
+DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QString titleText, const QStringList& texts, bool isRollText)
 	: QDialog(parent)
     , m_textIndex(0)
 	, ui(new Ui::DialogInformationPromptClass())
@@ -29,6 +29,12 @@ DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QStringL
     //设置窗体透明,无边框
     this->setAttribute(Qt::WA_TranslucentBackground, true);
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+	// 初始化标题
+	if (!titleText.isEmpty())
+	{
+		ui->label->setText(titleText);
+	}
 
 	// 初始化文本
 	if (!texts.isEmpty())

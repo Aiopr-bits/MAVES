@@ -39,7 +39,8 @@ bool FormTurbulence::importParameter()
 	// 打开 turbulencePropertiesPath 文件
 	QFile turbulencePropertiesFile(turbulencePropertiesPath);
 	if (!turbulencePropertiesFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 turbulenceProperties 文件" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -62,7 +63,8 @@ bool FormTurbulence::importParameter()
 
 
 	if (simulationType.isEmpty()) {
-		QMessageBox::warning(this, tr("错误"), tr("未找到 simulationType 字段"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "未找到 simulationType 字段 "});
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -222,7 +224,8 @@ bool FormTurbulence::exportParameter()
 	// 打开 turbulencePropertiesPath 文件
 	QFile turbulencePropertiesFile(turbulencePropertiesPath);
 	if (!turbulencePropertiesFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 turbulenceProperties 文件" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 
@@ -264,7 +267,8 @@ bool FormTurbulence::exportParameter()
 
 	// 将修改后的内容写回文件
 	if (!turbulencePropertiesFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		QMessageBox::warning(this, tr("错误"), tr("无法打开 turbulenceProperties 文件"));
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 turbulenceProperties 文件" });
+		dialogInformationPrompt->exec();
 		return false;
 	}
 	QTextStream out(&turbulencePropertiesFile);
