@@ -8,21 +8,21 @@
 #pragma once
 #pragma execution_character_set("utf-8")
 #include <QWidget>
-#include "ui_FormPhysicalPropertyParameter.h"
+#include "ui_FormThermo.h"
 #include "FormSolver.h"
 #include "GlobalData.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class FormPhysicalPropertyParameterClass; };
+namespace Ui { class FormThermoClass; };
 QT_END_NAMESPACE
 
-class FormPhysicalPropertyParameter : public QWidget
+class FormThermo : public QWidget
 {
 	Q_OBJECT
 
 public:
-	FormPhysicalPropertyParameter(QWidget *parent = nullptr);
-	~FormPhysicalPropertyParameter();
+	FormThermo(QWidget *parent = nullptr);
+	~FormThermo();
 	
 	bool importParameter();
 	bool exportParameter();
@@ -31,5 +31,5 @@ public slots:
 	void solverChanged(const QString& newText);
 
 private:
-	Ui::FormPhysicalPropertyParameterClass *ui;
+	Ui::FormThermoClass *ui;
 };

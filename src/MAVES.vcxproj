@@ -110,10 +110,11 @@
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
     <QtUic Include="FormModelClip.ui" />
-    <QtUic Include="FormPhysicalPropertyParameter.ui" />
+    <QtUic Include="FormThermo.ui" />
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="FormSolver.ui" />
+    <QtUic Include="FormTransportProperties.ui" />
     <QtUic Include="FormTurbulence.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
@@ -126,10 +127,11 @@
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
     <ClCompile Include="FormModelClip.cpp" />
-    <ClCompile Include="FormPhysicalPropertyParameter.cpp" />
+    <ClCompile Include="FormThermo.cpp" />
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="FormSolver.cpp" />
+    <ClCompile Include="FormTransportProperties.cpp" />
     <ClCompile Include="FormTurbulence.cpp" />
     <ClCompile Include="GlobalData.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -150,11 +152,12 @@
   <ItemGroup>
     <QtMoc Include="FormBoundaryConditionsTabWidget.h" />
     <QtMoc Include="CustomCheckBoxDelegate.h" />
-    <QtMoc Include="FormPhysicalPropertyParameter.h" />
+    <QtMoc Include="FormThermo.h" />
     <QtMoc Include="FormSolver.h" />
     <QtMoc Include="FormTurbulence.h" />
     <QtMoc Include="DialogResultMerge.h" />
     <QtMoc Include="DialogInformationPrompt.h" />
+    <QtMoc Include="FormTransportProperties.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

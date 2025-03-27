@@ -77,7 +77,8 @@ MainWindow::MainWindow(QWidget* parent)
 	formMeshImport = new FormMeshImport(this);
 	formSolver = new FormSolver(this);
 	formTurbulence = new FormTurbulence(this);
-	formPhysicalPropertyParameter = new FormPhysicalPropertyParameter(this);
+	formThermo = new FormThermo(this);
+	formTransportProperties = new FormTransportProperties(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formRun = new FormRun(this);
 	formPostprocessing = new FormPostprocessing(this);
@@ -87,7 +88,8 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formSolver, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formTurbulence, 0, 0, 1, 1);
-	ui->gridLayout_3->addWidget(formPhysicalPropertyParameter, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formThermo, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formTransportProperties, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
@@ -97,7 +99,8 @@ MainWindow::MainWindow(QWidget* parent)
 	formMeshImport->hide();
 	formSolver->hide();
 	formTurbulence->hide();
-	formPhysicalPropertyParameter->hide();
+	formThermo->hide();
+	formTransportProperties->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -179,7 +182,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
 	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
-	connect(formSolver, &FormSolver::labelText_8_Changed, formPhysicalPropertyParameter, &FormPhysicalPropertyParameter::solverChanged);				//求解器改变，物性参数控制面板调整
+	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);												//更新渲染窗口
@@ -232,7 +235,8 @@ void MainWindow::hideAllSubForm()
 	formMeshImport->hide();
 	formSolver->hide();
 	formTurbulence->hide();
-	formPhysicalPropertyParameter->hide();
+	formThermo->hide();
+	formTransportProperties->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -495,7 +499,8 @@ void MainWindow::handleAction10Triggered()
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
 		//formTurbulence->importParameter();
-		//formPhysicalPropertyParameter->importParameter();
+		//formThermo->importParameter();
+		//formTransportProperties->importParameter();
 		formBoundaryConditions->importParameter();
 		formRun->importParameter();
 
@@ -522,8 +527,11 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	else if (previousPanelButton == "湍流") {
 		widget = formTurbulence;
 	}
-	else if (previousPanelButton == "物性参数") {
-		widget = formPhysicalPropertyParameter;
+	else if (previousPanelButton == "热物理特性") {
+		widget = formThermo;
+	}
+	else if (previousPanelButton == "传输特性") {
+		widget = formTransportProperties;
 	}
 	else if (previousPanelButton == "边界条件") {
 		widget = formBoundaryConditions;
@@ -611,11 +619,21 @@ void MainWindow::on_pushButton_6_clicked()
 void MainWindow::on_pushButton_7_clicked()
 {
 	hideAllSubForm();
-	formPhysicalPropertyParameter->show();
+	formThermo->show();
 	ui->tabWidget->setCurrentIndex(0);
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
-	emit panelPushButtonClicked("物性参数");
+	emit panelPushButtonClicked("热物理特性");
+}
+
+void MainWindow::on_pushButton_21_clicked()
+{
+	hideAllSubForm();
+	formTransportProperties->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("传输特性");
 }
 
 void MainWindow::on_pushButton_13_clicked()
@@ -1115,8 +1133,9 @@ void MainWindow::formRun_run()
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	//formSolver->exportParameter();
 	//formTurbulence->exportParameter();
-	//formPhysicalPropertyParameter->exportParameter();
-	////formBoundaryConditions->exportParameter();
+	//formThermo->exportParameter();
+	//formTransportProperties->exportParameter();
+	//formBoundaryConditions->exportParameter();
 	formRun->exportParameter();
 
 	//隐藏开始按钮，显示停止按钮

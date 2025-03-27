@@ -5,12 +5,12 @@
 | Email: mailzengzhiyong@gamil.com                                            |
 \*---------------------------------------------------------------------------*/
 
-#include "FormPhysicalPropertyParameter.h"
+#include "FormThermo.h"
 #include "FormSolver.h"
 
-FormPhysicalPropertyParameter::FormPhysicalPropertyParameter(QWidget *parent)
+FormThermo::FormThermo(QWidget *parent)
 	: QWidget(parent)
-	, ui(new Ui::FormPhysicalPropertyParameterClass())
+	, ui(new Ui::FormThermoClass())
 {
 	ui->setupUi(this);
 
@@ -31,12 +31,12 @@ FormPhysicalPropertyParameter::FormPhysicalPropertyParameter(QWidget *parent)
 	ui->widget_2->hide();
 }
 
-FormPhysicalPropertyParameter::~FormPhysicalPropertyParameter()
+FormThermo::~FormThermo()
 {
 	delete ui;
 }
 
-bool FormPhysicalPropertyParameter::importParameter()
+bool FormThermo::importParameter()
 {
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -176,7 +176,7 @@ bool FormPhysicalPropertyParameter::importParameter()
 	return false;
 }
 
-bool FormPhysicalPropertyParameter::exportParameter()
+bool FormThermo::exportParameter()
 {
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -266,7 +266,7 @@ bool FormPhysicalPropertyParameter::exportParameter()
 	return false;
 }
 
-void FormPhysicalPropertyParameter::solverChanged(const QString& newText)
+void FormThermo::solverChanged(const QString& newText)
 {
 	if (newText == "rhoSimpleFoam") {
 		ui->widget->show();

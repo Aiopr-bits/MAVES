@@ -50,7 +50,8 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
 #include "FormBoundaryConditions.h"
-#include "FormPhysicalPropertyParameter.h"
+#include "FormThermo.h"
+#include "FormTransportProperties.h"
 #include "FormTurbulence.h"
 #include "FormSolver.h"
 #include <QProcess>
@@ -195,7 +196,8 @@ public slots:
 	void on_pushButton_2_clicked();								   														//网格页面
 	void on_pushButton_5_clicked();								    													//求解器页面
 	void on_pushButton_6_clicked();								    													//湍流模型页面
-	void on_pushButton_7_clicked();								    													//物理参数页面
+	void on_pushButton_7_clicked();								    													//热物理特性页面
+	void on_pushButton_21_clicked();								    												//传输特性页面
 	void on_pushButton_13_clicked();								    												//边界条件页面
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
@@ -277,7 +279,8 @@ public:
 	FormMeshImport* formMeshImport;
 	FormSolver* formSolver;
 	FormTurbulence* formTurbulence;
-	FormPhysicalPropertyParameter* formPhysicalPropertyParameter;
+	FormThermo* formThermo;
+	FormTransportProperties* formTransportProperties;
 	FormBoundaryConditions* formBoundaryConditions;
 	FormRun* formRun;
 	FormPostprocessing* formPostprocessing;
