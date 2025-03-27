@@ -60,7 +60,8 @@ MainWindow::MainWindow(QWidget* parent)
 		ui->pushButton, ui->pushButton_2, ui->pushButton_3, ui->pushButton_4, ui->pushButton_5,
 		ui->pushButton_6, ui->pushButton_7, ui->pushButton_8, ui->pushButton_9, ui->pushButton_10,
 		ui->pushButton_11, ui->pushButton_12, ui->pushButton_13, ui->pushButton_14, ui->pushButton_15,
-		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20
+		ui->pushButton_16, ui->pushButton_17, ui->pushButton_18, ui->pushButton_19, ui->pushButton_20,
+		ui->pushButton_21, ui->pushButton_22
 	};
 	for (QPushButton* button : buttons) {
 		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
@@ -76,6 +77,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formMesh = new FormMesh(this);
 	formMeshImport = new FormMeshImport(this);
 	formSolver = new FormSolver(this);
+	formRadiation = new FormRadiation(this);
 	formTurbulence = new FormTurbulence(this);
 	formThermo = new FormThermo(this);
 	formTransportProperties = new FormTransportProperties(this);
@@ -87,6 +89,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formMesh, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formMeshImport, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formSolver, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formRadiation, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formTurbulence, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formThermo, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formTransportProperties, 0, 0, 1, 1);
@@ -98,6 +101,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formMesh->hide();
 	formMeshImport->hide();
 	formSolver->hide();
+	formRadiation->hide();
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
@@ -149,6 +153,26 @@ MainWindow::MainWindow(QWidget* parent)
 	//初始化previousPanelButton	
 	previousPanelButton = "几何";
 
+	//初始化tabWidget控件可见性
+	ui->pushButton_22->hide();	//辐射
+	ui->pushButton_6->hide();	//湍流
+	ui->pushButton_7->hide();	//热力学特性
+	ui->pushButton_21->hide();	//传输特性
+	ui->pushButton_8->hide();	//离散化
+	ui->pushButton_9->hide();	//线性求解器
+	ui->pushButton_10->hide();	//被动标量
+	ui->pushButton_11->hide();	//参考值
+	ui->pushButton_12->hide();	//区域设置
+	ui->pushButton_13->hide();	//边界条件
+	ui->pushButton_14->hide();	//初始条件
+	ui->pushButton_15->hide();	//监视器
+	ui->line_5->hide();
+	ui->pushButton_16->hide();	//求解计算
+	ui->line_4->hide();
+	ui->pushButton_17->hide();	//后处理
+	ui->pushButton_3->hide();	//模型切分
+	ui->pushButton_18->hide();	//计算
+
 	// 工具栏信号处理
 	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);																//信息框
 	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);																//x正向
@@ -182,6 +206,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
 	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
 	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
+	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
 	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
@@ -234,6 +259,7 @@ void MainWindow::hideAllSubForm()
 	formMesh->hide();
 	formMeshImport->hide();
 	formSolver->hide();
+	formRadiation->hide();
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
@@ -498,6 +524,7 @@ void MainWindow::handleAction10Triggered()
 
 		//更新参数配置页面(需补充)
 		formSolver->importParameter();
+		//formRadiation->importParameter();
 		//formTurbulence->importParameter();
 		//formThermo->importParameter();
 		//formTransportProperties->importParameter();
@@ -523,6 +550,9 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	}
 	else if (previousPanelButton == "求解器") {
 		widget = formSolver;
+	}
+	else if (previousPanelButton == "辐射") {
+		widget = formRadiation;
 	}
 	else if (previousPanelButton == "湍流") {
 		widget = formTurbulence;
@@ -604,6 +634,16 @@ void MainWindow::on_pushButton_5_clicked()
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
 	emit panelPushButtonClicked("求解器");
+}
+
+void MainWindow::on_pushButton_22_clicked()
+{
+	hideAllSubForm();
+	formRadiation->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("辐射");
 }
 
 void MainWindow::on_pushButton_6_clicked()
@@ -1123,6 +1163,89 @@ void MainWindow::formMesh_updateFormFinished()
 	handleAction8Triggered();
 }
 
+void MainWindow::formSolver_select(const QString& application)
+{
+	//初始化tabWidget控件可见性
+	ui->pushButton_22->hide();		//辐射
+	ui->pushButton_6->hide();		//湍流
+	ui->pushButton_7->hide();		//热力学特性
+	ui->pushButton_21->hide();		//传输特性
+	ui->pushButton_8->hide();		//离散化
+	ui->pushButton_9->hide();		//线性求解器
+	ui->pushButton_10->hide();		//被动标量
+	ui->pushButton_11->hide();		//参考值
+	ui->pushButton_12->hide();		//区域设置
+	ui->pushButton_13->hide();		//边界条件
+	ui->pushButton_14->hide();		//初始条件
+	ui->pushButton_15->hide();		//监视器
+	ui->line_5->hide();
+	ui->pushButton_16->hide();		//求解计算
+	ui->line_4->hide();
+	ui->pushButton_17->hide();		//后处理
+	ui->pushButton_3->hide();		//模型切分
+	ui->pushButton_18->hide();		//计算
+
+	if (application == "rhoSimpleFoam")
+	{
+		ui->pushButton_6->show();	//湍流
+		ui->pushButton_7->show();	//热力学特性
+		ui->pushButton_8->show();	//离散化
+		ui->pushButton_9->show();	//线性求解器
+		ui->pushButton_10->show();	//被动标量
+		ui->pushButton_11->show();	//参考值
+		ui->pushButton_12->show();	//区域设置
+		ui->pushButton_13->show();	//边界条件
+		ui->pushButton_14->show();	//初始条件
+		ui->pushButton_15->show();	//监视器
+		ui->line_5->show();
+		ui->pushButton_16->show();	//求解计算
+		ui->line_4->show();
+		ui->pushButton_17->show();	//后处理
+		ui->pushButton_3->show();	//模型切分
+		ui->pushButton_18->show();	//计算
+	}
+	else if (application == "buoyantBoussinesqPimpleFoam")
+	{
+		ui->pushButton_22->show();	//辐射
+		ui->pushButton_6->show();	//湍流
+		ui->pushButton_21->show();	//传输特性
+		ui->pushButton_8->show();	//离散化
+		ui->pushButton_9->show();	//线性求解器
+		ui->pushButton_10->show();	//被动标量
+		ui->pushButton_11->show();	//参考值
+		ui->pushButton_12->show();	//区域设置
+		ui->pushButton_13->show();	//边界条件
+		ui->pushButton_14->show();	//初始条件
+		ui->pushButton_15->show();	//监视器
+		ui->line_5->show();
+		ui->pushButton_16->show();	//求解计算
+		ui->line_4->show();
+		ui->pushButton_17->show();	//后处理
+		ui->pushButton_3->show();	//模型切分
+		ui->pushButton_18->show();	//计算
+	}
+	else if (application == "chtMultiRegionFoam")
+	{
+		ui->pushButton_22->show();	//辐射
+		ui->pushButton_6->show();	//湍流
+		ui->pushButton_7->show();	//热力学特性
+		ui->pushButton_8->show();	//离散化
+		ui->pushButton_9->show();	//线性求解器
+		ui->pushButton_10->show();	//被动标量
+		ui->pushButton_11->show();	//参考值
+		ui->pushButton_12->show();	//区域设置
+		ui->pushButton_13->show();	//边界条件
+		ui->pushButton_14->show();	//初始条件
+		ui->pushButton_15->show();	//监视器
+		ui->line_5->show();
+		ui->pushButton_16->show();	//求解计算
+		ui->line_4->show();
+		ui->pushButton_17->show();	//后处理
+		ui->pushButton_3->show();	//模型切分
+		ui->pushButton_18->show();	//计算
+	}
+}
+
 void MainWindow::formRun_run()
 {
 	if (GlobalData::getInstance().getCaseData()->casePath.empty())
@@ -1132,6 +1255,7 @@ void MainWindow::formRun_run()
 	}
 	//保存界面上所有的配置参数，并校验是否符合要求(需补充)
 	//formSolver->exportParameter();
+	//formRadiation->exportParameter();
 	//formTurbulence->exportParameter();
 	//formThermo->exportParameter();
 	//formTransportProperties->exportParameter();

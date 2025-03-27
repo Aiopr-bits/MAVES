@@ -50,6 +50,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
 #include "FormBoundaryConditions.h"
+#include "FormRadiation.h"
 #include "FormThermo.h"
 #include "FormTransportProperties.h"
 #include "FormTurbulence.h"
@@ -195,6 +196,7 @@ public slots:
 	void on_pushButton_4_clicked();								    													//网格导入页面
 	void on_pushButton_2_clicked();								   														//网格页面
 	void on_pushButton_5_clicked();								    													//求解器页面
+	void on_pushButton_22_clicked();																					//辐射
 	void on_pushButton_6_clicked();								    													//湍流模型页面
 	void on_pushButton_7_clicked();								    													//热物理特性页面
 	void on_pushButton_21_clicked();								    												//传输特性页面
@@ -228,6 +230,7 @@ public slots:
 	void formMesh_itemEntered(const QString& text);																		//网格页面Item进入
 	void formMesh_itemExited(const QString& text);																		//网格页面Item退出
 	void formMesh_updateFormFinished();																					//更新界面完成
+	void formSolver_select(const QString& application);																	//求解器选择
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算
 	void formPostprocessing_apply(std::vector<QListView*> listViewBoundaries);											//应用
@@ -278,6 +281,7 @@ public:
 	FormMesh* formMesh;
 	FormMeshImport* formMeshImport;
 	FormSolver* formSolver;
+	FormRadiation* formRadiation;
 	FormTurbulence* formTurbulence;
 	FormThermo* formThermo;
 	FormTransportProperties* formTransportProperties;

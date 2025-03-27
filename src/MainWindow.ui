@@ -264,6 +264,55 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="pushButton_22">
+             <property name="minimumSize">
+              <size>
+               <width>180</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+             </property>
+             <property name="text">
+              <string>辐射</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../res/radiation.png</normaloff>../res/radiation.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="pushButton_6">
              <property name="minimumSize">
               <size>

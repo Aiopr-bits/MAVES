@@ -15,6 +15,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QTextStream>
+#include "DialogInformationPrompt.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormSolverClass; };

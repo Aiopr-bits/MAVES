@@ -269,10 +269,31 @@ void FormSolver::updateListView()
 
 void FormSolver::on_pushButton_5_clicked()
 {
+	if(GlobalData::getInstance().getCaseData()->meshPatchNamesMap.empty())
+	{
+		QMessageBox::warning(this, "错误", "请先导入网格数据");
+		return;
+	}
+
+
 	QModelIndexList selectedIndexes = ui->listView->selectionModel()->selectedIndexes();
 	if (!selectedIndexes.isEmpty()) {
 		QString selectedText = selectedIndexes.first().data().toString();
 		ui->label_8->setText(selectedText);
+
+		if (selectedText == "steadyCompressibleSolver")
+		{
+			selectedText = "rhoSimpleFoam";
+		}
+		else if (selectedText == "transientIncompressibleSolver")
+		{
+			selectedText = "buoyantBoussinesqPimpleFoam";
+		}
+		else if (selectedText == "multiRegionSolver")
+		{
+			selectedText = "chtMultiRegionFoam";
+		}
+
 		GlobalData::getInstance().getCaseData()->solverName = selectedText.toStdString();
 		emit labelText_8_Changed(selectedText);
 	}
