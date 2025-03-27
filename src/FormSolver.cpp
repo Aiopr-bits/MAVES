@@ -271,10 +271,11 @@ void FormSolver::on_pushButton_5_clicked()
 {
 	if(GlobalData::getInstance().getCaseData()->meshPatchNamesMap.empty())
 	{
-		QMessageBox::warning(this, "错误", "请先导入网格数据");
+		//新建一个DialogInformationPrompt窗口并弹出
+		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this,{ "请先导入网格!"}, true);
+		dialogInformationPrompt->exec();
 		return;
 	}
-
 
 	QModelIndexList selectedIndexes = ui->listView->selectionModel()->selectedIndexes();
 	if (!selectedIndexes.isEmpty()) {

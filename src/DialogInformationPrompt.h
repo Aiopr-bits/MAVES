@@ -21,7 +21,7 @@ class DialogInformationPrompt : public QDialog
 	Q_OBJECT
 
 public:
-	DialogInformationPrompt(QWidget *parent = nullptr);
+	DialogInformationPrompt(QWidget* parent = nullptr, const QStringList& texts = QStringList(), bool isRollText = false);
 	~DialogInformationPrompt();
 
 protected:
@@ -31,11 +31,13 @@ protected:
 
 private slots:
 	void updateLabelText();	
+	void on_pushButton_clicked();
 
 public:
 	Ui::DialogInformationPromptClass *ui;
 	QPoint m_mousePosition; 
 	bool m_isMousePressed; 
 	QTimer* m_timer;
-	int m_textIndex; // 当前文本索引
+	QStringList m_texts;	// 文本列表
+	int m_textIndex;		// 当前文本索引
 };

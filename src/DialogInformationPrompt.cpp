@@ -10,13 +10,12 @@
 #include <qmessagebox.h>
 #include <QGraphicsDropShadowEffect>
 
-DialogInformationPrompt::DialogInformationPrompt(QWidget *parent)
+DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QStringList& texts, bool isRollText)
 	: QDialog(parent)
     , m_textIndex(0)
 	, ui(new Ui::DialogInformationPromptClass())
 {
 	ui->setupUi(this);
-	this->resize(300, 270);
 
     //实例阴影shadow
     QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(this);
@@ -31,15 +30,25 @@ DialogInformationPrompt::DialogInformationPrompt(QWidget *parent)
     this->setAttribute(Qt::WA_TranslucentBackground, true);
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
-    // 初始化定时器
-    m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, this, &DialogInformationPrompt::updateLabelText);
-    m_timer->start(500);
+	// 初始化文本
+	if (!texts.isEmpty())
+	{
+		ui->label_2->setText(texts.first());
+		m_texts = texts;
+	}
+
+    // 初始化切换文本定时器
+    if (isRollText)
+    {
+        m_timer = new QTimer(this);
+        connect(m_timer, &QTimer::timeout, this, &DialogInformationPrompt::updateLabelText);
+        m_timer->start(500);
+    }
 }
 
 DialogInformationPrompt::~DialogInformationPrompt()
 {
-	delete ui;
+    delete ui;
 }
 
 void DialogInformationPrompt::mousePressEvent(QMouseEvent* event)
@@ -67,16 +76,14 @@ void DialogInformationPrompt::mouseReleaseEvent(QMouseEvent* event)
     }
 }
 
+void DialogInformationPrompt::on_pushButton_clicked()
+{
+    //释放该窗口内存
+	delete this;
+}
+
 void DialogInformationPrompt::updateLabelText()
 {
-    // 定义要循环的字符串数组
-    static const QStringList texts = {
-        "数据加载中      ",
-        "数据加载中 .    ",
-        "数据加载中 . .  ",
-        "数据加载中 . . ."
-    };
-
-    ui->label_2->setText(texts[m_textIndex]);
-    m_textIndex = (m_textIndex + 1) % texts.size();
+    ui->label_2->setText(m_texts[m_textIndex]);
+    m_textIndex = (m_textIndex + 1) % m_texts.size();
 }
