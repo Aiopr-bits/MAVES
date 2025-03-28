@@ -158,7 +158,7 @@ MainWindow::MainWindow(QWidget* parent)
 	//初始化tabWidget控件可见性
 	ui->pushButton_22->hide();	//辐射
 	ui->pushButton_6->hide();	//湍流
-	ui->pushButton_7->hide();	//热力学特性
+	ui->pushButton_7->hide();	//热
 	ui->pushButton_21->hide();	//传输特性
 	ui->pushButton_8->hide();	//离散化
 	ui->pushButton_9->hide();	//线性求解器
@@ -1173,7 +1173,7 @@ void MainWindow::formSolver_select(const QString& application)
 	//初始化tabWidget控件可见性
 	ui->pushButton_22->hide();		//辐射
 	ui->pushButton_6->hide();		//湍流
-	ui->pushButton_7->hide();		//热力学特性
+	ui->pushButton_7->hide();		//热
 	ui->pushButton_21->hide();		//传输特性
 	ui->pushButton_8->hide();		//离散化
 	ui->pushButton_9->hide();		//线性求解器
@@ -1193,7 +1193,7 @@ void MainWindow::formSolver_select(const QString& application)
 	if (application == "rhoSimpleFoam")
 	{
 		ui->pushButton_6->show();	//湍流
-		ui->pushButton_7->show();	//热力学特性
+		ui->pushButton_7->show();	//热
 		ui->pushButton_8->show();	//离散化
 		ui->pushButton_9->show();	//线性求解器
 		ui->pushButton_10->show();	//被动标量
@@ -1233,7 +1233,7 @@ void MainWindow::formSolver_select(const QString& application)
 	{
 		ui->pushButton_22->show();	//辐射
 		ui->pushButton_6->show();	//湍流
-		ui->pushButton_7->show();	//热力学特性
+		ui->pushButton_7->show();	//热
 		ui->pushButton_8->show();	//离散化
 		ui->pushButton_9->show();	//线性求解器
 		ui->pushButton_10->show();	//被动标量

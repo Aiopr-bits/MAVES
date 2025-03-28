@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1530</width>
-    <height>1500</height>
+    <height>1193</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -132,7 +132,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>1401</height>
+           <height>1094</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -244,6 +244,55 @@ QPushButton:pressed {
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="pushButton_23">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>网格加密</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-hex-meshing.png</normaloff>../res/icon-hex-meshing.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButton_4">
               <property name="minimumSize">
                <size>
@@ -283,6 +332,55 @@ QPushButton:pressed {
               <property name="icon">
                <iconset>
                 <normaloff>../res/icon-import.png</normaloff>../res/icon-import.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_24">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>翼型</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-airfoil.png</normaloff>../res/icon-airfoil.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -349,55 +447,6 @@ QPushButton:pressed {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_22">
-              <property name="minimumSize">
-               <size>
-                <width>180</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>180</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: white;
-    color: black;
-    border: none;
-    text-align: left;
-    padding-left: 50px;
-}
-
-QPushButton:hover {
-    background-color: rgb(242, 242, 242);
-}
-
-QPushButton:pressed {
-    background-color: rgb(232, 232, 232);
-}</string>
-              </property>
-              <property name="text">
-               <string>辐射</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../res/icon-radiation.png</normaloff>../res/icon-radiation.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>35</width>
-                <height>35</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QPushButton" name="pushButton_6">
               <property name="minimumSize">
                <size>
@@ -447,6 +496,202 @@ QPushButton:pressed {
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="pushButton_25">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>动态网格</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-dynamic-mesh.png</normaloff>../res/icon-dynamic-mesh.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_26">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>离散项</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-spray.png</normaloff>../res/icon-spray.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_27">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>燃烧</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-combustion.png</normaloff>../res/icon-combustion.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_22">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>辐射</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-radiation.png</normaloff>../res/icon-radiation.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButton_7">
               <property name="minimumSize">
                <size>
@@ -481,11 +726,60 @@ QPushButton:pressed {
 }</string>
               </property>
               <property name="text">
-               <string>热力学特性</string>
+               <string>热</string>
               </property>
               <property name="icon">
                <iconset>
                 <normaloff>../res/icon-thermo.png</normaloff>../res/icon-thermo.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>35</width>
+                <height>35</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_28">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    padding-left: 50px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+QPushButton:pressed {
+    background-color: rgb(232, 232, 232);
+}</string>
+              </property>
+              <property name="text">
+               <string>弹性模量</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../res/icon-srf.png</normaloff>../res/icon-srf.png</iconset>
               </property>
               <property name="iconSize">
                <size>
