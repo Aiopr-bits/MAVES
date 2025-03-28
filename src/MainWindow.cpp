@@ -150,7 +150,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->chartView->setRenderHint(QPainter::Antialiasing);
 
 	// 初始化残差图刷新定时器
-	chartUpdateTimer->start(500);
+	chartUpdateTimer->start(100);
 
 	//初始化previousPanelButton	
 	previousPanelButton = "几何";
