@@ -122,8 +122,10 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->pushButton->setStyleSheet("QPushButton { background-color: rgb(232, 232, 232); border: none; text-align: left; padding-left: 50px; }");
 	lastClickedButton = ui->pushButton;
 
-	//对信息输出框滚动条进行polish抛光
+	//对滚动条进行polish抛光
 	ui->textBrowser->verticalScrollBar()->style()->polish(ui->textBrowser->verticalScrollBar());
+	ui->scrollArea->verticalScrollBar()->style()->polish(ui->scrollArea->verticalScrollBar());
+	ui->scrollArea->horizontalScrollBar()->style()->polish(ui->scrollArea->horizontalScrollBar());
 
 	// 初始化图表
 	axisX->setTitleText("迭代次数");
