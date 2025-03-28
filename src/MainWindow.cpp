@@ -156,9 +156,15 @@ MainWindow::MainWindow(QWidget* parent)
 	previousPanelButton = "几何";
 
 	//初始化tabWidget控件可见性
+	ui->pushButton_23->hide();	//网格加密
+	ui->pushButton_24->hide();	//翼型
 	ui->pushButton_22->hide();	//辐射
 	ui->pushButton_6->hide();	//湍流
+	ui->pushButton_25->hide();	//动态网格
+	ui->pushButton_26->hide();	//离散项
+	ui->pushButton_27->hide();	//燃烧
 	ui->pushButton_7->hide();	//热
+	ui->pushButton_28->hide();	//弹性模量
 	ui->pushButton_21->hide();	//传输特性
 	ui->pushButton_8->hide();	//离散化
 	ui->pushButton_9->hide();	//线性求解器
@@ -1171,24 +1177,30 @@ void MainWindow::formMesh_updateFormFinished()
 void MainWindow::formSolver_select(const QString& application)
 {
 	//初始化tabWidget控件可见性
-	ui->pushButton_22->hide();		//辐射
-	ui->pushButton_6->hide();		//湍流
-	ui->pushButton_7->hide();		//热
-	ui->pushButton_21->hide();		//传输特性
-	ui->pushButton_8->hide();		//离散化
-	ui->pushButton_9->hide();		//线性求解器
-	ui->pushButton_10->hide();		//被动标量
-	ui->pushButton_11->hide();		//参考值
-	ui->pushButton_12->hide();		//区域设置
-	ui->pushButton_13->hide();		//边界条件
-	ui->pushButton_14->hide();		//初始条件
-	ui->pushButton_15->hide();		//监视器
+	ui->pushButton_23->hide();	//网格加密
+	ui->pushButton_24->hide();	//翼型
+	ui->pushButton_22->hide();	//辐射
+	ui->pushButton_6->hide();	//湍流
+	ui->pushButton_25->hide();	//动态网格
+	ui->pushButton_26->hide();	//离散项
+	ui->pushButton_27->hide();	//燃烧
+	ui->pushButton_7->hide();	//热
+	ui->pushButton_28->hide();	//弹性模量
+	ui->pushButton_21->hide();	//传输特性
+	ui->pushButton_8->hide();	//离散化
+	ui->pushButton_9->hide();	//线性求解器
+	ui->pushButton_10->hide();	//被动标量
+	ui->pushButton_11->hide();	//参考值
+	ui->pushButton_12->hide();	//区域设置
+	ui->pushButton_13->hide();	//边界条件
+	ui->pushButton_14->hide();	//初始条件
+	ui->pushButton_15->hide();	//监视器
 	ui->line_5->hide();
-	ui->pushButton_16->hide();		//求解计算
+	ui->pushButton_16->hide();	//求解计算
 	ui->line_4->hide();
-	ui->pushButton_17->hide();		//后处理
-	ui->pushButton_3->hide();		//模型切分
-	ui->pushButton_18->hide();		//计算
+	ui->pushButton_17->hide();	//后处理
+	ui->pushButton_3->hide();	//模型切分
+	ui->pushButton_18->hide();	//计算
 
 	if (application == "rhoSimpleFoam")
 	{
