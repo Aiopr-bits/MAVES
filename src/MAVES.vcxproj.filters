@@ -56,9 +56,6 @@
     <QtUic Include="FormBoundaryConditionsTabWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="FormPhysicalPropertyParameter.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="FormSolver.ui">
       <Filter>Form Files</Filter>
     </QtUic>
@@ -69,6 +66,27 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="DialogInformationPrompt.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FormRadiation.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FormThermo.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FormTransportProperties.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CustomItemWidgetMeshRegions2.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CustomItemWidgetMeshRegions1.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CustomItemWidgetMeshBoundaries2.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CustomItemWidgetMeshBoundaries1.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -106,9 +124,6 @@
     <ClCompile Include="FormBoundaryConditionsTabWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FormPhysicalPropertyParameter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FormSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -119,6 +134,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogInformationPrompt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormRadiation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormThermo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormTransportProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomItemWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,9 +189,6 @@
     <QtMoc Include="CustomCheckBoxDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="FormPhysicalPropertyParameter.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="FormSolver.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -175,6 +199,18 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DialogInformationPrompt.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormThermo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormTransportProperties.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormRadiation.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomItemWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

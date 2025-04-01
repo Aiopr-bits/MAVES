@@ -102,6 +102,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtUic Include="CustomItemWidgetMeshBoundaries1.ui" />
+    <QtUic Include="CustomItemWidgetMeshBoundaries2.ui" />
+    <QtUic Include="CustomItemWidgetMeshRegions1.ui" />
+    <QtUic Include="CustomItemWidgetMeshRegions2.ui" />
     <QtUic Include="DialogInformationPrompt.ui" />
     <QtUic Include="DialogResultMerge.ui" />
     <QtUic Include="FormBoundaryConditions.ui" />
@@ -120,6 +124,7 @@
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="WorkSpaceWindow.ui" />
     <QtMoc Include="WorkSpaceWindow.h" />
+    <ClCompile Include="CustomItemWidget.cpp" />
     <ClCompile Include="DialogInformationPrompt.cpp" />
     <ClCompile Include="DialogResultMerge.cpp" />
     <ClCompile Include="FormBoundaryConditions.cpp" />
@@ -161,6 +166,7 @@
     <QtMoc Include="DialogInformationPrompt.h" />
     <QtMoc Include="FormTransportProperties.h" />
     <QtMoc Include="FormRadiation.h" />
+    <QtMoc Include="CustomItemWidget.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
