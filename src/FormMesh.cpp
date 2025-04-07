@@ -593,4 +593,50 @@ void FormMesh::on_pushButton_3_clicked()
 	ui->listWidget_2->addItem(item);
 	auto widget = new CustomItemWidget(1, this, patchName1, patchName2, patchName1 + " in " + regionName1, patchName2 + " in " + regionName2);
 	ui->listWidget_2->setItemWidget(item, widget);
+
+	//点击widget的ui_ItemWidgetMeshBoundaries2的pushButton，执行on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked
+	connect(widget->ui_ItemWidgetMeshBoundaries2->pushButton, &QPushButton::clicked, this, [=]() {
+		on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(widget);
+		});
+}
+
+void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidget* widget)
+{
+	// 获取与widget绑定的item
+	QListWidgetItem* item = nullptr;
+	for (int i = 0; i < ui->listWidget_2->count(); ++i) {
+		QListWidgetItem* itemTemp = ui->listWidget_2->item(i);
+		if (ui->listWidget_2->itemWidget(itemTemp) == widget) {
+			item = itemTemp;
+			break;
+		}
+	}
+
+	if (item == nullptr) {
+		return;
+	}
+
+	// 获取链接后的item中的信息
+	QString text1 = widget->text3;
+	QString text2 = widget->text4;
+	int index1 = text1.indexOf(" in ");
+	int index2 = text2.indexOf(" in ");
+	QString regionName1 = text1.mid(index1 + 4);
+	QString regionName2 = text2.mid(index2 + 4);
+	QString patchName1 = text1.left(index1);
+	QString patchName2 = text2.left(index2);
+
+	// 移除链接后的item
+	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(item));
+
+	// 添加分解后的两个item
+	auto item1 = new QListWidgetItem(ui->listWidget_2);
+	ui->listWidget_2->addItem(item1);
+	auto widget1 = new CustomItemWidget(0, this, patchName1, patchName1 + " in " + regionName1);
+	ui->listWidget_2->setItemWidget(item1, widget1);
+
+	auto item2 = new QListWidgetItem(ui->listWidget_2);
+	ui->listWidget_2->addItem(item2);
+	auto widget2 = new CustomItemWidget(0, this, patchName2, patchName2 + " in " + regionName2);
+	ui->listWidget_2->setItemWidget(item2, widget2);
 }
