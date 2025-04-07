@@ -1085,7 +1085,7 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 		formMesh->updateForm(isRender);
 
 		//网格导入成功,初始化参数配置页面(需补充)
-		formBoundaryConditions->onMeshImported();
+		//formBoundaryConditions->onMeshImported();
 	}
 
 	render->ResetCamera();
@@ -1098,7 +1098,7 @@ void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
 	render->RemoveAllViewProps();
 
 	//获取region名称
-	QStandardItemModel* model = qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model());
+	QStandardItemModel* model /*= qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model())*/;
 	QStringList items;
 	for (int i = 0; i < model->rowCount(); ++i) {
 		items << model->item(i)->text();

@@ -91,7 +91,7 @@ void FormPostprocessing::updateForm()
 {
 	std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
 	getNephogramPatchData(casePath);
-	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap = GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
 
 	this->ui->comboBox->clear();
 	this->ui->comboBox_2->clear();
@@ -113,7 +113,7 @@ void FormPostprocessing::updateForm()
 
 	// 遍历 meshPatchNamesMap 并将 key 值添加到 listView 中
 	QIcon regionIcon("..\\res\\region.png");
-	for (const auto& pair : meshPatchNamesMap)
+	for (const auto& pair : patchType)
 	{
 		QString actorName = QString::fromStdString(pair.first);
 		QStandardItem* item = new QStandardItem(actorName);
@@ -131,10 +131,16 @@ void FormPostprocessing::updateForm()
 	ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
 
 	// 将数据复制到 vector 并反转，以模拟逆序遍历
-	std::vector<std::pair<std::string, std::vector<std::string>>> reversedMeshPatch;
-	reversedMeshPatch.reserve(meshPatchNamesMap.size());
-	for (const auto& kv : meshPatchNamesMap) {
-		reversedMeshPatch.push_back(kv);
+	std::vector<std::pair<std::string, std::vector<std::pair<std::string, std::string>>>> reversedMeshPatch;
+	reversedMeshPatch.reserve(patchType.size());
+	for (const auto& kv : patchType)
+	{
+		std::vector<std::pair<std::string, std::string>> patchNames;
+		for (const auto& patch : kv.second)
+		{
+			patchNames.push_back(std::make_pair(patch.first, patch.second));
+		}
+		reversedMeshPatch.push_back(std::make_pair(kv.first, patchNames));
 	}
 	std::reverse(reversedMeshPatch.begin(), reversedMeshPatch.end());
 
@@ -148,7 +154,12 @@ void FormPostprocessing::updateForm()
 	// 创建 patch 的 listView
 	for (const auto& kv : reversedMeshPatch)
 	{
-		QListView* listView = createBoundariesListView(kv.first, kv.second);
+		std::vector<std::string> patchNames;
+		for (const auto& patch : kv.second)
+		{
+			patchNames.push_back(patch.first);
+		}
+		QListView* listView = createBoundariesListView(kv.first, patchNames);
 		ui->verticalLayout->insertWidget(1, listView);
 		listViewBoundaries.push_back(listView);
 	}
@@ -175,9 +186,9 @@ void FormPostprocessing::split(const std::string& s, char delimiter, std::vector
 	}
 }
 
-std::unordered_map<std::string, std::vector<std::string>> FormPostprocessing::analysismeshPatchNames(const std::vector<std::string>& meshPatchNames)
+std::unordered_map<std::string, unordered_map<std::string, std::string>> FormPostprocessing::analysismeshPatchNames(const std::vector<std::string>& meshPatchNames)
 {
-	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap;
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType;
 	for (const auto& name : meshPatchNames)
 	{
 		std::vector<std::string> tokens;
@@ -196,22 +207,22 @@ std::unordered_map<std::string, std::vector<std::string>> FormPostprocessing::an
 			patch = tokens[tokens.size() - 1];
 		}
 
-		meshPatchNamesMap[region].push_back(patch);
+		patchType[region][patch] = "";
 	}
 
 	//将key==default的元素放到第一个
-	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMapTemp;
-	for (const auto& item : meshPatchNamesMap) {
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchTypeTemp;
+	for (const auto& item : patchType) {
 		if (item.first == "default") {
-			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.begin(), item);
+			patchTypeTemp.insert(patchTypeTemp.begin(), item);
 		}
 		else {
-			meshPatchNamesMapTemp.insert(meshPatchNamesMapTemp.end(), item);
+			patchTypeTemp.insert(patchTypeTemp.end(), item);
 		}
 	}
-	meshPatchNamesMap = meshPatchNamesMapTemp;
+	patchType = patchTypeTemp;
 
-	return meshPatchNamesMap;
+	return patchType;
 }
 
 QListView* FormPostprocessing::createBoundariesListView(std::string regionName, std::vector<std::string> patchNames)
@@ -331,8 +342,8 @@ void FormPostprocessing::getMeshPatchData(const std::string& casePath)
 		meshPatchNames.push_back(std::string(currentPatchName));
 	}
 
-	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap = analysismeshPatchNames(meshPatchNames);
-	GlobalData::getInstance().getCaseData()->meshPatchNamesMap = meshPatchNamesMap;
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = analysismeshPatchNames(meshPatchNames);
+	GlobalData::getInstance().getCaseData()->patchType = patchType;
 }
 
 void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
@@ -370,14 +381,15 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 	double lastTime = timeSteps.back();
 	reader->SetTimeValue(lastTime);
 
-	auto meshPatchNamesMap = GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
-	if (meshPatchNamesMap.size() > 1) {
+	//auto meshPatchNamesMap = GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+	if (patchType.size() > 1) {
 		// 多域情况下，对各子域分别进行读取并记录其标量并集
 		fieldsScalarRange.clear();
 		fieldName.clear();
 		std::unordered_set<std::string> fieldNameSet;
 
-		for (const auto& kv : meshPatchNamesMap) {
+		for (const auto& kv : patchType) {
 			vtkSmartPointer<vtkOpenFOAMReader> subdomainReader = vtkSmartPointer<vtkOpenFOAMReader>::New();
 			subdomainReader->SetFileName(casePath.c_str());
 			subdomainReader->SetCreateCellToPoint(1);
@@ -387,7 +399,7 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 
 			subdomainReader->DisableAllPatchArrays();
 			for (const auto& patch : kv.second) {
-				std::string patchPath = "/" + kv.first + "/" + patch;
+				std::string patchPath = "/" + kv.first + "/" + patch.first;
 				subdomainReader->SetPatchArrayStatus(patchPath.c_str(), 1);
 			}
 			subdomainReader->Update();
@@ -426,17 +438,17 @@ void FormPostprocessing::getNephogramPatchData(const std::string& casePath)
 	} else {
 		// 单域情况
 		reader->DisableAllPatchArrays();
-		if (meshPatchNamesMap.size() > 1) {//多域情况
-			for (const auto& kv : meshPatchNamesMap) {
+		if (patchType.size() > 1) {//多域情况
+			for (const auto& kv : patchType) {
 				for (const auto& patch : kv.second) {
-					if (kv.first != "default"&& patch=="internalMesh") {
-						std::string patchName = "/" + kv.first + "/" + patch;
+					if (kv.first != "default"&& patch.first == "internalMesh") {
+						std::string patchName = "/" + kv.first + "/" + patch.first;
 						reader->SetPatchArrayStatus(patchName.c_str(), 1);
 					}
 				}
 			}
 		}
-		else if (meshPatchNamesMap.size() == 1) {
+		else if (patchType.size() == 1) {
 			reader->SetPatchArrayStatus("internalMesh", 1);
 		}
 		reader->Update();

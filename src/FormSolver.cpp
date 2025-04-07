@@ -276,7 +276,7 @@ void FormSolver::updateListView()
 
 void FormSolver::on_pushButton_5_clicked()
 {
-	if(GlobalData::getInstance().getCaseData()->meshPatchNamesMap.empty())
+	if(GlobalData::getInstance().getCaseData()->patchType.empty())
 	{
 		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "信息提示", { "请先导入网格!" });
 		dialogInformationPrompt->exec();

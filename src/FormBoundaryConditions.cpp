@@ -44,16 +44,16 @@ void FormBoundaryConditions::initListView()
 	listViewModel->clear();
 	patchName.clear();
 
-	std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap = GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
-	for (const auto& pair : meshPatchNamesMap) {
-		for (const auto& patch : pair.second) {
-			if (patch != "internalMesh")
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+	for (const auto& regions : patchType) {
+		for (const auto& patchname : regions.second) {
+			if (patchname.first != "internalMesh")
 			{
-				if(pair.first!="default")
-					patchName.push_back(QString::fromStdString(pair.first + "/" + patch));
+				if (regions.first != "default")
+					patchName.push_back(QString::fromStdString(regions.first + "/" + patchname.first));
 				else
-					patchName.push_back(QString::fromStdString(patch));
-			}		
+					patchName.push_back(QString::fromStdString(patchname.first));
+			}
 		}
 	}
 

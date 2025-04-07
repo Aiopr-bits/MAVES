@@ -65,7 +65,8 @@ public:
 		char delimiter, 
 		std::vector<std::string>& tokens);
 
-	std::unordered_map<std::string, std::vector<std::string>>		//解析网格patch名称
+	std::unordered_map<std::string,									//解析网格patch名称
+		unordered_map<std::string, std::string>>
 		analysismeshPatchNames
 		(const std::vector<std::string>& meshPatchNames);
 

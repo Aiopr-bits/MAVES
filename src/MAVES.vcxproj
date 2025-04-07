@@ -85,7 +85,7 @@
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -106,6 +106,7 @@
     <QtUic Include="CustomItemWidgetMeshBoundaries2.ui" />
     <QtUic Include="CustomItemWidgetMeshRegions1.ui" />
     <QtUic Include="CustomItemWidgetMeshRegions2.ui" />
+    <QtUic Include="CustomItemWidgetMeshZones.ui" />
     <QtUic Include="DialogInformationPrompt.ui" />
     <QtUic Include="DialogResultMerge.ui" />
     <QtUic Include="FormBoundaryConditions.ui" />

@@ -17,6 +17,26 @@
 #include <QSequentialAnimationGroup>
 #include <vtkOpenFOAMReader.h>
 #include <sstream>
+#include <vtkCompositeDataSet.h>
+#include <vtkMultiBlockDataSet.h>
+#include <vtkInformation.h>
+#include "CustomItemWidget.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+#include <algorithm>
+#include <cctype>
+
+// 如果是 C++14，启用 experimental/filesystem
+#if __cplusplus < 201703L
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormMeshClass; };
@@ -30,19 +50,31 @@ public:
     FormMesh(QWidget* parent = nullptr);
     ~FormMesh();
 
+	void getCellZoneNames(const std::string& casePath); 								//获取cell zone名称
+    void getPatchNames(const std::string& casePath); 								    //获取网格patch数据
+	void getPatchTypes(const std::string& casePath); 								    //获取网格patch类型
+
+public slots:
+    void resizeEvent(QResizeEvent* event);
+    void on_tabWidget_currentChanged(int index);
+    void updateForm(bool isRender);
+    void onSelectionChanged();
+
+public:
+    Ui::FormMeshClass* ui;
+    int previousIndex;
+
+     //以下可能删除
 	QListView* createBoundariesListView(std::string regionName,
         std::vector<std::string> patchNames);
 
     void split(const std::string& s, char delimiter,
         std::vector<std::string>& tokens);
 
-    std::unordered_map<std::string, std::vector<std::string>> 
+    std::unordered_map<std::string, unordered_map<std::string, std::string>>
         analysismeshPatchNames(const std::vector<std::string>& meshPatchNames);
 
-    void getMeshPatchData(const std::string& casePath); 								//获取网格patch数据
-
 public slots:
-    void updateForm(bool isRender);
     void onListViewClicked(const QModelIndex& index);
     void on_pushButton_clicked();
     void onItemEntered(const QString& text);
@@ -60,7 +92,6 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 public:
-    Ui::FormMeshClass* ui;
     QStandardItemModel* listViewModel;
     QModelIndex lastIndex;
 	std::vector<QListView*> listViewBoundaries;
