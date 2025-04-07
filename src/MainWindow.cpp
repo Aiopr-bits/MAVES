@@ -1092,35 +1092,37 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 	renderWindow->Render();
 }
 
-void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
+void MainWindow::formMesh_apply()
 {
 	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
 
-	//获取region名称
-	QStandardItemModel* model /*= qobject_cast<QStandardItemModel*>(formMesh->ui->listView->model())*/;
-	QStringList items;
-	for (int i = 0; i < model->rowCount(); ++i) {
-		items << model->item(i)->text();
-	}
-
-	// 遍历 listViewModel 并根据选中状态添加到
+	// 获取patchGroup
 	std::vector<std::string> patchGroup;
-	for (int i = listViewBoundaries.size() - 1; i >= 0; --i) {
-		auto* model = qobject_cast<QStandardItemModel*>(listViewBoundaries[i]->model());
-		bool isDefault = (items[items.size() - i - 1] == "default");
+	QList<QListWidgetItem*> selectedItems = formMesh->ui->listWidget_2->selectedItems();
+	for (const auto& item : selectedItems)
+	{
+		CustomItemWidget* widget = qobject_cast<CustomItemWidget*>(formMesh->ui->listWidget_2->itemWidget(item));
+		if (widget)
+		{
+			QString text = widget->text2;
+			QString regionName, patchName;
 
-		for (int j = 0; j < model->rowCount(); ++j) {
-			QStandardItem* item = model->item(j);
-			if (!item || item->checkState() != Qt::Checked) continue;
+			int index = text.indexOf(" in ");
+			if (index != -1)
+			{
+				regionName = text.mid(index + 4);
+				patchName = text.left(index);
 
-			const std::string text = item->text().toStdString();
-			if (isDefault) {
-				patchGroup.push_back((text == "internalMesh") ? text : "patch/" + text);
-			}
-			else {
-				std::string prefix = "/" + items[items.size() - i - 1].toStdString() + "/";
-				patchGroup.push_back(prefix + ((text == "internalMesh") ? text : "patch/" + text));
+				if (regionName == "default")
+				{
+					patchGroup.push_back((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString());
+				}
+				else
+				{
+					std::string prefix = "/" + regionName.toStdString() + "/";
+					patchGroup.push_back(prefix + ((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString()));
+				}
 			}
 		}
 	}
@@ -1132,7 +1134,6 @@ void MainWindow::formMesh_apply(std::vector<QListView*> listViewBoundaries)
 		render->AddActor(meshPatchActor);
 	}
 	renderWindow->Render();
-
 }
 
 void MainWindow::formMesh_itemEntered(const QString& text)
@@ -1172,6 +1173,9 @@ void MainWindow::formMesh_updateFormFinished()
 
 	formMesh->on_pushButton_clicked();
 	handleAction8Triggered();
+
+	for (int i = 0; i < formMesh->ui->listWidget_2->count(); ++i) 
+		formMesh->ui->listWidget_2->item(i)->setSelected(false);
 }
 
 void MainWindow::formSolver_select(const QString& application)

@@ -47,11 +47,20 @@ FormMesh::~FormMesh()
 
 void FormMesh::onSelectionChanged()
 {
+	//链接公共面按钮
 	if (ui->listWidget_2->selectedItems().size() == 2) {
 		ui->pushButton_3->show();
 	}
 	else {
 		ui->pushButton_3->hide();
+	}
+
+	//应用
+	if (ui->listWidget_2->selectedItems().size() >0) {
+		ui->pushButton->show();
+	}
+	else {
+		ui->pushButton->hide();
 	}
 }
 
@@ -627,6 +636,7 @@ void FormMesh::updateForm(bool isRender)
 	ui->listWidget_4->setFixedHeight(totalHeight);
 
 	if (isRender) {
+		for (int i = 0; i < ui->listWidget_2->count(); ++i)	ui->listWidget_2->item(i)->setSelected(true);
 		on_pushButton_clicked();
 		updateFormFinished();
 	}
@@ -689,7 +699,7 @@ void FormMesh::onListViewClicked(const QModelIndex& index)
 
 void FormMesh::on_pushButton_clicked()
 {
-	//emit apply(listViewBoundaries);
+	emit apply();
 }
 
 void FormMesh::onItemEntered(const QString& text)

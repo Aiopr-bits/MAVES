@@ -59,6 +59,10 @@ public slots:
     void on_tabWidget_currentChanged(int index);
     void updateForm(bool isRender);
     void onSelectionChanged();
+	void on_pushButton_clicked();
+
+signals:
+	void apply();                                                                        //应用
 
 public:
     Ui::FormMeshClass* ui;
@@ -76,13 +80,12 @@ public:
 
 public slots:
     void onListViewClicked(const QModelIndex& index);
-    void on_pushButton_clicked();
     void onItemEntered(const QString& text);
     void onItemExited(const QString& text);
     void onToggleRegionSecondAnimation();
 
 signals:
-    void apply(std::vector<QListView*> listViewBoundaries);
+    //void apply(std::vector<QListView*> listViewBoundaries);
 	void itemEntered(const QString& text);
 	void itemExited(const QString& text);
     void toggleRegionSecondAnimation();
