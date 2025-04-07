@@ -211,8 +211,6 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);														//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);													//导入网格
 	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
-	connect(formMesh, &FormMesh::itemEntered, this, &MainWindow::formMesh_itemEntered);																	//网格页面Item进入
-	connect(formMesh, &FormMesh::itemExited, this, &MainWindow::formMesh_itemExited);																	//网格页面Item退出
 	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
 	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
@@ -1134,32 +1132,6 @@ void MainWindow::formMesh_apply()
 		render->AddActor(meshPatchActor);
 	}
 	renderWindow->Render();
-}
-
-void MainWindow::formMesh_itemEntered(const QString& text)
-{
-	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	//// 将 QString 转换为 std::string
-	//std::string key = text.toStdString();
-	//auto actorIt = meshPatchActors.find(key);
-	//if (actorIt != meshPatchActors.end())
-	//{
-	//	actorIt->second->GetProperty()->SetColor(204.0 / 255.0, 103.0 / 255.0, 103.0 / 255.0);
-	//	renderWindow->Render();
-	//}
-}
-
-void MainWindow::formMesh_itemExited(const QString& text)
-{
-	//const auto& meshPatchActors = GlobalData::getInstance().getCaseData()->meshPatchActors;
-	//// 将 QString 转换为 std::string
-	//std::string key = text.toStdString();
-	//auto actorIt = meshPatchActors.find(key);
-	//if (actorIt != meshPatchActors.end())
-	//{
-	//	actorIt->second->GetProperty()->SetColor(0.0, 221.0 / 255.0, 221.0 / 255.0);
-	//	renderWindow->Render();
-	//}
 }
 
 void MainWindow::formMesh_updateFormFinished()
