@@ -594,4 +594,3 @@ void FormMesh::on_pushButton_3_clicked()
 	auto widget = new CustomItemWidget(1, this, patchName1, patchName2, patchName1 + " in " + regionName1, patchName2 + " in " + regionName2);
 	ui->listWidget_2->setItemWidget(item, widget);
 }
-

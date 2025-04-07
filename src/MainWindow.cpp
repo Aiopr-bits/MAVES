@@ -1103,23 +1103,30 @@ void MainWindow::formMesh_apply()
 		CustomItemWidget* widget = qobject_cast<CustomItemWidget*>(formMesh->ui->listWidget_2->itemWidget(item));
 		if (widget)
 		{
-			QString text = widget->text2;
-			QString regionName, patchName;
+			std::vector<QString> textList;
+			textList.push_back(widget->text1);
+			textList.push_back(widget->text2);
+			textList.push_back(widget->text3);
+			textList.push_back(widget->text4);
 
-			int index = text.indexOf(" in ");
-			if (index != -1)
+			for (auto& str : textList)
 			{
-				regionName = text.mid(index + 4);
-				patchName = text.left(index);
+				QString regionName, patchName;
+				int index = str.indexOf(" in ");
+				if (index != -1)
+				{
+					regionName = str.mid(index + 4);
+					patchName = str.left(index);
 
-				if (regionName == "default")
-				{
-					patchGroup.push_back((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString());
-				}
-				else
-				{
-					std::string prefix = "/" + regionName.toStdString() + "/";
-					patchGroup.push_back(prefix + ((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString()));
+					if (regionName == "default")
+					{
+						patchGroup.push_back((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString());
+					}
+					else
+					{
+						std::string prefix = "/" + regionName.toStdString() + "/";
+						patchGroup.push_back(prefix + ((patchName == "internalMesh") ? patchName.toStdString() : "patch/" + patchName.toStdString()));
+					}
 				}
 			}
 		}
