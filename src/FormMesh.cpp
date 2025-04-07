@@ -38,20 +38,35 @@ FormMesh::~FormMesh()
 
 void FormMesh::onSelectionChanged()
 {
-	//链接公共面按钮
-	if (ui->listWidget_2->selectedItems().size() == 2) {
-		ui->pushButton_3->show();
-	}
-	else {
-		ui->pushButton_3->hide();
-	}
-
 	//应用
-	if (ui->listWidget_2->selectedItems().size() >0) {
+	if (ui->listWidget_2->selectedItems().size() > 0) {
 		ui->pushButton->show();
 	}
 	else {
 		ui->pushButton->hide();
+	}
+
+	//链接公共面按钮
+	if (ui->listWidget_2->selectedItems().size() == 2) {
+		QList<QListWidgetItem*> selectedItems = ui->listWidget_2->selectedItems();
+		CustomItemWidget* widget1 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[0]));
+		CustomItemWidget* widget2 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[1]));
+
+		QString text1 = widget1->text2;
+		QString text2 = widget2->text2;
+
+		int index1 = text1.indexOf(" in ");
+		int index2 = text2.indexOf(" in ");
+		QString regionName1 = text1.mid(index1 + 4);
+		QString regionName2 = text2.mid(index2 + 4);
+
+		if (regionName1 != regionName2 && regionName1 != "default" && regionName2 != "default")
+		{
+			ui->pushButton_3->show();
+		}	
+	}
+	else {
+		ui->pushButton_3->hide();
 	}
 }
 
@@ -551,3 +566,32 @@ void FormMesh::on_pushButton_clicked()
 {
 	emit apply();
 }
+
+void FormMesh::on_pushButton_3_clicked()
+{
+	// 获取选中的两个区域
+	QList<QListWidgetItem*> selectedItems = ui->listWidget_2->selectedItems();
+	if (selectedItems.size() != 2) {
+		return;
+	}
+	CustomItemWidget* widget1 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[0]));
+	CustomItemWidget* widget2 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[1]));
+	QString text1 = widget1->text2;
+	QString text2 = widget2->text2;
+	int index1 = text1.indexOf(" in ");
+	int index2 = text2.indexOf(" in ");
+	QString regionName1 = text1.mid(index1 + 4);
+	QString regionName2 = text2.mid(index2 + 4);
+	QString patchName1 = text1.left(index1);
+	QString patchName2 = text2.left(index2);
+
+	// 移除选中的两个item
+	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(selectedItems[0]));
+	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(selectedItems[1]));
+
+	auto item = new QListWidgetItem(ui->listWidget_2);
+	ui->listWidget_2->addItem(item);
+	auto widget = new CustomItemWidget(1, this, patchName1, patchName2, patchName1 + " in " + regionName1, patchName2 + " in " + regionName2);
+	ui->listWidget_2->setItemWidget(item, widget);
+}
+

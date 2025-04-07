@@ -65,7 +65,8 @@ public slots:
     void on_tabWidget_currentChanged(int index);
     void updateForm(bool isRender);
     void onSelectionChanged();
-	void on_pushButton_clicked();
+	void on_pushButton_clicked();                                                       //应用
+	void on_pushButton_3_clicked(); 									                //链接公共面按钮
 
 signals:
 	void apply();                                                                       //应用

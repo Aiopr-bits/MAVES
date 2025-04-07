@@ -10,7 +10,7 @@ CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QStrin
     , lineEdit(nullptr)
     , editing(false)
 {
-    initializeUI(styleIndex, text, text2);
+	initializeUI(styleIndex, text, text2, text3, text4);
 }
 
 CustomItemWidget::~CustomItemWidget()
