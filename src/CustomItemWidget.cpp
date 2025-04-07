@@ -1,7 +1,14 @@
 ﻿#include "CustomItemWidget.h"
 
-CustomItemWidget::CustomItemWidget(int styleIndex, const QString& text, const QString& text2, QWidget* parent)
-    : QWidget(parent), ui_ItemWidgetMeshBoundaries1(nullptr), ui_ItemWidgetMeshBoundaries2(nullptr), ui_ItemWidgetMeshRegions1(nullptr), ui_ItemWidgetMeshRegions2(nullptr), lineEdit(nullptr), editing(false)
+CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QString& text, const QString& text2, const QString& text3, const QString& text4)
+    : QWidget(parent)
+    , ui_ItemWidgetMeshBoundaries1(nullptr)
+    , ui_ItemWidgetMeshBoundaries2(nullptr)
+    , ui_ItemWidgetMeshRegions1(nullptr)
+    , ui_ItemWidgetMeshRegions2(nullptr)
+	, ui_ItemWidgetMeshZones(nullptr)
+    , lineEdit(nullptr)
+    , editing(false)
 {
     initializeUI(styleIndex, text, text2);
 }
@@ -12,14 +19,19 @@ CustomItemWidget::~CustomItemWidget()
     delete ui_ItemWidgetMeshBoundaries2;
     delete ui_ItemWidgetMeshRegions1;
     delete ui_ItemWidgetMeshRegions2;
+	delete ui_ItemWidgetMeshZones;
 }
 
-void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const QString& text2)
+void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const QString& text2, const QString& text3, const QString& text4)
 {
     if (styleIndex == 0) {
         ui_ItemWidgetMeshBoundaries1 = new Ui::CustomItemWidgetMeshBoundaries1Class();
         ui_ItemWidgetMeshBoundaries1->setupUi(this);
         ui_ItemWidgetMeshBoundaries1->label->setText(text);
+
+        // 初始化 text
+        this->text1 = text;
+        this->text2 = text2;
 
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshBoundaries1->comboBox);
@@ -38,6 +50,12 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         ui_ItemWidgetMeshBoundaries2->setupUi(this);
         ui_ItemWidgetMeshBoundaries2->label->setText(text);
 		ui_ItemWidgetMeshBoundaries2->label_2->setText(text2);
+
+		//初始化 text
+		this->text1 = text;
+		this->text2 = text2;
+		this->text3 = text3;
+		this->text4 = text4;
 
         // 安装事件过滤器
         ui_ItemWidgetMeshBoundaries2->label->installEventFilter(this);
@@ -73,6 +91,19 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         // 安装事件过滤器
         ui_ItemWidgetMeshRegions2->label->installEventFilter(this);
     }
+    else if (styleIndex == 4) {
+		ui_ItemWidgetMeshZones = new Ui::CustomItemWidgetMeshZonesClass();
+		ui_ItemWidgetMeshZones->setupUi(this);
+		ui_ItemWidgetMeshZones->label->setText(text);
+
+		// 设置 QComboBox 的自定义视图
+		QListView* combo1View1 = new QListView(ui_ItemWidgetMeshZones->comboBox);
+		combo1View1->setMinimumWidth(150);
+		ui_ItemWidgetMeshZones->comboBox->setView(combo1View1);
+
+		// 安装事件过滤器
+		ui_ItemWidgetMeshZones->label->installEventFilter(this);
+    }
     else {
         return;
     }
@@ -80,49 +111,48 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 
 bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
 {
-    if (event->type() == QEvent::Enter || event->type() == QEvent::Leave) {
-        if (ui_ItemWidgetMeshBoundaries1 && obj == ui_ItemWidgetMeshBoundaries1->label) {
-            if (event->type() == QEvent::Enter) {
-                qDebug() << "Mouse entered ui_ItemWidgetMeshBoundaries1->label";
-            }
-            else {
-                qDebug() << "Mouse left ui_ItemWidgetMeshBoundaries1->label";
-            }
+    if (ui_ItemWidgetMeshBoundaries1 && obj == ui_ItemWidgetMeshBoundaries1->label) {
+        if (event->type() == QEvent::Enter) {
+            ui_ItemWidgetMeshBoundaries1->label->setText(text2);
+            return true;
         }
-        if (ui_ItemWidgetMeshBoundaries2 && (obj == ui_ItemWidgetMeshBoundaries2->label || obj == ui_ItemWidgetMeshBoundaries2->label_2)) {
-            if (event->type() == QEvent::Enter) {
-                qDebug() << "Mouse entered" << (obj == ui_ItemWidgetMeshBoundaries2->label ? "ui_ItemWidgetMeshBoundaries2->label" : "ui_ItemWidgetMeshBoundaries2->label_2");
-            }
-            else {
-                qDebug() << "Mouse left" << (obj == ui_ItemWidgetMeshBoundaries2->label ? "ui_ItemWidgetMeshBoundaries2->label" : "ui_ItemWidgetMeshBoundaries2->label_2");
-            }
+        else if (event->type() == QEvent::Leave) {
+            ui_ItemWidgetMeshBoundaries1->label->setText(text1);
+            return true;
         }
-        if (ui_ItemWidgetMeshRegions1 && obj == ui_ItemWidgetMeshRegions1->label) {
-            if (event->type() == QEvent::Enter) {
-                qDebug() << "Mouse entered ui_ItemWidgetMeshRegions1->label";
-            }
-            else {
-                qDebug() << "Mouse left ui_ItemWidgetMeshRegions1->label";
-            }
-        }
-        if (ui_ItemWidgetMeshRegions2 && obj == ui_ItemWidgetMeshRegions2->label) {
-            if (event->type() == QEvent::Enter) {
-                qDebug() << "Mouse entered ui_ItemWidgetMeshRegions2->label";
-            }
-            else {
-                qDebug() << "Mouse left ui_ItemWidgetMeshRegions2->label";
-            }
+        else if (event->type() == QEvent::MouseButtonDblClick) {
+            beginEdit(ui_ItemWidgetMeshBoundaries1->label);
+            return true;
         }
     }
-
-    if (ui_ItemWidgetMeshBoundaries1 && obj == ui_ItemWidgetMeshBoundaries1->label && event->type() == QEvent::MouseButtonDblClick) {
-        beginEdit(ui_ItemWidgetMeshBoundaries1->label);
-        return true;
+    if (ui_ItemWidgetMeshBoundaries2 && obj == ui_ItemWidgetMeshBoundaries2->label) {
+        if (event->type() == QEvent::Enter) {
+			ui_ItemWidgetMeshBoundaries2->label->setText(text3);          
+            return true;
+        }
+        else if (event->type() == QEvent::Leave) {
+			ui_ItemWidgetMeshBoundaries2->label->setText(text1);           
+            return true;
+        }
+        else if (event->type() == QEvent::MouseButtonDblClick) {
+			beginEdit(ui_ItemWidgetMeshBoundaries2->label);        
+            return true;
+        }
     }
-    if (ui_ItemWidgetMeshBoundaries2 && (obj == ui_ItemWidgetMeshBoundaries2->label || obj == ui_ItemWidgetMeshBoundaries2->label_2) && event->type() == QEvent::MouseButtonDblClick) {
-        beginEdit(qobject_cast<QLabel*>(obj));
-        return true;
-    }
+	if (ui_ItemWidgetMeshBoundaries2 && obj == ui_ItemWidgetMeshBoundaries2->label_2) {
+		if (event->type() == QEvent::Enter) {
+			ui_ItemWidgetMeshBoundaries2->label_2->setText(text4);
+			return true;
+		}
+		else if (event->type() == QEvent::Leave) {
+			ui_ItemWidgetMeshBoundaries2->label_2->setText(text2);
+			return true;
+		}
+		else if (event->type() == QEvent::MouseButtonDblClick) {
+			beginEdit(ui_ItemWidgetMeshBoundaries2->label_2);
+			return true;
+		}
+	}
     if (ui_ItemWidgetMeshRegions1 && obj == ui_ItemWidgetMeshRegions1->label && event->type() == QEvent::MouseButtonDblClick) {
         return true;
     }
@@ -130,6 +160,10 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
         beginEdit(ui_ItemWidgetMeshRegions2->label);
         return true;
     }
+	if (ui_ItemWidgetMeshZones && obj == ui_ItemWidgetMeshZones->label && event->type() == QEvent::MouseButtonDblClick) {
+		beginEdit(ui_ItemWidgetMeshZones->label);
+		return true;
+	}
 
     if (editing && event->type() == QEvent::MouseButtonPress) {
         if (obj != lineEdit) {
@@ -159,12 +193,32 @@ void CustomItemWidget::beginEdit(QLabel* label)
 	else if (ui_ItemWidgetMeshRegions2) {
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshRegions2->horizontalLayout);
 	}
+	else if (ui_ItemWidgetMeshZones) {
+		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
+	}
 
     if (!label || !boxLayout) return;
 
-    lineEdit = new QLineEdit(label->text(), this);
-    lineEdit->setGeometry(label->geometry()); // 设置 lineEdit 的几何属性与 label 相同
-    lineEdit->setSizePolicy(label->sizePolicy()); // 设置 lineEdit 的大小策略与 label 相同
+    
+	QString text = label->text();
+	int index = text.indexOf(" in ");
+	if (index != -1) text = text.left(index);
+
+    lineEdit = new QLineEdit(text, this);
+    lineEdit->setStyleSheet(
+        "QLineEdit {"
+        "    border: 1px solid rgb(192, 192, 192);" // 默认边框颜色
+        "    font-family: 'Arial Rounded MT Bold';"// 字体
+        "    font-weight: 250;"                    // 字体粗细
+        "    color: rgb(66, 66, 66);"              // 字体颜色
+        "}"
+        "QLineEdit:focus {"
+        "    border: 1px solid rgb(50, 170, 233);" // 焦点时的边框颜色
+        "    outline: none;"                       // 移除默认虚线框
+        "}"
+    );
+    lineEdit->setGeometry(label->geometry()); 
+    lineEdit->setSizePolicy(label->sizePolicy());
     int labelIndex = boxLayout->indexOf(label);
     boxLayout->removeWidget(label);
     label->hide();
@@ -186,13 +240,19 @@ void CustomItemWidget::finishEdit()
     if (ui_ItemWidgetMeshBoundaries1) {
         label = ui_ItemWidgetMeshBoundaries1->label;
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries1->horizontalLayout);
+        text2.replace(text1, newText);
+		text1.replace(text1, newText);				
     }
     else if (ui_ItemWidgetMeshBoundaries2) {
         if (ui_ItemWidgetMeshBoundaries2->label->isHidden()) {
             label = ui_ItemWidgetMeshBoundaries2->label;
-        }
+            text3.replace(text1, newText);
+			text1.replace(text1, newText);			
+		}
         else {
             label = ui_ItemWidgetMeshBoundaries2->label_2;
+            text4.replace(text2, newText);
+			text2.replace(text2, newText);			
         }
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries2->horizontalLayout);
     }
@@ -203,6 +263,14 @@ void CustomItemWidget::finishEdit()
 	else if (ui_ItemWidgetMeshRegions2) {
 		label = ui_ItemWidgetMeshRegions2->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshRegions2->horizontalLayout);
+        text2.replace(text1, newText);
+        text1.replace(text1, newText);        
+	}
+	else if (ui_ItemWidgetMeshZones) {
+		label = ui_ItemWidgetMeshZones->label;
+		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
+        text2.replace(text1, newText);
+        text1.replace(text1, newText);      
 	}
 
     if (!label || !boxLayout) return;
@@ -214,7 +282,6 @@ void CustomItemWidget::finishEdit()
     boxLayout->insertWidget(lineEditIndex, label); 
     label->show();
 
-    emit textChanged(newText);
     lineEdit->deleteLater();
     lineEdit = nullptr;
 

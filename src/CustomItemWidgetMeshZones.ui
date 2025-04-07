@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomItemWidgetMeshRegions2Class</class>
- <widget class="QWidget" name="CustomItemWidgetMeshRegions2Class">
+ <class>CustomItemWidgetMeshZonesClass</class>
+ <widget class="QWidget" name="CustomItemWidgetMeshZonesClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>CustomItemWidgetMeshRegions2</string>
+   <string>CustomItemWidgetMeshZones</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -47,9 +47,6 @@
     background-color: transparent;
 }
 QLabel {
-    font-family: &quot;Arial&quot;;
-}
-QLabel {
     font-family: &quot;Arial Rounded MT Bold&quot;;
     font-weight: 250;
     color: rgb(66, 66, 66);
@@ -61,79 +58,47 @@ QLabel {
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QPushButton" name="pushButton">
        <property name="minimumSize">
         <size>
-         <width>45</width>
+         <width>26</width>
          <height>26</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>45</width>
+         <width>26</width>
          <height>26</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">		QComboBox {
-    		border: 1px solid transparent;
-    		background-color: transparent;
-    		padding: 5px;
-   			border-radius: 13px;
-		}
-        QComboBox:hover {
-            background-color: rgb(242, 242, 242);
-            border: 1px solid lightgray;
-            border-radius: 13px;
-        }
-        QComboBox::drop-down {
-            border: none;
-        }
-        QComboBox QAbstractItemView {
-            border: 1px solid lightgray;
-            selection-background-color: rgb(242, 242, 242);
-            outline: none; /* 移除虚线框 */
-        }
-        QComboBox QAbstractItemView::item {
-            min-height: 25px;
-            outline: none; /* 移除虚线框 */
-        }
-        QComboBox QAbstractItemView::item:hover {
-            background-color: rgb(242, 242, 242);
-            color: black;
-        }
-        QComboBox QAbstractItemView::item:selected {
-            background-color: rgb(242, 242, 242);
-            color: black; 
-        }
-        QComboBox::down-arrow {
-            image: url(../res/arrow.png); 
-            width: 12px;
-            height: 12px;
-        }</string>
+        <string notr="true">QPushButton {
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242);
+    border: 1px solid lightgray;
+}</string>
        </property>
-       <item>
-        <property name="text">
-         <string>液体</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../res/Fluid.png</normaloff>../res/Fluid.png</iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>固体</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../res/Solid.png</normaloff>../res/Solid.png</iconset>
-        </property>
-       </item>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <activeoff>../res/OversetZone.png</activeoff>
+         <activeon>../res/Overset.png</activeon>
+        </iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_2">
+      <widget class="QComboBox" name="comboBox">
        <property name="minimumSize">
         <size>
          <width>26</width>
