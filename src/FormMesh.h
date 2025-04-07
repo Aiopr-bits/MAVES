@@ -50,9 +50,9 @@ public:
     FormMesh(QWidget* parent = nullptr);
     ~FormMesh();
 
+    void getRegionTypes(const std::string& casePath);   						        //获取区域类型
+    void getPatchTypes(const std::string& casePath); 								    //获取网格patch类型
 	void getCellZoneNames(const std::string& casePath); 								//获取cell zone名称
-    void getPatchNames(const std::string& casePath); 								    //获取网格patch数据
-	void getPatchTypes(const std::string& casePath); 								    //获取网格patch类型
 
 public slots:
     void resizeEvent(QResizeEvent* event);

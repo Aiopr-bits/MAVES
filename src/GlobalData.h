@@ -25,7 +25,8 @@ struct CaseData
 	std::string solverName;                                                                             //求解器名称
 
 	std::vector<std::string> cellZoneNames; 															// zones名称
-	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType;                 // 网格patch名称(subDomainName,patchName, patchType)
+    std::unordered_map < std::string, std::string> regionsType;                                         // 区域类型
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType;                 // 网格patch类型(subDomainName,patchName, patchType)
 	std::vector<double> timeSteps; 																		// 时间步
 	std::vector<std::string> fieldName; 																// 物理量名称
 	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // 物理量范围(fieldName ，（rangeMin ，rangeMax）)
@@ -47,7 +48,7 @@ public:
     GlobalData(const GlobalData&) = delete;                                             // 禁止拷贝构造
     GlobalData& operator=(const GlobalData&) = delete;                                  // 禁止赋值构造
 
-    void setCaseData(const CaseData& data);                                             // 设置全局数据                                      
+    void setCaseData(const CaseData& data);                                             // 设置全局数据 
 	CaseData* getCaseData() const;													    // 获取全局数据
 	void clearAllData(); 															    // 清空全局数据
 

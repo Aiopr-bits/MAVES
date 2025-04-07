@@ -256,38 +256,256 @@ std::unordered_map<std::string, unordered_map<std::string, std::string>>FormMesh
 	return patchType;
 }
 
-void FormMesh::getPatchNames(const std::string& casePath)
+void FormMesh::getRegionTypes(const std::string& casePath)
 {
-	std::vector<std::string> meshPatchNames;
-
-	// 创建 OpenFOAM 读取器
-	vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
-		vtkSmartPointer<vtkOpenFOAMReader>::New();
-	openFOAMReader->SetFileName(casePath.c_str());
-	openFOAMReader->SetCreateCellToPoint(1);
-	openFOAMReader->SetSkipZeroTime(1);
-	openFOAMReader->UpdateInformation();
-
-	// 获取所有补丁名称
-	int numPatches = openFOAMReader->GetNumberOfPatchArrays();
-	if (numPatches == 0)
-	{
-		std::cerr << "没有找到任何补丁。" << std::endl;
-		return;
+	// 修正后的文件路径
+	std::string filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/regionProperties";
+	std::ifstream file(filePath);
+	if (!file.is_open()) {
+		return;  // 文件无法打开则直接返回
 	}
 
-	// 禁用所有补丁
-	openFOAMReader->DisableAllPatchArrays();
+	std::unordered_map<std::string, std::string> regionsType;
 
-	// 遍历所有补丁
-	for (int i = 0; i < numPatches; ++i)
+	// 简单的去除首尾空白字符的函数
+	auto trim = [&](const std::string& s) -> std::string {
+		if (s.empty())
+			return s;
+		auto start = s.begin();
+		while (start != s.end() && std::isspace(*start))
+			++start;
+		auto end = s.end();
+		do {
+			--end;
+		} while (std::distance(start, end) > 0 && std::isspace(*end));
+		return std::string(start, end + 1);
+		};
+
+	bool inRegionsBlock = false;
+	bool foundRegionsToken = false;
+	std::string line;
+
+	while (std::getline(file, line))
 	{
-		const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
-		meshPatchNames.push_back(std::string(currentPatchName));
+		std::string trimmedLine = trim(line);
+
+		// 寻找 "regions" 关键字
+		if (!foundRegionsToken && trimmedLine.find("regions") != std::string::npos)
+		{
+			foundRegionsToken = true;
+			continue;
+		}
+		// 一旦发现 "regions" 后，遇到 "(" 表示进入解析区域
+		if (foundRegionsToken && !inRegionsBlock && trimmedLine.find('(') != std::string::npos)
+		{
+			inRegionsBlock = true;
+			continue;
+		}
+		// 碰到 ")" 就表示 regions 块结束
+		if (inRegionsBlock && trimmedLine[0] == ')')
+		{
+			break;
+		}
+
+		// 在 regions 块中，解析每行结构如：
+		// fluid       (bottomAir topAir)
+		// solid       (heater leftSolid rightSolid)
+		if (inRegionsBlock && !trimmedLine.empty())
+		{
+			// 先提取区域类型，例如 "fluid"
+			// 再从后面的括号中提取所有区域名
+			// 形式大概为：<regionType> ( regionName1 regionName2 ... )
+			// 可以先找到左括号 "(" 的位置
+			size_t bracketPos = trimmedLine.find('(');
+			if (bracketPos == std::string::npos)
+			{
+				continue; // 格式异常则跳过
+			}
+			std::string regionType = trim(trimmedLine.substr(0, bracketPos));
+			// 去掉 regionType 末尾多余空格后如 "fluid"
+
+			// 提取括号内的部分
+			size_t rightBracketPos = trimmedLine.find(')', bracketPos + 1);
+			if (rightBracketPos == std::string::npos)
+			{
+				continue; // 没有闭合括号则跳过
+			}
+			std::string insideBrackets =
+				trimmedLine.substr(bracketPos + 1, rightBracketPos - (bracketPos + 1));
+			insideBrackets = trim(insideBrackets);
+
+			// 将括号内的区域名称按空白拆分
+			std::istringstream iss(insideBrackets);
+			std::string regionName;
+			while (iss >> regionName)
+			{
+				regionName = trim(regionName);
+				if (!regionName.empty())
+				{
+					// 将 "regionName" -> "regionType" 存储
+					regionsType[regionName] = regionType;
+				}
+			}
+		}
 	}
 
-	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchNames = analysismeshPatchNames(meshPatchNames);
-	GlobalData::getInstance().getCaseData()->patchType = patchNames;
+	file.close();
+
+	// 将解析结果存储到全局数据
+	GlobalData::getInstance().getCaseData()->regionsType = regionsType;
+}
+
+void FormMesh::getPatchTypes(const std::string& casePath)
+{
+	// 1. 定义 trim 函数（可用 lambda 内联实现）
+	auto trim = [&](const std::string& s) -> std::string {
+		if (s.empty())
+			return s;
+
+		auto start = s.begin();
+		while (start != s.end() && std::isspace(*start))
+			start++;
+		auto end = s.end();
+		do {
+			end--;
+		} while (std::distance(start, end) > 0 && std::isspace(*end));
+		return std::string(start, end + 1);
+		};
+
+	// 2. 定义 ParseBoundaryFile 函数
+	auto parseBoundaryFile = [&](const std::string& filepath) -> std::map<std::string, std::string> {
+		std::map<std::string, std::string> patchTypes;
+		std::ifstream infile(filepath);
+		if (!infile.is_open())
+		{
+			std::cerr << "无法打开 boundary 文件: " << filepath << std::endl;
+			return patchTypes;
+		}
+
+		std::string line;
+		std::string currentPatch;
+		bool inBlock = false;
+		while (std::getline(infile, line))
+		{
+			std::string trimmed = trim(line);
+			if (trimmed.empty() || trimmed[0] == '/' || trimmed[0] == '#' || trimmed[0] == '|' || trimmed[0] == '\\')
+				continue;
+
+			if (!inBlock)
+			{
+				currentPatch = trimmed;
+				if (std::getline(infile, line))
+				{
+					trimmed = trim(line);
+					if (trimmed == "{")
+					{
+						inBlock = true;
+					}
+				}
+			}
+			else
+			{
+				if (trimmed == "}")
+				{
+					inBlock = false;
+					currentPatch.clear();
+				}
+				else
+				{
+					if (trimmed.find("type") == 0)
+					{
+						std::istringstream iss(trimmed);
+						std::string key, value;
+						iss >> key >> value;
+						if (!value.empty() && value.back() == ';')
+							value.pop_back();  // 去除末尾分号
+						patchTypes[currentPatch] = value;
+					}
+				}
+			}
+		}
+		infile.close();
+		return patchTypes;
+		};
+
+	// 3. 获取指定路径下的补丁名称 (getPatchNames 逻辑)
+	{
+		std::vector<std::string> meshPatchNames;
+		vtkSmartPointer<vtkOpenFOAMReader> openFOAMReader =
+			vtkSmartPointer<vtkOpenFOAMReader>::New();
+		openFOAMReader->SetFileName(casePath.c_str());
+		openFOAMReader->SetCreateCellToPoint(1);
+		openFOAMReader->SetSkipZeroTime(1);
+		openFOAMReader->UpdateInformation();
+
+		int numPatches = openFOAMReader->GetNumberOfPatchArrays();
+		if (numPatches == 0)
+		{
+			std::cerr << "没有找到任何补丁。" << std::endl;
+			return;
+		}
+		openFOAMReader->DisableAllPatchArrays();
+
+		for (int i = 0; i < numPatches; ++i)
+		{
+			const char* currentPatchName = openFOAMReader->GetPatchArrayName(i);
+			meshPatchNames.push_back(std::string(currentPatchName));
+		}
+
+		// 将解析结果写入全局数据
+		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchNames =
+			analysismeshPatchNames(meshPatchNames);
+		GlobalData::getInstance().getCaseData()->patchType = patchNames;
+	}
+
+	// 4. 解析所有 boundary 文件，获得补丁类型 (getPatchTypes 逻辑)
+	std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType =
+		GlobalData::getInstance().getCaseData()->patchType;
+
+	// 尝试读取 single domain 情形
+	fs::path mainBoundaryFile = fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / "polyMesh" / "boundary";
+	if (fs::exists(mainBoundaryFile))
+	{
+		auto boundaries = parseBoundaryFile(mainBoundaryFile.string());
+		for (const auto& pair : boundaries)
+		{
+			if (pair.first.find("internalMesh") != std::string::npos)
+				continue;
+			auto domain = patchType.find("default");
+			if (domain != patchType.end())
+			{
+				domain->second[pair.first] = pair.second;
+			}
+		}
+	}
+
+	// 检查多域 (cellZoneNames)，在不同文件夹下继续解析 boundary
+	std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
+	if (cellZoneNames.size() > 1)
+	{
+		for (auto& cellZoneName : cellZoneNames)
+		{
+			fs::path subBoundaryFile =
+				fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / cellZoneName / "polyMesh" / "boundary";
+			if (fs::exists(subBoundaryFile))
+			{
+				auto boundaries = parseBoundaryFile(subBoundaryFile.string());
+				for (const auto& pair : boundaries)
+				{
+					if (pair.first.find("internalMesh") != std::string::npos)
+						continue;
+					auto domain = patchType.find(cellZoneName);
+					if (domain != patchType.end())
+					{
+						domain->second[pair.first] = pair.second;
+					}
+				}
+			}
+		}
+	}
+
+	// 将解析结果写入全局数据
+	GlobalData::getInstance().getCaseData()->patchType = patchType;
 }
 
 void FormMesh::getCellZoneNames(const std::string& casePath)
@@ -324,186 +542,47 @@ void FormMesh::getCellZoneNames(const std::string& casePath)
 	GlobalData::getInstance().getCaseData()->cellZoneNames = cellZoneNames;
 }
 
-// 简单的字符串 trim 函数
-static inline std::string trim(const std::string& s)
-{
-	if (s.empty())
-		return s;
-
-	auto start = s.begin();
-	while (start != s.end() && std::isspace(*start))
-		start++;
-	auto end = s.end();
-	do {
-		end--;
-	} while (std::distance(start, end) > 0 && std::isspace(*end));
-	return std::string(start, end + 1);
-}
-
-// 解析单个 boundary 文件，返回 patch 名称和 type 的映射
-std::map<std::string, std::string> ParseBoundaryFile(const std::string& filepath)
-{
-	std::map<std::string, std::string> patchTypes;
-	std::ifstream infile(filepath);
-	if (!infile.is_open())
-	{
-		std::cerr << "无法打开 boundary 文件: " << filepath << std::endl;
-		return patchTypes;
-	}
-
-	std::string line;
-	std::string currentPatch;
-	bool inBlock = false;
-	while (std::getline(infile, line))
-	{
-		std::string trimmed = trim(line);
-		if (trimmed.empty() || trimmed[0] == '/' || trimmed[0] == '#' || trimmed[0] == '|' || trimmed[0] == '\\')
-			continue;
-
-		// 如果不在块内，则当前行可能为 patch 名称
-		if (!inBlock)
-		{
-			currentPatch = trimmed;
-			// 读取下一行，并判断是否为 '{'
-			if (std::getline(infile, line))
-			{
-				trimmed = trim(line);
-				if (trimmed == "{")
-				{
-					inBlock = true;
-				}
-			}
-		}
-		else // inBlock==true，即在当前 patch 定义内部
-		{
-			if (trimmed == "}")
-			{
-				inBlock = false;
-				currentPatch.clear();
-			}
-			else
-			{
-				// 检查当前行是否以 "type" 开头
-				if (trimmed.find("type") == 0)
-				{
-					std::istringstream iss(trimmed);
-					std::string key, value;
-					iss >> key >> value;
-					// 去除结尾分号，如 patch; -> patch
-					if (!value.empty() && value.back() == ';')
-						value.pop_back();
-					patchTypes[currentPatch] = value;
-				}
-			}
-		}
-	}
-	infile.close();
-	return patchTypes;
-}
-
-void FormMesh::getPatchTypes(const std::string& casePath)
-{
-	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
-	// 先尝试解析主域（single domain 情形）：{casePath}/constant/polyMesh/boundary
-	fs::path mainBoundaryFile = fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / "polyMesh" / "boundary";
-	if (fs::exists(mainBoundaryFile))
-	{
-		auto boundaries = ParseBoundaryFile(mainBoundaryFile.string());
-		for (const auto& pair : boundaries)
-		{
-			// 忽略 internalMesh
-			if (pair.first.find("internalMesh") != std::string::npos)
-				continue;
-
-			//类型添加进patchType中
-			auto domain = patchType.find("default");
-			if (domain != patchType.end())
-			{
-				domain->second[pair.first] = pair.second;
-			}
-		}
-	}
-
-	// 检查是否存在多域
-	std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
-	if (cellZoneNames.size() > 1)
-	{
-		for (auto& cellZoneName : cellZoneNames)
-		{
-			fs::path subBoundaryFile = fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / cellZoneName / "polyMesh" / "boundary";
-			if (fs::exists(subBoundaryFile))
-			{
-				auto boundaries = ParseBoundaryFile(subBoundaryFile.string());
-				for (const auto& pair : boundaries)
-				{
-					if (pair.first.find("internalMesh") != std::string::npos)
-						continue;
-
-					//类型添加进patchType中
-					auto domain = patchType.find(cellZoneName);
-					if (domain != patchType.end())
-					{
-						domain->second[pair.first] = pair.second;
-					}
-				}
-			}
-		}
-	}
-	GlobalData::getInstance().getCaseData()->patchType = patchType;
-}
-
 void FormMesh::updateForm(bool isRender)
 {
-	getCellZoneNames(GlobalData::getInstance().getCaseData()->casePath);
-	getPatchNames(GlobalData::getInstance().getCaseData()->casePath);
+	getRegionTypes(GlobalData::getInstance().getCaseData()->casePath);
 	getPatchTypes(GlobalData::getInstance().getCaseData()->casePath);
-
-	//CellZones
-	ui->listWidget_4->clear();
-	std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
-	for (int i = 0; i < cellZoneNames.size(); i++)
-	{
-		auto item = new QListWidgetItem(ui->listWidget_4);
-		ui->listWidget_4->addItem(item);
-		auto widget = new CustomItemWidget(4, this, QString::fromStdString(cellZoneNames[i]));
-		ui->listWidget_4->setItemWidget(item, widget);
-	}
-
-	int totalHeight = 0;
-	for (int i = 0; i < std::min(ui->listWidget_4->count(), 5); ++i) {
-		totalHeight += ui->listWidget_4->sizeHintForRow(i);
-	}
-	ui->listWidget_4->setFixedHeight(totalHeight);
-
+	getCellZoneNames(GlobalData::getInstance().getCaseData()->casePath);
 
 	//Regions
 	ui->listWidget->clear();
-	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
-	for (const auto& pair : patchType)
-	{
-		QString regionName = QString::fromStdString(pair.first);
-		if (regionName == "default") {
-			auto item = new QListWidgetItem(ui->listWidget);
-			ui->listWidget->addItem(item);
-			auto widget = new CustomItemWidget(2, this, regionName);
-			ui->listWidget->setItemWidget(item, widget);
-		}
-		else {
-			auto item = new QListWidgetItem(ui->listWidget);
-			ui->listWidget->addItem(item);
-			auto widget = new CustomItemWidget(3, this, regionName);
-			ui->listWidget->setItemWidget(item, widget);
-		}
+	std::unordered_map < std::string, std::string> regionsType = GlobalData::getInstance().getCaseData()->regionsType;
+
+	std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+	std::string filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/polyMesh";
+	if (fs::exists(filePath)) {
+		auto item = new QListWidgetItem(ui->listWidget);
+		ui->listWidget->addItem(item);
+		auto widget = new CustomItemWidget(2, this, "default");
+		ui->listWidget->setItemWidget(item, widget);
 	}
 
-	totalHeight = 0;
-	for (int i = 0; i < std::min(ui->listWidget->count(), 15); ++i) {
+	for (const auto& pair : regionsType)
+	{
+		auto item = new QListWidgetItem(ui->listWidget);
+		ui->listWidget->addItem(item);
+		auto widget = new CustomItemWidget(3, this, QString::fromStdString(pair.first));
+
+		QString text = QString::fromStdString(pair.second);
+		if (text == "fluid")text = "液体";
+		else if (text == "solid")text = "固体";
+		widget->ui_ItemWidgetMeshRegions2->comboBox->setCurrentText(text);
+		ui->listWidget->setItemWidget(item, widget);
+	}
+
+	int totalHeight = 0;
+	for (int i = 0; i < std::min(ui->listWidget->count(), 5); ++i) {
 		totalHeight += ui->listWidget->sizeHintForRow(i);
 	}
 	ui->listWidget->setFixedHeight(totalHeight);
 
 	//Boundaries
 	ui->listWidget_2->clear();
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
 	for (const auto& region : patchType)
 	{
 		QString regionName = QString::fromStdString(region.first);
@@ -530,65 +609,27 @@ void FormMesh::updateForm(bool isRender)
 	}
 	ui->listWidget_2->setFixedHeight(totalHeight);
 
+	//CellZones
+	ui->listWidget_4->clear();
+	std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
+	for (int i = 0; i < cellZoneNames.size(); i++)
+	{
+		auto item = new QListWidgetItem(ui->listWidget_4);
+		ui->listWidget_4->addItem(item);
+		auto widget = new CustomItemWidget(4, this, QString::fromStdString(cellZoneNames[i]));
+		ui->listWidget_4->setItemWidget(item, widget);
+	}
+
+	totalHeight = 0;
+	for (int i = 0; i < std::min(ui->listWidget_4->count(), 5); ++i) {
+		totalHeight += ui->listWidget_4->sizeHintForRow(i);
+	}
+	ui->listWidget_4->setFixedHeight(totalHeight);
+
 	if (isRender) {
 		on_pushButton_clicked();
 		updateFormFinished();
 	}
-
-	//std::unordered_map<std::string, std::vector<std::string>> meshPatchNamesMap =GlobalData::getInstance().getCaseData()->meshPatchNamesMap;
-	//listViewModel->clear();
-
-	//// 遍历 meshPatchNamesMap 并将 key 值添加到 listView 中
-	//QIcon regionIcon("..\\res\\region.png");
-	//for (const auto& pair : meshPatchNamesMap)
-	//{
-	//	QString actorName = QString::fromStdString(pair.first);
-	//	QStandardItem* item = new QStandardItem(actorName);
-	//	item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-	//	item->setSizeHint(QSize(0, 30));
-	//	item->setIcon(regionIcon);
-	//	listViewModel->appendRow(item);
-	//}
-
-	//// 设置 QListView 的高度
-	//int totalHeight = 0;
-	//for (int i = 0; i < listViewModel->rowCount(); ++i) {
-	//	totalHeight += ui->listView->sizeHintForRow(i);
-	//}
-	//ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
-
-	//// 将数据复制到 vector 并反转，以模拟逆序遍历
-	//std::vector<std::pair<std::string, std::vector<std::string>>> reversedMeshPatch;
-	//reversedMeshPatch.reserve(meshPatchNamesMap.size());
-	//for (const auto& kv : meshPatchNamesMap) {
-	//	reversedMeshPatch.push_back(kv);
-	//}
-	//std::reverse(reversedMeshPatch.begin(), reversedMeshPatch.end());
-
-	////清除释放listViewBoundaries
-	//for (auto& listView : listViewBoundaries)
-	//{
-	//	delete listView;
-	//}
-	//listViewBoundaries.clear();
-
-	//// 创建 patch 的 listView
-	//for (const auto& kv : reversedMeshPatch)
-	//{
-	//	QListView* listView = createBoundariesListView(kv.first, kv.second);
-	//	ui->verticalLayout->insertWidget(1, listView);
-	//	listViewBoundaries.push_back(listView);
-	//}
-
-	//// 点击 ui->listView 的第一个 item
-	//QModelIndex index = listViewModel->index(0, 0);
-	//ui->listView->setCurrentIndex(index);
-	//onListViewClicked(index);
-
-	//if (isRender) {
-	//	on_pushButton_clicked();
-	//	updateFormFinished();
-	//}	
 }
 
 void FormMesh::onListViewClicked(const QModelIndex& index)
