@@ -28,7 +28,7 @@ FormMesh::FormMesh(QWidget* parent)
 	onSelectionChanged();
 
 	//信号与槽
-	connect(ui->listWidget_2->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FormMesh::onSelectionChanged);
+	connect(ui->listWidget_2->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FormMesh::onSelectionChanged);		
 }
 
 FormMesh::~FormMesh()
@@ -489,6 +489,7 @@ void FormMesh::updateForm(bool isRender)
 		ui->listWidget->addItem(item);
 		auto widget = new CustomItemWidget(2, this, "default");
 		ui->listWidget->setItemWidget(item, widget);
+		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
 	}
 
 	for (const auto& pair : regionsType)
@@ -502,6 +503,7 @@ void FormMesh::updateForm(bool isRender)
 		else if (text == "solid")text = "固体";
 		widget->ui_ItemWidgetMeshRegions2->comboBox->setCurrentText(text);
 		ui->listWidget->setItemWidget(item, widget);
+		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
 	}
 
 	int totalHeight = 0;
@@ -530,6 +532,7 @@ void FormMesh::updateForm(bool isRender)
 			}
 			widget->ui_ItemWidgetMeshBoundaries1->comboBox->setCurrentText(text);
 			ui->listWidget_2->setItemWidget(item, widget);
+			connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
 		}
 	}
 
@@ -548,6 +551,7 @@ void FormMesh::updateForm(bool isRender)
 		ui->listWidget_4->addItem(item);
 		auto widget = new CustomItemWidget(4, this, QString::fromStdString(cellZoneNames[i]));
 		ui->listWidget_4->setItemWidget(item, widget);
+		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
 	}
 
 	totalHeight = 0;
@@ -593,6 +597,7 @@ void FormMesh::on_pushButton_3_clicked()
 	ui->listWidget_2->addItem(item);
 	auto widget = new CustomItemWidget(1, this, patchName1, patchName2, patchName1 + " in " + regionName1, patchName2 + " in " + regionName2);
 	ui->listWidget_2->setItemWidget(item, widget);
+	connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
 
 	//取消选中状态
 	ui->listWidget_2->item(ui->listWidget_2->row(selectedItems[0]))->setSelected(false);
@@ -658,4 +663,76 @@ void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidg
 		if (!item->isHidden())totalHeight += ui->listWidget_2->sizeHintForRow(i);
 	}
 	ui->listWidget_2->setFixedHeight(totalHeight);
+}
+
+void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
+{
+	if (widget->ui_ItemWidgetMeshBoundaries1 != nullptr) 
+	{
+		QString currentText = widget->text2;
+		if (previousText != currentText)
+		{
+			QString previousRegionsName = previousText.mid(previousText.indexOf(" in ") + 4);
+			QString previousPatchName = previousText.left(previousText.indexOf(" in "));
+			QString currentRegionsName = currentText.mid(currentText.indexOf(" in ") + 4);
+			QString currentPatchName = currentText.left(currentText.indexOf(" in "));
+
+			// 替换 GlobalData 变量
+			std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+			patchType[previousRegionsName.toStdString()][currentPatchName.toStdString()] = patchType[previousRegionsName.toStdString()][previousPatchName.toStdString()];
+			patchType[previousRegionsName.toStdString()].erase(previousPatchName.toStdString());
+			GlobalData::getInstance().getCaseData()->patchType = patchType;
+
+			// 修改文件
+			std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+			std::string filePath;
+			if (previousRegionsName == "default")
+				filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/polyMesh/boundary";
+			else
+				filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + previousRegionsName.toStdString() + "/polyMesh/boundary";
+
+			std::ifstream file(filePath);
+			if (!file.is_open()) {
+				qDebug() << "无法打开文件:" << QString::fromStdString(filePath);
+				return;
+			}
+
+			std::string content;
+			std::string line;
+			while (std::getline(file, line)) {
+				// 替换边界名称
+				if (line.find(previousPatchName.toStdString()) != std::string::npos) {
+					size_t pos = line.find(previousPatchName.toStdString());
+					line.replace(pos, previousPatchName.toStdString().length(), currentPatchName.toStdString());
+				}
+				content += line + "\n";
+			}
+			file.close();
+
+			// 将修改后的内容写回文件
+			std::ofstream outFile(filePath);
+			if (!outFile.is_open()) {
+				qDebug() << "无法写入文件:" << QString::fromStdString(filePath);
+				return;
+			}
+			outFile << content;
+			outFile.close();
+		}
+	}
+	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
+	{
+
+	}
+	else if (widget->ui_ItemWidgetMeshRegions1 != nullptr)
+	{
+
+	}
+	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
+	{
+
+	}
+	else if (widget->ui_ItemWidgetMeshZones != nullptr)
+	{
+
+	}
 }

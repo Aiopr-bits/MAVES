@@ -240,19 +240,25 @@ void CustomItemWidget::finishEdit()
     if (ui_ItemWidgetMeshBoundaries1) {
         label = ui_ItemWidgetMeshBoundaries1->label;
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries1->horizontalLayout);
+		QString previousText = text2;
         text2.replace(text1, newText);
-		text1.replace(text1, newText);				
+		text1.replace(text1, newText);	
+        emit textChanged(this, previousText);
     }
     else if (ui_ItemWidgetMeshBoundaries2) {
         if (ui_ItemWidgetMeshBoundaries2->label->isHidden()) {
             label = ui_ItemWidgetMeshBoundaries2->label;
+            QString previousText = text3;
             text3.replace(text1, newText);
-			text1.replace(text1, newText);			
+			text1.replace(text1, newText);	
+            emit textChanged(this, previousText);
 		}
         else {
             label = ui_ItemWidgetMeshBoundaries2->label_2;
+            QString previousText = text4;
             text4.replace(text2, newText);
 			text2.replace(text2, newText);			
+            emit textChanged(this, previousText);
         }
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries2->horizontalLayout);
     }
@@ -263,14 +269,18 @@ void CustomItemWidget::finishEdit()
 	else if (ui_ItemWidgetMeshRegions2) {
 		label = ui_ItemWidgetMeshRegions2->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshRegions2->horizontalLayout);
+        QString previousText = text2;
         text2.replace(text1, newText);
-        text1.replace(text1, newText);        
+        text1.replace(text1, newText);     
+        emit textChanged(this, previousText);
 	}
 	else if (ui_ItemWidgetMeshZones) {
 		label = ui_ItemWidgetMeshZones->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
+        QString previousText = text2;
         text2.replace(text1, newText);
-        text1.replace(text1, newText);      
+        text1.replace(text1, newText);  
+        emit textChanged(this, previousText);
 	}
 
     if (!label || !boxLayout) return;

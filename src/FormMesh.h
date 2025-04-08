@@ -68,6 +68,7 @@ public slots:
 	void on_pushButton_clicked();                                                       //应用
 	void on_pushButton_3_clicked(); 									                //链接公共面按钮
 	void on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidget* widget); 	//接触公共面链接
+    void on_textChanged(CustomItemWidget* widget, QString previousText);				//文本改变
 
 signals:
 	void apply();                                                                       //应用

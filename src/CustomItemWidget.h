@@ -48,6 +48,9 @@ public:
     void beginEdit(QLabel* label);
     void finishEdit();
 
+signals:
+    void textChanged(CustomItemWidget* widget, QString previousText);
+
 public:
     Ui::CustomItemWidgetMeshBoundaries1Class* ui_ItemWidgetMeshBoundaries1; 
     Ui::CustomItemWidgetMeshBoundaries2Class* ui_ItemWidgetMeshBoundaries2;
