@@ -852,9 +852,62 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 			fs::rename(folderPath, newFolderPath);
 		}
 	}
-
 	else if (widget->ui_ItemWidgetMeshZones != nullptr)
 	{
+		QString currentText = widget->text1;
+		if (previousText == currentText) return;
 
+		// 替换 GlobalData 变量
+		std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
+		for (int i = 0; i < cellZoneNames.size(); i++)
+		{
+			if (cellZoneNames[i] == previousText.toStdString())
+			{
+				cellZoneNames[i] = currentText.toStdString();
+				break;
+			}
+		}
+		GlobalData::getInstance().getCaseData()->cellZoneNames = cellZoneNames;
+
+		// 修改文件
+		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+		std::string topoSetDictPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/system/topoSetDict";
+		fs::remove(topoSetDictPath); // 删除旧文件（如果存在）
+		std::ofstream topoSetDictFile(topoSetDictPath);
+		if (!topoSetDictFile) {
+			qDebug() << "无法创建文件:" << QString::fromStdString(topoSetDictPath);
+			return;
+		}
+
+		topoSetDictFile << "FoamFile\n";
+		topoSetDictFile << "{\n";
+		topoSetDictFile << "	version	2.0;\n";
+		topoSetDictFile << "	format	ascii;\n";
+		topoSetDictFile << "	class	dictionary;\n";
+		topoSetDictFile << "	location	\"system\";\n";
+		topoSetDictFile << "	object	topoSetDict;\n";
+		topoSetDictFile << "}\n";
+		topoSetDictFile << "actions	(\n";
+		topoSetDictFile << "	{\n";
+        topoSetDictFile << "		name	" << currentText.toStdString() << "; \n";
+		topoSetDictFile << "		type	cellZoneSet;\n";
+		topoSetDictFile << "		action	new;\n";
+		topoSetDictFile << "		source	zoneToCell;\n";
+		topoSetDictFile << "		sourceInfo\n";
+		topoSetDictFile << "		{\n";
+		topoSetDictFile << "			zone	" << previousText.toStdString() << ";\n";
+		topoSetDictFile << "		}\n";
+		topoSetDictFile << "	}\n";
+		topoSetDictFile << "\n";
+		topoSetDictFile << "	{\n";
+		topoSetDictFile << "		name	" << previousText.toStdString() << "; \n";
+		topoSetDictFile << "		type	cellZoneSet;\n";
+		topoSetDictFile << "		action	remove;\n";
+		topoSetDictFile << "	}\n";
+		topoSetDictFile << ");\n";
+		topoSetDictFile.close();
+
+		//执行topoSet
+		emit topoSet();
 	}
 }

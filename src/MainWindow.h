@@ -228,6 +228,7 @@ public slots:
 	void formMeshImport_import(const QString& filePath, bool isRender);													//网格导入
 	void formMesh_apply(); 																								//更新渲染窗口	
 	void formMesh_updateFormFinished();																					//更新界面完成
+	void formMesh_topoSet();																							//网格拓扑集
 	void formSolver_select(const QString& application);																	//求解器选择
 	void formRun_run();																									//求解计算
 	void formRun_stopRun();																								//停止计算

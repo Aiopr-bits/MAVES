@@ -73,6 +73,7 @@ public slots:
 signals:
 	void apply();                                                                       //应用
 	void updateFormFinished(); 												            //更新界面完成
+    void topoSet(); 
 
 public:
     Ui::FormMeshClass* ui;
