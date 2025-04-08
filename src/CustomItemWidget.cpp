@@ -66,6 +66,9 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         ui_ItemWidgetMeshRegions1->setupUi(this);
         ui_ItemWidgetMeshRegions1->label->setText(text);
 
+        // 初始化 text
+        this->text1 = text;
+
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshRegions1->comboBox);
         combo1View1->setMinimumWidth(150);
@@ -78,6 +81,9 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         ui_ItemWidgetMeshRegions2 = new Ui::CustomItemWidgetMeshRegions2Class();
         ui_ItemWidgetMeshRegions2->setupUi(this);
         ui_ItemWidgetMeshRegions2->label->setText(text);
+
+        // 初始化 text
+        this->text1 = text;
 
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshRegions2->comboBox);
@@ -95,6 +101,9 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		ui_ItemWidgetMeshZones = new Ui::CustomItemWidgetMeshZonesClass();
 		ui_ItemWidgetMeshZones->setupUi(this);
 		ui_ItemWidgetMeshZones->label->setText(text);
+
+        // 初始化 text
+        this->text1 = text;
 
 		// 设置 QComboBox 的自定义视图
 		QListView* combo1View1 = new QListView(ui_ItemWidgetMeshZones->comboBox);
@@ -277,16 +286,14 @@ void CustomItemWidget::finishEdit()
 	else if (ui_ItemWidgetMeshRegions2) {
 		label = ui_ItemWidgetMeshRegions2->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshRegions2->horizontalLayout);
-        QString previousText = text2;
-        text2.replace(text1, newText);
+        QString previousText = text1;
         text1.replace(text1, newText);     
         emit textChanged(this, previousText);
 	}
 	else if (ui_ItemWidgetMeshZones) {
 		label = ui_ItemWidgetMeshZones->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
-        QString previousText = text2;
-        text2.replace(text1, newText);
+        QString previousText = text1;
         text1.replace(text1, newText);  
         emit textChanged(this, previousText);
 	}

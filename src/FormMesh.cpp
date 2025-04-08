@@ -756,8 +756,103 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 	}
 	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
 	{
+		QString currentText = widget->text1;
+		if (previousText == currentText) return;
 
+		// 替换 GlobalData 变量
+		std::unordered_map<std::string, std::string> regionsType = GlobalData::getInstance().getCaseData()->regionsType;
+		regionsType[currentText.toStdString()] = regionsType[previousText.toStdString()];
+		regionsType.erase(previousText.toStdString());
+		GlobalData::getInstance().getCaseData()->regionsType = regionsType;
+
+		// 修改文件
+		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+		std::string filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/regionProperties";
+
+		std::ifstream file(filePath);
+		if (!file.is_open()) {
+			qDebug() << "无法打开文件:" << QString::fromStdString(filePath);
+			return;
+		}
+
+		std::string content;
+		std::string line;
+		bool inRegionsBlock = false;
+		bool foundRegionsToken = false;
+
+		while (std::getline(file, line)) {
+			std::string trimmedLine = line;
+			trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t")); // 去除行首空格
+			trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1); // 去除行尾空格
+
+			// 检测是否找到 regions 关键字
+			if (!foundRegionsToken && trimmedLine.find("regions") != std::string::npos) {
+				foundRegionsToken = true;
+				content += line + "\n";
+				continue;
+			}
+
+			// 检测是否进入 regions 块
+			if (foundRegionsToken && !inRegionsBlock && trimmedLine == "(") {
+				inRegionsBlock = true;
+				content += line + "\n";
+				continue;
+			}
+
+			// 检测是否退出 regions 块
+			if (inRegionsBlock && trimmedLine == ")") {
+				inRegionsBlock = false;
+				content += line + "\n";
+				continue;
+			}
+
+			// 在 regions 块中，修改括号中的 regionName
+			if (inRegionsBlock && !trimmedLine.empty()) {
+				size_t bracketPos = trimmedLine.find('(');
+				size_t rightBracketPos = trimmedLine.find(')', bracketPos + 1);
+
+				if (bracketPos != std::string::npos && rightBracketPos != std::string::npos) {
+					std::string regionType = trimmedLine.substr(0, bracketPos);
+					regionType.erase(regionType.find_last_not_of(" \t") + 1); // 去除区域类型末尾空格
+
+					std::string insideBrackets = trimmedLine.substr(bracketPos + 1, rightBracketPos - bracketPos - 1);
+					std::istringstream iss(insideBrackets);
+					std::string regionName;
+					std::string updatedRegionNames;
+
+					while (iss >> regionName) {
+						if (regionName == previousText.toStdString()) {
+							regionName = currentText.toStdString(); // 替换 regionName
+						}
+						updatedRegionNames += regionName + " ";
+					}
+
+					updatedRegionNames.erase(updatedRegionNames.find_last_not_of(" ") + 1); // 去除末尾多余空格
+					line = "    " + regionType + "       (" + updatedRegionNames + ")";
+				}
+			}
+
+			content += line + "\n";
+		}
+		file.close();
+
+		// 将修改后的内容写回文件
+		std::ofstream outFile(filePath);
+		if (!outFile.is_open()) {
+			qDebug() << "无法写入文件:" << QString::fromStdString(filePath);
+			return;
+		}
+		outFile << content;
+		outFile.close();
+
+		//修改文件夹名称
+		std::string folderPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + previousText.toStdString();
+		std::string newFolderPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + currentText.toStdString();
+		if (fs::exists(folderPath)) {
+			fs::rename(folderPath, newFolderPath);
+		}
 	}
+
 	else if (widget->ui_ItemWidgetMeshZones != nullptr)
 	{
 
