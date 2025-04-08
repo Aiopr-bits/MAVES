@@ -585,16 +585,28 @@ void FormMesh::on_pushButton_3_clicked()
 	QString patchName1 = text1.left(index1);
 	QString patchName2 = text2.left(index2);
 
-	// 移除选中的两个item
-	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(selectedItems[0]));
-	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(selectedItems[1]));
+	// 隐藏选中的两个item
+	ui->listWidget_2->item(ui->listWidget_2->row(selectedItems[0]))->setHidden(true);
+	ui->listWidget_2->item(ui->listWidget_2->row(selectedItems[1]))->setHidden(true);
 
 	auto item = new QListWidgetItem(ui->listWidget_2);
 	ui->listWidget_2->addItem(item);
 	auto widget = new CustomItemWidget(1, this, patchName1, patchName2, patchName1 + " in " + regionName1, patchName2 + " in " + regionName2);
 	ui->listWidget_2->setItemWidget(item, widget);
 
-	//点击widget的ui_ItemWidgetMeshBoundaries2的pushButton，执行on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked
+	//取消选中状态
+	ui->listWidget_2->item(ui->listWidget_2->row(selectedItems[0]))->setSelected(false);
+	ui->listWidget_2->item(ui->listWidget_2->row(selectedItems[1]))->setSelected(false);
+
+	// 重新设置 ui->listWidget_2 高度，仅计算显示的 item
+	int totalHeight = 0;
+	for (int i = 0; i < ui->listWidget_2->count(); ++i) {
+		QListWidgetItem* item = ui->listWidget_2->item(i);
+		if (!item->isHidden())totalHeight += ui->listWidget_2->sizeHintForRow(i);
+	}
+	ui->listWidget_2->setFixedHeight(totalHeight);
+
+	//取消链接按钮事件
 	connect(widget->ui_ItemWidgetMeshBoundaries2->pushButton, &QPushButton::clicked, this, [=]() {
 		on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(widget);
 		});
@@ -629,14 +641,21 @@ void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidg
 	// 移除链接后的item
 	delete ui->listWidget_2->takeItem(ui->listWidget_2->row(item));
 
-	// 添加分解后的两个item
-	auto item1 = new QListWidgetItem(ui->listWidget_2);
-	ui->listWidget_2->addItem(item1);
-	auto widget1 = new CustomItemWidget(0, this, patchName1, patchName1 + " in " + regionName1);
-	ui->listWidget_2->setItemWidget(item1, widget1);
+	// 显示之前隐藏的两个item
+	for (int i = 0; i < ui->listWidget_2->count(); i++)
+	{
+		QListWidgetItem* item = ui->listWidget_2->item(i);
+		CustomItemWidget* widget = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
+		if (widget != nullptr && (widget->text2 == patchName1 + " in " + regionName1 || widget->text2 == patchName2 + " in " + regionName2)) {
+			item->setHidden(false);
+		}
+	}
 
-	auto item2 = new QListWidgetItem(ui->listWidget_2);
-	ui->listWidget_2->addItem(item2);
-	auto widget2 = new CustomItemWidget(0, this, patchName2, patchName2 + " in " + regionName2);
-	ui->listWidget_2->setItemWidget(item2, widget2);
+	// 重新设置 ui->listWidget_2 高度，仅计算显示的 item
+	int totalHeight = 0;
+	for (int i = 0; i < ui->listWidget_2->count(); ++i) {
+		QListWidgetItem* item = ui->listWidget_2->item(i);
+		if (!item->isHidden())totalHeight += ui->listWidget_2->sizeHintForRow(i);
+	}
+	ui->listWidget_2->setFixedHeight(totalHeight);
 }
