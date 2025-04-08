@@ -721,7 +721,34 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 	}
 	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
 	{
+		//获取当前文本
+		QString currentText = widget->text3;
+		for (int i = 0; i < ui->listWidget_2->count(); i++)
+		{
+			QListWidgetItem* item = ui->listWidget_2->item(i);
+			CustomItemWidget* widgetHided = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
+			if (!widgetHided->isHidden()) continue;
 
+			if (widgetHided->text2 == currentText)
+			{
+				currentText = widget->text4;
+				break;
+			}
+		}
+
+		for (int i = 0; i < ui->listWidget_2->count(); i++)
+		{
+			QListWidgetItem* item = ui->listWidget_2->item(i);
+			CustomItemWidget* widgetHided = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
+			if (widgetHided->text2 == previousText)
+			{
+				widgetHided->text2 = currentText;
+				widgetHided->text1 = currentText.left(currentText.indexOf(" in "));
+				emit widgetHided->textChanged(widgetHided, previousText);				
+				break;
+			}
+
+		}
 	}
 	else if (widget->ui_ItemWidgetMeshRegions1 != nullptr)
 	{

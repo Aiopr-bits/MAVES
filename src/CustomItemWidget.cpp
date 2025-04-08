@@ -171,6 +171,15 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
             return true;
         }
     }
+
+    if (editing && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+            finishEdit();
+            return true;
+        }
+    }
+
     return QWidget::eventFilter(obj, event);
 }
 
@@ -224,7 +233,6 @@ void CustomItemWidget::beginEdit(QLabel* label)
     label->hide();
     boxLayout->insertWidget(labelIndex, lineEdit);
     lineEdit->setFocus();
-    connect(lineEdit, &QLineEdit::editingFinished, this, &CustomItemWidget::finishEdit);
 
     qApp->installEventFilter(this);
 }

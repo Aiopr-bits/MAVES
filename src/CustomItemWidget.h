@@ -12,6 +12,7 @@
 #include "ui_CustomItemWidgetMeshRegions1.h"
 #include "ui_CustomItemWidgetMeshRegions2.h"
 #include "ui_CustomItemWidgetMeshZones.h"
+#include <QKeyEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
