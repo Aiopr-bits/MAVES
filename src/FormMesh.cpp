@@ -664,6 +664,81 @@ void FormMesh::on_pushButton_clicked()
 	emit apply();
 }
 
+// 修改文件内容，将边界类型改为 mappedWall
+void modifyBoundaryFile(const std::string& filePath, const std::string& patchName, const std::string& sampleRegion, const std::string& samplePatch)
+{
+	std::ifstream file(filePath);
+	if (!file.is_open()) {
+		qDebug() << "无法打开文件:" << QString::fromStdString(filePath);
+		return;
+	}
+
+	std::string content;
+	std::string line;
+	bool inTargetBlock = false;
+
+	while (std::getline(file, line)) {
+		std::string trimmedLine = line;
+		trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t")); // 去除行首空格
+		trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1); // 去除行尾空格
+
+		// 检测是否找到目标 patchName
+		if (!inTargetBlock && trimmedLine == patchName) {
+			content += line + "\n"; // 保留当前行
+			if (std::getline(file, line)) { // 读取下一行
+				trimmedLine = line;
+				trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t"));
+				trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1);
+
+				if (trimmedLine == "{") { // 确认进入目标块
+					inTargetBlock = true;
+				}
+			}
+			content += line + "\n"; // 保留 "{" 行
+			continue;
+		}
+
+		// 检测是否退出目标块
+		if (inTargetBlock && trimmedLine == "}") {
+			inTargetBlock = false;
+
+			// 在退出目标块前，插入 mappedWall 的相关配置
+			content += "		sampleRegion    " + sampleRegion + ";\n";
+			content += "		samplePatch    " + samplePatch + ";\n";
+			content += "		sampleMode	nearestPatchFace;\n";
+			content += "		offsetMode	uniform;\n";
+			content += "		offset	(0 0 0);\n";
+		}
+
+		// 在目标块中找到 "type" 并替换值
+		if (inTargetBlock && trimmedLine.find("type") == 0) {
+			size_t pos1 = trimmedLine.find_last_of(' ');
+			size_t pos2 = line.find(';');
+			std::string typeStr = trimmedLine.substr(pos1 + 1, pos2 - pos1 - 1);
+
+			// 替换 type 为 mappedWall
+			if (typeStr != "mappedWall") {
+				size_t pos = line.find(typeStr);
+				if (pos != std::string::npos) {
+					line.replace(pos, typeStr.length(), "mappedWall");
+				}
+			}
+		}
+
+		content += line + "\n";
+	}
+	file.close();
+
+	// 将修改后的内容写回文件
+	std::ofstream outFile(filePath);
+	if (!outFile.is_open()) {
+		qDebug() << "无法写入文件:" << QString::fromStdString(filePath);
+		return;
+	}
+	outFile << content;
+	outFile.close();
+}
+
 void FormMesh::on_pushButton_3_clicked()
 {
 	// 获取选中的两个区域
@@ -708,6 +783,18 @@ void FormMesh::on_pushButton_3_clicked()
 	connect(widget->ui_ItemWidgetMeshBoundaries2->pushButton, &QPushButton::clicked, this, [=]() {
 		on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(widget);
 		});
+
+	// 修改 GlobalData 变量
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+	patchType[regionName1.toStdString()][patchName1.toStdString()] = "mappedWall&" + regionName2.toStdString() + "&" + patchName2.toStdString();
+	patchType[regionName2.toStdString()][patchName2.toStdString()] = "mappedWall&" + regionName1.toStdString() + "&" + patchName1.toStdString();
+
+	//修改文件
+	std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+	std::string filePath1 = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + regionName1.toStdString() + "/polyMesh/boundary";
+	std::string filePath2 = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + regionName2.toStdString() + "/polyMesh/boundary";
+	modifyBoundaryFile(filePath1, patchName1.toStdString(), regionName2.toStdString(), patchName2.toStdString());
+	modifyBoundaryFile(filePath2, patchName2.toStdString(), regionName1.toStdString(), patchName1.toStdString());
 }
 
 void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidget* widget)
