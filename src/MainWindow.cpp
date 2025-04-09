@@ -1217,6 +1217,9 @@ void MainWindow::formMesh_cellZonesToRegions()
 		dialogInformationPrompt->close();
 		dialogInformationPrompt->deleteLater(); // 自动释放对话框
 		process->deleteLater();                // 自动释放 QProcess
+
+		// 更新网格导入页面
+		formMesh->updateForm(false);
 		});
 
 	// 设置并启动 QProcess
