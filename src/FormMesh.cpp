@@ -1084,10 +1084,10 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 			currentType = "fluid";
 			break;
 		case 1:
-			previousType = "solid";
+			currentType = "solid";
 			break;
 		default:
-			previousType = "";
+			currentType = "";
 			break;
 		}
 
@@ -1153,7 +1153,7 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 
 			// 在 regions 块中，修改括号中的 regionName
 			if (inRegionsBlock && !trimmedLine.empty()) {
-				if (trimmedLine.find("fluid") != std::string::npos) 
+				if (trimmedLine.find("fluid") == 0)
 				{
 					line = "	fluid	(";
 					std::string boundaries = "";
@@ -1165,10 +1165,10 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 					if (!boundaries.empty() && boundaries[boundaries.size() - 1] == ' ') {
 						boundaries.erase(boundaries.size() - 1);
 					}
-					line += boundaries + ")\n";
+					line += boundaries + ")";
 				}
 
-				if (trimmedLine.find("solid") != std::string::npos) 
+				if (trimmedLine.find("solid") == 0)
 				{
 					line = "	solid	(";
 					std::string boundaries = "";
