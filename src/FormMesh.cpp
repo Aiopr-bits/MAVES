@@ -349,7 +349,39 @@ void FormMesh::getPatchTypes(const std::string& casePath)
 						iss >> key >> value;
 						if (!value.empty() && value.back() == ';')
 							value.pop_back();  // 去除末尾分号
-						patchTypes[currentPatch] = value;
+						if (value != "mappedWall")
+						{
+							patchTypes[currentPatch] = value;
+						}
+						else
+						{
+							std::string sampleRegion, samplePatch;
+							while (sampleRegion.empty() || samplePatch.empty())
+							{
+								if (std::getline(infile, line))
+								{
+									trimmed = trim(line);
+									if (trimmed.find("sampleRegion") == 0)
+									{
+										std::istringstream iss(trimmed);
+										iss >> key >> sampleRegion;
+										if (!sampleRegion.empty() && sampleRegion.back() == ';')
+											sampleRegion.pop_back();  // 去除末尾分号
+									}
+									else if (trimmed.find("samplePatch") == 0)
+									{
+										std::istringstream iss(trimmed);
+										iss >> key >> samplePatch;
+										if (!samplePatch.empty() && samplePatch.back() == ';')
+											samplePatch.pop_back();  // 去除末尾分号
+									}
+								}
+							}
+							if (!sampleRegion.empty() && !samplePatch.empty())
+							{
+								patchTypes[currentPatch] = "mappedWall&" + sampleRegion + "&" + samplePatch;
+							}
+						}
 					}
 				}
 			}
@@ -409,14 +441,14 @@ void FormMesh::getPatchTypes(const std::string& casePath)
 		}
 	}
 
-	// 检查多域 (cellZoneNames)，在不同文件夹下继续解析 boundary
-	std::vector<std::string> cellZoneNames = GlobalData::getInstance().getCaseData()->cellZoneNames;
-	if (cellZoneNames.size() > 1)
+	// 检查多域 (regionsType)，在不同文件夹下继续解析 boundary
+	std::unordered_map < std::string, std::string> regionsTypes = GlobalData::getInstance().getCaseData()->regionsType;
+	if (regionsTypes.size() > 0)
 	{
-		for (auto& cellZoneName : cellZoneNames)
+		for (auto& regionsType : regionsTypes)
 		{
 			fs::path subBoundaryFile =
-				fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / cellZoneName / "polyMesh" / "boundary";
+				fs::path(casePath.substr(0, casePath.find_last_of("/\\"))) / "constant" / regionsType.first / "polyMesh" / "boundary";
 			if (fs::exists(subBoundaryFile))
 			{
 				auto boundaries = parseBoundaryFile(subBoundaryFile.string());
@@ -424,7 +456,7 @@ void FormMesh::getPatchTypes(const std::string& casePath)
 				{
 					if (pair.first.find("internalMesh") != std::string::npos)
 						continue;
-					auto domain = patchType.find(cellZoneName);
+					auto domain = patchType.find(regionsType.first);
 					if (domain != patchType.end())
 					{
 						domain->second[pair.first] = pair.second;
@@ -531,6 +563,12 @@ void FormMesh::updateForm(bool isRender)
 			ui->listWidget->addItem(item);
 			auto widget = new CustomItemWidget(0, this, patchName, patchName + " in " + regionName);
 			QString text = QString::fromStdString(patch.second);
+            if (text.startsWith("mappedWall"))
+			{
+				text = "patch";
+				item->setHidden(true);
+			}
+
 			if (!text.isEmpty()) {
 				text[0] = text[0].toUpper();
 			}
@@ -542,9 +580,56 @@ void FormMesh::updateForm(bool isRender)
 		}
 	}
 
+	//添加链接的item
+	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchTypeTemp = patchType;
+	for (const auto& region : patchType)
+	{
+		std::string regionName = region.first;
+		if (regionName == "default")
+			continue;
+
+		for (const auto& patch : region.second)
+		{
+			if (patchTypeTemp[regionName][patch.first].find("mappedWall") == 0)
+			{
+				std::string sampleRegion, samplePatch;
+				std::string mappedWall = patchTypeTemp[regionName][patch.first];
+				std::vector<std::string> tokens;
+				split(mappedWall, '&', tokens);
+				if (tokens.size() == 3)
+				{
+					sampleRegion = tokens[1];
+					samplePatch = tokens[2];
+				}
+
+				//如果patchTypeTemp[sampleRegion][samplePatch]存在且patchTypeTemp[sampleRegion][samplePatch].find("mappedWall") == 0
+				if (patchTypeTemp.find(sampleRegion) != patchTypeTemp.end() &&
+					patchTypeTemp[sampleRegion].find(samplePatch) != patchTypeTemp[sampleRegion].end() &&
+					patchTypeTemp[sampleRegion][samplePatch].find("mappedWall") == 0)
+				{
+					patchTypeTemp[sampleRegion].erase(samplePatch);//移除另一个避免重复添加
+					auto item = new QListWidgetItem(ui->listWidget_2);
+					ui->listWidget_2->addItem(item);
+					auto widget = new CustomItemWidget(1, this, QString::fromStdString(patch.first), QString::fromStdString(samplePatch),
+						QString::fromStdString(patch.first) + " in " + QString::fromStdString(regionName),
+						QString::fromStdString(samplePatch) + " in " + QString::fromStdString(sampleRegion));
+					ui->listWidget_2->setItemWidget(item, widget);
+					connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
+					connect(widget, &CustomItemWidget::typeChanged, this, &FormMesh::on_typeChanged);
+					connect(widget, &CustomItemWidget::optionChanged, this, &FormMesh::on_optionChanged);
+					//取消链接按钮事件
+					connect(widget->ui_ItemWidgetMeshBoundaries2->pushButton, &QPushButton::clicked, this, [=]() {
+						on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(widget);
+						});
+				}
+			}
+		}
+	}
+
 	totalHeight = 0;
 	for (int i = 0; i < std::min(ui->listWidget_2->count(), 15); ++i) {
-		totalHeight += ui->listWidget_2->sizeHintForRow(i);
+		QListWidgetItem* item = ui->listWidget_2->item(i);
+		if (!item->isHidden())totalHeight += ui->listWidget_2->sizeHintForRow(i);
 	}
 	ui->listWidget_2->setFixedHeight(totalHeight);
 
@@ -1034,7 +1119,7 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 				size_t pos2 = line.find(';');
 				std::string typeStr = trimmedLine.substr(pos1 + 1, pos2 - pos1 - 1);
 
-				if (typeStr != "mappedWall") {
+				if (typeStr.find("mappedWall") != 0 ) {
 					size_t pos = line.find(typeStr);
 					if (pos != std::string::npos) {
 						line.replace(pos, typeStr.length(), currentType.toStdString());
