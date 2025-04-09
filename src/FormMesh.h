@@ -75,7 +75,8 @@ public slots:
 signals:
 	void apply();                                                                       //应用
 	void updateFormFinished(); 												            //更新界面完成
-    void topoSet(); 
+	void topoSet();     									                            //拓扑集    
+	void cellZonesToRegions(); 									                        //cell zones to regions
 
 public:
     Ui::FormMeshClass* ui;

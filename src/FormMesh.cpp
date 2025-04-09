@@ -1469,19 +1469,24 @@ void FormMesh::on_optionChanged(CustomItemWidget* widget, int previousIndex)
 {
 	if (widget->ui_ItemWidgetMeshBoundaries1 != nullptr)
 	{
-
 	}
 	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
 	{
 	}
 	else if (widget->ui_ItemWidgetMeshRegions1 != nullptr)
 	{
+		int currentIndex = widget->ui_ItemWidgetMeshRegions1->comboBox->currentIndex();
+		QString previousType, currentType;
+		if (currentIndex == 0)//生成计算域
+		{
+			emit cellZonesToRegions();
+		}
+
 	}
 	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
 	{
 	}
 	else if (widget->ui_ItemWidgetMeshZones != nullptr)
 	{
-
 	}
 }

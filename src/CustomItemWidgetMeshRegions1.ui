@@ -125,7 +125,7 @@ QLabel {
        </property>
        <item>
         <property name="text">
-         <string>新建项目</string>
+         <string>生成计算域</string>
         </property>
        </item>
        <item>

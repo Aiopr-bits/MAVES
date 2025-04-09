@@ -213,6 +213,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
 	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
 	connect(formMesh, &FormMesh::topoSet, this, &MainWindow::formMesh_topoSet);																			//网格拓扑集
+	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_cellZonesToRegions);													//网格cellZones转区域
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
 	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
@@ -1194,6 +1195,41 @@ void MainWindow::formMesh_topoSet()
 	process->start();
 }
 
+void MainWindow::formMesh_cellZonesToRegions()
+{
+	QProcess* process = new QProcess(this);
+
+	// 创建非阻塞的提示对话框
+	DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "提示", { "正在执行 cellZonesToRegions 命令..." });
+	dialogInformationPrompt->show();
+
+	// 连接 QProcess 的标准输出信号
+	connect(process, &QProcess::readyReadStandardOutput, this, [=]() {
+		while (process->canReadLine()) {
+			QByteArray output = process->readLine();
+			ui->textBrowser->append(QString::fromLocal8Bit(output));
+			ui->textBrowser->repaint();
+		}
+		});
+
+	// 连接 QProcess 的 finished 信号，在进程结束时关闭并释放对话框
+	connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [=]() {
+		dialogInformationPrompt->close();
+		dialogInformationPrompt->deleteLater(); // 自动释放对话框
+		process->deleteLater();                // 自动释放 QProcess
+		});
+
+	// 设置并启动 QProcess
+	QFileInfo fileInfo(QString::fromStdString(GlobalData::getInstance().getCaseData()->casePath));
+	QString casePath = fileInfo.absolutePath();
+	QString command = "splitMeshRegions -cellZones -overwrite -prefixRegion -case " + casePath;
+	process->setProgram("cmd.exe");
+	process->setArguments(QStringList() << "/C" << command);
+	process->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		args->flags |= CREATE_NO_WINDOW;
+		});
+	process->start();
+}
 
 void MainWindow::formSolver_select(const QString& application)
 {

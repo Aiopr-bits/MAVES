@@ -50,8 +50,8 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
             previousTypeIndex = currentIndex; 
             });
 
-		// 连接选项切换信号槽
-		connect(ui_ItemWidgetMeshBoundaries1->comboBox_2, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+		// 连接选项选择信号槽
+		connect(ui_ItemWidgetMeshBoundaries1->comboBox_2, QOverload<int>::of(&QComboBox::activated), this, [=](int currentIndex) {
 			emit optionChanged(this, previousOptionIndex);
 			previousOptionIndex = currentIndex;
 			});
@@ -88,11 +88,11 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         combo1View1->setMinimumWidth(150);
         ui_ItemWidgetMeshRegions1->comboBox->setView(combo1View1);
 
-        // 连接选项切换信号槽
-        connect(ui_ItemWidgetMeshRegions1->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
-            emit optionChanged(this, previousOptionIndex);
-            previousOptionIndex = currentIndex;
-            });
+        // 连接选项选择信号槽
+        connect(ui_ItemWidgetMeshRegions1->comboBox, QOverload<int>::of(&QComboBox::activated), this, [=](int currentIndex) {  
+           emit optionChanged(this, previousOptionIndex);  
+           previousOptionIndex = currentIndex;  
+        });
 
         // 安装事件过滤器
         ui_ItemWidgetMeshRegions1->label->installEventFilter(this);
@@ -120,8 +120,8 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
             previousTypeIndex = currentIndex;
             });
 
-        // 连接选项切换信号槽
-        connect(ui_ItemWidgetMeshRegions2->comboBox_2, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+        // 连接选项选择信号槽
+        connect(ui_ItemWidgetMeshRegions2->comboBox_2, QOverload<int>::of(&QComboBox::activated), this, [=](int currentIndex) {
             emit optionChanged(this, previousOptionIndex);
             previousOptionIndex = currentIndex;
             });
@@ -142,8 +142,8 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		combo1View1->setMinimumWidth(150);
 		ui_ItemWidgetMeshZones->comboBox->setView(combo1View1);
 
-        // 连接选项切换信号槽
-        connect(ui_ItemWidgetMeshZones->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+        // 连接选项选择信号槽
+        connect(ui_ItemWidgetMeshZones->comboBox, QOverload<int>::of(&QComboBox::activated), this, [=](int currentIndex) {
             emit optionChanged(this, previousOptionIndex);
             previousOptionIndex = currentIndex;
             });
