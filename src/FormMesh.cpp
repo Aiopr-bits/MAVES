@@ -982,6 +982,7 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 		std::string regionName = text.substr(text.find(" in ") + 4);
 		std::string patchName = text.substr(0, text.find(" in "));
 		patchType[regionName][patchName] = currentType.toStdString();
+		GlobalData::getInstance().getCaseData()->patchType = patchType;
 
 		//修改文件
 		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
@@ -1062,6 +1063,140 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 	}
 	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
 	{
+		int currentIndex = widget->ui_ItemWidgetMeshRegions2->comboBox->currentIndex();
+		QString previousType, currentType;
+		switch (previousIndex)
+		{
+		case 0:
+			previousType = "fluid";
+			break;
+		case 1:
+			previousType = "solid";
+			break;
+		default:
+			previousType = "";
+			break;
+		}
+
+		switch (currentIndex)
+		{
+		case 0:
+			currentType = "fluid";
+			break;
+		case 1:
+			previousType = "solid";
+			break;
+		default:
+			previousType = "";
+			break;
+		}
+
+		// 替换 GlobalData 变量
+		std::unordered_map<std::string, std::string> regionsType = GlobalData::getInstance().getCaseData()->regionsType;
+		std::string text = widget->text1.toStdString();
+		regionsType[text] = currentType.toStdString();
+		GlobalData::getInstance().getCaseData()->regionsType = regionsType;
+
+		//修改文件
+		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+		std::string filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/regionProperties";
+
+		std::ifstream file(filePath);
+		if (!file.is_open()) {
+			qDebug() << "无法打开文件:" << QString::fromStdString(filePath);
+			return;
+		}
+
+		std::string content;
+		std::string line;
+		bool inRegionsBlock = false;
+		bool foundRegionsToken = false;
+
+		// 读取文件并修改内容
+		while (std::getline(file, line)) {
+			std::string trimmedLine = line;
+			trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t")); // 去除行首空格
+			trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1); // 去除行尾空格
+
+			// 检测是否找到 regions 关键字
+			if (!foundRegionsToken && trimmedLine.find("regions") != std::string::npos) {
+				foundRegionsToken = true;
+				content += line + "\n";
+				continue;
+			}
+
+			// 检测是否进入 regions 块
+			if (foundRegionsToken && !inRegionsBlock && trimmedLine == "(") {
+				inRegionsBlock = true;
+				content += line + "\n";
+				continue;
+			}
+
+			// 检测是否退出 regions 块
+			if (inRegionsBlock && trimmedLine == ")") {
+				inRegionsBlock = false;
+
+				// 在退出 regions 块前，确保将当前边界添加到对应类型
+				if (!text.empty() && !currentType.isEmpty()) {
+					content += "    " + currentType.toStdString() + "       (";
+					for (const auto& region : regionsType) {
+						if (region.second == currentType.toStdString()) {
+							content += region.first + " ";
+						}
+					}
+					content += ")\n";
+				}
+
+				content += line + "\n";
+				continue;
+			}
+
+			// 在 regions 块中，修改括号中的 regionName
+			if (inRegionsBlock && !trimmedLine.empty()) {
+				if (trimmedLine.find("fluid") != std::string::npos) 
+				{
+					line = "	fluid	(";
+					std::string boundaries = "";
+					for (const auto& region : regionsType) {
+						if (region.second == "fluid") {
+							boundaries += region.first + " ";
+						}
+					}
+					if (!boundaries.empty() && boundaries[boundaries.size() - 1] == ' ') {
+						boundaries.erase(boundaries.size() - 1);
+					}
+					line += boundaries + ")\n";
+				}
+
+				if (trimmedLine.find("solid") != std::string::npos) 
+				{
+					line = "	solid	(";
+					std::string boundaries = "";
+					for (const auto& region : regionsType) {
+						if (region.second == "solid") {
+							boundaries += region.first + " ";
+						}
+					}
+					if (!boundaries.empty() && boundaries[boundaries.size() - 1] == ' ') {
+						boundaries.erase(boundaries.size() - 1);
+					}
+					line += boundaries + ")";
+				}
+			}
+
+			content += line + "\n";
+		}
+		file.close();
+
+		// 将修改后的内容写回文件
+		std::ofstream outFile(filePath);
+		if (!outFile.is_open()) {
+			qDebug() << "无法写入文件:" << QString::fromStdString(filePath);
+			return;
+		}
+		outFile << content;
+		outFile.close();
+
 	}
 	else if (widget->ui_ItemWidgetMeshZones != nullptr)
 	{
