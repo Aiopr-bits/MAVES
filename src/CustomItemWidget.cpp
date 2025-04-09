@@ -9,6 +9,8 @@ CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QStrin
 	, ui_ItemWidgetMeshZones(nullptr)
     , lineEdit(nullptr)
     , editing(false)
+	, previousTypeIndex(0)
+	, previousOptionIndex(0)
 {
 	initializeUI(styleIndex, text, text2, text3, text4);
 }
@@ -42,6 +44,18 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         combo1View2->setMinimumWidth(150);
         ui_ItemWidgetMeshBoundaries1->comboBox_2->setView(combo1View2);
 
+        // 连接类型切换信号槽
+        connect(ui_ItemWidgetMeshBoundaries1->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+            emit typeChanged(this, previousTypeIndex); 
+            previousTypeIndex = currentIndex; 
+            });
+
+		// 连接选项切换信号槽
+		connect(ui_ItemWidgetMeshBoundaries1->comboBox_2, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+			emit optionChanged(this, previousOptionIndex);
+			previousOptionIndex = currentIndex;
+			});
+
         // 安装事件过滤器
         ui_ItemWidgetMeshBoundaries1->label->installEventFilter(this);
     }
@@ -74,6 +88,12 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         combo1View1->setMinimumWidth(150);
         ui_ItemWidgetMeshRegions1->comboBox->setView(combo1View1);
 
+        // 连接选项切换信号槽
+        connect(ui_ItemWidgetMeshRegions1->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+            emit optionChanged(this, previousOptionIndex);
+            previousOptionIndex = currentIndex;
+            });
+
         // 安装事件过滤器
         ui_ItemWidgetMeshRegions1->label->installEventFilter(this);
     }
@@ -94,6 +114,18 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         combo1View2->setMinimumWidth(150);
         ui_ItemWidgetMeshRegions2->comboBox_2->setView(combo1View2);
 
+        // 连接类型切换信号槽
+        connect(ui_ItemWidgetMeshRegions2->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+            emit typeChanged(this, previousTypeIndex);
+            previousTypeIndex = currentIndex;
+            });
+
+        // 连接选项切换信号槽
+        connect(ui_ItemWidgetMeshRegions2->comboBox_2, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+            emit optionChanged(this, previousOptionIndex);
+            previousOptionIndex = currentIndex;
+            });
+
         // 安装事件过滤器
         ui_ItemWidgetMeshRegions2->label->installEventFilter(this);
     }
@@ -109,6 +141,12 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		QListView* combo1View1 = new QListView(ui_ItemWidgetMeshZones->comboBox);
 		combo1View1->setMinimumWidth(150);
 		ui_ItemWidgetMeshZones->comboBox->setView(combo1View1);
+
+        // 连接选项切换信号槽
+        connect(ui_ItemWidgetMeshZones->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+            emit optionChanged(this, previousOptionIndex);
+            previousOptionIndex = currentIndex;
+            });
 
 		// 安装事件过滤器
 		ui_ItemWidgetMeshZones->label->installEventFilter(this);

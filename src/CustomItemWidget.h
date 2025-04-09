@@ -51,6 +51,8 @@ public:
 
 signals:
     void textChanged(CustomItemWidget* widget, QString previousText);
+	void typeChanged(CustomItemWidget* widget, int previousIndex);
+	void optionChanged(CustomItemWidget* widget, int previousIndex);
 
 public:
     Ui::CustomItemWidgetMeshBoundaries1Class* ui_ItemWidgetMeshBoundaries1; 
@@ -65,4 +67,7 @@ public:
     QString text2;
 	QString text3;
 	QString text4;
+
+    int previousTypeIndex;
+	int previousOptionIndex;
 };

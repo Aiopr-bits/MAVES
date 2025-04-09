@@ -490,6 +490,8 @@ void FormMesh::updateForm(bool isRender)
 		auto widget = new CustomItemWidget(2, this, "default");
 		ui->listWidget->setItemWidget(item, widget);
 		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
+		connect(widget, &CustomItemWidget::typeChanged, this, &FormMesh::on_typeChanged);
+		connect(widget, &CustomItemWidget::optionChanged, this, &FormMesh::on_optionChanged);
 	}
 
 	for (const auto& pair : regionsType)
@@ -504,6 +506,8 @@ void FormMesh::updateForm(bool isRender)
 		widget->ui_ItemWidgetMeshRegions2->comboBox->setCurrentText(text);
 		ui->listWidget->setItemWidget(item, widget);
 		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
+		connect(widget, &CustomItemWidget::typeChanged, this, &FormMesh::on_typeChanged);
+		connect(widget, &CustomItemWidget::optionChanged, this, &FormMesh::on_optionChanged);
 	}
 
 	int totalHeight = 0;
@@ -533,6 +537,8 @@ void FormMesh::updateForm(bool isRender)
 			widget->ui_ItemWidgetMeshBoundaries1->comboBox->setCurrentText(text);
 			ui->listWidget_2->setItemWidget(item, widget);
 			connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
+			connect(widget, &CustomItemWidget::typeChanged, this, &FormMesh::on_typeChanged);
+			connect(widget, &CustomItemWidget::optionChanged, this, &FormMesh::on_optionChanged);
 		}
 	}
 
@@ -552,6 +558,8 @@ void FormMesh::updateForm(bool isRender)
 		auto widget = new CustomItemWidget(4, this, QString::fromStdString(cellZoneNames[i]));
 		ui->listWidget_4->setItemWidget(item, widget);
 		connect(widget, &CustomItemWidget::textChanged, this, &FormMesh::on_textChanged);
+		connect(widget, &CustomItemWidget::typeChanged, this, &FormMesh::on_typeChanged);
+		connect(widget, &CustomItemWidget::optionChanged, this, &FormMesh::on_optionChanged);
 	}
 
 	totalHeight = 0;
@@ -909,5 +917,175 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 
 		//执行topoSet
 		emit topoSet();
+	}
+}
+
+void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
+{
+	if (widget->ui_ItemWidgetMeshBoundaries1 != nullptr)
+	{
+		int currentIndex = widget->ui_ItemWidgetMeshBoundaries1->comboBox->currentIndex();
+		QString previousType, currentType;
+		switch (previousIndex)
+		{
+		case 0:
+			previousType = "patch";
+			break;
+		case 1:
+			previousType = "wall";
+			break;
+		case 2:
+			previousType = "symmetry";
+			break;
+		case 3:
+			previousType = "empty";
+			break;
+		case 4:
+			previousType = "wedge";
+			break;
+		case 5:
+			previousType = "overset";
+			break;
+		default:
+			previousType = "";
+			break;
+		}
+
+		switch (currentIndex)
+		{
+		case 0:
+			currentType = "patch";
+			break;
+		case 1:
+			currentType = "wall";
+			break;
+		case 2:
+			currentType = "symmetry";
+			break;
+		case 3:
+			currentType = "empty";
+			break;
+		case 4:
+			currentType = "wedge";
+			break;
+		case 5:
+			currentType = "overset";
+			break;
+		default:
+			currentType = "";
+			break;
+		}
+
+		// 替换 GlobalData 变量
+		std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+		std::string text = widget->text2.toStdString();
+		std::string regionName = text.substr(text.find(" in ") + 4);
+		std::string patchName = text.substr(0, text.find(" in "));
+		patchType[regionName][patchName] = currentType.toStdString();
+
+		//修改文件
+		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+		std::string filePath;
+		if (regionName == "default")
+			filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/polyMesh/boundary";
+		else
+			filePath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + regionName + "/polyMesh/boundary";
+
+		std::ifstream file(filePath);
+		if (!file.is_open()) {
+			qDebug() << "无法打开文件:" << QString::fromStdString(filePath);
+			return;
+		}
+
+		std::string content;
+		std::string line;
+		bool inTargetBlock = false;
+
+		while (std::getline(file, line)) {
+			std::string trimmedLine = line;
+			trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t")); // 去除行首空格
+			trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1); // 去除行尾空格
+
+			// 检测是否找到目标 patchName
+			if (!inTargetBlock && trimmedLine == patchName) {
+				content += line + "\n"; // 保留当前行
+				if (std::getline(file, line)) { // 读取下一行
+					trimmedLine = line;
+					trimmedLine.erase(0, trimmedLine.find_first_not_of(" \t"));
+					trimmedLine.erase(trimmedLine.find_last_not_of(" \t") + 1);
+
+					if (trimmedLine == "{") { // 确认进入目标块
+						inTargetBlock = true;
+					}
+				}
+				content += line + "\n"; // 保留 "{" 行
+				continue;
+			}
+
+			// 检测是否退出目标块
+			if (inTargetBlock && trimmedLine == "}") {
+				inTargetBlock = false;
+			}
+
+			// 在目标块中找到 "type" 并替换值
+			if (inTargetBlock && trimmedLine.find("type") == 0) {
+				size_t pos1 = trimmedLine.find_last_of(' ');
+				size_t pos2 = line.find(';');
+				std::string typeStr = trimmedLine.substr(pos1 + 1, pos2 - pos1 - 1);
+
+				if (typeStr != "mappedWall") {
+					size_t pos = line.find(typeStr);
+					if (pos != std::string::npos) {
+						line.replace(pos, typeStr.length(), currentType.toStdString());
+					}
+				}
+			}
+
+			content += line + "\n";
+		}
+		file.close();
+
+		// 将修改后的内容写回文件
+		std::ofstream outFile(filePath);
+		if (!outFile.is_open()) {
+			qDebug() << "无法写入文件:" << QString::fromStdString(filePath);
+			return;
+		}
+		outFile << content;
+		outFile.close();
+	}
+	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshRegions1 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshZones != nullptr)
+	{
+
+	}
+}
+
+void FormMesh::on_optionChanged(CustomItemWidget* widget, int previousIndex)
+{
+	if (widget->ui_ItemWidgetMeshBoundaries1 != nullptr)
+	{
+
+	}
+	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshRegions1 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
+	{
+	}
+	else if (widget->ui_ItemWidgetMeshZones != nullptr)
+	{
+
 	}
 }
