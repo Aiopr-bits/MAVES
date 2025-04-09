@@ -10,7 +10,7 @@
 #include <qmessagebox.h>
 #include <QGraphicsDropShadowEffect>
 
-DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QString titleText, const QStringList& texts, bool isRollText)
+DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QString titleText, const QStringList& texts, bool isShowCloseButton, bool isRollText)
 	: QDialog(parent)
     , m_textIndex(0)
 	, ui(new Ui::DialogInformationPromptClass())
@@ -35,6 +35,16 @@ DialogInformationPrompt::DialogInformationPrompt(QWidget* parent, const QString 
 	{
 		ui->label->setText(titleText);
 	}
+
+    // 初始化关闭按钮
+    if (isShowCloseButton)
+    {
+        ui->pushButton->setVisible(true);
+    }
+    else
+    {
+        ui->pushButton->setVisible(false);
+    }
 
 	// 初始化文本
 	if (!texts.isEmpty())

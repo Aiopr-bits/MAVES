@@ -1164,7 +1164,7 @@ void MainWindow::formMesh_topoSet()
 	QProcess* process = new QProcess(this);
 
 	// 创建非阻塞的提示对话框
-	DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "提示", { "正在执行 topoSet 命令..." });
+	DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "提示", { "正在拓扑设置..." }, false);
 	dialogInformationPrompt->show();
 
 	// 连接 QProcess 的标准输出信号
@@ -1200,7 +1200,7 @@ void MainWindow::formMesh_cellZonesToRegions()
 	QProcess* process = new QProcess(this);
 
 	// 创建非阻塞的提示对话框
-	DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "提示", { "正在执行 cellZonesToRegions 命令..." });
+	DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "提示", { "正在生成计算域..." }, false);
 	dialogInformationPrompt->show();
 
 	// 连接 QProcess 的标准输出信号

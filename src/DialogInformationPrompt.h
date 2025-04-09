@@ -21,7 +21,7 @@ class DialogInformationPrompt : public QDialog
 	Q_OBJECT
 
 public:
-	DialogInformationPrompt(QWidget* parent = nullptr, const QString titleText ="信息提示", const QStringList& texts ={"信息提示框"}, bool isRollText = false);
+	DialogInformationPrompt(QWidget* parent = nullptr, const QString titleText = "信息提示", const QStringList& texts = { "信息提示框" }, bool isShowCloseButton = true, bool isRollText = false);
 	~DialogInformationPrompt();
 
 protected:
