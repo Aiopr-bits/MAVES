@@ -213,7 +213,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
 	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
 	connect(formMesh, &FormMesh::topoSet, this, &MainWindow::formMesh_topoSet);																			//网格拓扑集
-	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_cellZonesToRegions);													//网格cellZones转区域
+	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_splitMeshRegions);														//网格cellZones转区域
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
 	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
@@ -1195,7 +1195,7 @@ void MainWindow::formMesh_topoSet()
 	process->start();
 }
 
-void MainWindow::formMesh_cellZonesToRegions()
+void MainWindow::formMesh_splitMeshRegions()
 {
 	QProcess* process = new QProcess(this);
 
@@ -1217,6 +1217,48 @@ void MainWindow::formMesh_cellZonesToRegions()
 		dialogInformationPrompt->close();
 		dialogInformationPrompt->deleteLater(); // 自动释放对话框
 		process->deleteLater();                // 自动释放 QProcess
+
+		//获取constantPath除了polyMesh以外的文件夹名称
+		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
+		std::string constantPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant";
+
+		QString result;
+		QDir dir(QString::fromStdString(constantPath));
+		QStringList subfolders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		result.clear();
+
+		for (const QString& folder : subfolders) {
+			if (folder != "polyMesh") {
+				result += folder + " ";
+			}
+		}
+
+		if (!result.isEmpty()) {
+			result.chop(1);
+		}
+
+
+        //生成regionProperties文件       
+        std::string regionPropertiesPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/regionProperties";  
+        QFile file(QString::fromStdString(regionPropertiesPath));  
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))  
+        {  
+           QTextStream out(&file);  
+           out << "FoamFile\n";  
+           out << "{\n";  
+           out << "    version     2.0;\n";  
+           out << "    format      ascii;\n";  
+           out << "    class       dictionary;\n";  
+           out << "    object      regionProperties;\n";
+           out << "}\n";  
+           out << "regions\n";  
+           out << "(\n";  
+           out << "    fluid       ("+ result +")\n";
+           out << "    solid       ()\n";  
+           out << ");\n";  
+
+           file.close();  
+        }
 
 		// 更新网格导入页面
 		formMesh->updateForm(false);
