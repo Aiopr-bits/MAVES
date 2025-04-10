@@ -130,7 +130,7 @@ QLabel {
        </item>
        <item>
         <property name="text">
-         <string>新建项目</string>
+         <string>删除</string>
         </property>
        </item>
        <item>

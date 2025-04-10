@@ -27,6 +27,7 @@
 #include <map>
 #include <algorithm>
 #include <cctype>
+#include <QDir>
 
 // 如果是 C++14，启用 experimental/filesystem
 #if __cplusplus < 201703L
