@@ -29,6 +29,10 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 
 	//选中第一个单选按钮
 	ui->radioButton_7->setChecked(true);
+	onComboBox_5_IndexChanged(0);
+	onComboBox_6_IndexChanged(0);
+	onComboBox_7_IndexChanged(0);
+	onComboBox_8_IndexChanged(0);
 
 
 	//ui->gridLayout->setRowStretch(0, 1);

@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include "DialogInformationPrompt.h"
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormTurbulenceClass; };
