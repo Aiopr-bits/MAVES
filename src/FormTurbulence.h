@@ -27,10 +27,23 @@ public:
 	FormTurbulence(QWidget *parent = nullptr);
 	~FormTurbulence();
 
-	bool importParameter();
-	bool exportParameter();
-	void onComboBoxTextChanged(const QString& text);
+private slots:
+	void onRadioButtonToggled();									//湍流模型切换
+	void onComboBox_5_IndexChanged(int index);						//雷诺平均-模型切换
+	void onComboBox_6_IndexChanged(int index);						//大涡模拟-模型切换
+	void onComboBox_7_IndexChanged(int index);						//变化量切换
+	void onComboBox_8_IndexChanged(int index);						//过滤器切换
+	void on_PushButton_3_Toggled(bool checked);						//雷诺平均-模型		参数面板收起展开切换
+	void on_PushButton_6_Toggled(bool checked);						//大涡模拟-模型		参数面板收起展开切换
+	void on_PushButton_7_Toggled(bool checked);						//变化量切换		参数面板收起展开切换
+	void on_PushButton_8_Toggled(bool checked);						//过滤器切换		参数面板收起展开切换
 
 private:
 	Ui::FormTurbulenceClass *ui;
+
+//以下可能删除
+public:
+	bool importParameter();
+	bool exportParameter();
+	void onComboBoxTextChanged(const QString& text);
 };
