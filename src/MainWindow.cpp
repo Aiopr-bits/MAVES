@@ -215,7 +215,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::topoSet, this, &MainWindow::formMesh_topoSet);																			//网格拓扑集
 	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_splitMeshRegions);														//网格cellZones转区域
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
-	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::solverChanged);														//求解器改变，物性参数控制面板调整
+	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::initialization);														//求解器改变，物性参数控制面板调整
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);												//更新渲染窗口

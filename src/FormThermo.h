@@ -11,6 +11,7 @@
 #include "ui_FormThermo.h"
 #include "FormSolver.h"
 #include "GlobalData.h"
+#include "FormThermoListWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormThermoClass; };
@@ -26,10 +27,12 @@ public:
 	
 	bool importParameter();
 	bool exportParameter();
+	void initialization(const QString& newText);
 
 public slots:
-	void solverChanged(const QString& newText);
+	void on_ListWidgetItem_Clicked(QListWidgetItem* item);
 
 private:
 	Ui::FormThermoClass *ui;
+	std::vector<FormThermoListWidget*> formThermoListWidgets;
 };

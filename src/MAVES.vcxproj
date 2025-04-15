@@ -121,6 +121,7 @@
     <QtUic Include="FormPostprocessing.ui" />
     <QtUic Include="FormRun.ui" />
     <QtUic Include="FormSolver.ui" />
+    <QtUic Include="FormThermoListWidget.ui" />
     <QtUic Include="FormTransportProperties.ui" />
     <QtUic Include="FormTurbulence.ui" />
     <QtUic Include="MainWindow.ui" />
@@ -140,6 +141,7 @@
     <ClCompile Include="FormPostprocessing.cpp" />
     <ClCompile Include="FormRun.cpp" />
     <ClCompile Include="FormSolver.cpp" />
+    <ClCompile Include="FormThermoListWidget.cpp" />
     <ClCompile Include="FormTransportProperties.cpp" />
     <ClCompile Include="FormTurbulence.cpp" />
     <ClCompile Include="GlobalData.cpp" />
@@ -169,6 +171,7 @@
     <QtMoc Include="FormTransportProperties.h" />
     <QtMoc Include="FormRadiation.h" />
     <QtMoc Include="CustomItemWidget.h" />
+    <QtMoc Include="FormThermoListWidget.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

@@ -92,6 +92,9 @@
     <QtUic Include="CustomItemWidgetMeshZones.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="FormThermoListWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -149,6 +152,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CustomItemWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormThermoListWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -214,6 +220,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CustomItemWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FormThermoListWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
