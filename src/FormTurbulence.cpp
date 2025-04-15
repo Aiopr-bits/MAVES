@@ -15,10 +15,10 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 	ui->setupUi(this);
 
 	// 连接信号和槽
-	connect(ui->comboBox_5, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FormTurbulence::onComboBox_5_IndexChanged);
-	connect(ui->comboBox_6, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FormTurbulence::onComboBox_6_IndexChanged);
-	connect(ui->comboBox_7, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FormTurbulence::onComboBox_7_IndexChanged);
-	connect(ui->comboBox_8, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FormTurbulence::onComboBox_8_IndexChanged);
+	connect(ui->comboBox_5, QOverload<int>::of(&QComboBox::activated), this, &FormTurbulence::onComboBox_5_IndexChanged);
+	connect(ui->comboBox_6, QOverload<int>::of(&QComboBox::activated), this, &FormTurbulence::onComboBox_6_IndexChanged);
+	connect(ui->comboBox_7, QOverload<int>::of(&QComboBox::activated), this, &FormTurbulence::onComboBox_7_IndexChanged);
+	connect(ui->comboBox_8, QOverload<int>::of(&QComboBox::activated), this, &FormTurbulence::onComboBox_8_IndexChanged);
 	connect(ui->pushButton_3, &QPushButton::toggled, this, &FormTurbulence::on_PushButton_3_Toggled);
 	connect(ui->pushButton_6, &QPushButton::toggled, this, &FormTurbulence::on_PushButton_6_Toggled);
 	connect(ui->pushButton_7, &QPushButton::toggled, this, &FormTurbulence::on_PushButton_7_Toggled);
@@ -28,12 +28,11 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 	connect(ui->radioButton_9, &QRadioButton::toggled, this, &FormTurbulence::onRadioButtonToggled);
 
 	//选中第一个单选按钮
-	ui->radioButton_7->setChecked(true);
 	onComboBox_5_IndexChanged(0);
 	onComboBox_6_IndexChanged(0);
 	onComboBox_7_IndexChanged(0);
 	onComboBox_8_IndexChanged(0);
-
+	ui->radioButton_7->setChecked(true);
 
 	//ui->gridLayout->setRowStretch(0, 1);
 	//ui->gridLayout->setRowStretch(3, 1);
@@ -533,6 +532,15 @@ void FormTurbulence::onRadioButtonToggled()
 	if (senderButton && senderButton->isChecked()) {
 		if (senderButton == ui->radioButton_7) {
 			ui->widget->hide();
+			ui->widget_46->hide();
+			ui->widget_48->hide();
+
+			ui->pushButton_3->setChecked(false);
+			on_PushButton_3_Toggled(false);
+			ui->pushButton_7->setChecked(false);
+			on_PushButton_7_Toggled(false);
+			ui->pushButton_8->setChecked(false);
+			on_PushButton_8_Toggled(false);
 		}
 		else if (senderButton == ui->radioButton_8) {
 			ui->widget->show();
@@ -561,7 +569,6 @@ void FormTurbulence::onRadioButtonToggled()
 			on_PushButton_7_Toggled(false);
 			ui->pushButton_8->setChecked(false);
 			on_PushButton_8_Toggled(false);
-
 		}
 	}
 }
