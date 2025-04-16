@@ -81,6 +81,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTurbulence = new FormTurbulence(this);
 	formThermo = new FormThermo(this);
 	formTransportProperties = new FormTransportProperties(this);
+	formCellZones = new FormCellZones(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formRun = new FormRun(this);
 	formPostprocessing = new FormPostprocessing(this);
@@ -93,6 +94,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formTurbulence, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formThermo, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formTransportProperties, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formCellZones, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
@@ -105,6 +107,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
+	formCellZones->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -271,6 +274,7 @@ void MainWindow::hideAllSubForm()
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
+	formCellZones->hide();
 	formBoundaryConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
@@ -571,6 +575,10 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	else if (previousPanelButton == "传输特性") {
 		widget = formTransportProperties;
 	}
+	else if (previousPanelButton == "区域设置")
+	{
+		widget = formCellZones;	 
+	}
 	else if (previousPanelButton == "边界条件") {
 		widget = formBoundaryConditions;
 	}
@@ -682,6 +690,16 @@ void MainWindow::on_pushButton_21_clicked()
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
 	emit panelPushButtonClicked("传输特性");
+}
+
+void MainWindow::on_pushButton_12_clicked()
+{
+	hideAllSubForm();
+	formCellZones->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("区域设置");
 }
 
 void MainWindow::on_pushButton_13_clicked()

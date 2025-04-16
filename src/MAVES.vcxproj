@@ -112,6 +112,7 @@
     <QtUic Include="DialogResultMerge.ui" />
     <QtUic Include="FormBoundaryConditions.ui" />
     <QtUic Include="FormBoundaryConditionsTabWidget.ui" />
+    <QtUic Include="FormCellZones.ui" />
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
@@ -132,6 +133,7 @@
     <ClCompile Include="DialogResultMerge.cpp" />
     <ClCompile Include="FormBoundaryConditions.cpp" />
     <ClCompile Include="FormBoundaryConditionsTabWidget.cpp" />
+    <ClCompile Include="FormCellZones.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
@@ -172,6 +174,7 @@
     <QtMoc Include="FormRadiation.h" />
     <QtMoc Include="CustomItemWidget.h" />
     <QtMoc Include="FormThermoListWidget.h" />
+    <QtMoc Include="FormCellZones.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

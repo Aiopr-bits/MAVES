@@ -49,7 +49,9 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
+#include "FormCellZones.h"
 #include "FormBoundaryConditions.h"
+#include "FormBoundaryConditionsTabWidget.h"
 #include "FormRadiation.h"
 #include "FormThermo.h"
 #include "FormTransportProperties.h"
@@ -131,7 +133,6 @@ QT_CHARTS_USE_NAMESPACE
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QFutureWatcher>
-#include "FormBoundaryConditionsTabWidget.h"
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -200,6 +201,7 @@ public slots:
 	void on_pushButton_6_clicked();								    													//湍流模型页面
 	void on_pushButton_7_clicked();								    													//热物理特性页面
 	void on_pushButton_21_clicked();								    												//传输特性页面
+	void on_pushButton_12_clicked();								    												//区域设置
 	void on_pushButton_13_clicked();								    												//边界条件页面
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
@@ -285,6 +287,7 @@ public:
 	FormTurbulence* formTurbulence;
 	FormThermo* formThermo;
 	FormTransportProperties* formTransportProperties;
+	FormCellZones* formCellZones;
 	FormBoundaryConditions* formBoundaryConditions;
 	FormRun* formRun;
 	FormPostprocessing* formPostprocessing;
