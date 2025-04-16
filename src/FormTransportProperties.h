@@ -15,6 +15,9 @@ public:
 	FormTransportProperties(QWidget *parent = nullptr);
 	~FormTransportProperties();
 
+public slots:
+	void on_comboBox_itemActivated(int index);
+
 private:
 	Ui::FormTransportPropertiesClass *ui;
 };
