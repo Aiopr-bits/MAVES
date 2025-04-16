@@ -6,26 +6,4748 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>469</width>
+    <height>1500</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FormRadiation</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>200</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout_24">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_13">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>辐射</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="styleSheet">
+        <string notr="true">QScrollArea {
+	border: none;
+}
+
+QWidget {
+ 	background-color: white;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal {
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: #f0f0f0; /* 滚动条背景色 */
+    width: 8px; /* 滚动条宽度 */
+    margin: 0px 0px 0px 0px; /* 滚动条与内容的间距 */
+    opacity: 0; /* 默认隐藏滚动条 */
+}
+
+QScrollBar:vertical:hover {
+    opacity: 1; /* 鼠标悬浮时显示滚动条 */
+}
+
+QScrollBar::handle:vertical {
+    background: #c0c0c0; /* 滚动条滑块颜色 */
+    border-radius: 4px; /* 滑块圆角 */
+    min-height: 20px; /* 滑块最小高度 */
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #a0a0a0; /* 滑块悬停时的颜色 */
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none; /* 去掉上下箭头 */
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none; /* 去掉滚动条空白区域的背景 */
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: #f0f0f0; /* 滚动条背景色 */
+    height: 8px; /* 滚动条高度 */
+    margin: 0px 0px 0px 0px; /* 滚动条与内容的间距 */
+    opacity: 0; /* 默认隐藏滚动条 */
+}
+
+QScrollBar:horizontal:hover {
+    opacity: 1; /* 鼠标悬浮时显示滚动条 */
+}
+
+QScrollBar::handle:horizontal {
+    background: #c0c0c0; /* 滚动条滑块颜色 */
+    border-radius: 4px; /* 滑块圆角 */
+    min-width: 20px; /* 滑块最小宽度 */
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #a0a0a0; /* 滑块悬停时的颜色 */
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    background: none; /* 去掉左右箭头 */
+    width: 0px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none; /* 去掉滚动条空白区域的背景 */
+}</string>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>449</width>
+          <height>1448</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_19">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_12">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>辐射</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox">
+                 <property name="minimumSize">
+                  <size>
+                   <width>25</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>25</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QCheckBox {
+    color: transparent;
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(150, 150, 150);
+    background: rgb(255, 255, 255);
+}
+
+QCheckBox::indicator:hover {
+    background: rgb(242, 242, 242);
+}
+
+QCheckBox::indicator:checked {
+    image: url(../res/checkBox.png);
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QGridLayout" name="gridLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <widget class="Line" name="line_10">
+                    <property name="styleSheet">
+                     <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_79">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout">
+                    <item>
+                     <widget class="QLabel" name="label_61">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>100</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;求解频率&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_78">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>35</width>
+                        <height>17</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="spinBox_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>200</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                      </property>
+                      <property name="minimum">
+                       <number>1</number>
+                      </property>
+                      <property name="maximum">
+                       <number>8</number>
+                      </property>
+                      <property name="value">
+                       <number>5</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QLabel" name="label_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>模型</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_17">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>17</width>
+                   <height>37</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_54">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>辐射模型</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_69">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_5">
+                   <property name="minimumSize">
+                    <size>
+                     <width>165</width>
+                     <height>12</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>165</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    min-height: 10px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 20px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>none</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>P1</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Discrete Ordinates</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Surface to Surface</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_70">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_3">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255); /* 背景颜色为白色 */
+    border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
+    border-radius: 12px; /* 圆角边框，半径可调整 */
+    padding: 10px; /* 内边距，确保内容不贴边 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮时背景颜色 */
+}
+
+QPushButton:checked {
+    background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
+}</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <selectedoff>../res/Expand.png</selectedoff>
+                     <selectedon>../res/Collapse.png</selectedon>
+                    </iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_4" native="true">
+                 <layout class="QGridLayout" name="gridLayout_7">
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item row="0" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_3">
+                    <item>
+                     <widget class="QWidget" name="widget_2" native="true">
+                      <layout class="QGridLayout" name="gridLayout_5">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item row="0" column="0">
+                        <layout class="QHBoxLayout" name="horizontalLayout_3">
+                         <item>
+                          <widget class="Line" name="line_11">
+                           <property name="styleSheet">
+                            <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                           </property>
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_84">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeType">
+                            <enum>QSizePolicy::Fixed</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <layout class="QGridLayout" name="gridLayout_2">
+                           <item row="3" column="0">
+                            <widget class="QLabel" name="label_62">
+                             <property name="minimumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;最大迭代&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="1">
+                            <spacer name="horizontalSpacer_80">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>35</width>
+                               <height>17</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="1">
+                            <spacer name="horizontalSpacer_81">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>35</width>
+                               <height>17</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="2" column="2">
+                            <widget class="QLineEdit" name="lineEdit_55">
+                             <property name="minimumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>1e-03</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <spacer name="horizontalSpacer_82">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>35</width>
+                               <height>17</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="label_63">
+                             <property name="minimumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;η&lt;span style=&quot; vertical-align:sub;&quot;&gt;θ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QLabel" name="label_64">
+                             <property name="minimumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;η&lt;span style=&quot; vertical-align:sub;&quot;&gt;φ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <spacer name="horizontalSpacer_83">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>35</width>
+                               <height>17</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="label_65">
+                             <property name="minimumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>100</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;收敛&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="QSpinBox" name="spinBox_5">
+                             <property name="minimumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                             </property>
+                             <property name="minimum">
+                              <number>1</number>
+                             </property>
+                             <property name="maximum">
+                              <number>8</number>
+                             </property>
+                             <property name="value">
+                              <number>3</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="2">
+                            <widget class="QSpinBox" name="spinBox_6">
+                             <property name="minimumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                             </property>
+                             <property name="minimum">
+                              <number>1</number>
+                             </property>
+                             <property name="maximum">
+                              <number>8</number>
+                             </property>
+                             <property name="value">
+                              <number>5</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="2">
+                            <widget class="QSpinBox" name="spinBox_7">
+                             <property name="minimumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>200</width>
+                               <height>25</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                             </property>
+                             <property name="minimum">
+                              <number>1</number>
+                             </property>
+                             <property name="maximum">
+                              <number>8</number>
+                             </property>
+                             <property name="value">
+                              <number>8</number>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="widget_3" native="true">
+                      <layout class="QGridLayout" name="gridLayout_6">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item row="0" column="0">
+                        <layout class="QHBoxLayout" name="horizontalLayout_4">
+                         <item>
+                          <widget class="Line" name="line_12">
+                           <property name="styleSheet">
+                            <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                           </property>
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_90">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeType">
+                            <enum>QSizePolicy::Fixed</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <layout class="QVBoxLayout" name="verticalLayout_2">
+                           <item>
+                            <layout class="QGridLayout" name="gridLayout_3">
+                             <item row="0" column="0">
+                              <widget class="QLabel" name="label_66">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;平滑&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="0" column="1">
+                              <spacer name="horizontalSpacer_85">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>35</width>
+                                 <height>17</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item row="0" column="2">
+                              <widget class="QCheckBox" name="checkBox_2">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QCheckBox {
+    color: transparent;
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(150, 150, 150);
+    background: rgb(255, 255, 255);
+}
+
+QCheckBox::indicator:hover {
+    background: rgb(242, 242, 242);
+}
+
+QCheckBox::indicator:checked {
+    image: url(../res/checkBox.png);
+}</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="checked">
+                                <bool>true</bool>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="0">
+                              <widget class="QLabel" name="label_67">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;恒定辐射&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="1">
+                              <spacer name="horizontalSpacer_86">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>35</width>
+                                 <height>17</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item row="1" column="2">
+                              <widget class="QCheckBox" name="checkBox_3">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QCheckBox {
+    color: transparent;
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(150, 150, 150);
+    background: rgb(255, 255, 255);
+}
+
+QCheckBox::indicator:hover {
+    background: rgb(242, 242, 242);
+}
+
+QCheckBox::indicator:checked {
+    image: url(../res/checkBox.png);
+}</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="checked">
+                                <bool>true</bool>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item>
+                            <layout class="QHBoxLayout" name="horizontalLayout_9">
+                             <item>
+                              <widget class="QLabel" name="label_6">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>面聚合</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_18">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>17</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                            </layout>
+                           </item>
+                           <item>
+                            <widget class="Line" name="line_5">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <layout class="QGridLayout" name="gridLayout_4">
+                             <item row="0" column="0">
+                              <widget class="QLabel" name="label_68">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;聚类面片&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="0" column="1">
+                              <spacer name="horizontalSpacer_87">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>35</width>
+                                 <height>17</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item row="0" column="2">
+                              <widget class="QSpinBox" name="spinBox_3">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                               </property>
+                               <property name="minimum">
+                                <number>1</number>
+                               </property>
+                               <property name="maximum">
+                                <number>8</number>
+                               </property>
+                               <property name="value">
+                                <number>5</number>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="0">
+                              <widget class="QLabel" name="label_69">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;特征角&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="1">
+                              <spacer name="horizontalSpacer_88">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>32</width>
+                                 <height>14</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item row="1" column="2">
+                              <widget class="QLineEdit" name="lineEdit_57">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>20</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="2" column="0">
+                              <widget class="QLabel" name="label_70">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;最大射线数&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="2" column="1">
+                              <spacer name="horizontalSpacer_89">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>35</width>
+                                 <height>17</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item row="2" column="2">
+                              <widget class="QSpinBox" name="spinBox_4">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>25</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">/* QSpinBox整体样式 */
+QSpinBox {
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    border-radius: 1px;                  /* 圆角 */
+    padding: 2px 5px;                    /* 内边距 */
+    color: rgb(64, 64, 64);              /* 字体颜色 */
+}
+
+/* 鼠标悬停时的样式 */
+QSpinBox:hover {
+    border: 1px solid rgb(160,160,160); /* 边框变暗 */
+}
+
+/* 禁用状态的样式 */
+QSpinBox:disabled {
+    background: rgb(224, 224, 224);      /* 灰色背景 */
+    color: rgb(128, 128, 128);           /* 字体颜色变灰 */
+    border: 2px solid rgb(192, 192, 192); /* 边框颜色保持一致 */
+}
+
+/* 上下按钮的样式 */
+QSpinBox::up-button, QSpinBox::down-button {
+    background: rgb(255, 255, 255);      /* 按钮背景颜色 */
+    border: 1px solid rgb(192, 192, 192); /* 边框颜色 */
+    margin: 0.5px;                         /* 按钮与边框的间距 */
+    border-radius: 1px;                  /* 按钮圆角 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: rgb(242,242,242);      /* 按钮背景变暗 */
+}
+
+/* 按下按钮时的样式 */
+QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+    background: rgb(160, 160, 160);      /* 按钮背景更暗 */
+}
+
+/* 上按钮的箭头样式 */
+QSpinBox::up-arrow {
+    image: url(../res/up-arrow.png); /* 替换为你的上箭头图标路径 */
+}
+
+/* 下按钮的箭头样式 */
+QSpinBox::down-arrow {
+    image: url(:/res/down-arrow.png); /* 替换为你的下箭头图标路径 */
+
+}
+
+/* 禁用状态下的按钮样式 */
+QSpinBox::up-button:disabled, QSpinBox::down-button:disabled {
+    background: rgb(224, 224, 224);      /* 按钮背景变灰 */
+}
+
+QSpinBox QLineEdit::selection {
+    background: rgb(192, 192, 192); /* 设置选中背景色为灰色 */
+    color: rgb(255, 255, 255);     /* 设置选中文字颜色为白色 */
+}</string>
+                               </property>
+                               <property name="minimum">
+                                <number>1</number>
+                               </property>
+                               <property name="maximum">
+                                <number>10000000</number>
+                               </property>
+                               <property name="value">
+                                <number>1000000</number>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_14">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_71">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>吸收模型</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_91">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_6">
+                   <property name="minimumSize">
+                    <size>
+                     <width>165</width>
+                     <height>12</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>165</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    min-height: 10px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 20px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>none</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Constant</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_92">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_4">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255); /* 背景颜色为白色 */
+    border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
+    border-radius: 12px; /* 圆角边框，半径可调整 */
+    padding: 10px; /* 内边距，确保内容不贴边 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮时背景颜色 */
+}
+
+QPushButton:checked {
+    background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
+}</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <selectedoff>../res/Expand.png</selectedoff>
+                     <selectedon>../res/Collapse.png</selectedon>
+                    </iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_12" native="true">
+                 <layout class="QGridLayout" name="gridLayout_20">
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="QWidget" name="widget_5" native="true">
+                    <layout class="QGridLayout" name="gridLayout_9">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                      <layout class="QHBoxLayout" name="horizontalLayout_5">
+                       <item>
+                        <widget class="Line" name="line_13">
+                         <property name="styleSheet">
+                          <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                         </property>
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_96">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <layout class="QGridLayout" name="gridLayout_8">
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_72">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;a[1/m&lt;span style=&quot; vertical-align:super;&quot;&gt;2&lt;/span&gt;]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <spacer name="horizontalSpacer_93">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>35</width>
+                             <height>17</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="0" column="2">
+                          <widget class="QLineEdit" name="lineEdit_53">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_73">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;e[1/m]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <spacer name="horizontalSpacer_95">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>35</width>
+                             <height>17</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="1" column="2">
+                          <widget class="QLineEdit" name="lineEdit_56">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_74">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;E[W/m&lt;span style=&quot; vertical-align:super;&quot;&gt;3&lt;/span&gt;]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <spacer name="horizontalSpacer_94">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>35</width>
+                             <height>17</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="2" column="2">
+                          <widget class="QLineEdit" name="lineEdit_54">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_15">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_75">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>散射模型</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_97">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_7">
+                   <property name="minimumSize">
+                    <size>
+                     <width>165</width>
+                     <height>12</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>165</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    min-height: 10px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 20px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>none</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Constant</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_98">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_5">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255); /* 背景颜色为白色 */
+    border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
+    border-radius: 12px; /* 圆角边框，半径可调整 */
+    padding: 10px; /* 内边距，确保内容不贴边 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮时背景颜色 */
+}
+
+QPushButton:checked {
+    background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
+}</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <selectedoff>../res/Expand.png</selectedoff>
+                     <selectedon>../res/Collapse.png</selectedon>
+                    </iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_13" native="true">
+                 <layout class="QGridLayout" name="gridLayout_21">
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="QWidget" name="widget_6" native="true">
+                    <layout class="QGridLayout" name="gridLayout_11">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                      <layout class="QHBoxLayout" name="horizontalLayout_7">
+                       <item>
+                        <widget class="Line" name="line_14">
+                         <property name="styleSheet">
+                          <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                         </property>
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_101">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <layout class="QGridLayout" name="gridLayout_10">
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_76">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:9pt; vertical-align:sub;&quot;&gt;μ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <spacer name="horizontalSpacer_99">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>35</width>
+                             <height>17</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="0" column="2">
+                          <widget class="QLineEdit" name="lineEdit_58">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_77">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:9pt; vertical-align:sub;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <spacer name="horizontalSpacer_100">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>35</width>
+                             <height>17</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="1" column="2">
+                          <widget class="QLineEdit" name="lineEdit_59">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_11" native="true">
+             <layout class="QGridLayout" name="gridLayout_18">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QWidget" name="widget_10" native="true">
+                <layout class="QGridLayout" name="gridLayout_23">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <layout class="QVBoxLayout" name="verticalLayout_11">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <item>
+                      <widget class="QLabel" name="label_7">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>太阳辐射</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_19">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>17</width>
+                         <height>37</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="Line" name="line_6">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <item>
+                      <widget class="QLabel" name="label_4">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>太阳辐射</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_12">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_4">
+                       <property name="minimumSize">
+                        <size>
+                         <width>25</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>25</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+    color: transparent;
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(150, 150, 150);
+    background: rgb(255, 255, 255);
+}
+
+QCheckBox::indicator:hover {
+    background: rgb(242, 242, 242);
+}
+
+QCheckBox::indicator:checked {
+    image: url(../res/checkBox.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="checked">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_13">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeType">
+                        <enum>QSizePolicy::Fixed</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_16">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_78">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>太阳方向</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_102">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="comboBox_8">
+                         <property name="minimumSize">
+                          <size>
+                           <width>165</width>
+                           <height>12</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>165</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    min-height: 10px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 20px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>Constant</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Sun Tracking</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_103">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>10</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButton_6">
+                         <property name="minimumSize">
+                          <size>
+                           <width>25</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>25</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255); /* 背景颜色为白色 */
+    border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
+    border-radius: 12px; /* 圆角边框，半径可调整 */
+    padding: 10px; /* 内边距，确保内容不贴边 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮时背景颜色 */
+}
+
+QPushButton:checked {
+    background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
+}</string>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset>
+                           <selectedoff>../res/Expand.png</selectedoff>
+                           <selectedon>../res/Collapse.png</selectedon>
+                          </iconset>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_14" native="true">
+                       <layout class="QGridLayout" name="gridLayout_17">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item row="0" column="0">
+                         <layout class="QVBoxLayout" name="verticalLayout_8">
+                          <item>
+                           <widget class="QWidget" name="widget_7" native="true">
+                            <layout class="QGridLayout" name="gridLayout_13">
+                             <property name="leftMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
+                             <item row="0" column="0">
+                              <layout class="QHBoxLayout" name="horizontalLayout_18">
+                               <item>
+                                <widget class="Line" name="line_15">
+                                 <property name="styleSheet">
+                                  <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                                 </property>
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <spacer name="horizontalSpacer_105">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Fixed</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <layout class="QHBoxLayout" name="horizontalLayout_17">
+                                 <item>
+                                  <widget class="QLabel" name="label_79">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;方向&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <spacer name="horizontalSpacer_104">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_60">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_107">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_61">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_106">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_62">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>-1</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="widget_8" native="true">
+                            <layout class="QGridLayout" name="gridLayout_14">
+                             <property name="leftMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
+                             <item row="0" column="0">
+                              <layout class="QHBoxLayout" name="horizontalLayout_21">
+                               <item>
+                                <widget class="Line" name="line_16">
+                                 <property name="styleSheet">
+                                  <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                                 </property>
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <spacer name="horizontalSpacer_116">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Fixed</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <layout class="QGridLayout" name="gridLayout_12">
+                                 <item row="0" column="0">
+                                  <widget class="QLabel" name="label_85">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;当地子午线&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="1">
+                                  <spacer name="horizontalSpacer_113">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="0" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_68">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>0</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="0">
+                                  <widget class="QLabel" name="label_82">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;经度&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="1">
+                                  <spacer name="horizontalSpacer_109">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="1" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_67">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>0</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="0">
+                                  <widget class="QLabel" name="label_81">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;维度&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="1">
+                                  <spacer name="horizontalSpacer_111">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="2" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_66">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>0</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="0">
+                                  <widget class="QLabel" name="label_84">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;上方向&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="1">
+                                  <spacer name="horizontalSpacer_112">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="3" column="2">
+                                  <layout class="QHBoxLayout" name="horizontalLayout_19">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_63">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_117">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_65">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_118">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_71">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>1</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </item>
+                                 <item row="4" column="0">
+                                  <widget class="QLabel" name="label_80">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;东方向&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="4" column="1">
+                                  <spacer name="horizontalSpacer_110">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="4" column="2">
+                                  <layout class="QHBoxLayout" name="horizontalLayout_20">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_72">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>1</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_119">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_73">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_120">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_74">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>25</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>0</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </item>
+                                 <item row="5" column="0">
+                                  <widget class="QLabel" name="label_83">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;开始日&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="5" column="1">
+                                  <spacer name="horizontalSpacer_108">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="5" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_64">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>0</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="6" column="0">
+                                  <widget class="QLabel" name="label_86">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;开始时间[h]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="6" column="1">
+                                  <spacer name="horizontalSpacer_114">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="6" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_70">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>0</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="7" column="0">
+                                  <widget class="QLabel" name="label_87">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;跟踪更新间隔[h]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="7" column="1">
+                                  <spacer name="horizontalSpacer_115">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>35</width>
+                                     <height>17</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="7" column="2">
+                                  <widget class="QLineEdit" name="lineEdit_69">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>25</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>1</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_9">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_22">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_88">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>太阳负载</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_121">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="comboBox_9">
+                         <property name="minimumSize">
+                          <size>
+                           <width>165</width>
+                           <height>12</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>165</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    border-radius: 2px;
+    min-height: 10px;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: rgb(122, 122, 122); /* 默认边界颜色 */
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::drop-down:hover {
+    border-left-color: rgb(23, 23, 23); /* 鼠标悬浮时边界颜色 */
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;../res/arrow.png&quot;); /* 使用相对路径 */
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    selection-background-color: #f0f0f0;
+    selection-color: black;
+    outline: 0px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 20px; /* 增加选项高度 */
+}
+
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
+    background: white;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background: #bfbfbf;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: white;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QComboBox QAbstractItemView QScrollBarup-arrow:vertical, 
+QComboBox QAbstractItemView QScrollBardown-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBaradd-page:vertical, 
+QComboBox QAbstractItemView QScrollBarsub-page:vertical {
+    background: none;
+}
+
+</string>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>Constant</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_122">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>10</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButton_7">
+                         <property name="minimumSize">
+                          <size>
+                           <width>25</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>25</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 255); /* 背景颜色为白色 */
+    border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
+    border-radius: 12px; /* 圆角边框，半径可调整 */
+    padding: 10px; /* 内边距，确保内容不贴边 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:hover {
+    background-color: rgb(242, 242, 242); /* 鼠标悬浮时背景颜色 */
+}
+
+QPushButton:checked {
+    background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
+}</string>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset>
+                           <selectedoff>../res/Expand.png</selectedoff>
+                           <selectedon>../res/Collapse.png</selectedon>
+                          </iconset>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_15" native="true">
+                       <layout class="QGridLayout" name="gridLayout_22">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item row="0" column="0">
+                         <widget class="QWidget" name="widget_9" native="true">
+                          <layout class="QGridLayout" name="gridLayout_16">
+                           <property name="leftMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>0</number>
+                           </property>
+                           <item row="0" column="0">
+                            <layout class="QHBoxLayout" name="horizontalLayout_23">
+                             <item>
+                              <widget class="Line" name="line_17">
+                               <property name="styleSheet">
+                                <string notr="true">QFrame {
+    border: 2px solid rgb(181, 181, 181);
+}
+</string>
+                               </property>
+                               <property name="orientation">
+                                <enum>Qt::Vertical</enum>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_125">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeType">
+                                <enum>QSizePolicy::Fixed</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>20</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <layout class="QGridLayout" name="gridLayout_15">
+                               <item row="0" column="0">
+                                <widget class="QLabel" name="label_89">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;方向[W/m&lt;span style=&quot; vertical-align:super;&quot;&gt;2&lt;/span&gt;]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="1">
+                                <spacer name="horizontalSpacer_123">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>35</width>
+                                   <height>17</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="0" column="2">
+                                <widget class="QLineEdit" name="lineEdit_75">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>200</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>200</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>1000</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="1" column="0">
+                                <widget class="QLabel" name="label_90">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel {
+    font-family: 'Arial'; /* 字体 */
+    font-size: 9pt;       /* 字体大小 */
+    color: rgb(66, 66, 66);  
+    padding: 2px; 
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;扩散[W/m&lt;span style=&quot; vertical-align:super;&quot;&gt;2&lt;/span&gt;]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="1" column="1">
+                                <spacer name="horizontalSpacer_124">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>35</width>
+                                   <height>17</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="1" column="2">
+                                <widget class="QLineEdit" name="lineEdit_76">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>200</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>200</width>
+                                   <height>25</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLineEdit {
+    border: 1px solid rgb(192, 192, 192); /* 默认边框颜色 */
+}
+QLineEdit:focus {
+    border: 1px solid rgb(50, 170, 233); /* 焦点时的边框颜色 */
+    outline: none;                       /* 移除默认虚线框 */
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>0</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_24">
+                     <item>
+                      <widget class="QLabel" name="label_8">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>反射光线</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_14">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_5">
+                       <property name="minimumSize">
+                        <size>
+                         <width>25</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>25</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+    color: transparent;
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(150, 150, 150);
+    background: rgb(255, 255, 255);
+}
+
+QCheckBox::indicator:hover {
+    background: rgb(242, 242, 242);
+}
+
+QCheckBox::indicator:checked {
+    image: url(../res/checkBox.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="checked">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_15">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeType">
+                        <enum>QSizePolicy::Fixed</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
