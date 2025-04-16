@@ -1,0 +1,14 @@
+FoamFile
+{
+	version	2.0;
+	class	dictionary;
+	format	ascii;
+	location	"constant/solid";
+	object	radiationProperties;
+}
+radiation	true;
+solverFreq	5;
+radiationModel	opaqueSolid;
+absorptionEmissionModel	none;
+scatterModel	none;
+transmissivityModel	none;

@@ -1,0 +1,43 @@
+FoamFile
+{
+	version	2.0;
+	format	binary;
+	class	dictionary;
+	location	"system/solid";
+	object	changeDictionaryDict;
+}
+T
+{
+	boundaryField
+	{
+		board
+		{
+			type	zeroGradient;
+		}
+		cpu
+		{
+			type	compressible::turbulentTemperatureRadCoupledMixed;
+			qrNbr	qr;
+			qr	none;
+			neighbourFieldName	T;
+			alphaAni	Anialpha;
+			kappaMethod	solidThermo;
+			kappa	none;
+			Tnbr	T;
+		}
+	}
+}
+p
+{
+	boundaryField
+	{
+		board
+		{
+			type	zeroGradient;
+		}
+		cpu
+		{
+			type	zeroGradient;
+		}
+	}
+}

@@ -1,0 +1,65 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	location	"system";
+	object	topoSetDict;
+}
+actions	(
+	{
+		name	cellsToExtract;
+		type	cellSet;
+		action	new;
+		source	labelToCell;
+		sourceInfo
+		{
+			value	();
+		}
+	}
+
+	{
+		name	facesToExtract;
+		type	faceSet;
+		action	new;
+		source	labelToCell;
+		sourceInfo
+		{
+			value	();
+		}
+	}
+
+	{
+		name	facesToExtract;
+		type	faceSet;
+		action	add;
+		source	boxToFace;
+		sourceInfo
+		{
+			box	(0.0845 0.0415 0) (0.091 0.050499998 0.008);
+		}
+	}
+
+	{
+		name	facesToExtract;
+		type	faceSet;
+		action	add;
+		source	cellToFace;
+		sourceInfo
+		{
+			set	cellsToExtract;
+			option	all;
+		}
+	}
+
+	{
+		name	facesToExtract;
+		type	faceSet;
+		action	subset;
+		source	patchToFace;
+		sourceInfo
+		{
+			name	boundaries;
+		}
+	}
+);

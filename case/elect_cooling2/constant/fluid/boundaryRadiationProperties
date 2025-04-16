@@ -1,0 +1,50 @@
+FoamFile
+{
+	version	2.0;
+	class	dictionary;
+	format	ascii;
+	location	"constant/fluid";
+	object	boundaryRadiationProperties;
+}
+boundaries
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}
+board
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}
+cpu
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}
+fan
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}
+fan_inlet
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}
+outlet
+{
+	type	lookup;
+	emissivity	1.0;
+	absorptivity	1.0;
+	transmissivity	0.0;
+}

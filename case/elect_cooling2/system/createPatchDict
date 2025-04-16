@@ -1,0 +1,20 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	location	"system";
+	object	createPatchDict;
+}
+pointSync	false;
+patches	(
+	{
+		name	boundaries_in_outlet_tool;
+		patchInfo
+		{
+			type	patch;
+		}
+		constructFrom	set;
+		set	facesToExtract;
+	}
+);

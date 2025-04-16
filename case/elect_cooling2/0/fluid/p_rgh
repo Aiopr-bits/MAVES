@@ -1,0 +1,39 @@
+FoamFile
+{
+	version	2.0;
+	format	binary;
+	class	volScalarField;
+	location	"0/fluid";
+	object	p_rgh;
+	arch	"LSB;label=32;scalar=64";
+}
+dimensions	[1 -1 -2 0 0 0 0];
+internalField	uniform 100000;
+boundaryField
+{
+	boundaries
+	{
+		type	fixedFluxPressure;
+	}
+	board
+	{
+		type	fixedFluxPressure;
+	}
+	cpu
+	{
+		type	fixedFluxPressure;
+	}
+	fan
+	{
+		type	fixedFluxPressure;
+	}
+	fan_inlet
+	{
+		type	fixedFluxPressure;
+	}
+	outlet
+	{
+		type	fixedValue;
+		value	uniform 100000;
+	}
+}

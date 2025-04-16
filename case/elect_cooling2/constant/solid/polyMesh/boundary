@@ -1,0 +1,30 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	polyBoundaryMesh;
+	location	"constant/polyMesh";
+	object	boundary;
+}
+2
+(
+	board
+	{
+		type	wall;
+		startFace	9045;
+		nFaces	684;
+		inGroups	(viewFactorWall);
+	}
+	cpu
+	{
+		type	mappedWall;
+		sampleRegion	fluid;
+		samplePatch	cpu;
+		sampleMode	nearestPatchFace;
+		offsetMode	uniform;
+		offset	(0 0 0);
+		startFace	9729;
+		nFaces	1554;
+		inGroups	(viewFactorWall);
+	}
+)

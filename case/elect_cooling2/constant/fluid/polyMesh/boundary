@@ -1,0 +1,56 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	polyBoundaryMesh;
+	location	"constant/polyMesh";
+	object	boundary;
+}
+6
+(
+	boundaries
+	{
+		type	wall;
+		startFace	207357;
+		nFaces	5530;
+		inGroups	(viewFactorWall);
+	}
+	board
+	{
+		type	wall;
+		startFace	212887;
+		nFaces	16833;
+		inGroups	(viewFactorWall);
+	}
+	cpu
+	{
+		type	mappedWall;
+		sampleRegion	solid;
+		samplePatch	cpu;
+		sampleMode	nearestPatchFace;
+		offsetMode	uniform;
+		offset	(0 0 0);
+		startFace	229720;
+		nFaces	1554;
+		inGroups	(viewFactorWall);
+	}
+	fan
+	{
+		type	wall;
+		startFace	231274;
+		nFaces	899;
+		inGroups	(viewFactorWall);
+	}
+	fan_inlet
+	{
+		type	patch;
+		startFace	232173;
+		nFaces	433;
+	}
+	outlet
+	{
+		type	patch;
+		startFace	232606;
+		nFaces	33;
+	}
+)

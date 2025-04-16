@@ -1,0 +1,80 @@
+solid patch0604
+facet normal 0.0 0.0 1.0
+outer loop
+vertex 0.06500001 0.0173 0.001
+vertex 0.051 0.0313 0.001
+vertex 0.051 0.0173 0.001
+endloop
+endfacet
+facet normal 0.0 0.0 1.0
+outer loop
+vertex 0.051 0.0313 0.001
+vertex 0.06500001 0.0173 0.001
+vertex 0.06500001 0.0313 0.001
+endloop
+endfacet
+endsolid patch0604
+solid patch0606
+facet normal 0.0 1.0 0.0
+outer loop
+vertex 0.051 0.0313 0.001
+vertex 0.06500001 0.0313 0.0
+vertex 0.051 0.0313 0.0
+endloop
+endfacet
+facet normal 0.0 1.0 0.0
+outer loop
+vertex 0.06500001 0.0313 0.0
+vertex 0.051 0.0313 0.001
+vertex 0.06500001 0.0313 0.001
+endloop
+endfacet
+endsolid patch0606
+solid patch0607
+facet normal 1.0 0.0 0.0
+outer loop
+vertex 0.06500001 0.0313 0.0
+vertex 0.06500001 0.0173 0.001
+vertex 0.06500001 0.0173 0.0
+endloop
+endfacet
+facet normal 1.0 0.0 0.0
+outer loop
+vertex 0.06500001 0.0173 0.001
+vertex 0.06500001 0.0313 0.0
+vertex 0.06500001 0.0313 0.001
+endloop
+endfacet
+endsolid patch0607
+solid patch0608
+facet normal -1.0 0.0 0.0
+outer loop
+vertex 0.051 0.0313 0.001
+vertex 0.051 0.0173 0.0
+vertex 0.051 0.0173 0.001
+endloop
+endfacet
+facet normal -1.0 0.0 0.0
+outer loop
+vertex 0.051 0.0173 0.0
+vertex 0.051 0.0313 0.001
+vertex 0.051 0.0313 0.0
+endloop
+endfacet
+endsolid patch0608
+solid patch0609
+facet normal 0.0 -1.0 0.0
+outer loop
+vertex 0.06500001 0.0173 0.001
+vertex 0.051 0.0173 0.0
+vertex 0.06500001 0.0173 0.0
+endloop
+endfacet
+facet normal 0.0 -1.0 0.0
+outer loop
+vertex 0.051 0.0173 0.0
+vertex 0.06500001 0.0173 0.001
+vertex 0.051 0.0173 0.001
+endloop
+endfacet
+endsolid patch0609

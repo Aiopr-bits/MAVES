@@ -1,0 +1,33 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	location	"system/solid";
+	object	fvOptions;
+}
+scalarSource
+{
+	active	true;
+	type	scalarSemiImplicitSource;
+	scalarSemiImplicitSourceCoeffs
+	{
+		volumeMode	specific;
+		selectionMode	all;
+		injectionRateSuSp
+		{
+			h	(1250000 0);
+		}
+	}
+}
+temperatureLimit
+{
+	active	true;
+	type	limitTemperature;
+	limitTemperatureCoeffs
+	{
+		min	290;
+		max	600;
+		selectionMode	all;
+	}
+}
