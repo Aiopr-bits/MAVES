@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTransportProperties = new FormTransportProperties(this);
 	formCellZones = new FormCellZones(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
+	formInitialConditions = new FormInitialConditions(this);
 	formRun = new FormRun(this);
 	formPostprocessing = new FormPostprocessing(this);
 	formModelClip = new FormModelClip(this);
@@ -96,6 +97,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formTransportProperties, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formCellZones, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formInitialConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formRun, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formPostprocessing, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formModelClip, 0, 0, 1, 1);
@@ -109,6 +111,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTransportProperties->hide();
 	formCellZones->hide();
 	formBoundaryConditions->hide();
+	formInitialConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
 	formModelClip->hide();
@@ -276,6 +279,7 @@ void MainWindow::hideAllSubForm()
 	formTransportProperties->hide();
 	formCellZones->hide();
 	formBoundaryConditions->hide();
+	formInitialConditions->hide();
 	formRun->hide();
 	formPostprocessing->hide();
 	formModelClip->hide();
@@ -582,6 +586,9 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	else if (previousPanelButton == "边界条件") {
 		widget = formBoundaryConditions;
 	}
+	else if (previousPanelButton == "初始条件") {
+		widget = formInitialConditions;
+	}
 	else if (previousPanelButton == "求解计算") {
 		widget = formRun;
 	}
@@ -710,6 +717,16 @@ void MainWindow::on_pushButton_13_clicked()
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
 	emit panelPushButtonClicked("边界条件");
+}
+
+void MainWindow::on_pushButton_14_clicked()
+{
+	hideAllSubForm();
+	formInitialConditions->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("初始条件");
 }
 
 void MainWindow::on_pushButton_16_clicked()

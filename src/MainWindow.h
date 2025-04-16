@@ -52,6 +52,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormCellZones.h"
 #include "FormBoundaryConditions.h"
 #include "FormBoundaryConditionsTabWidget.h"
+#include "FormInitialConditions.h"
 #include "FormRadiation.h"
 #include "FormThermo.h"
 #include "FormTransportProperties.h"
@@ -203,6 +204,7 @@ public slots:
 	void on_pushButton_21_clicked();								    												//传输特性页面
 	void on_pushButton_12_clicked();								    												//区域设置
 	void on_pushButton_13_clicked();								    												//边界条件页面
+	void on_pushButton_14_clicked();								    												//初始条件页面
 	void on_pushButton_16_clicked();																					//求解计算页面
 	void on_pushButton_17_clicked();																					//后处理页面
 	void on_pushButton_3_clicked();								    													//模型切分
@@ -289,6 +291,7 @@ public:
 	FormTransportProperties* formTransportProperties;
 	FormCellZones* formCellZones;
 	FormBoundaryConditions* formBoundaryConditions;
+	FormInitialConditions* formInitialConditions;
 	FormRun* formRun;
 	FormPostprocessing* formPostprocessing;
 	FormModelClip* formModelClip;
