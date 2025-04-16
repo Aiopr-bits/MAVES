@@ -1026,7 +1026,13 @@ QPushButton:hover {
 
 QPushButton:checked {
     background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
-	qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
 }</string>
                               </property>
                               <property name="text">
@@ -6550,7 +6556,6 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
     border-radius: 12px; /* 圆角边框，半径可调整 */
     padding: 10px; /* 内边距，确保内容不贴边 */
-    /*qproperty-icon: url(../res/Expand.png); */
     qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
 }
 
@@ -6560,8 +6565,13 @@ QPushButton:hover {
 
 QPushButton:checked {
     background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
-    /*qproperty-icon: url(../res/Collapse.png); */
-	qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
 }</string>
                               </property>
                               <property name="text">
@@ -14098,7 +14108,6 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
     border-radius: 12px; /* 圆角边框，半径可调整 */
     padding: 10px; /* 内边距，确保内容不贴边 */
-    /*qproperty-icon: url(../res/Expand.png); */
     qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
 }
 
@@ -14108,8 +14117,13 @@ QPushButton:hover {
 
 QPushButton:checked {
     background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
-    /*qproperty-icon: url(../res/Collapse.png); */
-	qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
 }</string>
                     </property>
                     <property name="text">
@@ -14462,7 +14476,6 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
     border: 1px solid rgb(100, 100, 100); /* 边框颜色 */
     border-radius: 12px; /* 圆角边框，半径可调整 */
     padding: 10px; /* 内边距，确保内容不贴边 */
-    /*qproperty-icon: url(../res/Expand.png); */
     qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
 }
 
@@ -14472,8 +14485,13 @@ QPushButton:hover {
 
 QPushButton:checked {
     background-color: rgb(255, 255, 255); /* 选中时背景颜色 */
-    /*qproperty-icon: url(../res/Collapse.png); */
-	qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+    qproperty-iconSize: 10px 10px; /* 图标大小，可根据需要调整 */
+}
+
+QPushButton:disabled {
+    background-color: rgb(225, 225, 225); /* 不可用时背景颜色 */
+    color: rgb(150, 150, 150); /* 不可用时文字颜色（可选） */
+    border: 1px solid rgb(200, 200, 200); /* 不可用时边框颜色（可选） */
 }</string>
                     </property>
                     <property name="text">
