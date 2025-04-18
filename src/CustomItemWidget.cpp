@@ -160,11 +160,16 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 
 		// 初始化 text
 		this->text1 = text;
+        this->text2 = text2;
         this->text3 = text3;
+
         if (text2 == "patch")
         {
             QPixmap pixmap("../res/patch.png");
-            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+            int margin = 4; 
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
 
 			ui_ItemWidgetBoundaryConditions->comboBox->clear();
             QPixmap pressureInletIcon("../res/PressureInlet.png");
@@ -184,8 +189,11 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		}
         else if (text2 == "wall")
         {
-			QPixmap pixmap("../res/wall.png");
-			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+            QPixmap pixmap("../res/wall.png");
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
 
 			ui_ItemWidgetBoundaryConditions->comboBox->clear();
 			QPixmap wallIcon("../res/Wall.png");
@@ -196,7 +204,11 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		else if (text2 == "symmetry")
 		{
             QPixmap pixmap("../res/symmetry.png");
-            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
+
             ui_ItemWidgetBoundaryConditions->comboBox->clear();
             QPixmap symmetryIcon("../res/Symmetry.png");
             ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(symmetryIcon), "Symmetry");
@@ -204,27 +216,67 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		else if (text2 == "empty")
 		{
 			QPixmap pixmap("../res/empty.png");
-			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
-			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin); 
+
+            ui_ItemWidgetBoundaryConditions->comboBox->clear();
 			QPixmap emptyIcon("../res/Empty.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(emptyIcon), "Empty");
 		}
-		else if (text2 == "Wedge")
+		else if (text2 == "wedge")
 		{
 			QPixmap pixmap("../res/Wedge.png");
-			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
-			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
+
+            ui_ItemWidgetBoundaryConditions->comboBox->clear();
 			QPixmap wedgeIcon("../res/Wedge.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(wedgeIcon), "Wedge");
 		}
-        else if (text2 == "Overset")
+        else if (text2 == "overset")
         {
 			QPixmap pixmap("../res/Overset.png");
-			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
-			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
+
+            ui_ItemWidgetBoundaryConditions->comboBox->clear();
 			QPixmap oversetIcon("../res/Overset.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(oversetIcon), "Overset");
         }
+        else if (text2.startsWith("mappedWall"))
+        {
+			QPixmap pixmap("../res/Link.png");
+            int margin = 4;
+            QSize scaledSize = ui_ItemWidgetBoundaryConditions->label_2->size() - QSize(margin * 2, margin * 2);
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap.scaled(scaledSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui_ItemWidgetBoundaryConditions->label_2->setContentsMargins(margin, margin, margin, margin);
+
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+			QPixmap mappedWallIcon("../res/Link.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(mappedWallIcon), "Mapped Wall");
+			QPixmap mappedWallIcon2("../res/Custom.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(mappedWallIcon2), "Custom");
+        }
+
+        // 设置 QComboBox 的自定义视图
+		QListView* combo1View1 = new QListView(ui_ItemWidgetBoundaryConditions->comboBox);
+		combo1View1->setMinimumWidth(150);
+		ui_ItemWidgetBoundaryConditions->comboBox->setView(combo1View1);
+
+		//链接类型切换信号槽
+		connect(ui_ItemWidgetBoundaryConditions->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int currentIndex) {
+			emit typeChanged(this, previousTypeIndex);
+			previousTypeIndex = currentIndex;
+			});
+
+        // 安装事件过滤器
+        ui_ItemWidgetBoundaryConditions->label->installEventFilter(this);
     }
     else {
         return;
@@ -286,11 +338,23 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
 		beginEdit(ui_ItemWidgetMeshZones->label);
 		return true;
 	}
-	if (ui_ItemWidgetBoundaryConditions && obj == ui_ItemWidgetBoundaryConditions->label && event->type() == QEvent::MouseButtonDblClick) {
-		beginEdit(ui_ItemWidgetBoundaryConditions->label);
-		return true;
+	if (ui_ItemWidgetBoundaryConditions && obj == ui_ItemWidgetBoundaryConditions->label) {
+        if (event->type() == QEvent::Enter)
+        {
+			ui_ItemWidgetBoundaryConditions->label->setText(text3);
+			return true;
+		}
+		else if (event->type() == QEvent::Leave)
+		{
+			ui_ItemWidgetBoundaryConditions->label->setText(text1);
+			return true;
+        }
+        else if (event->type() == QEvent::MouseButtonDblClick) 
+        {
+            beginEdit(ui_ItemWidgetBoundaryConditions->label);
+            return true;
+        }
 	}
-
     if (editing && event->type() == QEvent::MouseButtonPress) {
         if (obj != lineEdit) {
             finishEdit();

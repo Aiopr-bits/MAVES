@@ -74,6 +74,11 @@ QLabel {
          <height>26</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    background: transparent;
+}</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -82,6 +87,9 @@ QLabel {
        </property>
        <property name="scaledContents">
         <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>3</number>
        </property>
       </widget>
      </item>

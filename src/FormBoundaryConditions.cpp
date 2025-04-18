@@ -15,12 +15,12 @@ FormBoundaryConditions::FormBoundaryConditions(QWidget* parent)
 {
 	ui->setupUi(this);
 
-	listViewModel = new QStandardItemModel(this);
-	ui->listView->setModel(listViewModel);
-	ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
+	//listViewModel = new QStandardItemModel(this);
+	//ui->listView->setModel(listViewModel);
+	//ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	connect(ui->listView, &QListView::clicked, this, &FormBoundaryConditions::onListViewItemClicked);
-	connect(this, &FormBoundaryConditions::toggleRegionSecondAnimation, this, &FormBoundaryConditions::onToggleRegionSecondAnimation);
+	//connect(ui->listView, &QListView::clicked, this, &FormBoundaryConditions::onListViewItemClicked);
+	//connect(this, &FormBoundaryConditions::toggleRegionSecondAnimation, this, &FormBoundaryConditions::onToggleRegionSecondAnimation);
 }
 
 FormBoundaryConditions::~FormBoundaryConditions()
@@ -30,74 +30,74 @@ FormBoundaryConditions::~FormBoundaryConditions()
 
 void FormBoundaryConditions::onMeshImported()
 {
-	initListView();
-	initSubWidget();
+	//initListView();
+	//initSubWidget();
 
-	//点击第一个item
-	QModelIndex index = listViewModel->index(0, 0);
-	ui->listView->setCurrentIndex(index);
-	onListViewItemClicked(index);
+	////点击第一个item
+	//QModelIndex index = listViewModel->index(0, 0);
+	//ui->listView->setCurrentIndex(index);
+	//onListViewItemClicked(index);
 }
 
 void FormBoundaryConditions::initListView()
 {
-	listViewModel->clear();
-	patchName.clear();
+	//listViewModel->clear();
+	//patchName.clear();
 
-	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
-	for (const auto& regions : patchType) {
-		for (const auto& patchname : regions.second) {
-			if (patchname.first != "internalMesh")
-			{
-				if (regions.first != "default")
-					patchName.push_back(QString::fromStdString(regions.first + "/" + patchname.first));
-				else
-					patchName.push_back(QString::fromStdString(patchname.first));
-			}
-		}
-	}
+	//std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+	//for (const auto& regions : patchType) {
+	//	for (const auto& patchname : regions.second) {
+	//		if (patchname.first != "internalMesh")
+	//		{
+	//			if (regions.first != "default")
+	//				patchName.push_back(QString::fromStdString(regions.first + "/" + patchname.first));
+	//			else
+	//				patchName.push_back(QString::fromStdString(patchname.first));
+	//		}
+	//	}
+	//}
 
-	QIcon icon("../res/patch.png");
-	foreach(const QString & name, patchName) {
-		QStandardItem* item = new QStandardItem(icon, name);
-		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-		item->setSizeHint(QSize(0, 30));
-		listViewModel->appendRow(item);
-	}
-	
-	// 计算所有 item 的总高度
-	int totalHeight = 0;
-	for (int i = 0; i < std::min(8, listViewModel->rowCount()); ++i) {
-		totalHeight += ui->listView->sizeHintForRow(i);
-	}
-	ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
+	//QIcon icon("../res/patch.png");
+	//foreach(const QString & name, patchName) {
+	//	QStandardItem* item = new QStandardItem(icon, name);
+	//	item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+	//	item->setSizeHint(QSize(0, 30));
+	//	listViewModel->appendRow(item);
+	//}
+	//
+	//// 计算所有 item 的总高度
+	//int totalHeight = 0;
+	//for (int i = 0; i < std::min(8, listViewModel->rowCount()); ++i) {
+	//	totalHeight += ui->listView->sizeHintForRow(i);
+	//}
+	//ui->listView->setFixedHeight(totalHeight + 2 * ui->listView->frameWidth());
 }
 
 void FormBoundaryConditions::initSubWidget()
 {
-	// 先移除并销毁 ui->widget 上所有布局和控件
-	QLayout* layout = ui->widget->layout();
-	if (layout) {
-		QLayoutItem* item;
-		while ((item = layout->takeAt(0)) != nullptr) {
-			if (item->widget()) {
-				delete item->widget();
-			}
-			delete item;
-		}
-		delete layout;
-	}
+	//// 先移除并销毁 ui->widget 上所有布局和控件
+	//QLayout* layout = ui->widget->layout();
+	//if (layout) {
+	//	QLayoutItem* item;
+	//	while ((item = layout->takeAt(0)) != nullptr) {
+	//		if (item->widget()) {
+	//			delete item->widget();
+	//		}
+	//		delete item;
+	//	}
+	//	delete layout;
+	//}
 
-	//为每个patch创建一个FormBoundaryConditionsTabWidget
-	tabWidgetsGroup.clear();
-	QVBoxLayout* vLayout = new QVBoxLayout();
-	ui->widget->setLayout(vLayout);
-	for (int i = 0; i < patchName.size(); ++i) {
-		FormBoundaryConditionsTabWidget* tabWidget = new FormBoundaryConditionsTabWidget();
-		tabWidgetsGroup.push_back(tabWidget);
-		vLayout->addWidget(tabWidget);
-		tabWidget->setVisible(false);		
-	}
+	////为每个patch创建一个FormBoundaryConditionsTabWidget
+	//tabWidgetsGroup.clear();
+	//QVBoxLayout* vLayout = new QVBoxLayout();
+	//ui->widget->setLayout(vLayout);
+	//for (int i = 0; i < patchName.size(); ++i) {
+	//	FormBoundaryConditionsTabWidget* tabWidget = new FormBoundaryConditionsTabWidget();
+	//	tabWidgetsGroup.push_back(tabWidget);
+	//	vLayout->addWidget(tabWidget);
+	//	tabWidget->setVisible(false);		
+	//}
 }
 
 void FormBoundaryConditions::initBoundaryConditions()
@@ -230,46 +230,46 @@ void FormBoundaryConditions::parseBoundaryFile(const QString& filePath, const QS
 
 void FormBoundaryConditions::onToggleRegionSecondAnimation()
 {
-	// 获取ui->widget 的切换后截图
-	QPixmap pixmap2 = ui->widget->grab();
+	//// 获取ui->widget 的切换后截图
+	//QPixmap pixmap2 = ui->widget->grab();
 
-	//第二段动画
-	//在pixmap下方拼接一个和当前pixmap大小一样的白色图片
-	QPixmap whitePixmap2(pixmap2.size());
-	whitePixmap2.fill(Qt::white);
-	QPixmap combinedPixmap2(pixmap2.width(), pixmap2.height() * 2);
-	QPainter painter2(&combinedPixmap2);
-	painter2.drawPixmap(0, 0, pixmap2);
-	painter2.drawPixmap(0, pixmap2.height(), whitePixmap2);
+	////第二段动画
+	////在pixmap下方拼接一个和当前pixmap大小一样的白色图片
+	//QPixmap whitePixmap2(pixmap2.size());
+	//whitePixmap2.fill(Qt::white);
+	//QPixmap combinedPixmap2(pixmap2.width(), pixmap2.height() * 2);
+	//QPainter painter2(&combinedPixmap2);
+	//painter2.drawPixmap(0, 0, pixmap2);
+	//painter2.drawPixmap(0, pixmap2.height(), whitePixmap2);
 
-	// 创建一个 QLabel 来显示 combinedPixmap2
-	QLabel* animationLabel2 = new QLabel(ui->widget);
-	animationLabel2->setPixmap(combinedPixmap2);
-	animationLabel2->setGeometry(
-		(ui->widget->width() - combinedPixmap2.width()) / 2,
-		(ui->widget->height() - combinedPixmap2.height()) / 2,
-		combinedPixmap2.width(),
-		combinedPixmap2.height()
-	);
-	animationLabel2->show();
+	//// 创建一个 QLabel 来显示 combinedPixmap2
+	//QLabel* animationLabel2 = new QLabel(ui->widget);
+	//animationLabel2->setPixmap(combinedPixmap2);
+	//animationLabel2->setGeometry(
+	//	(ui->widget->width() - combinedPixmap2.width()) / 2,
+	//	(ui->widget->height() - combinedPixmap2.height()) / 2,
+	//	combinedPixmap2.width(),
+	//	combinedPixmap2.height()
+	//);
+	//animationLabel2->show();
 
-	// 制作动画2
-	QPropertyAnimation* animation2 = new QPropertyAnimation(animationLabel2, "geometry");
-	animation2->setDuration(100);
-	animation2->setEndValue(
-		QRect(
-			(ui->widget->width() - combinedPixmap2.width()) / 2,
-			0,
-			combinedPixmap2.width(),
-			combinedPixmap2.height()
-		)
-	);
-	animation2->setStartValue(animationLabel2->geometry());
-	animation2->start(QAbstractAnimation::DeleteWhenStopped);
-	connect(animation2, &QAbstractAnimation::finished, this, [=]() {
-		delete animationLabel2;
-		delete animation2;
-		});
+	//// 制作动画2
+	//QPropertyAnimation* animation2 = new QPropertyAnimation(animationLabel2, "geometry");
+	//animation2->setDuration(100);
+	//animation2->setEndValue(
+	//	QRect(
+	//		(ui->widget->width() - combinedPixmap2.width()) / 2,
+	//		0,
+	//		combinedPixmap2.width(),
+	//		combinedPixmap2.height()
+	//	)
+	//);
+	//animation2->setStartValue(animationLabel2->geometry());
+	//animation2->start(QAbstractAnimation::DeleteWhenStopped);
+	//connect(animation2, &QAbstractAnimation::finished, this, [=]() {
+	//	delete animationLabel2;
+	//	delete animation2;
+	//	});
 }
 
 void FormBoundaryConditions::importParameter()
@@ -448,56 +448,143 @@ void FormBoundaryConditions::exportParameter()
 
 void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
 {
-	// 获取 ui->widget 的切换前截图
-	QPixmap pixmap1 = ui->widget->grab();
+//	// 获取 ui->widget 的切换前截图
+//	QPixmap pixmap1 = ui->widget->grab();
+//
+//	//隐藏所有的FormBoundaryConditionsTabWidget
+//	for (int i = 0; i < tabWidgetsGroup.size(); ++i) {
+//		tabWidgetsGroup[i]->setVisible(false);
+//	}
+//
+//	//显示选中的FormBoundaryConditionsTabWidget
+//	tabWidgetsGroup[index.row()]->setVisible(true);
+//
+//	// 获取ui->widget 的切换后截图
+//	QPixmap pixmap2 = ui->widget->grab();
+//
+//	//第一段动画
+////在pixmap下方拼接一个和当前pixmap大小一样的白色图片
+//	QPixmap whitePixmap1(pixmap1.size());
+//	whitePixmap1.fill(Qt::white);
+//	QPixmap combinedPixmap1(pixmap1.width(), pixmap1.height() * 2);
+//	QPainter painter1(&combinedPixmap1);
+//	painter1.drawPixmap(0, 0, pixmap1);
+//	painter1.drawPixmap(0, pixmap1.height(), whitePixmap1);
+//
+//	// 创建一个 QLabel 来显示 combinedPixmap1
+//	QLabel* animationLabel = new QLabel(ui->widget);
+//	animationLabel->setPixmap(combinedPixmap1);
+//	animationLabel->setGeometry(
+//		(ui->widget->width() - combinedPixmap1.width()) / 2,
+//		(ui->widget->height() - combinedPixmap1.height()) / 2,
+//		combinedPixmap1.width(),
+//		combinedPixmap1.height()
+//	);
+//	animationLabel->show();
+//
+//	// 制作动画1
+//	QPropertyAnimation* animation = new QPropertyAnimation(animationLabel, "geometry");
+//	animation->setDuration(100);
+//	animation->setStartValue(
+//		QRect(
+//			(ui->widget->width() - combinedPixmap1.width()) / 2,
+//			0,
+//			combinedPixmap1.width(),
+//			combinedPixmap1.height()
+//		)
+//	);
+//	animation->setEndValue(animationLabel->geometry());
+//	animation->start();
+//	connect(animation, &QAbstractAnimation::finished, this, [=]() {
+//		delete animationLabel;
+//		delete animation;
+//		emit toggleRegionSecondAnimation();
+//		});
+}
 
-	//隐藏所有的FormBoundaryConditionsTabWidget
-	for (int i = 0; i < tabWidgetsGroup.size(); ++i) {
-		tabWidgetsGroup[i]->setVisible(false);
+void FormBoundaryConditions::initialization(const QString& newText)
+{
+	//清理之前的内容
+	ui->listWidget->clear();
+
+	if (newText == "rhoSimpleFoam" || newText == "buoyantBoussinesqPimpleFoam")
+	{
+		//获取边界类型
+		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+		for (const auto& region : patchType)
+		{
+			QString regionName = QString::fromStdString(region.first);
+			for (const auto& patch : region.second)
+			{
+				QString patchName = QString::fromStdString(patch.first);
+				if (regionName == "default")
+				{
+					if (patchName == "internalMesh")
+						continue;
+
+					auto item = new QListWidgetItem(ui->listWidget);
+					ui->listWidget->addItem(item);
+
+					auto widget = new CustomItemWidget(5, this, patchName, QString::fromStdString(patch.second), patchName);
+					widget->ui_ItemWidgetBoundaryConditions->comboBox->setCurrentIndex(0);
+					ui->listWidget->setItemWidget(item, widget);
+
+					connect(widget, &CustomItemWidget::textChanged, this, &FormBoundaryConditions::on_textChanged);
+					connect(widget, &CustomItemWidget::typeChanged, this, &FormBoundaryConditions::on_typeChanged);
+
+				}
+			}
+
+			int totalHeight = 0;
+			for (int i = 0; i < std::min(ui->listWidget->count(), 5); ++i) {
+				QListWidgetItem* item = ui->listWidget->item(i);
+				if (!item->isHidden()) totalHeight += ui->listWidget->sizeHintForRow(i);
+			}
+			ui->listWidget->setFixedHeight(totalHeight);
+		}
 	}
+	else if (newText == "chtMultiRegionFoam") 
+	{
+		//获取边界类型
+		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
+		for (const auto& region : patchType)
+		{
+			QString regionName = QString::fromStdString(region.first);
+			for (const auto& patch : region.second)
+			{
+				QString patchName = QString::fromStdString(patch.first);
+				if (regionName != "default")
+				{
+					if (patchName == "internalMesh")
+						continue;
 
-	//显示选中的FormBoundaryConditionsTabWidget
-	tabWidgetsGroup[index.row()]->setVisible(true);
+					auto item = new QListWidgetItem(ui->listWidget);
+					ui->listWidget->addItem(item);
 
-	// 获取ui->widget 的切换后截图
-	QPixmap pixmap2 = ui->widget->grab();
+					auto widget = new CustomItemWidget(5, this, patchName, QString::fromStdString(patch.second), patchName + " in " + regionName);
+					widget->ui_ItemWidgetBoundaryConditions->comboBox->setCurrentIndex(0);
+					ui->listWidget->setItemWidget(item, widget);
 
-	//第一段动画
-//在pixmap下方拼接一个和当前pixmap大小一样的白色图片
-	QPixmap whitePixmap1(pixmap1.size());
-	whitePixmap1.fill(Qt::white);
-	QPixmap combinedPixmap1(pixmap1.width(), pixmap1.height() * 2);
-	QPainter painter1(&combinedPixmap1);
-	painter1.drawPixmap(0, 0, pixmap1);
-	painter1.drawPixmap(0, pixmap1.height(), whitePixmap1);
+					connect(widget, &CustomItemWidget::textChanged, this, &FormBoundaryConditions::on_textChanged);
+					connect(widget, &CustomItemWidget::typeChanged, this, &FormBoundaryConditions::on_typeChanged);
 
-	// 创建一个 QLabel 来显示 combinedPixmap1
-	QLabel* animationLabel = new QLabel(ui->widget);
-	animationLabel->setPixmap(combinedPixmap1);
-	animationLabel->setGeometry(
-		(ui->widget->width() - combinedPixmap1.width()) / 2,
-		(ui->widget->height() - combinedPixmap1.height()) / 2,
-		combinedPixmap1.width(),
-		combinedPixmap1.height()
-	);
-	animationLabel->show();
+				}
+			}
+		}
 
-	// 制作动画1
-	QPropertyAnimation* animation = new QPropertyAnimation(animationLabel, "geometry");
-	animation->setDuration(100);
-	animation->setStartValue(
-		QRect(
-			(ui->widget->width() - combinedPixmap1.width()) / 2,
-			0,
-			combinedPixmap1.width(),
-			combinedPixmap1.height()
-		)
-	);
-	animation->setEndValue(animationLabel->geometry());
-	animation->start();
-	connect(animation, &QAbstractAnimation::finished, this, [=]() {
-		delete animationLabel;
-		delete animation;
-		emit toggleRegionSecondAnimation();
-		});
+		int totalHeight = 0;
+		for (int i = 0; i < std::min(ui->listWidget->count(), 5); ++i) {
+			QListWidgetItem* item = ui->listWidget->item(i);
+			if (!item->isHidden()) totalHeight += ui->listWidget->sizeHintForRow(i);
+		}
+		ui->listWidget->setFixedHeight(totalHeight);
+	}
+}
+
+void FormBoundaryConditions::on_textChanged(CustomItemWidget* widget, QString previousText)
+{
+}
+
+void FormBoundaryConditions::on_typeChanged(CustomItemWidget* widget, int previousIndex)
+{
 }

@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>402</width>
-    <height>703</height>
+    <width>316</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FormBoundaryConditions</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QLabel" name="label">
        <property name="font">
@@ -39,171 +39,270 @@
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="styleSheet">
+        <string notr="true">QScrollArea {
+	border: none;
+}
+
+QWidget {
+ 	background-color: white;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal {
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: #f0f0f0; /* 滚动条背景色 */
+    width: 8px; /* 滚动条宽度 */
+    margin: 0px 0px 0px 0px; /* 滚动条与内容的间距 */
+    opacity: 0; /* 默认隐藏滚动条 */
+}
+
+QScrollBar:vertical:hover {
+    opacity: 1; /* 鼠标悬浮时显示滚动条 */
+}
+
+QScrollBar::handle:vertical {
+    background: #c0c0c0; /* 滚动条滑块颜色 */
+    border-radius: 4px; /* 滑块圆角 */
+    min-height: 20px; /* 滑块最小高度 */
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #a0a0a0; /* 滑块悬停时的颜色 */
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none; /* 去掉上下箭头 */
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none; /* 去掉滚动条空白区域的背景 */
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: #f0f0f0; /* 滚动条背景色 */
+    height: 8px; /* 滚动条高度 */
+    margin: 0px 0px 0px 0px; /* 滚动条与内容的间距 */
+    opacity: 0; /* 默认隐藏滚动条 */
+}
+
+QScrollBar:horizontal:hover {
+    opacity: 1; /* 鼠标悬浮时显示滚动条 */
+}
+
+QScrollBar::handle:horizontal {
+    background: #c0c0c0; /* 滚动条滑块颜色 */
+    border-radius: 4px; /* 滑块圆角 */
+    min-width: 20px; /* 滑块最小宽度 */
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #a0a0a0; /* 滑块悬停时的颜色 */
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    background: none; /* 去掉左右箭头 */
+    width: 0px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none; /* 去掉滚动条空白区域的背景 */
+}</string>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+       <property name="widgetResizable">
+        <bool>true</bool>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>13</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>296</width>
+          <height>557</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>30</height>
-          </size>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-         <property name="font">
-          <font>
-           <family>Agency FB</family>
-           <pointsize>10</pointsize>
-          </font>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Agency FB</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel {
     background-color: rgb(230, 230, 230); /* 背景色 */
     padding-left: 5px; /* 左侧内边距 */
 }
 
 </string>
-         </property>
-         <property name="text">
-          <string>网格边界</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListView" name="listView">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QListView::item {
-    padding: 11px;
+               </property>
+               <property name="text">
+                <string>网格边界</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="listWidget">
+               <property name="styleSheet">
+                <string notr="true">QListWidget::item {
+    padding: 0px;
+    min-height: 30px; /* 设置最小高度 */
+    max-height: 30px; /* 设置最大高度 */
+    color: #000000; /* 默认文字颜色 */
 }
 
-QListView {
+QListWidget:focus {
+    outline: none;
+}
+
+QListWidget {
     border: none;
 }
 
-QListView::item {
+QListWidget::item {
     background: #FFFFFF;
 }
 
-QListView::item:hover {
+QListWidget::item:hover {
     background: #F7F7F7;
 }
 
-QListView::item:selected {
+QListWidget::item:selected {
     background: #EEEEEE;
+    color: #000000; /* 选中时文字颜色为黑色 */
 }
 
-QListView QScrollBar:vertical {
+QListWidget QScrollBar:vertical {
     border: 1px solid #dcdcdc;
     background: white;
     width: 12px;
     margin: 0px 0px 0px 0px;
 }
 
-QListView QScrollBar::handle:vertical {
+QListWidget QScrollBar::handle:vertical {
     background: #bfbfbf;
     min-height: 20px;
     border-radius: 5px;
 }
 
-QListView QScrollBar::add-line:vertical {
+QListWidget QScrollBar::add-line:vertical {
     background: white;
     height: 0px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
 
-QListView QScrollBar::sub-line:vertical {
+QListWidget QScrollBar::sub-line:vertical {
     background: white;
     height: 0px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 
-QListView QScrollBar::up-arrow:vertical,
-QListView QScrollBar::down-arrow:vertical {
+QListWidget QScrollBar::up-arrow:vertical,
+QListWidget QScrollBar::down-arrow:vertical {
     border: none;
     width: 0px;
     height: 0px;
     background: none;
 }
 
-QListView QScrollBar::add-page:vertical,
-QListView QScrollBar::sub-page:vertical {
+QListWidget QScrollBar::add-page:vertical,
+QListWidget QScrollBar::sub-page:vertical {
     background: none;
-}
-</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="Line" name="line_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
+}</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget" native="true"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QWidget" name="widget" native="true"/>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>13</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
