@@ -103,6 +103,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtUic Include="CustomItemWidgetBoundaryConditions.ui" />
     <QtUic Include="CustomItemWidgetMeshBoundaries1.ui" />
     <QtUic Include="CustomItemWidgetMeshBoundaries2.ui" />
     <QtUic Include="CustomItemWidgetMeshRegions1.ui" />

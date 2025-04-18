@@ -7,6 +7,7 @@ CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QStrin
     , ui_ItemWidgetMeshRegions1(nullptr)
     , ui_ItemWidgetMeshRegions2(nullptr)
 	, ui_ItemWidgetMeshZones(nullptr)
+	, ui_ItemWidgetBoundaryConditions(nullptr)
     , lineEdit(nullptr)
     , editing(false)
 	, previousTypeIndex(0)
@@ -22,6 +23,7 @@ CustomItemWidget::~CustomItemWidget()
     delete ui_ItemWidgetMeshRegions1;
     delete ui_ItemWidgetMeshRegions2;
 	delete ui_ItemWidgetMeshZones;
+	delete ui_ItemWidgetBoundaryConditions;
 }
 
 void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const QString& text2, const QString& text3, const QString& text4)
@@ -151,6 +153,79 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 		// 安装事件过滤器
 		ui_ItemWidgetMeshZones->label->installEventFilter(this);
     }
+    else if (styleIndex == 5) {
+		ui_ItemWidgetBoundaryConditions = new Ui::CustomItemWidgetBoundaryConditionsClass();
+		ui_ItemWidgetBoundaryConditions->setupUi(this);
+		ui_ItemWidgetBoundaryConditions->label->setText(text);
+
+		// 初始化 text
+		this->text1 = text;
+        this->text3 = text3;
+        if (text2 == "patch")
+        {
+            QPixmap pixmap("../res/patch.png");
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+            QPixmap pressureInletIcon("../res/PressureInlet.png");
+            ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(pressureInletIcon), "Pressure Inlet");
+			QPixmap velocityInletIcon("../res/VelocityInlet.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(velocityInletIcon), "Velocity Inlet");
+			QPixmap massFlowInletIcon("../res/MassFlowInlet.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(massFlowInletIcon), "Mass Flow Inlet");
+			QPixmap pressureOutletIcon("../res/PressureOutlet.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(pressureOutletIcon), "Pressure Outlet");
+			QPixmap outflowIcon("../res/Outflow.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(outflowIcon), "Outflow");
+			QPixmap freeStreamIcon("../res/FreeStream.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(freeStreamIcon), "Free Stream");
+			QPixmap customIcon("../res/Custom.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(customIcon), "Custom");
+		}
+        else if (text2 == "wall")
+        {
+			QPixmap pixmap("../res/wall.png");
+			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+			QPixmap wallIcon("../res/Wall.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(wallIcon), "Wall");
+            QPixmap customIcon("../res/Custom.png");
+            ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(customIcon), "Custom");
+        }
+		else if (text2 == "symmetry")
+		{
+            QPixmap pixmap("../res/symmetry.png");
+            ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+            ui_ItemWidgetBoundaryConditions->comboBox->clear();
+            QPixmap symmetryIcon("../res/Symmetry.png");
+            ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(symmetryIcon), "Symmetry");
+        }
+		else if (text2 == "empty")
+		{
+			QPixmap pixmap("../res/empty.png");
+			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+			QPixmap emptyIcon("../res/Empty.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(emptyIcon), "Empty");
+		}
+		else if (text2 == "Wedge")
+		{
+			QPixmap pixmap("../res/Wedge.png");
+			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+			QPixmap wedgeIcon("../res/Wedge.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(wedgeIcon), "Wedge");
+		}
+        else if (text2 == "Overset")
+        {
+			QPixmap pixmap("../res/Overset.png");
+			ui_ItemWidgetBoundaryConditions->label_2->setPixmap(pixmap);
+			ui_ItemWidgetBoundaryConditions->comboBox->clear();
+			QPixmap oversetIcon("../res/Overset.png");
+			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(oversetIcon), "Overset");
+        }
+    }
     else {
         return;
     }
@@ -211,6 +286,10 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
 		beginEdit(ui_ItemWidgetMeshZones->label);
 		return true;
 	}
+	if (ui_ItemWidgetBoundaryConditions && obj == ui_ItemWidgetBoundaryConditions->label && event->type() == QEvent::MouseButtonDblClick) {
+		beginEdit(ui_ItemWidgetBoundaryConditions->label);
+		return true;
+	}
 
     if (editing && event->type() == QEvent::MouseButtonPress) {
         if (obj != lineEdit) {
@@ -251,6 +330,9 @@ void CustomItemWidget::beginEdit(QLabel* label)
 	}
 	else if (ui_ItemWidgetMeshZones) {
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
+	}
+	else if (ui_ItemWidgetBoundaryConditions) {
+		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetBoundaryConditions->horizontalLayout);
 	}
 
     if (!label || !boxLayout) return;
@@ -334,6 +416,13 @@ void CustomItemWidget::finishEdit()
         QString previousText = text1;
         text1.replace(text1, newText);  
         emit textChanged(this, previousText);
+	}
+	else if (ui_ItemWidgetBoundaryConditions) {
+		label = ui_ItemWidgetBoundaryConditions->label;
+		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetBoundaryConditions->horizontalLayout);
+		QString previousText = text1;
+		text1.replace(text1, newText);
+		emit textChanged(this, previousText);
 	}
 
     if (!label || !boxLayout) return;

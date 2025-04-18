@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomItemWidgetBoundaryConditionsClass</class>
+ <widget class="QWidget" name="CustomItemWidgetBoundaryConditionsClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>562</width>
+    <height>30</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>30</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>30</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>CustomItemWidgetBoundaryConditions</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    background-color: transparent;
+}
+QLabel {
+    font-family: &quot;Arial&quot;;
+}
+QLabel {
+    font-family: &quot;Arial Rounded MT Bold&quot;;
+    font-weight: 250;
+    color: rgb(66, 66, 66);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox">
+       <property name="minimumSize">
+        <size>
+         <width>45</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>45</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">		QComboBox {
+    		border: 1px solid transparent;
+    		background-color: transparent;
+    		padding: 5px;
+   			border-radius: 13px;
+		}
+        QComboBox:hover {
+            background-color: rgb(242, 242, 242);
+            border: 1px solid lightgray;
+            border-radius: 13px;
+        }
+        QComboBox::drop-down {
+            border: none;
+        }
+        QComboBox QAbstractItemView {
+            border: 1px solid lightgray;
+            selection-background-color: rgb(242, 242, 242);
+            outline: none; /* 移除虚线框 */
+        }
+        QComboBox QAbstractItemView::item {
+            min-height: 25px;
+            outline: none; /* 移除虚线框 */
+        }
+        QComboBox QAbstractItemView::item:hover {
+            background-color: rgb(242, 242, 242);
+            color: black;
+        }
+        QComboBox QAbstractItemView::item:selected {
+            background-color: rgb(242, 242, 242);
+            color: black; 
+        }
+        QComboBox::down-arrow {
+            image: url(../res/arrow.png); 
+            width: 12px;
+            height: 12px;
+        }</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

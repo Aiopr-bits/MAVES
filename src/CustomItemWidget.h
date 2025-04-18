@@ -12,6 +12,7 @@
 #include "ui_CustomItemWidgetMeshRegions1.h"
 #include "ui_CustomItemWidgetMeshRegions2.h"
 #include "ui_CustomItemWidgetMeshZones.h"
+#include "ui_CustomItemWidgetBoundaryConditions.h"
 #include <QKeyEvent>
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +22,7 @@ namespace Ui {
 	class CustomItemWidgetMeshRegions1Class; 		            //type  2
 	class CustomItemWidgetMeshRegions2Class;                    //type  3
 	class CustomItemWidgetMeshZonesClass; 				        //type  4
+	class CustomItemWidgetBoundaryConditionsClass;              //type  5
 };
 QT_END_NAMESPACE
 
@@ -60,6 +62,7 @@ public:
     Ui::CustomItemWidgetMeshRegions1Class* ui_ItemWidgetMeshRegions1;
     Ui::CustomItemWidgetMeshRegions2Class* ui_ItemWidgetMeshRegions2;
 	Ui::CustomItemWidgetMeshZonesClass* ui_ItemWidgetMeshZones;
+	Ui::CustomItemWidgetBoundaryConditionsClass* ui_ItemWidgetBoundaryConditions;
 
     QLineEdit* lineEdit;
     bool editing;
