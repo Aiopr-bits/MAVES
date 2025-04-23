@@ -24,6 +24,16 @@ class FormBoundaryConditionsTabWidget : public QWidget
 public:
 	FormBoundaryConditionsTabWidget(QWidget *parent = nullptr);
 	~FormBoundaryConditionsTabWidget();
+
+public slots:
+	void resizeEvent(QResizeEvent* event);
+
+public:
+	Ui::FormBoundaryConditionsTabWidgetClass* ui;
+
+
+//以下可能删除
+public:
 	void setLayoutVisibility(QLayout* layout, bool visible);
 	void updateLayoutVisibility(QGridLayout* layout, bool visible);
 
@@ -35,10 +45,8 @@ public slots:
 	void onComboBox_5CurrentIndexChanged(int index);
 	void onComboBox_6CurrentIndexChanged(int index);
 	void onComboBox_7CurrentIndexChanged(int index);
-	void resizeEvent(QResizeEvent* event);
 	void on_tabWidget_currentChanged(int index);
 
 public:
-	Ui::FormBoundaryConditionsTabWidgetClass *ui;
 	int previousIndex;
 };
