@@ -1444,7 +1444,7 @@ void MainWindow::formRun_run()
 	QString caseDir = fileInfo.path();
 	QString controlDictPath = caseDir + "/system/controlDict";
 
-	// 删除原来的计算结果
+	// 删除原来的计算结果和并行计算文件
 	if (formRun->ui->checkBox->isChecked())
 	{
 		QDir dir(caseDir);
@@ -1454,6 +1454,12 @@ void MainWindow::formRun_run()
 			bool ok;
 			double folderNumber = folder.toDouble(&ok);
 			if (ok && folderNumber != 0.0)
+			{
+				QDir folderDir(caseDir + "/" + folder);
+				folderDir.removeRecursively();
+			}
+
+			if (folder.startsWith("processor"))
 			{
 				QDir folderDir(caseDir + "/" + folder);
 				folderDir.removeRecursively();
