@@ -221,8 +221,8 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(formMesh, &FormMesh::topoSet, this, &MainWindow::formMesh_topoSet);																			//网格拓扑集
 	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_splitMeshRegions);														//网格cellZones转区域
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
-	connect(formSolver, &FormSolver::labelText_8_Changed, formThermo, &FormThermo::initialization);														//求解器改变，物性参数控制面板调整
-	connect(formSolver, &FormSolver::labelText_8_Changed, formBoundaryConditions, &FormBoundaryConditions::initialization);								//求解器改变，物性参数控制面板调整
+	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::onSubPanelInitialized);													//求解器改变，子面板初始化
+	connect(formTurbulence, &FormTurbulence::turbulenceTypeChanged, this, &MainWindow::onSubPanelInitialized);											//湍流模型改变，子面板初始化
 	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);												//更新渲染窗口
@@ -395,6 +395,50 @@ void MainWindow::onCameraAnimationTimeout()
 		ui->action7->setEnabled(true);
 		ui->action8->setEnabled(true);
 	}
+}
+
+void MainWindow::onSubPanelInitialized()
+{
+	//获取求解器
+	QString solver = formSolver->ui->label_8->text();
+	if (solver == "transientIncompressibleSolver")
+	{
+		solver = "buoyantBoussinesqPimpleFoam";
+	}
+	else if (solver == "steadyCompressibleSolver")
+	{
+		solver = "rhoSimpleFoam";
+	}
+	else if (solver == "multiRegionSolver")
+	{
+		solver = "chtMultiRegionFoam";
+	}
+
+	//获取湍流类型
+    QString turbulenceType;  
+    QList<QRadioButton*> radioButtons = formTurbulence->ui->groupBox->findChildren<QRadioButton*>();  
+    for (QRadioButton* radioButton : radioButtons) {  
+       if (radioButton->isChecked()) {  
+           turbulenceType = radioButton->text();  
+           break;  
+       }  
+    }
+	if (turbulenceType == "层流")
+	{
+		turbulenceType = "Laminar";
+	}
+	else if (turbulenceType == "雷诺平均")
+	{
+		turbulenceType = formTurbulence->ui->comboBox_5->currentText();
+	}
+	else if (turbulenceType == "大涡模拟")
+	{
+		turbulenceType = formTurbulence->ui->comboBox_6->currentText();
+	}
+
+	formThermo->initialization(solver);
+	formBoundaryConditions->initialization(solver);
+	formInitialConditions->initialization(solver, "fluid", turbulenceType);
 }
 
 void MainWindow::startCameraAnimation()

@@ -39,7 +39,10 @@ private slots:
 	void on_PushButton_7_Toggled(bool checked);						//变化量切换		参数面板收起展开切换
 	void on_PushButton_8_Toggled(bool checked);						//过滤器切换		参数面板收起展开切换
 
-private:
+signals:
+	void turbulenceTypeChanged();
+
+public:
 	Ui::FormTurbulenceClass *ui;
 
 //以下可能删除

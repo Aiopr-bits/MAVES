@@ -116,6 +116,7 @@
     <QtUic Include="FormCellZones.ui" />
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormInitialConditions.ui" />
+    <QtUic Include="FormInitialConditionsTabWidget.ui" />
     <QtUic Include="FormMesh.ui" />
     <QtUic Include="FormMeshImport.ui" />
     <QtUic Include="FormModelClip.ui" />
@@ -138,6 +139,7 @@
     <ClCompile Include="FormCellZones.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormInitialConditions.cpp" />
+    <ClCompile Include="FormInitialConditionsTabWidget.cpp" />
     <ClCompile Include="FormMesh.cpp" />
     <ClCompile Include="FormMeshImport.cpp" />
     <ClCompile Include="FormModelClip.cpp" />
@@ -179,6 +181,7 @@
     <QtMoc Include="FormThermoListWidget.h" />
     <QtMoc Include="FormCellZones.h" />
     <QtMoc Include="FormInitialConditions.h" />
+    <QtMoc Include="FormInitialConditionsTabWidget.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

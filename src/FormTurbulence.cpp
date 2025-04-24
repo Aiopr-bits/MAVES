@@ -400,6 +400,7 @@ void FormTurbulence::onComboBox_5_IndexChanged(int index)
 		ui->pushButton_8->setChecked(false);
 		on_PushButton_8_Toggled(false);
 	}
+	emit turbulenceTypeChanged();
 }
 
 void FormTurbulence::onComboBox_6_IndexChanged(int index)
@@ -626,6 +627,7 @@ void FormTurbulence::onComboBox_6_IndexChanged(int index)
 		ui->pushButton_8->setChecked(false);
 		on_PushButton_8_Toggled(false);
 	}
+	emit turbulenceTypeChanged();
 }
 
 void FormTurbulence::onComboBox_7_IndexChanged(int index)
@@ -757,6 +759,7 @@ void FormTurbulence::onRadioButtonToggled()
 			on_PushButton_8_Toggled(false);
 		}
 	}
+	emit turbulenceTypeChanged();
 }
 
 bool FormTurbulence::importParameter()

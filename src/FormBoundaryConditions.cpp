@@ -518,12 +518,12 @@ void FormBoundaryConditions::onListViewItemClicked(const QModelIndex& index)
 //		});
 }
 
-void FormBoundaryConditions::initialization(const QString& newText)
+void FormBoundaryConditions::initialization(const QString& solver)
 {
 	//清理之前的内容
 	ui->listWidget->clear();
 
-	if (newText == "rhoSimpleFoam" || newText == "buoyantBoussinesqPimpleFoam")
+	if (solver == "rhoSimpleFoam" || solver == "buoyantBoussinesqPimpleFoam")
 	{
 		//获取边界类型
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
@@ -559,7 +559,7 @@ void FormBoundaryConditions::initialization(const QString& newText)
 			ui->listWidget->setFixedHeight(totalHeight);
 		}
 	}
-	else if (newText == "chtMultiRegionFoam") 
+	else if (solver == "chtMultiRegionFoam")
 	{
 		//获取边界类型
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;

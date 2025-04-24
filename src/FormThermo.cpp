@@ -294,7 +294,7 @@ void FormThermo::on_ListWidgetItem_Clicked(QListWidgetItem* item)
 	}
 }
 
-void FormThermo::initialization(const QString& newText)
+void FormThermo::initialization(const QString& solver)
 {
 	// 清理之前的控件
 	for (FormThermoListWidget* formThermoListWidget : formThermoListWidgets) {
@@ -303,7 +303,7 @@ void FormThermo::initialization(const QString& newText)
 	formThermoListWidgets.clear();
 	ui->listWidget_3->clear();
 
-	if (newText == "rhoSimpleFoam") {
+	if (solver == "rhoSimpleFoam") {
 		ui->widget->hide();
 
 		FormThermoListWidget* formThermoListWidget = new FormThermoListWidget(this, "fluid");
@@ -311,7 +311,7 @@ void FormThermo::initialization(const QString& newText)
 		ui->verticalLayout_2->insertWidget(insertPosition, formThermoListWidget);
 		formThermoListWidgets.push_back(formThermoListWidget);
 	}
-	else if (newText == "buoyantBoussinesqPimpleFoam") {
+	else if (solver == "buoyantBoussinesqPimpleFoam") {
 		ui->widget->hide();
 
 		FormThermoListWidget* formThermoListWidget = new FormThermoListWidget(this, "fluid");
@@ -319,7 +319,7 @@ void FormThermo::initialization(const QString& newText)
 		ui->verticalLayout_2->insertWidget(insertPosition, formThermoListWidget);
 		formThermoListWidgets.push_back(formThermoListWidget);
 	}
-	else if (newText == "chtMultiRegionFoam") {
+	else if (solver == "chtMultiRegionFoam") {
 		ui->widget->show();
 
 		ui->label_4->show();

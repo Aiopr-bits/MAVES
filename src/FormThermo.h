@@ -27,7 +27,7 @@ public:
 	
 	bool importParameter();
 	bool exportParameter();
-	void initialization(const QString& newText);
+	void initialization(const QString& solver);
 
 public slots:
 	void on_ListWidgetItem_Clicked(QListWidgetItem* item);

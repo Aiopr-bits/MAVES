@@ -226,6 +226,7 @@ public slots:
 	void resizeEvent(QResizeEvent* event);																				//窗口大小改变事件
 	void on_tabWidget_currentChanged(int index);																		//tabWidget切换事件
 	void onCameraAnimationTimeout();																					//相机动画
+	void onSubPanelInitialized();																						//子面板初始化
 
 	//副控制面板事件处理
 	void formGeometry_import(const QString& filePath);																	//几何导入
