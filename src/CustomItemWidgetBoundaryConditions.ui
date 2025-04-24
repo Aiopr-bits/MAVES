@@ -54,6 +54,11 @@
          <height>25</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    background: transparent;
+}</string>
+       </property>
        <property name="text">
         <string/>
        </property>
