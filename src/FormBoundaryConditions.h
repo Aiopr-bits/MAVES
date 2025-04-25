@@ -31,7 +31,7 @@ public:
 	~FormBoundaryConditions();
 
 public slots:
-	void initialization(const QString& newText);
+	void initialization(const QString& solver);
 	void on_textChanged(CustomItemWidget* widget, QString previousText);				//文本改变
 	void on_typeChanged(CustomItemWidget* widget, int previousIndex);					//类型改变
 

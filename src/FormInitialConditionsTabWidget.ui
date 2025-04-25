@@ -1443,7 +1443,7 @@ QLineEdit:disabled {
                </spacer>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_27">
+               <widget class="QLineEdit" name="lineEdit_50">
                 <property name="minimumSize">
                  <size>
                   <width>200</width>

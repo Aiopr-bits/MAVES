@@ -104,6 +104,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtUic Include="CustomItemWidgetBoundaryConditions.ui" />
+    <QtUic Include="CustomItemWidgetCellZones.ui" />
     <QtUic Include="CustomItemWidgetMeshBoundaries1.ui" />
     <QtUic Include="CustomItemWidgetMeshBoundaries2.ui" />
     <QtUic Include="CustomItemWidgetMeshRegions1.ui" />
@@ -114,6 +115,7 @@
     <QtUic Include="FormBoundaryConditions.ui" />
     <QtUic Include="FormBoundaryConditionsTabWidget.ui" />
     <QtUic Include="FormCellZones.ui" />
+    <QtUic Include="FormCellZonesTabWidget.ui" />
     <QtUic Include="FormGeometry.ui" />
     <QtUic Include="FormInitialConditions.ui" />
     <QtUic Include="FormInitialConditionsTabWidget.ui" />
@@ -137,6 +139,7 @@
     <ClCompile Include="FormBoundaryConditions.cpp" />
     <ClCompile Include="FormBoundaryConditionsTabWidget.cpp" />
     <ClCompile Include="FormCellZones.cpp" />
+    <ClCompile Include="FormCellZonesTabWidget.cpp" />
     <ClCompile Include="FormGeometry.cpp" />
     <ClCompile Include="FormInitialConditions.cpp" />
     <ClCompile Include="FormInitialConditionsTabWidget.cpp" />
@@ -182,6 +185,7 @@
     <QtMoc Include="FormCellZones.h" />
     <QtMoc Include="FormInitialConditions.h" />
     <QtMoc Include="FormInitialConditionsTabWidget.h" />
+    <QtMoc Include="FormCellZonesTabWidget.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />

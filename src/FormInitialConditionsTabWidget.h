@@ -2,6 +2,7 @@
 #pragma execution_character_set("utf-8")
 #include <QWidget>
 #include "ui_FormInitialConditionsTabWidget.h"
+#include <QRegularExpressionValidator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FormInitialConditionsTabWidgetClass; };

@@ -52,8 +52,8 @@ void FormMesh::onSelectionChanged()
 		CustomItemWidget* widget1 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[0]));
 		CustomItemWidget* widget2 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[1]));
 
-		QString text1 = widget1->text2;
-		QString text2 = widget2->text2;
+		QString text1 = widget1->Param2;
+		QString text2 = widget2->Param2;
 
 		int index1 = text1.indexOf(" in ");
 		int index2 = text2.indexOf(" in ");
@@ -748,8 +748,8 @@ void FormMesh::on_pushButton_3_clicked()
 	}
 	CustomItemWidget* widget1 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[0]));
 	CustomItemWidget* widget2 = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(selectedItems[1]));
-	QString text1 = widget1->text2;
-	QString text2 = widget2->text2;
+	QString text1 = widget1->Param2;
+	QString text2 = widget2->Param2;
 	int index1 = text1.indexOf(" in ");
 	int index2 = text2.indexOf(" in ");
 	QString regionName1 = text1.mid(index1 + 4);
@@ -890,8 +890,8 @@ void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidg
 	}
 
 	// 获取链接后的item中的信息
-	QString text1 = widget->text3;
-	QString text2 = widget->text4;
+	QString text1 = widget->Param3;
+	QString text2 = widget->Param4;
 	int index1 = text1.indexOf(" in ");
 	int index2 = text2.indexOf(" in ");
 	QString regionName1 = text1.mid(index1 + 4);
@@ -907,7 +907,7 @@ void FormMesh::on_ui_ItemWidgetMeshBoundaries2_pushButton_clicked(CustomItemWidg
 	{
 		QListWidgetItem* item = ui->listWidget_2->item(i);
 		CustomItemWidget* widget = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
-		if (widget != nullptr && (widget->text2 == patchName1 + " in " + regionName1 || widget->text2 == patchName2 + " in " + regionName2)) {
+		if (widget != nullptr && (widget->Param2 == patchName1 + " in " + regionName1 || widget->Param2 == patchName2 + " in " + regionName2)) {
 			item->setHidden(false);
 		}
 	}
@@ -938,7 +938,7 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 {
 	if (widget->ui_ItemWidgetMeshBoundaries1 != nullptr) 
 	{
-		QString currentText = widget->text2;
+		QString currentText = widget->Param2;
 		if (previousText != currentText)
 		{
 			QString previousRegionsName = previousText.mid(previousText.indexOf(" in ") + 4);
@@ -991,16 +991,16 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 	else if (widget->ui_ItemWidgetMeshBoundaries2 != nullptr)
 	{
 		//获取当前文本
-		QString currentText = widget->text3;
+		QString currentText = widget->Param3;
 		for (int i = 0; i < ui->listWidget_2->count(); i++)
 		{
 			QListWidgetItem* item = ui->listWidget_2->item(i);
 			CustomItemWidget* widgetHided = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
 			if (!widgetHided->isHidden()) continue;
 
-			if (widgetHided->text2 == currentText)
+			if (widgetHided->Param2 == currentText)
 			{
-				currentText = widget->text4;
+				currentText = widget->Param4;
 				break;
 			}
 		}
@@ -1009,10 +1009,10 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 		{
 			QListWidgetItem* item = ui->listWidget_2->item(i);
 			CustomItemWidget* widgetHided = qobject_cast<CustomItemWidget*>(ui->listWidget_2->itemWidget(item));
-			if (widgetHided->text2 == previousText)
+			if (widgetHided->Param2 == previousText)
 			{
-				widgetHided->text2 = currentText;
-				widgetHided->text1 = currentText.left(currentText.indexOf(" in "));
+				widgetHided->Param2 = currentText;
+				widgetHided->Param1 = currentText.left(currentText.indexOf(" in "));
 				emit widgetHided->textChanged(widgetHided, previousText);				
 				break;
 			}
@@ -1025,7 +1025,7 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 	}
 	else if (widget->ui_ItemWidgetMeshRegions2 != nullptr)
 	{
-		QString currentText = widget->text1;
+		QString currentText = widget->Param1;
 		if (previousText == currentText) return;
 
 		// 替换 GlobalData 变量
@@ -1123,7 +1123,7 @@ void FormMesh::on_textChanged(CustomItemWidget* widget, QString previousText)
 	}
 	else if (widget->ui_ItemWidgetMeshZones != nullptr)
 	{
-		QString currentText = widget->text1;
+		QString currentText = widget->Param1;
 		if (previousText == currentText) return;
 
 		// 替换 GlobalData 变量
@@ -1239,7 +1239,7 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 
 		// 替换 GlobalData 变量
 		std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;
-		std::string text = widget->text2.toStdString();
+		std::string text = widget->Param2.toStdString();
 		std::string regionName = text.substr(text.find(" in ") + 4);
 		std::string patchName = text.substr(0, text.find(" in "));
 		patchType[regionName][patchName] = currentType.toStdString();
@@ -1354,7 +1354,7 @@ void FormMesh::on_typeChanged(CustomItemWidget* widget, int previousIndex)
 
 		// 替换 GlobalData 变量
 		std::unordered_map<std::string, std::string> regionsType = GlobalData::getInstance().getCaseData()->regionsType;
-		std::string text = widget->text1.toStdString();
+		std::string text = widget->Param1.toStdString();
 		regionsType[text] = currentType.toStdString();
 		GlobalData::getInstance().getCaseData()->regionsType = regionsType;
 
@@ -1505,7 +1505,7 @@ void FormMesh::on_optionChanged(CustomItemWidget* widget, int previousIndex)
 		std::string casePath = GlobalData::getInstance().getCaseData()->casePath;
 		if (optionText == "删除")
 		{		
-			std::string subDomainPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + widget->text1.toStdString();
+			std::string subDomainPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/" + widget->Param1.toStdString();
 
 			// 删除文件夹 subDomainPath
 			QDir dir(QString::fromStdString(subDomainPath));
@@ -1520,7 +1520,7 @@ void FormMesh::on_optionChanged(CustomItemWidget* widget, int previousIndex)
 
 			//修改regionProperties文件
 			std::string regionPropertiesPath = casePath.substr(0, casePath.find_last_of("/\\")) + "/constant/regionProperties";
-			std::string previousText = widget->text1.toStdString();
+			std::string previousText = widget->Param1.toStdString();
 			std::string currentText = "";
 
 			std::ifstream file(regionPropertiesPath);

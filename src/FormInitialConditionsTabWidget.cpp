@@ -6,6 +6,14 @@ FormInitialConditionsTabWidget::FormInitialConditionsTabWidget(const QString& so
 {
 	ui->setupUi(this);
 	initialization(solver, regionType, turbulenceType);
+
+	// 输入限制
+	QRegularExpression regex("^-?(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?$");
+	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regex, this);
+    const auto lineEdits = this->findChildren<QLineEdit*>();
+    for (QLineEdit* lineEdit : lineEdits) {
+       lineEdit->setValidator(validator);
+    }
 }
 
 FormInitialConditionsTabWidget::~FormInitialConditionsTabWidget()

@@ -439,6 +439,7 @@ void MainWindow::onSubPanelInitialized()
 	formThermo->initialization(solver);
 	formBoundaryConditions->initialization(solver);
 	formInitialConditions->initialization(solver, "fluid", turbulenceType);
+	formCellZones->initialization(solver, "fluid", turbulenceType);
 }
 
 void MainWindow::startCameraAnimation()
@@ -1186,10 +1187,10 @@ void MainWindow::formMesh_apply()
 		if (widget)
 		{
 			std::vector<QString> textList;
-			textList.push_back(widget->text1);
-			textList.push_back(widget->text2);
-			textList.push_back(widget->text3);
-			textList.push_back(widget->text4);
+			textList.push_back(widget->Param1);
+			textList.push_back(widget->Param2);
+			textList.push_back(widget->Param3);
+			textList.push_back(widget->Param4);
 
 			for (auto& str : textList)
 			{

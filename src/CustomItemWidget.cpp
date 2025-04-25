@@ -1,6 +1,6 @@
 ﻿#include "CustomItemWidget.h"
 
-CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QString& text, const QString& text2, const QString& text3, const QString& text4)
+CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QString& Param1, const QString& Param2, const QString& Param3, const QString& Param4)
     : QWidget(parent)
     , ui_ItemWidgetMeshBoundaries1(nullptr)
     , ui_ItemWidgetMeshBoundaries2(nullptr)
@@ -8,12 +8,13 @@ CustomItemWidget::CustomItemWidget(int styleIndex, QWidget* parent, const QStrin
     , ui_ItemWidgetMeshRegions2(nullptr)
 	, ui_ItemWidgetMeshZones(nullptr)
 	, ui_ItemWidgetBoundaryConditions(nullptr)
+	, ui_ItemWidgetCellZones(nullptr)
     , lineEdit(nullptr)
     , editing(false)
 	, previousTypeIndex(0)
 	, previousOptionIndex(0)
 {
-	initializeUI(styleIndex, text, text2, text3, text4);
+	initializeUI(styleIndex, Param1, Param2, Param3, Param4);
 }
 
 CustomItemWidget::~CustomItemWidget()
@@ -24,18 +25,19 @@ CustomItemWidget::~CustomItemWidget()
     delete ui_ItemWidgetMeshRegions2;
 	delete ui_ItemWidgetMeshZones;
 	delete ui_ItemWidgetBoundaryConditions;
+	delete ui_ItemWidgetCellZones;
 }
 
-void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const QString& text2, const QString& text3, const QString& text4)
+void CustomItemWidget::initializeUI(int styleIndex, const QString& Param1, const QString& Param2, const QString& Param3, const QString& Param4)
 {
     if (styleIndex == 0) {
         ui_ItemWidgetMeshBoundaries1 = new Ui::CustomItemWidgetMeshBoundaries1Class();
         ui_ItemWidgetMeshBoundaries1->setupUi(this);
-        ui_ItemWidgetMeshBoundaries1->label->setText(text);
+        ui_ItemWidgetMeshBoundaries1->label->setText(Param1);
 
-        // 初始化 text
-        this->text1 = text;
-        this->text2 = text2;
+        // 初始化 Param1
+        this->Param1 = Param1;
+        this->Param2 = Param2;
 
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshBoundaries1->comboBox);
@@ -64,14 +66,14 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
     else if (styleIndex == 1) {
         ui_ItemWidgetMeshBoundaries2 = new Ui::CustomItemWidgetMeshBoundaries2Class();
         ui_ItemWidgetMeshBoundaries2->setupUi(this);
-        ui_ItemWidgetMeshBoundaries2->label->setText(text);
-		ui_ItemWidgetMeshBoundaries2->label_2->setText(text2);
+        ui_ItemWidgetMeshBoundaries2->label->setText(Param1);
+		ui_ItemWidgetMeshBoundaries2->label_2->setText(Param2);
 
-		//初始化 text
-		this->text1 = text;
-		this->text2 = text2;
-		this->text3 = text3;
-		this->text4 = text4;
+		//初始化 Param1
+		this->Param1 = Param1;
+		this->Param2 = Param2;
+		this->Param3 = Param3;
+		this->Param4 = Param4;
 
         // 安装事件过滤器
         ui_ItemWidgetMeshBoundaries2->label->installEventFilter(this);
@@ -80,10 +82,10 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
     else if (styleIndex == 2) {
         ui_ItemWidgetMeshRegions1 = new Ui::CustomItemWidgetMeshRegions1Class();
         ui_ItemWidgetMeshRegions1->setupUi(this);
-        ui_ItemWidgetMeshRegions1->label->setText(text);
+        ui_ItemWidgetMeshRegions1->label->setText(Param1);
 
-        // 初始化 text
-        this->text1 = text;
+        // 初始化 Param1
+        this->Param1 = Param1;
 
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshRegions1->comboBox);
@@ -102,10 +104,10 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
     else if (styleIndex == 3) {
         ui_ItemWidgetMeshRegions2 = new Ui::CustomItemWidgetMeshRegions2Class();
         ui_ItemWidgetMeshRegions2->setupUi(this);
-        ui_ItemWidgetMeshRegions2->label->setText(text);
+        ui_ItemWidgetMeshRegions2->label->setText(Param1);
 
-        // 初始化 text
-        this->text1 = text;
+        // 初始化 Param1
+        this->Param1 = Param1;
 
         // 设置 QComboBox 的自定义视图
         QListView* combo1View1 = new QListView(ui_ItemWidgetMeshRegions2->comboBox);
@@ -134,10 +136,10 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
     else if (styleIndex == 4) {
 		ui_ItemWidgetMeshZones = new Ui::CustomItemWidgetMeshZonesClass();
 		ui_ItemWidgetMeshZones->setupUi(this);
-		ui_ItemWidgetMeshZones->label->setText(text);
+		ui_ItemWidgetMeshZones->label->setText(Param1);
 
-        // 初始化 text
-        this->text1 = text;
+        // 初始化 Param1
+        this->Param1 = Param1;
 
 		// 设置 QComboBox 的自定义视图
 		QListView* combo1View1 = new QListView(ui_ItemWidgetMeshZones->comboBox);
@@ -156,14 +158,14 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
     else if (styleIndex == 5) {
 		ui_ItemWidgetBoundaryConditions = new Ui::CustomItemWidgetBoundaryConditionsClass();
 		ui_ItemWidgetBoundaryConditions->setupUi(this);
-		ui_ItemWidgetBoundaryConditions->label->setText(text);
+		ui_ItemWidgetBoundaryConditions->label->setText(Param1);
 
-		// 初始化 text
-		this->text1 = text;
-        this->text2 = text2;
-        this->text3 = text3;
+		// 初始化 Param1
+		this->Param1 = Param1;
+        this->Param2 = Param2;
+        this->Param3 = Param3;
 
-        if (text2 == "patch")
+        if (Param2 == "patch")
         {
             QPixmap pixmap("../res/patch.png");
             int margin = 4; 
@@ -187,7 +189,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 			QPixmap customIcon("../res/Custom.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(customIcon), "Custom");
 		}
-        else if (text2 == "wall")
+        else if (Param2 == "wall")
         {
             QPixmap pixmap("../res/wall.png");
             int margin = 4;
@@ -201,7 +203,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
             QPixmap customIcon("../res/Custom.png");
             ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(customIcon), "Custom");
         }
-		else if (text2 == "symmetry")
+		else if (Param2 == "symmetry")
 		{
             QPixmap pixmap("../res/symmetry.png");
             int margin = 4;
@@ -213,7 +215,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
             QPixmap symmetryIcon("../res/Symmetry.png");
             ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(symmetryIcon), "Symmetry");
         }
-		else if (text2 == "empty")
+		else if (Param2 == "empty")
 		{
 			QPixmap pixmap("../res/empty.png");
             int margin = 4;
@@ -225,7 +227,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 			QPixmap emptyIcon("../res/Empty.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(emptyIcon), "Empty");
 		}
-		else if (text2 == "wedge")
+		else if (Param2 == "wedge")
 		{
 			QPixmap pixmap("../res/Wedge.png");
             int margin = 4;
@@ -237,7 +239,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 			QPixmap wedgeIcon("../res/Wedge.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(wedgeIcon), "Wedge");
 		}
-        else if (text2 == "overset")
+        else if (Param2 == "overset")
         {
 			QPixmap pixmap("../res/Overset.png");
             int margin = 4;
@@ -249,7 +251,7 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
 			QPixmap oversetIcon("../res/Overset.png");
 			ui_ItemWidgetBoundaryConditions->comboBox->addItem(QIcon(oversetIcon), "Overset");
         }
-        else if (text2.startsWith("mappedWall"))
+        else if (Param2.startsWith("mappedWall"))
         {
 			QPixmap pixmap("../res/Link.png");
             int margin = 4;
@@ -278,6 +280,29 @@ void CustomItemWidget::initializeUI(int styleIndex, const QString& text, const Q
         // 安装事件过滤器
         ui_ItemWidgetBoundaryConditions->label->installEventFilter(this);
     }
+    else if (styleIndex == 6) {
+        ui_ItemWidgetCellZones = new Ui::CustomItemWidgetCellZonesClass();
+        ui_ItemWidgetCellZones->setupUi(this);
+        ui_ItemWidgetCellZones->label->setText(Param1);
+
+		// 初始化 Param1
+		this->Param1 = Param1;
+
+        if (Param2 == "0") 
+        {
+			ui_ItemWidgetCellZones->pushButton->show();
+			ui_ItemWidgetCellZones->pushButton_2->show();
+            ui_ItemWidgetCellZones->pushButton_3->hide();
+			ui_ItemWidgetCellZones->pushButton_4->hide();
+        }
+        else 
+        {
+            ui_ItemWidgetCellZones->pushButton->show();
+            ui_ItemWidgetCellZones->pushButton_2->show();
+            ui_ItemWidgetCellZones->pushButton_3->show();
+            ui_ItemWidgetCellZones->pushButton_4->show();
+        }
+    }
     else {
         return;
     }
@@ -287,11 +312,11 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
 {
     if (ui_ItemWidgetMeshBoundaries1 && obj == ui_ItemWidgetMeshBoundaries1->label) {
         if (event->type() == QEvent::Enter) {
-            ui_ItemWidgetMeshBoundaries1->label->setText(text2);
+            ui_ItemWidgetMeshBoundaries1->label->setText(Param2);
             return true;
         }
         else if (event->type() == QEvent::Leave) {
-            ui_ItemWidgetMeshBoundaries1->label->setText(text1);
+            ui_ItemWidgetMeshBoundaries1->label->setText(Param1);
             return true;
         }
         else if (event->type() == QEvent::MouseButtonDblClick) {
@@ -301,11 +326,11 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
     }
     if (ui_ItemWidgetMeshBoundaries2 && obj == ui_ItemWidgetMeshBoundaries2->label) {
         if (event->type() == QEvent::Enter) {
-			ui_ItemWidgetMeshBoundaries2->label->setText(text3);          
+			ui_ItemWidgetMeshBoundaries2->label->setText(Param3);          
             return true;
         }
         else if (event->type() == QEvent::Leave) {
-			ui_ItemWidgetMeshBoundaries2->label->setText(text1);           
+			ui_ItemWidgetMeshBoundaries2->label->setText(Param1);           
             return true;
         }
         else if (event->type() == QEvent::MouseButtonDblClick) {
@@ -315,11 +340,11 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
     }
 	if (ui_ItemWidgetMeshBoundaries2 && obj == ui_ItemWidgetMeshBoundaries2->label_2) {
 		if (event->type() == QEvent::Enter) {
-			ui_ItemWidgetMeshBoundaries2->label_2->setText(text4);
+			ui_ItemWidgetMeshBoundaries2->label_2->setText(Param4);
 			return true;
 		}
 		else if (event->type() == QEvent::Leave) {
-			ui_ItemWidgetMeshBoundaries2->label_2->setText(text2);
+			ui_ItemWidgetMeshBoundaries2->label_2->setText(Param2);
 			return true;
 		}
 		else if (event->type() == QEvent::MouseButtonDblClick) {
@@ -341,12 +366,12 @@ bool CustomItemWidget::eventFilter(QObject* obj, QEvent* event)
 	if (ui_ItemWidgetBoundaryConditions && obj == ui_ItemWidgetBoundaryConditions->label) {
         if (event->type() == QEvent::Enter)
         {
-			ui_ItemWidgetBoundaryConditions->label->setText(text3);
+			ui_ItemWidgetBoundaryConditions->label->setText(Param3);
 			return true;
 		}
 		else if (event->type() == QEvent::Leave)
 		{
-			ui_ItemWidgetBoundaryConditions->label->setText(text1);
+			ui_ItemWidgetBoundaryConditions->label->setText(Param1);
 			return true;
         }
         else if (event->type() == QEvent::MouseButtonDblClick) 
@@ -402,11 +427,11 @@ void CustomItemWidget::beginEdit(QLabel* label)
     if (!label || !boxLayout) return;
 
     
-	QString text = label->text();
-	int index = text.indexOf(" in ");
-	if (index != -1) text = text.left(index);
+	QString Param1 = label->text();
+	int index = Param1.indexOf(" in ");
+	if (index != -1) Param1 = Param1.left(index);
 
-    lineEdit = new QLineEdit(text, this);
+    lineEdit = new QLineEdit(Param1, this);
     lineEdit->setStyleSheet(
         "QLineEdit {"
         "    border: 1px solid rgb(192, 192, 192);" // 默认边框颜色
@@ -441,24 +466,24 @@ void CustomItemWidget::finishEdit()
     if (ui_ItemWidgetMeshBoundaries1) {
         label = ui_ItemWidgetMeshBoundaries1->label;
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries1->horizontalLayout);
-		QString previousText = text2;
-        text2.replace(text1, newText);
-		text1.replace(text1, newText);	
+		QString previousText = Param2;
+        Param2.replace(Param1, newText);
+		Param1.replace(Param1, newText);	
         emit textChanged(this, previousText);
     }
     else if (ui_ItemWidgetMeshBoundaries2) {
         if (ui_ItemWidgetMeshBoundaries2->label->isHidden()) {
             label = ui_ItemWidgetMeshBoundaries2->label;
-            QString previousText = text3;
-            text3.replace(text1, newText);
-			text1.replace(text1, newText);	
+            QString previousText = Param3;
+            Param3.replace(Param1, newText);
+			Param1.replace(Param1, newText);	
             emit textChanged(this, previousText);
 		}
         else {
             label = ui_ItemWidgetMeshBoundaries2->label_2;
-            QString previousText = text4;
-            text4.replace(text2, newText);
-			text2.replace(text2, newText);			
+            QString previousText = Param4;
+            Param4.replace(Param2, newText);
+			Param2.replace(Param2, newText);			
             emit textChanged(this, previousText);
         }
         boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshBoundaries2->horizontalLayout);
@@ -470,22 +495,22 @@ void CustomItemWidget::finishEdit()
 	else if (ui_ItemWidgetMeshRegions2) {
 		label = ui_ItemWidgetMeshRegions2->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshRegions2->horizontalLayout);
-        QString previousText = text1;
-        text1.replace(text1, newText);     
+        QString previousText = Param1;
+        Param1.replace(Param1, newText);     
         emit textChanged(this, previousText);
 	}
 	else if (ui_ItemWidgetMeshZones) {
 		label = ui_ItemWidgetMeshZones->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetMeshZones->horizontalLayout);
-        QString previousText = text1;
-        text1.replace(text1, newText);  
+        QString previousText = Param1;
+        Param1.replace(Param1, newText);  
         emit textChanged(this, previousText);
 	}
 	else if (ui_ItemWidgetBoundaryConditions) {
 		label = ui_ItemWidgetBoundaryConditions->label;
 		boxLayout = qobject_cast<QBoxLayout*>(ui_ItemWidgetBoundaryConditions->horizontalLayout);
-		QString previousText = text1;
-		text1.replace(text1, newText);
+		QString previousText = Param1;
+		Param1.replace(Param1, newText);
 		emit textChanged(this, previousText);
 	}
 
