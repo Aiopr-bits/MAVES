@@ -590,7 +590,6 @@ void MainWindow::handleAction10Triggered()
 		//formTurbulence->importParameter();
 		//formThermo->importParameter();
 		//formTransportProperties->importParameter();
-		formBoundaryConditions->importParameter();
 		formRun->importParameter();
 
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();

@@ -23,21 +23,12 @@ struct CaseData
 {
     std::string casePath; 														                        // case路径
 	std::string solverName;                                                                             //求解器名称
-
 	std::vector<std::string> cellZoneNames; 															// zones名称
     std::unordered_map < std::string, std::string> regionsType;                                         // 区域类型
 	std::unordered_map<std::string, unordered_map<std::string, std::string>> patchType;                 // 网格patch类型(subDomainName,patchName, patchType)
 	std::vector<double> timeSteps; 																		// 时间步
 	std::vector<std::string> fieldName; 																// 物理量名称
 	std::map<std::string, std::pair<double, double>> fieldsScalarRange;                                 // 物理量范围(fieldName ，（rangeMin ，rangeMax）)
-
-    //以下变量后续需要删除
-    std::map<QString, vtkSmartPointer<vtkActor>> meshEdgeActors;					                    //网格边界actor
-    std::map<QString, vtkSmartPointer<vtkActor>> meshFaceActors;					                    //网格面actor
-
-	QList<QPair<double, QStringList>> timeFilePairs; 													// 时间-VTK文件路径对
-	QStringList fieldNames; 																			// 物理量名称
-    QMap<QString, vtkSmartPointer<vtkScalarBarActor>> scalarBars;                                       // 物理量对应的图例
 };
 
 class GlobalData

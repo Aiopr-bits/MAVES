@@ -36,6 +36,5 @@ void GlobalData::clearAllData()
 {
 	m_caseData->solverName = "";
 	m_caseData->casePath = "";
-	m_caseData->timeFilePairs.clear();
 }
 
