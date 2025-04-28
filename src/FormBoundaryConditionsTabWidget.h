@@ -22,31 +22,29 @@ class FormBoundaryConditionsTabWidget : public QWidget
 	Q_OBJECT
 
 public:
-	FormBoundaryConditionsTabWidget(QWidget *parent = nullptr);
+	FormBoundaryConditionsTabWidget(
+		QWidget* parent = nullptr, 
+		const QString& solver = "rhoSimpleFoam",
+		const QString& turbulenceType = "Laminar",
+		const QString& boundaryType = "Patch",
+		const QString& boundaryConditionType = "Pressure Inlet");
+
 	~FormBoundaryConditionsTabWidget();
 
 public slots:
+	void initialization(
+		const QString& solver = "rhoSimpleFoam",
+		const QString& turbulenceType = "Laminar", 
+		const QString& boundaryType = "Patch",
+		const QString& boundaryConditionType = "Pressure Inlet");
+
+	void on_comboBox_14_itemActivated(int index);
+	void on_comboBox_16_itemActivated(int index);
+	void on_comboBox_26_itemActivated(int index);
+	void on_comboBox_43_itemActivated(int index);
+
 	void resizeEvent(QResizeEvent* event);
 
 public:
 	Ui::FormBoundaryConditionsTabWidgetClass* ui;
-
-
-//以下可能删除
-public:
-	void setLayoutVisibility(QLayout* layout, bool visible);
-	void updateLayoutVisibility(QGridLayout* layout, bool visible);
-
-public slots:
-	void onComboBoxCurrentIndexChanged(int index);
-	void onComboBox_2CurrentIndexChanged(int index);
-	void onComboBox_3CurrentIndexChanged(int index);
-	void onComboBox_4CurrentIndexChanged(int index);
-	void onComboBox_5CurrentIndexChanged(int index);
-	void onComboBox_6CurrentIndexChanged(int index);
-	void onComboBox_7CurrentIndexChanged(int index);
-	void on_tabWidget_currentChanged(int index);
-
-public:
-	int previousIndex;
 };

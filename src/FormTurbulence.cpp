@@ -42,15 +42,6 @@ FormTurbulence::FormTurbulence(QWidget *parent)
 	onComboBox_7_IndexChanged(0);
 	onComboBox_8_IndexChanged(0);
 	ui->radioButton_7->setChecked(true);
-
-	//ui->gridLayout->setRowStretch(0, 1);
-	//ui->gridLayout->setRowStretch(3, 1);
-	//ui->gridLayout->setColumnStretch(0, 1);
-	//ui->gridLayout->setColumnStretch(2, 1);
-
-	//connect(ui->comboBox, &QComboBox::currentTextChanged, this, &FormTurbulence::onComboBoxTextChanged);
-
-	//onComboBoxTextChanged("RAS");
 }
 
 FormTurbulence::~FormTurbulence()
@@ -581,8 +572,8 @@ void FormTurbulence::onRadioButtonToggled()
 			ui->pushButton_8->setChecked(false);
 			on_PushButton_8_Toggled(false);
 		}
+		emit turbulenceTypeChanged();
 	}
-	emit turbulenceTypeChanged();
 }
 
 bool FormTurbulence::importParameter()

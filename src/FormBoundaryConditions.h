@@ -31,10 +31,12 @@ public:
 	~FormBoundaryConditions();
 
 public slots:
-	void initialization(const QString& solver);
-
-signals:
+	void initialization(const QString& solver = "rhoSimpleFoam", const QString& turbulenceType = "Laminar");
+	void on_ListWidgetItem_Clicked(QListWidgetItem* item);
+	void on_textChanged(CustomItemWidget* widget, QString previousText);				//文本改变
+	void on_typeChanged(CustomItemWidget* widget, int previousIndex);					//类型改变
 
 private:
 	Ui::FormBoundaryConditionsClass* ui;
+	std::vector<FormBoundaryConditionsTabWidget*> formBoundaryConditionsTabWidgetsList;
 };

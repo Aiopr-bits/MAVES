@@ -437,9 +437,10 @@ void MainWindow::onSubPanelInitialized()
 	}
 
 	formThermo->initialization(solver);
-	formBoundaryConditions->initialization(solver);
+	formBoundaryConditions->initialization(solver, turbulenceType);
 	formInitialConditions->initialization(solver, "fluid", turbulenceType);
 	formCellZones->initialization(solver, "fluid", turbulenceType);
+
 }
 
 void MainWindow::startCameraAnimation()
