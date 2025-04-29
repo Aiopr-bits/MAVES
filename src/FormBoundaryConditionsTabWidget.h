@@ -38,12 +38,21 @@ public slots:
 		const QString& boundaryType = "Patch",
 		const QString& boundaryConditionType = "Pressure Inlet");
 
-	void on_comboBox_14_itemActivated(int index);
-	void on_comboBox_16_itemActivated(int index);
-	void on_comboBox_26_itemActivated(int index);
-	void on_comboBox_43_itemActivated(int index);
-
+	void on_comboBox_14_itemActivated(int index);						//p
+	void on_comboBox_16_itemActivated(int index);						//p-ρgh
+	void on_comboBox_26_itemActivated(int index);						//U
+	void on_comboBox_43_itemActivated(int index);						//T
+	void on_comboBox_50_itemActivated(int index);						//k
+	void on_comboBox_56_itemActivated(int index);						//k_t
+	void on_comboBox_62_itemActivated(int index);						//k_l
+	void on_comboBox_68_itemActivated(int index);						//ε
+	void on_comboBox_74_itemActivated(int index);						//v_SA
+	void on_comboBox_75_itemActivated(int index);						//ω
+	void on_comboBox_81_itemActivated(int index);						//v_t
+	void on_comboBox_82_itemActivated(int index);						//α_t
 	void resizeEvent(QResizeEvent* event);
+	void toggleWidgets(QWidget* w1, QWidget* w2, bool showFirst);
+	void on_anyComboBox_itemActivated(int index);
 
 public:
 	Ui::FormBoundaryConditionsTabWidgetClass* ui;

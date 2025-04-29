@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
+    <width>424</width>
     <height>4068</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
 }
 </string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_12">
+  <layout class="QGridLayout" name="gridLayout_19">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -6165,23 +6165,38 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                      <item>
                       <layout class="QVBoxLayout" name="verticalLayout_26">
                        <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_5">
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_76">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                        <widget class="QWidget" name="widget_34" native="true">
+                         <layout class="QGridLayout" name="gridLayout_12">
+                          <property name="leftMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item row="0" column="0">
+                           <layout class="QHBoxLayout" name="horizontalLayout_5">
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_76">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6204,28 +6219,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_77">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_77">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6248,28 +6263,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_78">
-                           <property name="minimumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_78">
+                              <property name="minimumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6292,13 +6307,16 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QPushButton" name="pushButton_17">
@@ -6519,23 +6537,38 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                      <item>
                       <layout class="QVBoxLayout" name="verticalLayout_27">
                        <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_6">
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_79">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                        <widget class="QWidget" name="widget_144" native="true">
+                         <layout class="QGridLayout" name="gridLayout_17">
+                          <property name="leftMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item row="0" column="0">
+                           <layout class="QHBoxLayout" name="horizontalLayout_6">
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_79">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6558,28 +6591,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_80">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_80">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6602,28 +6635,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_81">
-                           <property name="minimumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_81">
+                              <property name="minimumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6646,13 +6679,16 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QPushButton" name="pushButton_18">
@@ -6873,23 +6909,38 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                      <item>
                       <layout class="QVBoxLayout" name="verticalLayout_28">
                        <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_7">
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_82">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                        <widget class="QWidget" name="widget_145" native="true">
+                         <layout class="QGridLayout" name="gridLayout_18">
+                          <property name="leftMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item row="0" column="0">
+                           <layout class="QHBoxLayout" name="horizontalLayout_7">
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_82">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6912,28 +6963,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_83">
-                           <property name="minimumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>27</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_83">
+                              <property name="minimumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>27</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -6956,28 +7007,28 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="lineEdit_84">
-                           <property name="minimumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>28</width>
-                             <height>27</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLineEdit" name="lineEdit_84">
+                              <property name="minimumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>28</width>
+                                <height>27</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -7000,13 +7051,16 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                           </property>
-                           <property name="text">
-                            <string>0</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                              </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QPushButton" name="pushButton_19">
@@ -13455,23 +13509,21 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
                        <item>
                         <layout class="QVBoxLayout" name="verticalLayout_45">
                          <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_139">
-                           <item>
-                            <widget class="QLineEdit" name="lineEdit_156">
-                             <property name="minimumSize">
-                              <size>
-                               <width>94</width>
-                               <height>27</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>94</width>
-                               <height>27</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QLineEdit {
+                          <widget class="QLineEdit" name="lineEdit_156">
+                           <property name="minimumSize">
+                            <size>
+                             <width>94</width>
+                             <height>27</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>94</width>
+                             <height>27</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLineEdit {
     background-color: white;
     border: 1px solid rgb(122, 122, 122); /* 默认边界颜色 */
     border-radius: 2px;
@@ -13494,13 +13546,11 @@ QLineEdit:disabled {
     color: #a0a0a0; /* 禁用时文字颜色 */
 }
 </string>
-                             </property>
-                             <property name="text">
-                              <string>0</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
+                           </property>
+                           <property name="text">
+                            <string>0</string>
+                           </property>
+                          </widget>
                          </item>
                          <item>
                           <widget class="QPushButton" name="pushButton_30">

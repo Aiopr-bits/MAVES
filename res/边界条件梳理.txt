@@ -1,0 +1,233 @@
+P:													widget_11
+Zero Gradient										无
+Fixed Value											widget_2
+Fixed Mean Value									widget_3
+Uniform Fixed Value									widget_4
+Uniform Fixed Gradient								widget_5
+Fixed Gradient										widget_6
+Fixed Flux Pressure									无
+Total Pressure										widget_7
+Uniform Total Pressure								widget_8
+Fan													widget_9
+Free Stream Pressure								widget_10
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+p-ρgh:												widget_23
+Fixed Flux Pressure									无
+Total Pressure										widget_13
+Uniform Total Pressure								widget_14
+Fan													widget_15
+Free Stream Pressure								widget_16
+Plenum Inlet										widget_17
+Zero Gradient										无
+Fixed Value											widget_18
+Fixed Mean Value									widget_19
+Uniform Fixed Value									widget_20
+Uniform Fixed Gradient								widget_21
+Fixed Gradient										widget_22
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+U：													widget_55
+Zero Gradient										无
+Fixed Value											widget_35
+Fixed Mean Value									widget_36
+Uniform Fixed Value									widget_37
+Uniform Fixed Gradient								widget_38
+Fixed Gradient										widget_39
+Flow Rate Inlet Velocity							widget_40
+Flow Rate Outlet Velocity							widget_41
+Surface Normal Fixed Value							widget_42
+Pressure Inlet-Outlet Velocity						无
+Pressure Normal Inlet-Outlet Velocity				无
+Pressure Directed Inlet-Outlet Velocity				widget_43
+Inlet-Outlet										widget_44
+Atmospheric Inlet									widget_45
+Free Stream Velocity								widget_46
+Free Stream											widget_46
+Turbulent Inlet										widget_48
+No-Slip												无
+Slip												无
+Cylindrical Inlet									widget_49
+Swirl Flow Rate Inlet								widget_47
+Swirl Inlet											widget_50
+Matched Outlet										widget_51
+Moving Wall Velocity								widget_52
+Rotating Wall Velocity								widget_53
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+T:
+Inlet-Outlet										widget_57
+Uniform Inlet-Outlet								widget_58
+Outlet-Inlet										widget_59
+Free Stream											widget_60
+Turbulent Inlet										widget_61
+Mapped Inlet										widget_62
+Zero Gradient										无
+Fixed Value											widget_63
+Fixed Mean Value									widget_64
+Uniform Fixed Value									widget_65
+Uniform Fixed Gradient								widget_66
+Fixed Gradient										widget_67
+Total Temperature									widget_68
+Inlet-Outlet Total Temperature						widget_68
+Recycled Temperature								widget_69
+Wall Heat Transfer									widget_70
+Heat Flux											widget_71											
+Power												widget_72
+Lumped Mass											widget_73
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+Coupled Temperature and Radiation					无
+Coupled Temperature									无
+
+
+k													widget_24
+Turbulent Intensity Inlet							widget_76
+Atmospheric Inlet									无
+Zero Gradient										无
+Fixed Value											widget_77
+Fixed Mean Value									widget_78
+Uniform Fixed Value									widget_79
+Uniform Fixed Gradient								widget_80
+Fixed Gradient										widget_81
+Inlet-Outlet										widget_82
+Uniform Inlet-Outlet								widget_83
+Outlet-Inlet										widget_84
+Free Stream											widget_85
+Turbulent Inlet										widget_86
+Mapped Inlet										widget_87
+Standard Wall Function								无
+Low Re Wall Function								无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+k_t													widget_25
+Turbulent Intensity Inlet							widget_89
+Atmospheric Inlet									无
+Zero Gradient										无
+Fixed Value											widget_90
+Fixed Mean Value									widget_91
+Uniform Fixed Value									widget_92
+Uniform Fixed Gradient								widget_93
+Fixed Gradient										widget_94
+Inlet-Outlet										widget_95
+Uniform Inlet-Outlet								widget_96
+Outlet-Inlet										widget_97
+Free Stream											widget_98
+Turbulent Inlet										widget_99
+Mapped Inlet										widget_100
+Standard Wall Function								无
+Low Re Wall Function								无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset
+
+
+k_l													widget_26
+Turbulent Intensity Inlet							widget_102
+Zero Gradient										无
+Fixed Value											widget_103
+Fixed Mean Value									widget_104
+Uniform Fixed Value									widget_105
+Uniform Fixed Gradient								widget_106
+Fixed Gradient										widget_107
+Inlet-Outlet										widget_108
+Uniform Inlet-Outlet								widget_109
+Outlet-Inlet										widget_110
+Free Stream											widget_111
+Turbulent Inlet										widget_112
+Mapped Inlet										widget_113
+Standard Wall Function								无
+Low Re Wall Function								无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+ε													widget_27
+Turbulent Mixing Length Inlet						widget_115
+Zero Gradient										无
+Fixed Value											widget_116
+Fixed Mean Value									widget_117
+Uniform Fixed Value									widget_118
+Uniform Fixed Gradient								widget_119
+Fixed Gradient										widget_120
+Inlet-Outlet										widget_121
+Uniform Inlet-Outlet								widget_122
+Outlet-Inlet										widget_123
+Free Stream											widget_124
+Turbulent Inlet										widget_125
+Mapped Inlet										widget_126
+Standard Wall Function								无
+Low Re Wall Function								无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+
+v_SA												widget_33
+Fixed Value											widget_128
+Zero Gradient										无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+ω													widget_28
+Turbulent Mixing Length Inlet						widget_130
+Zero Gradient										无
+Fixed Value											widget_131
+Fixed Mean Value									widget_132
+Uniform Fixed Value									widget_133
+Uniform Fixed Gradient								widget_134
+Fixed Gradient										widget_135
+Inlet-Outlet										widget_136
+Uniform Inlet-Outlet								widget_137
+Outlet-Inlet										widget_138
+Free Stream											widget_139
+Turbulent Inlet										widget_140
+Mapped Inlet										widget_141
+Standard Wall Function								无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+
+v_t													widget_31
+Standard Wall Function								无
+Standard Wall Function(k)							无
+Spalding Wall Function								无
+Blended Wall Function								无
+Low Re Wall Function								无
+Rough Wall Function									widget_29
+Rough Wall Function(k)								widget_30
+Atmospheric Wall Function							widget_141
+Symmetry											无
+Empty												无
+Wedge												无
+Overset												无
+
+α_t													widget_32
+Calculated											无
+Standard Wall Function								无
+Jayatilleke Wall Function							无
+Symmetry											无
+Empty												无
+Wedge												无
+Overset													无
