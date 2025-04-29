@@ -1,0 +1,4 @@
+quazip5.lib
+quazip5d.lib
+quazip_static.lib
+quazip_staticd.lib
