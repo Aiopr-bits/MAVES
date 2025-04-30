@@ -1,0 +1,50 @@
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	location	"system";
+	object	createPatchDict;
+}
+pointSync	false;
+patches	(
+	{
+		name	board;
+		patchInfo
+		{
+			type	wall;
+		}
+		constructFrom	patches;
+		patches	(board_default);
+	}
+
+	{
+		name	cpu;
+		patchInfo
+		{
+			type	wall;
+		}
+		constructFrom	patches;
+		patches	(cpu_patch0604 cpu_patch0606 cpu_patch0607 cpu_patch0608 cpu_patch0609);
+	}
+
+	{
+		name	fan;
+		patchInfo
+		{
+			type	wall;
+		}
+		constructFrom	patches;
+		patches	(fan_x_min fan_x_max fan_y_min fan_y_max fan_z_max);
+	}
+
+	{
+		name	fan_inlet;
+		patchInfo
+		{
+			type	patch;
+		}
+		constructFrom	patches;
+		patches	(fan_z_min);
+	}
+);
