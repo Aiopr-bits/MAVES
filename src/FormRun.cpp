@@ -201,8 +201,6 @@ void FormRun::exportParameter()
 	filePath = caseDirPath + "/system/decomposeParDict";
 	file.setFileName(filePath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开文件: " + filePath });
-		dialogInformationPrompt->exec();
 		return;
 	}
 

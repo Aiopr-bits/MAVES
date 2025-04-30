@@ -5,8 +5,8 @@
  ;| Email: mailzengzhiyong@gamil.com                                            |
  ;\*---------------------------------------------------------------------------*/
 
-#define MyAppName "MAVES20250423"
-#define MyAppVersion "20250423"
+#define MyAppName "MAVES20250430"
+#define MyAppVersion "20250430"
 #define MyAppExeName "MAVES.exe"
 
 [Setup]
@@ -30,7 +30,7 @@ DisableProgramGroupPage=yes
 ; 取消下列注释行，在非管理员安装模式下运行(仅为当前用户安装.)
 ;PrivilegesRequired=lowest
 OutputDir=..\package
-OutputBaseFilename=MAVES20250423
+OutputBaseFilename=MAVES20250430
 SetupIconFile=..\res\icon.ico
 Compression=lzma
 SolidCompression=yes
