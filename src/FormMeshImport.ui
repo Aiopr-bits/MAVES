@@ -227,7 +227,7 @@ QComboBox QAbstractItemView QScrollBarsub-page:vertical {
            </property>
            <item>
             <property name="text">
-             <string>OpenFOAM 文件</string>
+             <string>TRF 文件</string>
             </property>
            </item>
           </widget>

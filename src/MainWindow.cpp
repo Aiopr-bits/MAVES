@@ -562,7 +562,7 @@ void MainWindow::handleAction9Triggered()
 void MainWindow::handleAction10Triggered()
 {
 	QString caseFilePath;
-	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM 文件 (*.foam);;"));
+	QFileDialog dialog(this, tr(""), "", tr("TRF 文件 (*.trf);;"));
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setViewMode(QFileDialog::Detail);
 
@@ -1819,7 +1819,7 @@ void MainWindow::formPostprocessing_loopPlayPause()
 void MainWindow::formPostprocessing_loadData()
 {
 	QString caseFilePath;
-	QFileDialog dialog(this, tr(""), "", tr("OpenFOAM 文件 (*.foam);;"));
+	QFileDialog dialog(this, tr(""), "", tr("TRF 文件 (*.trf);;"));
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setViewMode(QFileDialog::Detail);
 

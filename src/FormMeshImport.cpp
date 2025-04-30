@@ -35,9 +35,9 @@ void FormMeshImport::on_pushButton_2_clicked()
 	QString text = ui->comboBox->currentText();
 	QString filePath;
 
-	if (text == "OpenFOAM 文件") {
+	if (text == "TRF 文件") {
 		filePath = QFileDialog::getOpenFileName(this, tr("打开文件"), "",
-			tr("OpenFOAM 文件 (*.foam);;"));
+			tr("TRF 文件 (*.trf);;"));
 	}
 	else {
 		return;
