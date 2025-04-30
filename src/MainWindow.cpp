@@ -1252,6 +1252,9 @@ void MainWindow::formMesh_topoSet()
 	connect(process, &QProcess::readyReadStandardOutput, this, [=]() {
 		while (process->canReadLine()) {
 			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
 			ui->textBrowser->append(QString::fromLocal8Bit(output));
 			ui->textBrowser->repaint();
 		}
@@ -1288,6 +1291,9 @@ void MainWindow::formMesh_splitMeshRegions()
 	connect(process, &QProcess::readyReadStandardOutput, this, [=]() {
 		while (process->canReadLine()) {
 			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
 			ui->textBrowser->append(QString::fromLocal8Bit(output));
 			ui->textBrowser->repaint();
 		}
@@ -2223,6 +2229,9 @@ void MainWindow::onProcessRunOutput()
 {
 	while (processRun.canReadLine()) {
 		QByteArray output = processRun.readLine();
+		if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+			continue;
+		}
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
@@ -2243,6 +2252,9 @@ void MainWindow::onProcessDecomposeParOutput()
 {
 	while (processDecomposePar.canReadLine()) {
 		QByteArray output = processDecomposePar.readLine();
+		if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+			continue;
+		}
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 	}
@@ -2253,6 +2265,9 @@ void MainWindow::onProcessReconstructParOutput()
 
 	while (processReconstructPar.canReadLine()) {
 		QByteArray output = processReconstructPar.readLine();
+		if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+			continue;
+		}
 		ui->textBrowser->append(QString::fromLocal8Bit(output));
 		ui->textBrowser->repaint();
 
