@@ -438,7 +438,7 @@ void FormInitialConditionsTabWidget::initialization(const QString& solver, const
 			}
 		}
 	}
-	else if (solver == "chtMultiRegionFoam")
+	else if (solver == "chtMultiRegionSimpleFoam")
 	{
 		ui->tabWidget->tabBar()->hide();
 		ui->tabWidget->setCurrentIndex(0);

@@ -58,7 +58,7 @@ void FormInitialConditions::initialization(const QString& solver, const QString&
 		ui->verticalLayout_2->insertWidget(insertPosition, formInitialConditionsTabWidget);
 		formInitialConditionsTabWidgetsList.push_back(formInitialConditionsTabWidget);
 	}
-	else if (solver == "chtMultiRegionFoam")
+	else if (solver == "chtMultiRegionSimpleFoam")
 	{
 		ui->widget_2->show();
 

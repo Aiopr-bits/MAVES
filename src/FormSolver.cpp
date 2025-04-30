@@ -102,7 +102,7 @@ bool FormSolver::importParameter()
 		emit labelText_8_Changed("buoyantBoussinesqPimpleFoam");
 		return true;
 	}
-	else if (application == "chtMultiRegionFoam")
+	else if (application == "chtMultiRegionSimpleFoam")
 	{
 		ui->pushButton->setChecked(false);
 		ui->pushButton_2->setChecked(true);
@@ -111,8 +111,8 @@ bool FormSolver::importParameter()
 		ui->checkBox->setChecked(true);
 		ui->checkBox_2->setChecked(true);
 		ui->label_8->setText("multiRegionSolver");
-		GlobalData::getInstance().getCaseData()->solverName = "chtMultiRegionFoam";
-		emit labelText_8_Changed("chtMultiRegionFoam");
+		GlobalData::getInstance().getCaseData()->solverName = "chtMultiRegionSimpleFoam";
+		emit labelText_8_Changed("chtMultiRegionSimpleFoam");
 		return true;
 	}
 	else {
@@ -165,7 +165,7 @@ bool FormSolver::exportParameter()
 	}
 	else if (application == "multiRegionSolver")
 	{
-		application = "chtMultiRegionFoam";
+		application = "chtMultiRegionSimpleFoam";
 	}
 
 	QRegExp rx("application\\s+\\S+;");
@@ -298,7 +298,7 @@ void FormSolver::on_pushButton_5_clicked()
 		}
 		else if (selectedText == "multiRegionSolver")
 		{
-			selectedText = "chtMultiRegionFoam";
+			selectedText = "chtMultiRegionSimpleFoam";
 		}
 
 		GlobalData::getInstance().getCaseData()->solverName = selectedText.toStdString();

@@ -319,7 +319,7 @@ void FormThermo::initialization(const QString& solver)
 		ui->verticalLayout_2->insertWidget(insertPosition, formThermoListWidget);
 		formThermoListWidgets.push_back(formThermoListWidget);
 	}
-	else if (solver == "chtMultiRegionFoam") {
+	else if (solver == "chtMultiRegionSimpleFoam") {
 		ui->widget->show();
 
 		ui->label_4->show();

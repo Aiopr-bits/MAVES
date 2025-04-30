@@ -119,7 +119,7 @@ void FormBoundaryConditions::initialization(const QString& solver, const QString
 			ui->listWidget->setFixedHeight(totalHeight);
 		}
 	}
-	else if (solver == "chtMultiRegionFoam")
+	else if (solver == "chtMultiRegionSimpleFoam")
 	{
 		//获取边界类型
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> patchType = GlobalData::getInstance().getCaseData()->patchType;

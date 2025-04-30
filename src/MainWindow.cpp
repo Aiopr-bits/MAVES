@@ -411,7 +411,7 @@ void MainWindow::onSubPanelInitialized()
 	}
 	else if (solver == "multiRegionSolver")
 	{
-		solver = "chtMultiRegionFoam";
+		solver = "chtMultiRegionSimpleFoam";
 	}
 
 	//获取湍流类型
@@ -1424,7 +1424,7 @@ void MainWindow::formSolver_select(const QString& application)
 		ui->pushButton_3->show();	//模型切分
 		ui->pushButton_18->show();	//计算
 	}
-	else if (application == "chtMultiRegionFoam")
+	else if (application == "chtMultiRegionSimpleFoam")
 	{
 		ui->pushButton_22->show();	//辐射
 		ui->pushButton_6->show();	//湍流

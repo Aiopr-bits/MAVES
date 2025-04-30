@@ -2909,7 +2909,7 @@ void FormBoundaryConditionsTabWidget::initialization(
 			on_comboBox_82_itemActivated(0);
 		}
 	}
-	else if (solver == "chtMultiRegionFoam")
+	else if (solver == "chtMultiRegionSimpleFoam")
 	{
 		ui->tabWidget->setTabVisible(0, true);
 		ui->tabWidget->setTabVisible(1, true);

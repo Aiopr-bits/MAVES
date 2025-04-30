@@ -85,7 +85,7 @@ void FormCellZones::initialization(const QString& solver, const QString& regionT
 			}
 		}
 	}
-	else if (solver == "chtMultiRegionFoam")
+	else if (solver == "chtMultiRegionSimpleFoam")
 	{
 		for (auto& cellZoneName : cellZoneNames)
 		{
