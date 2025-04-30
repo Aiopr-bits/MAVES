@@ -1,0 +1,1054 @@
+FoamFile
+{
+	version	2.0;
+	class	dictionary;
+	format	ascii;
+	location	"system";
+	object	snappyHexMeshDict;
+}
+castellatedMesh	true;
+snap	true;
+addLayers	false;
+geometry
+{
+	board.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	stl;
+		name	board;
+		includedAngle	120.0;
+	}
+	cpu.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	stl;
+		name	cpu;
+		includedAngle	120.0;
+		faceGroups
+		{
+			patch0604
+			{
+				name	cpu;
+			}
+			patch0606
+			{
+				name	cpu;
+			}
+			patch0607
+			{
+				name	cpu;
+			}
+			patch0608
+			{
+				name	cpu;
+			}
+			patch0609
+			{
+				name	cpu;
+			}
+		}
+	}
+	fan.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	primitive;
+		primitiveType	box;
+		name	fan;
+		max	(0.066 0.032 0.0155);
+		min	(0.05 0.016 0.0115);
+		faceGroups
+		{
+			x_min
+			{
+				name	fan;
+			}
+			x_max
+			{
+				name	fan;
+			}
+			y_min
+			{
+				name	fan;
+			}
+			y_max
+			{
+				name	fan;
+			}
+			z_max
+			{
+				name	fan;
+			}
+			z_min
+			{
+				name	fan_inlet;
+			}
+		}
+	}
+	outlet_tool.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	primitive;
+		primitiveType	box;
+		name	outlet_tool;
+		max	(0.091 0.050499998 0.008);
+		min	(0.0845 0.0415 0);
+		faceGroups
+		{
+			x_min
+			{
+				name	outlet_tool;
+			}
+			x_max
+			{
+				name	outlet_tool;
+			}
+			y_min
+			{
+				name	outlet_tool;
+			}
+			y_max
+			{
+				name	outlet_tool;
+			}
+			z_min
+			{
+				name	outlet_tool;
+			}
+			z_max
+			{
+				name	outlet_tool;
+			}
+		}
+	}
+	pins.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	stl;
+		name	pins;
+		includedAngle	120.0;
+		faceGroups
+		{
+			patch058
+			{
+				name	pins;
+			}
+			patch059
+			{
+				name	pins;
+			}
+			patch060
+			{
+				name	pins;
+			}
+			patch061
+			{
+				name	pins;
+			}
+			patch063
+			{
+				name	pins;
+			}
+			patch069
+			{
+				name	pins;
+			}
+			patch070
+			{
+				name	pins;
+			}
+			patch071
+			{
+				name	pins;
+			}
+			patch072
+			{
+				name	pins;
+			}
+			patch074
+			{
+				name	pins;
+			}
+			patch080
+			{
+				name	pins;
+			}
+			patch081
+			{
+				name	pins;
+			}
+			patch082
+			{
+				name	pins;
+			}
+			patch083
+			{
+				name	pins;
+			}
+			patch085
+			{
+				name	pins;
+			}
+			patch091
+			{
+				name	pins;
+			}
+			patch092
+			{
+				name	pins;
+			}
+			patch093
+			{
+				name	pins;
+			}
+			patch094
+			{
+				name	pins;
+			}
+			patch096
+			{
+				name	pins;
+			}
+			patch0102
+			{
+				name	pins;
+			}
+			patch0103
+			{
+				name	pins;
+			}
+			patch0104
+			{
+				name	pins;
+			}
+			patch0105
+			{
+				name	pins;
+			}
+			patch0107
+			{
+				name	pins;
+			}
+			patch0113
+			{
+				name	pins;
+			}
+			patch0114
+			{
+				name	pins;
+			}
+			patch0115
+			{
+				name	pins;
+			}
+			patch0116
+			{
+				name	pins;
+			}
+			patch0118
+			{
+				name	pins;
+			}
+			patch0124
+			{
+				name	pins;
+			}
+			patch0125
+			{
+				name	pins;
+			}
+			patch0126
+			{
+				name	pins;
+			}
+			patch0127
+			{
+				name	pins;
+			}
+			patch0129
+			{
+				name	pins;
+			}
+			patch0135
+			{
+				name	pins;
+			}
+			patch0136
+			{
+				name	pins;
+			}
+			patch0137
+			{
+				name	pins;
+			}
+			patch0138
+			{
+				name	pins;
+			}
+			patch0140
+			{
+				name	pins;
+			}
+			patch0146
+			{
+				name	pins;
+			}
+			patch0147
+			{
+				name	pins;
+			}
+			patch0148
+			{
+				name	pins;
+			}
+			patch0149
+			{
+				name	pins;
+			}
+			patch0151
+			{
+				name	pins;
+			}
+			patch0157
+			{
+				name	pins;
+			}
+			patch0158
+			{
+				name	pins;
+			}
+			patch0159
+			{
+				name	pins;
+			}
+			patch0160
+			{
+				name	pins;
+			}
+			patch0162
+			{
+				name	pins;
+			}
+			patch0168
+			{
+				name	pins;
+			}
+			patch0169
+			{
+				name	pins;
+			}
+			patch0170
+			{
+				name	pins;
+			}
+			patch0171
+			{
+				name	pins;
+			}
+			patch0173
+			{
+				name	pins;
+			}
+			patch0179
+			{
+				name	pins;
+			}
+			patch0180
+			{
+				name	pins;
+			}
+			patch0181
+			{
+				name	pins;
+			}
+			patch0182
+			{
+				name	pins;
+			}
+			patch0184
+			{
+				name	pins;
+			}
+			patch0190
+			{
+				name	pins;
+			}
+			patch0191
+			{
+				name	pins;
+			}
+			patch0192
+			{
+				name	pins;
+			}
+			patch0193
+			{
+				name	pins;
+			}
+			patch0195
+			{
+				name	pins;
+			}
+			patch0201
+			{
+				name	pins;
+			}
+			patch0202
+			{
+				name	pins;
+			}
+			patch0203
+			{
+				name	pins;
+			}
+			patch0204
+			{
+				name	pins;
+			}
+			patch0206
+			{
+				name	pins;
+			}
+			patch0212
+			{
+				name	pins;
+			}
+			patch0213
+			{
+				name	pins;
+			}
+			patch0214
+			{
+				name	pins;
+			}
+			patch0215
+			{
+				name	pins;
+			}
+			patch0217
+			{
+				name	pins;
+			}
+			patch0223
+			{
+				name	pins;
+			}
+			patch0224
+			{
+				name	pins;
+			}
+			patch0225
+			{
+				name	pins;
+			}
+			patch0226
+			{
+				name	pins;
+			}
+			patch0228
+			{
+				name	pins;
+			}
+			patch0234
+			{
+				name	pins;
+			}
+			patch0235
+			{
+				name	pins;
+			}
+			patch0236
+			{
+				name	pins;
+			}
+			patch0237
+			{
+				name	pins;
+			}
+			patch0239
+			{
+				name	pins;
+			}
+			patch0245
+			{
+				name	pins;
+			}
+			patch0246
+			{
+				name	pins;
+			}
+			patch0247
+			{
+				name	pins;
+			}
+			patch0248
+			{
+				name	pins;
+			}
+			patch0250
+			{
+				name	pins;
+			}
+			patch0256
+			{
+				name	pins;
+			}
+			patch0257
+			{
+				name	pins;
+			}
+			patch0258
+			{
+				name	pins;
+			}
+			patch0259
+			{
+				name	pins;
+			}
+			patch0261
+			{
+				name	pins;
+			}
+			patch0267
+			{
+				name	pins;
+			}
+			patch0268
+			{
+				name	pins;
+			}
+			patch0269
+			{
+				name	pins;
+			}
+			patch0270
+			{
+				name	pins;
+			}
+			patch0272
+			{
+				name	pins;
+			}
+			patch0278
+			{
+				name	pins;
+			}
+			patch0279
+			{
+				name	pins;
+			}
+			patch0280
+			{
+				name	pins;
+			}
+			patch0281
+			{
+				name	pins;
+			}
+			patch0283
+			{
+				name	pins;
+			}
+			patch0289
+			{
+				name	pins;
+			}
+			patch0290
+			{
+				name	pins;
+			}
+			patch0291
+			{
+				name	pins;
+			}
+			patch0292
+			{
+				name	pins;
+			}
+			patch0294
+			{
+				name	pins;
+			}
+			patch0300
+			{
+				name	pins;
+			}
+			patch0301
+			{
+				name	pins;
+			}
+			patch0302
+			{
+				name	pins;
+			}
+			patch0303
+			{
+				name	pins;
+			}
+			patch0305
+			{
+				name	pins;
+			}
+			patch0311
+			{
+				name	pins;
+			}
+			patch0312
+			{
+				name	pins;
+			}
+			patch0313
+			{
+				name	pins;
+			}
+			patch0314
+			{
+				name	pins;
+			}
+			patch0316
+			{
+				name	pins;
+			}
+			patch0322
+			{
+				name	pins;
+			}
+			patch0323
+			{
+				name	pins;
+			}
+			patch0324
+			{
+				name	pins;
+			}
+			patch0325
+			{
+				name	pins;
+			}
+			patch0327
+			{
+				name	pins;
+			}
+			patch0333
+			{
+				name	pins;
+			}
+			patch0334
+			{
+				name	pins;
+			}
+			patch0335
+			{
+				name	pins;
+			}
+			patch0336
+			{
+				name	pins;
+			}
+			patch0338
+			{
+				name	pins;
+			}
+			patch0344
+			{
+				name	pins;
+			}
+			patch0345
+			{
+				name	pins;
+			}
+			patch0346
+			{
+				name	pins;
+			}
+			patch0347
+			{
+				name	pins;
+			}
+			patch0349
+			{
+				name	pins;
+			}
+			patch0355
+			{
+				name	pins;
+			}
+			patch0356
+			{
+				name	pins;
+			}
+			patch0357
+			{
+				name	pins;
+			}
+			patch0358
+			{
+				name	pins;
+			}
+			patch0360
+			{
+				name	pins;
+			}
+			patch0366
+			{
+				name	pins;
+			}
+			patch0367
+			{
+				name	pins;
+			}
+			patch0368
+			{
+				name	pins;
+			}
+			patch0369
+			{
+				name	pins;
+			}
+			patch0371
+			{
+				name	pins;
+			}
+			patch0377
+			{
+				name	pins;
+			}
+			patch0378
+			{
+				name	pins;
+			}
+			patch0379
+			{
+				name	pins;
+			}
+			patch0380
+			{
+				name	pins;
+			}
+			patch0382
+			{
+				name	pins;
+			}
+			patch0388
+			{
+				name	pins;
+			}
+			patch0389
+			{
+				name	pins;
+			}
+			patch0390
+			{
+				name	pins;
+			}
+			patch0391
+			{
+				name	pins;
+			}
+			patch0393
+			{
+				name	pins;
+			}
+			patch0399
+			{
+				name	pins;
+			}
+			patch0400
+			{
+				name	pins;
+			}
+			patch0401
+			{
+				name	pins;
+			}
+			patch0402
+			{
+				name	pins;
+			}
+			patch0404
+			{
+				name	pins;
+			}
+			patch0410
+			{
+				name	pins;
+			}
+			patch0411
+			{
+				name	pins;
+			}
+			patch0412
+			{
+				name	pins;
+			}
+			patch0413
+			{
+				name	pins;
+			}
+			patch0415
+			{
+				name	pins;
+			}
+			patch0421
+			{
+				name	pins;
+			}
+			patch0422
+			{
+				name	pins;
+			}
+			patch0423
+			{
+				name	pins;
+			}
+			patch0424
+			{
+				name	pins;
+			}
+			patch0426
+			{
+				name	pins;
+			}
+			patch0432
+			{
+				name	pins;
+			}
+			patch0433
+			{
+				name	pins;
+			}
+			patch0434
+			{
+				name	pins;
+			}
+			patch0435
+			{
+				name	pins;
+			}
+			patch0437
+			{
+				name	pins;
+			}
+			patch0443
+			{
+				name	pins;
+			}
+			patch0444
+			{
+				name	pins;
+			}
+			patch0445
+			{
+				name	pins;
+			}
+			patch0446
+			{
+				name	pins;
+			}
+			patch0448
+			{
+				name	pins;
+			}
+			patch0454
+			{
+				name	pins;
+			}
+			patch0455
+			{
+				name	pins;
+			}
+			patch0456
+			{
+				name	pins;
+			}
+			patch0457
+			{
+				name	pins;
+			}
+			patch0459
+			{
+				name	pins;
+			}
+			patch0465
+			{
+				name	pins;
+			}
+			patch0466
+			{
+				name	pins;
+			}
+			patch0467
+			{
+				name	pins;
+			}
+			patch0468
+			{
+				name	pins;
+			}
+			patch0470
+			{
+				name	pins;
+			}
+			patch0476
+			{
+				name	pins;
+			}
+			patch0477
+			{
+				name	pins;
+			}
+			patch0478
+			{
+				name	pins;
+			}
+			patch0479
+			{
+				name	pins;
+			}
+			patch0481
+			{
+				name	pins;
+			}
+			patch0487
+			{
+				name	pins;
+			}
+			patch0488
+			{
+				name	pins;
+			}
+			patch0489
+			{
+				name	pins;
+			}
+			patch0490
+			{
+				name	pins;
+			}
+			patch0492
+			{
+				name	pins;
+			}
+		}
+	}
+}
+castellatedMeshControls
+{
+	locationInMesh	(0.058 0.024 0.005);
+	refinementSurfaces
+	{
+		board
+		{
+			level	( 2 3 );
+			patchInfo
+			{
+				type	wall;
+			}
+		}
+		cpu
+		{
+			level	( 2 4 );
+			patchInfo
+			{
+				type	wall;
+			}
+		}
+		fan
+		{
+			level	( 1 3 );
+			patchInfo
+			{
+				type	wall;
+			}
+		}
+	}
+	refinementRegions
+	{
+	}
+	limitRegions
+	{
+	}
+	features	
+	(
+	{
+		file	"board.eMesh";
+		levels	((0 0));
+	}
+	{
+		file	"cpu.eMesh";
+		levels	((0 0));
+	}
+	{
+		file	"fan.eMesh";
+		levels	((0 0));
+	}
+	);
+	maxLocalCells	1000000;
+	maxGlobalCells	10000000;
+	nCellsBetweenLevels	4;
+	maxLoadUnbalance	0.1;
+	minRefinementCells	10;
+	resolveFeatureAngle	30.0;
+	allowFreeStandingZoneFaces	true;
+}
+snapControls
+{
+	tolerance	1.0;
+	nSmoothPatch	3;
+	nSolveIter	500;
+	nRelaxIter	5;
+	nFeatureSnapIter	10;
+	implicitFeatureSnap	false;
+	explicitFeatureSnap	true;
+	multiRegionFeatureSnap	true;
+	nFaceSplitInterval	5;
+}
+addLayersControls
+{
+	layers
+	{
+	}
+	relativeSizes	true;
+	minThickness	0.1;
+	firstLayerThickness	0.2;
+	expansionRatio	1.25;
+	nGrow	0;
+	featureAngle	180.0;
+	maxFaceThicknessRatio	0.5;
+	nSmoothSurfaceNormals	5;
+	nSmoothThickness	10;
+	minMedialAxisAngle	90.0;
+	maxThicknessToMedialRatio	0.5;
+	nMedialAxisIter	100;
+	nSmoothNormals	3;
+	slipFeatureAngle	30.0;
+	nRelaxIter	5;
+	nBufferCellsNoExtrude	0;
+	nLayerIter	50;
+	nRelaxedIter	20;
+	detectExtrusionIsland	true;
+	nOuterIter	1;
+}
+meshQualityControls
+{
+	maxNonOrtho	65.0;
+	maxBoundarySkewness	20.0;
+	maxInternalSkewness	4.0;
+	maxConcave	80.0;
+	minVol	1.0E-14;
+	minTetQuality	1.0E-20;
+	minArea	-1.0;
+	minTwist	0.02;
+	minTriangleTwist	-1.0;
+	minDeterminant	0.01;
+	minFaceWeight	0.05;
+	minVolRatio	0.01;
+	minVolCollapseRatio	0.1;
+	nSmoothScale	4;
+	errorReduction	0.75;
+	relaxed
+	{
+		maxNonOrtho	75.0;
+	}
+}
+mergeTolerance	1.0E-6;
+debug	0;

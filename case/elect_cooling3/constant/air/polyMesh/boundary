@@ -1,0 +1,47 @@
+
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/air/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+4
+(
+    inlet
+    {
+        type            patch;
+        nFaces          256;
+        startFace       198866;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          72;
+        startFace       199122;
+    }
+    wall
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          17062;
+        startFace       199194;
+    }
+    cpu-fluid
+    {
+        type            mappedWall;
+        nFaces          252;
+        startFace       216256;
+        sampleRegion    cpu;
+        samplePatch cpu-solid;
+        sampleMode  nearestPatchFace;
+        offsetMode  uniform;
+        offset  (0 0 0);
+    }
+)
+
+// ************************************************************************* //

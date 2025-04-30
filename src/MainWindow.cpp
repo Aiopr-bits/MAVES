@@ -1160,7 +1160,7 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
 	}
 
-	if (type == "foam")
+	if (type == "trf")
 	{
 		GlobalData::getInstance().getCaseData()->casePath = filePath.toStdString();
 		formMesh->updateForm(isRender);
