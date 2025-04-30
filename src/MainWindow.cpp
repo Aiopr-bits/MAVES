@@ -198,6 +198,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);																//适应窗口
 	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);																//模型切分
 	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);																//导入案例
+	connect(ui->action11, &QAction::triggered, this, &MainWindow::handleAction11Triggered);																//知识图谱
 
 	//主界面其他事件处理
 	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																		//播放
@@ -596,6 +597,12 @@ void MainWindow::handleAction10Triggered()
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
 	}
+}
+
+void MainWindow::handleAction11Triggered()
+{
+	QUrl url("http://172.20.19.215");
+	QDesktopServices::openUrl(url);
 }
 
 void MainWindow::on_panelPushButton_clicked(string text)
