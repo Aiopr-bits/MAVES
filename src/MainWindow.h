@@ -49,6 +49,7 @@ QT_CHARTS_USE_NAMESPACE
 #include "FormGeometry.h"
 #include "FormMeshImport.h"
 #include "FormModelClip.h"
+#include "FormOperatingConditions.h"
 #include "FormCellZones.h"
 #include "FormBoundaryConditions.h"
 #include "FormBoundaryConditionsTabWidget.h"
@@ -207,6 +208,7 @@ public slots:
 	void on_pushButton_6_clicked();								    													//湍流模型页面
 	void on_pushButton_7_clicked();								    													//热物理特性页面
 	void on_pushButton_21_clicked();								    												//传输特性页面
+	void on_pushButton_11_clicked();								    												//参考值
 	void on_pushButton_12_clicked();								    												//区域设置
 	void on_pushButton_13_clicked();								    												//边界条件页面
 	void on_pushButton_14_clicked();								    												//初始条件页面
@@ -297,6 +299,7 @@ public:
 	FormTurbulence* formTurbulence;
 	FormThermo* formThermo;
 	FormTransportProperties* formTransportProperties;
+	FormOperatingConditions* formOperatingConditions;
 	FormCellZones* formCellZones;
 	FormBoundaryConditions* formBoundaryConditions;
 	FormInitialConditions* formInitialConditions;

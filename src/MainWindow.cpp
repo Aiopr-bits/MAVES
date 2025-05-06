@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTurbulence = new FormTurbulence(this);
 	formThermo = new FormThermo(this);
 	formTransportProperties = new FormTransportProperties(this);
+	formOperatingConditions = new FormOperatingConditions(this);
 	formCellZones = new FormCellZones(this);
 	formBoundaryConditions = new FormBoundaryConditions(this);
 	formInitialConditions = new FormInitialConditions(this);
@@ -96,6 +97,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->gridLayout_3->addWidget(formTurbulence, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formThermo, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formTransportProperties, 0, 0, 1, 1);
+	ui->gridLayout_3->addWidget(formOperatingConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formCellZones, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formBoundaryConditions, 0, 0, 1, 1);
 	ui->gridLayout_3->addWidget(formInitialConditions, 0, 0, 1, 1);
@@ -110,6 +112,7 @@ MainWindow::MainWindow(QWidget* parent)
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
+	formOperatingConditions->hide();
 	formCellZones->hide();
 	formBoundaryConditions->hide();
 	formInitialConditions->hide();
@@ -280,6 +283,7 @@ void MainWindow::hideAllSubForm()
 	formTurbulence->hide();
 	formThermo->hide();
 	formTransportProperties->hide();
+	formOperatingConditions->hide();
 	formCellZones->hide();
 	formBoundaryConditions->hide();
 	formInitialConditions->hide();
@@ -442,7 +446,6 @@ void MainWindow::onSubPanelInitialized()
 	formBoundaryConditions->initialization(solver, turbulenceType);
 	formInitialConditions->initialization(solver, "fluid", turbulenceType);
 	formCellZones->initialization(solver, "fluid", turbulenceType);
-
 }
 
 void MainWindow::startCameraAnimation()
@@ -764,6 +767,9 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	else if (previousPanelButton == "传输特性") {
 		widget = formTransportProperties;
 	}
+	else if (previousPanelButton == "参考值") {
+		widget = formOperatingConditions;
+	}
 	else if (previousPanelButton == "区域设置")
 	{
 		widget = formCellZones;	 
@@ -882,6 +888,16 @@ void MainWindow::on_pushButton_21_clicked()
 	planeWidgetModelClip->Off();
 	ui->openGLWidget->renderWindow()->Render();
 	emit panelPushButtonClicked("传输特性");
+}
+
+void MainWindow::on_pushButton_11_clicked()
+{
+	hideAllSubForm();
+	formOperatingConditions->show();
+	ui->tabWidget->setCurrentIndex(0);
+	planeWidgetModelClip->Off();
+	ui->openGLWidget->renderWindow()->Render();
+	emit panelPushButtonClicked("参考值");
 }
 
 void MainWindow::on_pushButton_12_clicked()
