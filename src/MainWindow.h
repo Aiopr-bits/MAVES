@@ -181,6 +181,8 @@ public:
 		double focalX, double focalY, double focalZ, double upX, double upY, 
 		double upZ, bool resetCamera);
 
+	QString openFoamCommand(const QString& command);																	//执行OpenFOAM命令
+
 public slots:
 	//工具栏信号处理
 	void handleAction1Triggered();																						//信息框
@@ -224,6 +226,7 @@ public slots:
 	void onProcessRunOutput();																							//求解计算进程输出
 	void onProcessDecomposeParOutput();																					//分解网格进程输出
 	void onProcessReconstructParOutput();																				//重构网格进程输出
+	void onProcessOutput();																								//进程输出
 	void updateChart();											    													//更新残差图
 	void updatePlaneRepModelClipValues();								    											//更新模型切分平面选择器的值
 	void resizeEvent(QResizeEvent* event);																				//窗口大小改变事件
@@ -278,6 +281,7 @@ public:
 	QProcess processRun;
 	QProcess processDecomposePar;
 	QProcess processReconstructPar;
+	QProcess* process;
 
 	//渲染窗口
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;

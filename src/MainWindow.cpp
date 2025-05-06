@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, processRun(this)
 	, processDecomposePar(this)
 	, processReconstructPar(this)
+	, process(new QProcess(this))
 	, chart(new QChart())
 	, axisX(new QValueAxis())
 	, axisY(new QLogValueAxis())
@@ -494,6 +495,137 @@ void MainWindow::setupCameraAnimation(double posX, double posY, double posZ,
 
 	// 启动动画
 	startCameraAnimation();
+}
+
+QString MainWindow::openFoamCommand(const QString& command)
+{
+	// 若已有进程在运行，则先结束并清理
+	if (process) {
+		process->kill();
+		process->waitForFinished();
+		delete process;
+		process = nullptr;
+	}
+
+	// 创建并启动进程
+	process = new QProcess(this);
+
+	// 绑定输出事件
+	connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);
+
+	// 绑定计算结束之后的事件
+	QString openFOAMCommand = process->arguments().value(1).split(' ').value(0);
+	if (openFOAMCommand == "decomposePar") {
+		connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);
+	}
+	else if (openFOAMCommand == "reconstructPar") {
+		connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);
+	}
+	else if (openFOAMCommand == "rhoSimpleFoam" || openFOAMCommand == "buoyantBoussinesqPimpleFoam" || openFOAMCommand == "chtMultiRegionSimpleFoam") {
+		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);
+	}
+	else if (openFOAMCommand == "mpiexec") {
+		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);
+	}
+
+	process->setProgram("cmd.exe");
+	process->setArguments(QStringList() << "/C" << command);
+	process->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* args) {
+		args->flags |= CREATE_NO_WINDOW;
+		});
+	process->start();
+
+	// 等待启动完成
+	if (!process->waitForStarted()) {
+		return "";
+	}
+
+	// 等待进程完成
+	process->waitForFinished(-1);
+
+	// 读取输出并返回
+	QString output = process->readAllStandardOutput();
+	output.append(process->readAllStandardError());
+
+	return output.trimmed();
+}
+
+
+void MainWindow::onProcessOutput()
+{
+	QString openFOAMCommand = process->arguments().value(1).split(' ').value(0);
+
+	if (openFOAMCommand == "decomposePar")
+	{
+		while (process->canReadLine()) {
+			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
+			ui->textBrowser->append(QString::fromLocal8Bit(output));
+			ui->textBrowser->repaint();
+		}
+	}
+	else if (openFOAMCommand == "reconstructPar")
+	{
+		while (process->canReadLine()) {
+			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
+			ui->textBrowser->append(QString::fromLocal8Bit(output));
+			ui->textBrowser->repaint();
+
+			//如果输出信息中以“Time =”开始，则更新进度条
+			if (output.startsWith("Time =")) {
+				dialogResultMerge->ui->progressBar->setValue(dialogResultMerge->ui->progressBar->value() + 1.0 / (nWriteResults + 1) * 100);
+			}
+		}
+	}
+	else if (openFOAMCommand == "rhoSimpleFoam" || openFOAMCommand == "buoyantBoussinesqPimpleFoam" || openFOAMCommand == "chtMultiRegionSimpleFoam")
+	{
+		while (process->canReadLine()) {
+			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
+			ui->textBrowser->append(QString::fromLocal8Bit(output));
+			ui->textBrowser->repaint();
+
+			// 解析输出信息
+			parseOutput(QString::fromLocal8Bit(output));
+			ui->tab_2->repaint();
+			ui->chartView->update();
+			ui->chartView->repaint();
+
+			//如果输出信息中包含"ExecutionTime"，则更新时间步
+			if (output.contains("ExecutionTime") && (currentTimeStep % formRun->ui->spinBox_2->value() == 0)) {
+				nWriteResults++;
+			}
+		}
+	}
+	else if (openFOAMCommand == "mpiexec")
+	{
+		while (process->canReadLine()) {
+			QByteArray output = process->readLine();
+			if (output.startsWith("/") || output.startsWith("|") || output.startsWith("\\")) {
+				continue;
+			}
+			ui->textBrowser->append(QString::fromLocal8Bit(output));
+			ui->textBrowser->repaint();
+
+			// 解析输出信息
+			parseOutput(QString::fromLocal8Bit(output));
+			ui->tab_2->repaint();
+			ui->chartView->update();
+			ui->chartView->repaint();
+
+			//如果输出信息中包含"ExecutionTime"，则更新时间步
+			if (output.contains("ExecutionTime") && (currentTimeStep % formRun->ui->spinBox_2->value() == 0)) {
+				nWriteResults++;
+			}
+		}
+	}
 }
 
 void MainWindow::handleAction2Triggered()
@@ -1525,37 +1657,8 @@ void MainWindow::formRun_run()
 		}
 	}
 
-	// 打开 controlDict 文件
-	QFile controlDictFile(controlDictPath);
-	if (!controlDictFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "无法打开 controlDict 文件!" });
-		dialogInformationPrompt->exec();
-		return;
-	}
-
 	// 读取 controlDict 文件中的 application 字段
-	QString application;
-	QTextStream in(&controlDictFile);
-	while (!in.atEnd()) {
-		QString line = in.readLine();
-		if (line.trimmed().startsWith("application")) {
-			QStringList parts = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-			if (parts.size() >= 2) {
-				application = parts[1].trimmed();
-				if (application.endsWith(";")) {
-					application.chop(1); // 去除末尾的分号
-				}
-				break;
-			}
-		}
-	}
-	controlDictFile.close();
-
-	if (application.isEmpty()) {
-		DialogInformationPrompt* dialogInformationPrompt = new DialogInformationPrompt(this, "错误", { "未找到 application 字段!" });
-		dialogInformationPrompt->exec();
-		return;
-	}
+	QString application = openFoamCommand("foamDictionary " + caseDir + "/system/controlDict -entry application -value");
 
 	//串行计算
 	nWriteResults = 0;
