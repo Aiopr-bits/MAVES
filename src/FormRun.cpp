@@ -21,12 +21,13 @@ FormRun::FormRun(QWidget* parent)
 	ui->label_12->hide();
 	ui->pushButton_2->hide();
 
-	// 设置 lineEdit 只支持整数和小数输入
-	QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
-	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regExp, this);
-	ui->lineEdit->setValidator(validator);
-	ui->lineEdit_2->setValidator(validator);
-	ui->lineEdit_3->setValidator(validator);
+	// 输入限制
+	QRegularExpression regex("^-?(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?$");
+	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regex, this);
+	const auto lineEdits = this->findChildren<QLineEdit*>();
+	for (QLineEdit* lineEdit : lineEdits) {
+		lineEdit->setValidator(validator);
+	}
 
 	connect(ui->pushButton, &CustomHoverPushButton::cursorEnter, this, &FormRun::cursorEnterPushButton);
 	connect(ui->pushButton, &CustomHoverPushButton::cursorLeave, this, &FormRun::cursorLeavePushButton);

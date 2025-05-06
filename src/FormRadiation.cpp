@@ -10,31 +10,10 @@ FormRadiation::FormRadiation(QWidget *parent)
 	// 输入限制
 	QRegularExpression regex("^-?(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?$");
 	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regex, this);
-
-	ui->lineEdit_55->setValidator(validator);
-	ui->lineEdit_57->setValidator(validator);
-	ui->lineEdit_53->setValidator(validator);
-	ui->lineEdit_54->setValidator(validator);
-	ui->lineEdit_56->setValidator(validator);
-	ui->lineEdit_58->setValidator(validator);
-	ui->lineEdit_59->setValidator(validator);
-	ui->lineEdit_60->setValidator(validator);
-	ui->lineEdit_61->setValidator(validator);
-	ui->lineEdit_62->setValidator(validator);
-	ui->lineEdit_64->setValidator(validator);
-	ui->lineEdit_66->setValidator(validator);
-	ui->lineEdit_67->setValidator(validator);
-	ui->lineEdit_68->setValidator(validator);
-	ui->lineEdit_69->setValidator(validator);
-	ui->lineEdit_70->setValidator(validator);
-	ui->lineEdit_63->setValidator(validator);
-	ui->lineEdit_65->setValidator(validator);
-	ui->lineEdit_71->setValidator(validator);
-	ui->lineEdit_72->setValidator(validator);
-	ui->lineEdit_73->setValidator(validator);
-	ui->lineEdit_74->setValidator(validator);
-	ui->lineEdit_75->setValidator(validator);
-	ui->lineEdit_76->setValidator(validator);
+	const auto lineEdits = this->findChildren<QLineEdit*>();
+	for (QLineEdit* lineEdit : lineEdits) {
+		lineEdit->setValidator(validator);
+	}
 
 	connect(ui->checkBox, &QCheckBox::toggled, this, &FormRadiation::on_CheckBox_Toggled);
 	connect(ui->pushButton_3, &QPushButton::toggled, this, &FormRadiation::on_PushButton_3_Toggled);

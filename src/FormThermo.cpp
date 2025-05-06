@@ -18,23 +18,13 @@ FormThermo::FormThermo(QWidget *parent)
 	ui->widget->hide();
 	connect(ui->listWidget_3, &QListWidget::itemClicked, this, &FormThermo::on_ListWidgetItem_Clicked);
 
-
-
-	//QRegularExpression regExp("^-?\\d*\\.?\\d+([eE][-+]?\\d+)?$");
-	//QRegularExpressionValidator* validator = new QRegularExpressionValidator(regExp, this);
-	//ui->lineEdit->setValidator(validator);
-	//ui->lineEdit_2->setValidator(validator);
-	//ui->lineEdit_3->setValidator(validator);
-	//ui->lineEdit_4->setValidator(validator);
-	//ui->lineEdit_5->setValidator(validator);
-	//ui->lineEdit_6->setValidator(validator);
-	//ui->lineEdit_7->setValidator(validator);
-	//ui->lineEdit_8->setValidator(validator);
-	//ui->lineEdit_9->setValidator(validator);
-	//ui->lineEdit_10->setValidator(validator);
-
-	//ui->widget->hide();
-	//ui->widget_2->hide();
+	// 输入限制
+	QRegularExpression regex("^-?(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?$");
+	QRegularExpressionValidator* validator = new QRegularExpressionValidator(regex, this);
+	const auto lineEdits = this->findChildren<QLineEdit*>();
+	for (QLineEdit* lineEdit : lineEdits) {
+		lineEdit->setValidator(validator);
+	}
 }
 
 FormThermo::~FormThermo()
