@@ -135,8 +135,6 @@ QT_CHARTS_USE_NAMESPACE
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QDesktopServices>
-#include <QUrl>
 
 #ifdef _WIN32
 #include "qt_windows.h"
@@ -196,7 +194,6 @@ public slots:
 	void handleAction8Triggered();								    													//适应窗口
 	void handleAction9Triggered();								    													//模型切分
 	void handleAction10Triggered();								    													//导入案例
-	void handleAction11Triggered();								    													//知识图谱
 
 	//控制面板按钮点击事件处理
 	void on_panelPushButton_clicked(string text);								    									//控制面板按钮点击

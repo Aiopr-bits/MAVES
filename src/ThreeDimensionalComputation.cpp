@@ -201,8 +201,7 @@ ThreeDimensionalComputation::ThreeDimensionalComputation(QWidget* parent)
 	connect(ui->action7, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction7Triggered);																//z负向
 	connect(ui->action8, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction8Triggered);																//适应窗口
 	connect(ui->action9, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction9Triggered);																//模型切分
-	connect(ui->action10, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction10Triggered);																//导入案例
-	connect(ui->action11, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction11Triggered);																//知识图谱
+	connect(ui->action10, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction10Triggered);															//导入案例
 
 	//主界面其他事件处理
 	connect(playTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::onPlayTimerTimeout);																		//播放
@@ -212,37 +211,37 @@ ThreeDimensionalComputation::ThreeDimensionalComputation(QWidget* parent)
 	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessDecomposeParOutput);									//分解网格进程输出
 	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessReconstructParOutput);								//合并网格进程输出
 	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessRunFinished);						//求解计算进程结束
-	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessDecomposeParFinished);		//分解网格进程结束
-	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessReconstructParFinished);	//重构网格进程结束
+	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessDecomposeParFinished);	//分解网格进程结束
+	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessReconstructParFinished);//重构网格进程结束
 	connect(chartUpdateTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::updateChart); 																		//更新残差图
 	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &ThreeDimensionalComputation::updatePlaneRepModelClipValues); 				 						//更新模型切分平面选择器的值
-	connect(this, &ThreeDimensionalComputation::panelPushButtonClicked, this, &ThreeDimensionalComputation::on_panelPushButton_clicked);													//控制面板按钮点击
+	connect(this, &ThreeDimensionalComputation::panelPushButtonClicked, this, &ThreeDimensionalComputation::on_panelPushButton_clicked);								//控制面板按钮点击
 
 	//副控制面板事件处理
-	connect(formGeometry, &FormGeometry::geometryImported, this, &ThreeDimensionalComputation::formGeometry_import);														//导入几何
+	connect(formGeometry, &FormGeometry::geometryImported, this, &ThreeDimensionalComputation::formGeometry_import);													//导入几何
 	connect(formMeshImport, &FormMeshImport::meshImported, this, &ThreeDimensionalComputation::formMeshImport_import);													//导入网格
-	connect(formMesh, &FormMesh::apply, this, &ThreeDimensionalComputation::formMesh_apply);																				//网格应用
+	connect(formMesh, &FormMesh::apply, this, &ThreeDimensionalComputation::formMesh_apply);																			//网格应用
 	connect(formMesh, &FormMesh::updateFormFinished, this, &ThreeDimensionalComputation::formMesh_updateFormFinished);													//更新界面完成
-	connect(formMesh, &FormMesh::topoSet, this, &ThreeDimensionalComputation::formMesh_topoSet);																			//网格拓扑集
-	connect(formMesh, &FormMesh::cellZonesToRegions, this, &ThreeDimensionalComputation::formMesh_splitMeshRegions);														//网格cellZones转区域
+	connect(formMesh, &FormMesh::topoSet, this, &ThreeDimensionalComputation::formMesh_topoSet);																		//网格拓扑集
+	connect(formMesh, &FormMesh::cellZonesToRegions, this, &ThreeDimensionalComputation::formMesh_splitMeshRegions);													//网格cellZones转区域
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &ThreeDimensionalComputation::formSolver_select);														//求解器改变
 	connect(formSolver, &FormSolver::labelText_8_Changed, this, &ThreeDimensionalComputation::onSubPanelInitialized);													//求解器改变，子面板初始化
 	connect(formTurbulence, &FormTurbulence::turbulenceTypeChanged, this, &ThreeDimensionalComputation::onSubPanelInitialized);											//湍流模型改变，子面板初始化
 	connect(formRun, &FormRun::run, this, &ThreeDimensionalComputation::formRun_run);																					//求解计算
 	connect(formRun, &FormRun::stopRun, this, &ThreeDimensionalComputation::formRun_stopRun);																			//停止计算
 	connect(formPostprocessing, &FormPostprocessing::apply, this, &ThreeDimensionalComputation::formPostprocessing_apply);												//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &ThreeDimensionalComputation::formPostprocessing_firstFrame);										//第一帧
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &ThreeDimensionalComputation::formPostprocessing_firstFrame);									//第一帧
 	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &ThreeDimensionalComputation::formPostprocessing_previousFrame);								//上一帧
 	connect(formPostprocessing, &FormPostprocessing::reverse, this, &ThreeDimensionalComputation::formPostprocessing_reverse);											//重新播放
-	connect(formPostprocessing, &FormPostprocessing::play, this, &ThreeDimensionalComputation::formPostprocessing_play);													//播放
+	connect(formPostprocessing, &FormPostprocessing::play, this, &ThreeDimensionalComputation::formPostprocessing_play);												//播放
 	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &ThreeDimensionalComputation::formPostprocessing_nextFrame);										//下一帧
 	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &ThreeDimensionalComputation::formPostprocessing_lastFrame);										//最后一帧
-	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &ThreeDimensionalComputation::formPostprocessing_loopPlay);											//循环播放
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &ThreeDimensionalComputation::formPostprocessing_loopPlay);										//循环播放
 	connect(formPostprocessing, &FormPostprocessing::playPause, this, &ThreeDimensionalComputation::formPostprocessing_playPause);										//播放暂停
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &ThreeDimensionalComputation::formPostprocessing_reversePause);									//反向播放
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &ThreeDimensionalComputation::formPostprocessing_reversePause);								//反向播放
 	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &ThreeDimensionalComputation::formPostprocessing_loopPlayPause);								//循环播放
-	connect(formPostprocessing, &FormPostprocessing::loadData, this, &ThreeDimensionalComputation::formPostprocessing_loadData);											//加载数据
-	connect(formPostprocessing, &FormPostprocessing::updateFormFinished, this, &ThreeDimensionalComputation::formPostprocessing_updateFormFinished);						//更新界面完成
+	connect(formPostprocessing, &FormPostprocessing::loadData, this, &ThreeDimensionalComputation::formPostprocessing_loadData);										//加载数据
+	connect(formPostprocessing, &FormPostprocessing::updateFormFinished, this, &ThreeDimensionalComputation::formPostprocessing_updateFormFinished);					//更新界面完成
 	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &ThreeDimensionalComputation::formModelClip_checkBoxToggle);											//模型切分页面CheckBox切换
 	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &ThreeDimensionalComputation::formModelClip_lineEditsChanged);										//模型切分页面LineEdit值改变
 	connect(formModelClip, &FormModelClip::xPositive, this, &ThreeDimensionalComputation::formModelClip_xPositive);														//模型切分：X正向
@@ -732,12 +731,6 @@ void ThreeDimensionalComputation::handleAction10Triggered()
 		GlobalData::getInstance().getCaseData()->casePath = caseFilePath.toStdString();
 		ui->textBrowser->append("Load case successfully!");
 	}
-}
-
-void ThreeDimensionalComputation::handleAction11Triggered()
-{
-	QUrl url("http://172.20.19.215");
-	QDesktopServices::openUrl(url);
 }
 
 void ThreeDimensionalComputation::on_panelPushButton_clicked(string text)
