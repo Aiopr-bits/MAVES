@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     const char* oldPath = getenv("PATH");
     if (oldPath == nullptr) oldPath = "";
-    std::string newPath = "../solver/of2406/etc;../solver/of2406/bin;";
+    std::string newPath = "../solver/of2406/etc;../solver/of2406/bin;../extlib/Python313;";
     newPath += oldPath;
     _putenv(("PATH=" + newPath).c_str());
     _putenv("WM_PROJECT_DIR=../solver/of2406/");
