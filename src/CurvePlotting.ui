@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WorkSpaceWindowClass</class>
- <widget class="QMainWindow" name="WorkSpaceWindowClass">
+ <class>CurvePlottingClass</class>
+ <widget class="QMainWindow" name="CurvePlottingClass">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>

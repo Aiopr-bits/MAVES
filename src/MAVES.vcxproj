@@ -132,9 +132,9 @@
     <QtUic Include="FormThermoListWidget.ui" />
     <QtUic Include="FormTransportProperties.ui" />
     <QtUic Include="FormTurbulence.ui" />
-    <QtUic Include="MainWindow.ui" />
-    <QtUic Include="WorkSpaceWindow.ui" />
-    <QtMoc Include="WorkSpaceWindow.h" />
+    <QtUic Include="ThreeDimensionalComputation.ui" />
+    <QtUic Include="CurvePlotting.ui" />
+    <QtMoc Include="CurvePlotting.h" />
     <ClCompile Include="CustomItemWidget.cpp" />
     <ClCompile Include="DialogInformationPrompt.cpp" />
     <ClCompile Include="DialogResultMerge.cpp" />
@@ -158,8 +158,8 @@
     <ClCompile Include="FormTransportProperties.cpp" />
     <ClCompile Include="FormTurbulence.cpp" />
     <ClCompile Include="GlobalData.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="WorkSpaceWindow.cpp" />
+    <ClCompile Include="ThreeDimensionalComputation.cpp" />
+    <ClCompile Include="CurvePlotting.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -168,7 +168,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MainWindow.h" />
+    <QtMoc Include="ThreeDimensionalComputation.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FormMesh.h" />

@@ -6,11 +6,11 @@
 \*---------------------------------------------------------------------------*/
 
 #pragma once
-#include "MainWindow.h"
+#include "ThreeDimensionalComputation.h"
 
-MainWindow::MainWindow(QWidget* parent)
+ThreeDimensionalComputation::ThreeDimensionalComputation(QWidget* parent)
 	: QMainWindow(parent)
-	, ui(new Ui::MainWindowClass())
+	, ui(new Ui::ThreeDimensionalComputationClass())
 	, playTimer(new QTimer(this))
 	, reverseTimer(new QTimer(this))
 	, loopPlayTimer(new QTimer(this))
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget* parent)
 		ui->pushButton_21, ui->pushButton_22
 	};
 	for (QPushButton* button : buttons) {
-		connect(button, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
+		connect(button, &QPushButton::clicked, this, &ThreeDimensionalComputation::onButtonClicked);
 	}
 
 	//布局管理
@@ -192,75 +192,75 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->pushButton_18->hide();	//计算
 
 	// 工具栏信号处理
-	connect(ui->action1, &QAction::triggered, this, &MainWindow::handleAction1Triggered);																//信息框
-	connect(ui->action2, &QAction::triggered, this, &MainWindow::handleAction2Triggered);																//x正向
-	connect(ui->action3, &QAction::triggered, this, &MainWindow::handleAction3Triggered);																//x负向
-	connect(ui->action4, &QAction::triggered, this, &MainWindow::handleAction4Triggered);																//y正向
-	connect(ui->action5, &QAction::triggered, this, &MainWindow::handleAction5Triggered);																//y负向
-	connect(ui->action6, &QAction::triggered, this, &MainWindow::handleAction6Triggered);																//z正向
-	connect(ui->action7, &QAction::triggered, this, &MainWindow::handleAction7Triggered);																//z负向
-	connect(ui->action8, &QAction::triggered, this, &MainWindow::handleAction8Triggered);																//适应窗口
-	connect(ui->action9, &QAction::triggered, this, &MainWindow::handleAction9Triggered);																//模型切分
-	connect(ui->action10, &QAction::triggered, this, &MainWindow::handleAction10Triggered);																//导入案例
-	connect(ui->action11, &QAction::triggered, this, &MainWindow::handleAction11Triggered);																//知识图谱
+	connect(ui->action1, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction1Triggered);																//信息框
+	connect(ui->action2, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction2Triggered);																//x正向
+	connect(ui->action3, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction3Triggered);																//x负向
+	connect(ui->action4, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction4Triggered);																//y正向
+	connect(ui->action5, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction5Triggered);																//y负向
+	connect(ui->action6, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction6Triggered);																//z正向
+	connect(ui->action7, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction7Triggered);																//z负向
+	connect(ui->action8, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction8Triggered);																//适应窗口
+	connect(ui->action9, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction9Triggered);																//模型切分
+	connect(ui->action10, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction10Triggered);																//导入案例
+	connect(ui->action11, &QAction::triggered, this, &ThreeDimensionalComputation::handleAction11Triggered);																//知识图谱
 
 	//主界面其他事件处理
-	connect(playTimer, &QTimer::timeout, this, &MainWindow::onPlayTimerTimeout);																		//播放
-	connect(reverseTimer, &QTimer::timeout, this, &MainWindow::onReverseTimerTimeout);																	//倒放
-	connect(loopPlayTimer, &QTimer::timeout, this, &MainWindow::onLoopPlayTimerTimeout);																//循环播放
-	connect(&processRun, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessRunOutput);													//求解计算进程输出
-	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessDecomposeParOutput);									//分解网格进程输出
-	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessReconstructParOutput);								//合并网格进程输出
-	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);						//求解计算进程结束
-	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);		//分解网格进程结束
-	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);	//重构网格进程结束
-	connect(chartUpdateTimer, &QTimer::timeout, this, &MainWindow::updateChart); 																		//更新残差图
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues); 				 						//更新模型切分平面选择器的值
-	connect(this, &MainWindow::panelPushButtonClicked, this, &MainWindow::on_panelPushButton_clicked);													//控制面板按钮点击
+	connect(playTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::onPlayTimerTimeout);																		//播放
+	connect(reverseTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::onReverseTimerTimeout);																	//倒放
+	connect(loopPlayTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::onLoopPlayTimerTimeout);																//循环播放
+	connect(&processRun, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessRunOutput);													//求解计算进程输出
+	connect(&processDecomposePar, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessDecomposeParOutput);									//分解网格进程输出
+	connect(&processReconstructPar, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessReconstructParOutput);								//合并网格进程输出
+	connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessRunFinished);						//求解计算进程结束
+	connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessDecomposeParFinished);		//分解网格进程结束
+	connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessReconstructParFinished);	//重构网格进程结束
+	connect(chartUpdateTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::updateChart); 																		//更新残差图
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &ThreeDimensionalComputation::updatePlaneRepModelClipValues); 				 						//更新模型切分平面选择器的值
+	connect(this, &ThreeDimensionalComputation::panelPushButtonClicked, this, &ThreeDimensionalComputation::on_panelPushButton_clicked);													//控制面板按钮点击
 
 	//副控制面板事件处理
-	connect(formGeometry, &FormGeometry::geometryImported, this, &MainWindow::formGeometry_import);														//导入几何
-	connect(formMeshImport, &FormMeshImport::meshImported, this, &MainWindow::formMeshImport_import);													//导入网格
-	connect(formMesh, &FormMesh::apply, this, &MainWindow::formMesh_apply);																				//网格应用
-	connect(formMesh, &FormMesh::updateFormFinished, this, &MainWindow::formMesh_updateFormFinished);													//更新界面完成
-	connect(formMesh, &FormMesh::topoSet, this, &MainWindow::formMesh_topoSet);																			//网格拓扑集
-	connect(formMesh, &FormMesh::cellZonesToRegions, this, &MainWindow::formMesh_splitMeshRegions);														//网格cellZones转区域
-	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::formSolver_select);														//求解器改变
-	connect(formSolver, &FormSolver::labelText_8_Changed, this, &MainWindow::onSubPanelInitialized);													//求解器改变，子面板初始化
-	connect(formTurbulence, &FormTurbulence::turbulenceTypeChanged, this, &MainWindow::onSubPanelInitialized);											//湍流模型改变，子面板初始化
-	connect(formRun, &FormRun::run, this, &MainWindow::formRun_run);																					//求解计算
-	connect(formRun, &FormRun::stopRun, this, &MainWindow::formRun_stopRun);																			//停止计算
-	connect(formPostprocessing, &FormPostprocessing::apply, this, &MainWindow::formPostprocessing_apply);												//更新渲染窗口
-	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &MainWindow::formPostprocessing_firstFrame);										//第一帧
-	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &MainWindow::formPostprocessing_previousFrame);								//上一帧
-	connect(formPostprocessing, &FormPostprocessing::reverse, this, &MainWindow::formPostprocessing_reverse);											//重新播放
-	connect(formPostprocessing, &FormPostprocessing::play, this, &MainWindow::formPostprocessing_play);													//播放
-	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &MainWindow::formPostprocessing_nextFrame);										//下一帧
-	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &MainWindow::formPostprocessing_lastFrame);										//最后一帧
-	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &MainWindow::formPostprocessing_loopPlay);											//循环播放
-	connect(formPostprocessing, &FormPostprocessing::playPause, this, &MainWindow::formPostprocessing_playPause);										//播放暂停
-	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &MainWindow::formPostprocessing_reversePause);									//反向播放
-	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &MainWindow::formPostprocessing_loopPlayPause);								//循环播放
-	connect(formPostprocessing, &FormPostprocessing::loadData, this, &MainWindow::formPostprocessing_loadData);											//加载数据
-	connect(formPostprocessing, &FormPostprocessing::updateFormFinished, this, &MainWindow::formPostprocessing_updateFormFinished);						//更新界面完成
-	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &MainWindow::formModelClip_checkBoxToggle);											//模型切分页面CheckBox切换
-	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &MainWindow::formModelClip_lineEditsChanged);										//模型切分页面LineEdit值改变
-	connect(formModelClip, &FormModelClip::xPositive, this, &MainWindow::formModelClip_xPositive);														//模型切分：X正向
-	connect(formModelClip, &FormModelClip::yPositive, this, &MainWindow::formModelClip_yPositive);														//模型切分：Y正向
-	connect(formModelClip, &FormModelClip::zPositive, this, &MainWindow::formModelClip_zPositive);														//模型切分：Z正向
-	connect(formModelClip, &FormModelClip::cameraDirection, this, &MainWindow::formModelClip_cameraDirection);											//模型切分：相机方向
-	connect(formModelClip, &FormModelClip::alignView, this, &MainWindow::formModelClip_alignView);														//模型切分：对齐视角
-	connect(formModelClip, &FormModelClip::resetPlane, this, &MainWindow::formModelClip_resetPlane);													//模型切分：重置平面
-	connect(formModelClip, &FormModelClip::apply, this, &MainWindow::formModelClip_apply);																//模型切分：应用
-	connect(dialogResultMerge, &DialogResultMerge::interrupt, this, &MainWindow::dialogResultMerge_interrupt);											//结果合并弹窗:中断
+	connect(formGeometry, &FormGeometry::geometryImported, this, &ThreeDimensionalComputation::formGeometry_import);														//导入几何
+	connect(formMeshImport, &FormMeshImport::meshImported, this, &ThreeDimensionalComputation::formMeshImport_import);													//导入网格
+	connect(formMesh, &FormMesh::apply, this, &ThreeDimensionalComputation::formMesh_apply);																				//网格应用
+	connect(formMesh, &FormMesh::updateFormFinished, this, &ThreeDimensionalComputation::formMesh_updateFormFinished);													//更新界面完成
+	connect(formMesh, &FormMesh::topoSet, this, &ThreeDimensionalComputation::formMesh_topoSet);																			//网格拓扑集
+	connect(formMesh, &FormMesh::cellZonesToRegions, this, &ThreeDimensionalComputation::formMesh_splitMeshRegions);														//网格cellZones转区域
+	connect(formSolver, &FormSolver::labelText_8_Changed, this, &ThreeDimensionalComputation::formSolver_select);														//求解器改变
+	connect(formSolver, &FormSolver::labelText_8_Changed, this, &ThreeDimensionalComputation::onSubPanelInitialized);													//求解器改变，子面板初始化
+	connect(formTurbulence, &FormTurbulence::turbulenceTypeChanged, this, &ThreeDimensionalComputation::onSubPanelInitialized);											//湍流模型改变，子面板初始化
+	connect(formRun, &FormRun::run, this, &ThreeDimensionalComputation::formRun_run);																					//求解计算
+	connect(formRun, &FormRun::stopRun, this, &ThreeDimensionalComputation::formRun_stopRun);																			//停止计算
+	connect(formPostprocessing, &FormPostprocessing::apply, this, &ThreeDimensionalComputation::formPostprocessing_apply);												//更新渲染窗口
+	connect(formPostprocessing, &FormPostprocessing::firstFrame, this, &ThreeDimensionalComputation::formPostprocessing_firstFrame);										//第一帧
+	connect(formPostprocessing, &FormPostprocessing::previousFrame, this, &ThreeDimensionalComputation::formPostprocessing_previousFrame);								//上一帧
+	connect(formPostprocessing, &FormPostprocessing::reverse, this, &ThreeDimensionalComputation::formPostprocessing_reverse);											//重新播放
+	connect(formPostprocessing, &FormPostprocessing::play, this, &ThreeDimensionalComputation::formPostprocessing_play);													//播放
+	connect(formPostprocessing, &FormPostprocessing::nextFrame, this, &ThreeDimensionalComputation::formPostprocessing_nextFrame);										//下一帧
+	connect(formPostprocessing, &FormPostprocessing::lastFrame, this, &ThreeDimensionalComputation::formPostprocessing_lastFrame);										//最后一帧
+	connect(formPostprocessing, &FormPostprocessing::loopPlay, this, &ThreeDimensionalComputation::formPostprocessing_loopPlay);											//循环播放
+	connect(formPostprocessing, &FormPostprocessing::playPause, this, &ThreeDimensionalComputation::formPostprocessing_playPause);										//播放暂停
+	connect(formPostprocessing, &FormPostprocessing::reversePause, this, &ThreeDimensionalComputation::formPostprocessing_reversePause);									//反向播放
+	connect(formPostprocessing, &FormPostprocessing::loopPlayPause, this, &ThreeDimensionalComputation::formPostprocessing_loopPlayPause);								//循环播放
+	connect(formPostprocessing, &FormPostprocessing::loadData, this, &ThreeDimensionalComputation::formPostprocessing_loadData);											//加载数据
+	connect(formPostprocessing, &FormPostprocessing::updateFormFinished, this, &ThreeDimensionalComputation::formPostprocessing_updateFormFinished);						//更新界面完成
+	connect(formModelClip, &FormModelClip::checkBoxToggled, this, &ThreeDimensionalComputation::formModelClip_checkBoxToggle);											//模型切分页面CheckBox切换
+	connect(formModelClip, &FormModelClip::lineEditsChanged, this, &ThreeDimensionalComputation::formModelClip_lineEditsChanged);										//模型切分页面LineEdit值改变
+	connect(formModelClip, &FormModelClip::xPositive, this, &ThreeDimensionalComputation::formModelClip_xPositive);														//模型切分：X正向
+	connect(formModelClip, &FormModelClip::yPositive, this, &ThreeDimensionalComputation::formModelClip_yPositive);														//模型切分：Y正向
+	connect(formModelClip, &FormModelClip::zPositive, this, &ThreeDimensionalComputation::formModelClip_zPositive);														//模型切分：Z正向
+	connect(formModelClip, &FormModelClip::cameraDirection, this, &ThreeDimensionalComputation::formModelClip_cameraDirection);											//模型切分：相机方向
+	connect(formModelClip, &FormModelClip::alignView, this, &ThreeDimensionalComputation::formModelClip_alignView);														//模型切分：对齐视角
+	connect(formModelClip, &FormModelClip::resetPlane, this, &ThreeDimensionalComputation::formModelClip_resetPlane);													//模型切分：重置平面
+	connect(formModelClip, &FormModelClip::apply, this, &ThreeDimensionalComputation::formModelClip_apply);																//模型切分：应用
+	connect(dialogResultMerge, &DialogResultMerge::interrupt, this, &ThreeDimensionalComputation::dialogResultMerge_interrupt);											//结果合并弹窗:中断
 }
 
-MainWindow::~MainWindow()
+ThreeDimensionalComputation::~ThreeDimensionalComputation()
 {
 	delete ui;
 }
 
-void MainWindow::addCoordinateAxes()
+void ThreeDimensionalComputation::addCoordinateAxes()
 {
 	vtkSmartPointer<vtkAxesActor> actor_axes = vtkSmartPointer<vtkAxesActor>::New();
 
@@ -273,7 +273,7 @@ void MainWindow::addCoordinateAxes()
 	axesWidget->SetViewport(0.0, 0.0, 0.14, 0.2);
 }
 
-void MainWindow::hideAllSubForm()
+void ThreeDimensionalComputation::hideAllSubForm()
 {
 	formGeometry->hide();
 	formMesh->hide();
@@ -305,7 +305,7 @@ static void quadraticBezier3D(double t, const double p0[3], const double p1[3],
 	}
 }
 
-void MainWindow::onCameraAnimationTimeout()
+void ThreeDimensionalComputation::onCameraAnimationTimeout()
 {
 	m_camera->SetClippingRange(0.01, 10000.0);
 
@@ -403,7 +403,7 @@ void MainWindow::onCameraAnimationTimeout()
 	}
 }
 
-void MainWindow::onSubPanelInitialized()
+void ThreeDimensionalComputation::onSubPanelInitialized()
 {
 	//获取求解器
 	QString solver = formSolver->ui->label_8->text();
@@ -448,7 +448,7 @@ void MainWindow::onSubPanelInitialized()
 	formCellZones->initialization(solver, "fluid", turbulenceType);
 }
 
-void MainWindow::startCameraAnimation()
+void ThreeDimensionalComputation::startCameraAnimation()
 {
 	ui->action2->setEnabled(false);
 	ui->action3->setEnabled(false);
@@ -463,11 +463,11 @@ void MainWindow::startCameraAnimation()
 	m_currentFrame = 0;
 
 	m_animationTimer = new QTimer(this);
-	connect(m_animationTimer, &QTimer::timeout, this, &MainWindow::onCameraAnimationTimeout);
+	connect(m_animationTimer, &QTimer::timeout, this, &ThreeDimensionalComputation::onCameraAnimationTimeout);
 	m_animationTimer->start(intervalMs);
 }
 
-void MainWindow::setupCameraAnimation(double posX, double posY, double posZ,
+void ThreeDimensionalComputation::setupCameraAnimation(double posX, double posY, double posZ,
 	double focalX, double focalY, double focalZ,
 	double upX, double upY, double upZ,
 	bool resetCamera)
@@ -500,7 +500,7 @@ void MainWindow::setupCameraAnimation(double posX, double posY, double posZ,
 	startCameraAnimation();
 }
 
-QString MainWindow::openFoamCommand(const QString& command)
+QString ThreeDimensionalComputation::openFoamCommand(const QString& command)
 {
 	// 若已有进程在运行，则先结束并清理
 	if (process) {
@@ -514,21 +514,21 @@ QString MainWindow::openFoamCommand(const QString& command)
 	process = new QProcess(this);
 
 	// 绑定输出事件
-	connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::onProcessOutput);
+	connect(process, &QProcess::readyReadStandardOutput, this, &ThreeDimensionalComputation::onProcessOutput);
 
 	// 绑定计算结束之后的事件
 	QString openFOAMCommand = process->arguments().value(1).split(' ').value(0);
 	if (openFOAMCommand == "decomposePar") {
-		connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessDecomposeParFinished);
+		connect(&processDecomposePar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessDecomposeParFinished);
 	}
 	else if (openFOAMCommand == "reconstructPar") {
-		connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessReconstructParFinished);
+		connect(&processReconstructPar, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessReconstructParFinished);
 	}
 	else if (openFOAMCommand == "rhoSimpleFoam" || openFOAMCommand == "buoyantBoussinesqPimpleFoam" || openFOAMCommand == "chtMultiRegionSimpleFoam") {
-		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);
+		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessRunFinished);
 	}
 	else if (openFOAMCommand == "mpiexec") {
-		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &MainWindow::onProcessRunFinished);
+		connect(&processRun, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ThreeDimensionalComputation::onProcessRunFinished);
 	}
 
 	process->setProgram("cmd.exe");
@@ -554,7 +554,7 @@ QString MainWindow::openFoamCommand(const QString& command)
 }
 
 
-void MainWindow::onProcessOutput()
+void ThreeDimensionalComputation::onProcessOutput()
 {
 	QString openFOAMCommand = process->arguments().value(1).split(' ').value(0);
 
@@ -631,43 +631,43 @@ void MainWindow::onProcessOutput()
 	}
 }
 
-void MainWindow::handleAction2Triggered()
+void ThreeDimensionalComputation::handleAction2Triggered()
 {
 	// X正向视图
 	setupCameraAnimation(1, 0, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
-void MainWindow::handleAction3Triggered()
+void ThreeDimensionalComputation::handleAction3Triggered()
 {
 	// X负向视图
 	setupCameraAnimation(-1, 0, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
-void MainWindow::handleAction4Triggered()
+void ThreeDimensionalComputation::handleAction4Triggered()
 {
 	// Y正向视图
 	setupCameraAnimation(0, 1, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
-void MainWindow::handleAction5Triggered()
+void ThreeDimensionalComputation::handleAction5Triggered()
 {
 	// Y负向视图
 	setupCameraAnimation(0, -1, 0, 0, 0, 0, 0, 0, 1, true);
 }
 
-void MainWindow::handleAction6Triggered()
+void ThreeDimensionalComputation::handleAction6Triggered()
 {
 	// Z正向视图
 	setupCameraAnimation(0, 0, 1, 0, 0, 0, 0, 1, 0, true);
 }
 
-void MainWindow::handleAction7Triggered()
+void ThreeDimensionalComputation::handleAction7Triggered()
 {
 	// Z负向视图
 	setupCameraAnimation(0, 0, -1, 0, 0, 0, 0, 1, 0, true);
 }
 
-void MainWindow::handleAction8Triggered()
+void ThreeDimensionalComputation::handleAction8Triggered()
 {
 	// 适应窗口
 	m_camera = render->GetActiveCamera();
@@ -690,12 +690,12 @@ void MainWindow::handleAction8Triggered()
 	startCameraAnimation();
 }
 
-void MainWindow::handleAction9Triggered()
+void ThreeDimensionalComputation::handleAction9Triggered()
 {
 	on_pushButton_3_clicked();
 }
 
-void MainWindow::handleAction10Triggered()
+void ThreeDimensionalComputation::handleAction10Triggered()
 {
 	QString caseFilePath;
 	QFileDialog dialog(this, tr(""), "", tr("TRF 文件 (*.trf);;"));
@@ -734,13 +734,13 @@ void MainWindow::handleAction10Triggered()
 	}
 }
 
-void MainWindow::handleAction11Triggered()
+void ThreeDimensionalComputation::handleAction11Triggered()
 {
 	QUrl url("http://172.20.19.215");
 	QDesktopServices::openUrl(url);
 }
 
-void MainWindow::on_panelPushButton_clicked(string text)
+void ThreeDimensionalComputation::on_panelPushButton_clicked(string text)
 {
 	QWidget* widget = nullptr;
 	if (previousPanelButton == "几何") {
@@ -810,7 +810,7 @@ void MainWindow::on_panelPushButton_clicked(string text)
 	previousPanelButton = text;
 }
 
-void MainWindow::on_pushButton_clicked()
+void ThreeDimensionalComputation::on_pushButton_clicked()
 {
 	hideAllSubForm();
 	formGeometry->show();
@@ -820,7 +820,7 @@ void MainWindow::on_pushButton_clicked()
 	emit panelPushButtonClicked("几何");
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void ThreeDimensionalComputation::on_pushButton_4_clicked()
 {
 	hideAllSubForm();
 	formMeshImport->show();
@@ -830,7 +830,7 @@ void MainWindow::on_pushButton_4_clicked()
 	emit panelPushButtonClicked("导入");
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void ThreeDimensionalComputation::on_pushButton_2_clicked()
 {
 	hideAllSubForm();
 	formMesh->show();
@@ -840,7 +840,7 @@ void MainWindow::on_pushButton_2_clicked()
 	emit panelPushButtonClicked("网格");
 }
 
-void MainWindow::on_pushButton_5_clicked()
+void ThreeDimensionalComputation::on_pushButton_5_clicked()
 {
 	hideAllSubForm();
 	formSolver->show();
@@ -850,7 +850,7 @@ void MainWindow::on_pushButton_5_clicked()
 	emit panelPushButtonClicked("求解器");
 }
 
-void MainWindow::on_pushButton_22_clicked()
+void ThreeDimensionalComputation::on_pushButton_22_clicked()
 {
 	hideAllSubForm();
 	formRadiation->show();
@@ -860,7 +860,7 @@ void MainWindow::on_pushButton_22_clicked()
 	emit panelPushButtonClicked("辐射");
 }
 
-void MainWindow::on_pushButton_6_clicked()
+void ThreeDimensionalComputation::on_pushButton_6_clicked()
 {
 	hideAllSubForm();
 	formTurbulence->show();
@@ -870,7 +870,7 @@ void MainWindow::on_pushButton_6_clicked()
 	emit panelPushButtonClicked("湍流");
 }
 
-void MainWindow::on_pushButton_7_clicked()
+void ThreeDimensionalComputation::on_pushButton_7_clicked()
 {
 	hideAllSubForm();
 	formThermo->show();
@@ -880,7 +880,7 @@ void MainWindow::on_pushButton_7_clicked()
 	emit panelPushButtonClicked("热物理特性");
 }
 
-void MainWindow::on_pushButton_21_clicked()
+void ThreeDimensionalComputation::on_pushButton_21_clicked()
 {
 	hideAllSubForm();
 	formTransportProperties->show();
@@ -890,7 +890,7 @@ void MainWindow::on_pushButton_21_clicked()
 	emit panelPushButtonClicked("传输特性");
 }
 
-void MainWindow::on_pushButton_11_clicked()
+void ThreeDimensionalComputation::on_pushButton_11_clicked()
 {
 	hideAllSubForm();
 	formOperatingConditions->show();
@@ -900,7 +900,7 @@ void MainWindow::on_pushButton_11_clicked()
 	emit panelPushButtonClicked("参考值");
 }
 
-void MainWindow::on_pushButton_12_clicked()
+void ThreeDimensionalComputation::on_pushButton_12_clicked()
 {
 	hideAllSubForm();
 	formCellZones->show();
@@ -910,7 +910,7 @@ void MainWindow::on_pushButton_12_clicked()
 	emit panelPushButtonClicked("区域设置");
 }
 
-void MainWindow::on_pushButton_13_clicked()
+void ThreeDimensionalComputation::on_pushButton_13_clicked()
 {
 	hideAllSubForm();
 	formBoundaryConditions->show();
@@ -920,7 +920,7 @@ void MainWindow::on_pushButton_13_clicked()
 	emit panelPushButtonClicked("边界条件");
 }
 
-void MainWindow::on_pushButton_14_clicked()
+void ThreeDimensionalComputation::on_pushButton_14_clicked()
 {
 	hideAllSubForm();
 	formInitialConditions->show();
@@ -930,7 +930,7 @@ void MainWindow::on_pushButton_14_clicked()
 	emit panelPushButtonClicked("初始条件");
 }
 
-void MainWindow::on_pushButton_16_clicked()
+void ThreeDimensionalComputation::on_pushButton_16_clicked()
 {
 	hideAllSubForm();
 	formRun->show();
@@ -939,7 +939,7 @@ void MainWindow::on_pushButton_16_clicked()
 	emit panelPushButtonClicked("求解计算");
 }
 
-void MainWindow::on_pushButton_17_clicked()
+void ThreeDimensionalComputation::on_pushButton_17_clicked()
 {
 	hideAllSubForm();
 	formPostprocessing->show();
@@ -949,7 +949,7 @@ void MainWindow::on_pushButton_17_clicked()
 	emit panelPushButtonClicked("后处理");
 }
 
-void MainWindow::on_pushButton_3_clicked()
+void ThreeDimensionalComputation::on_pushButton_3_clicked()
 {
 	hideAllSubForm();
 	formModelClip->show();
@@ -990,7 +990,7 @@ void MainWindow::on_pushButton_3_clicked()
 	//平面选择器
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &ThreeDimensionalComputation::updatePlaneRepModelClipValues);
 	planeRepModelClip->SetPlaceFactor(1.5);
 	vtkSmartPointer<vtkPropCollection> actors = render->GetViewProps();
 	actors->InitTraversal();
@@ -1034,12 +1034,12 @@ void MainWindow::on_pushButton_3_clicked()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::on_pushButton_20_clicked()
+void ThreeDimensionalComputation::on_pushButton_20_clicked()
 {
 
 }
 
-void MainWindow::updatePlaneRepModelClipValues()
+void ThreeDimensionalComputation::updatePlaneRepModelClipValues()
 {
 	double origin[3];
 	double normal[3];
@@ -1063,14 +1063,14 @@ void MainWindow::updatePlaneRepModelClipValues()
 	formModelClip->ui->lineEdit_6->setText(QString::number(normal[2]));
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event)
+void ThreeDimensionalComputation::resizeEvent(QResizeEvent* event)
 {
 	if (ui->tabWidget->tabBar()) {
 		ui->tabWidget->tabBar()->setFixedWidth(ui->tabWidget->width());
 	}
 }
 
-void MainWindow::on_tabWidget_currentChanged(int index)
+void ThreeDimensionalComputation::on_tabWidget_currentChanged(int index)
 {
 	QWidget* widget0 = ui->tabWidget->widget(0);
 	QWidget* widget1 = ui->tabWidget->widget(1);
@@ -1128,7 +1128,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 	previousTabWidgetIndex = index;
 }
 
-void MainWindow::formGeometry_import(const QString& filePath)
+void ThreeDimensionalComputation::formGeometry_import(const QString& filePath)
 {
 	render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
@@ -1224,7 +1224,7 @@ static void AddDataSetsToAppendFilter(vtkDataObject* dataObj,
 	}
 }
 
-std::vector<vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(
+std::vector<vtkSmartPointer<vtkActor>> ThreeDimensionalComputation::createMeshPatchActor(
 	const std::string& casePath,
 	std::vector<std::string>& patchGroup)
 {
@@ -1297,7 +1297,7 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createMeshPatchActor(
 	return actorList;
 }
 
-void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
+void ThreeDimensionalComputation::formMeshImport_import(const QString& filePath, bool isRender)
 {
 	if (isRender)render->RemoveAllViewProps();
 	QFileInfo fileInfo(filePath);
@@ -1328,7 +1328,7 @@ void MainWindow::formMeshImport_import(const QString& filePath, bool isRender)
 	renderWindow->Render();
 }
 
-void MainWindow::formMesh_apply()
+void ThreeDimensionalComputation::formMesh_apply()
 {
 	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
@@ -1379,7 +1379,7 @@ void MainWindow::formMesh_apply()
 	renderWindow->Render();
 }
 
-void MainWindow::formMesh_updateFormFinished()
+void ThreeDimensionalComputation::formMesh_updateFormFinished()
 {
 	if (lastClickedButton != ui->pushButton_2) {
 		on_pushButton_2_clicked();
@@ -1395,7 +1395,7 @@ void MainWindow::formMesh_updateFormFinished()
 		formMesh->ui->listWidget_2->item(i)->setSelected(false);
 }
 
-void MainWindow::formMesh_topoSet()
+void ThreeDimensionalComputation::formMesh_topoSet()
 {
 	QProcess* process = new QProcess(this);
 
@@ -1434,7 +1434,7 @@ void MainWindow::formMesh_topoSet()
 	process->start();
 }
 
-void MainWindow::formMesh_splitMeshRegions()
+void ThreeDimensionalComputation::formMesh_splitMeshRegions()
 {
 	QProcess* process = new QProcess(this);
 
@@ -1518,7 +1518,7 @@ void MainWindow::formMesh_splitMeshRegions()
 	process->start();
 }
 
-void MainWindow::formSolver_select(const QString& application)
+void ThreeDimensionalComputation::formSolver_select(const QString& application)
 {
 	//初始化tabWidget控件可见性
 	ui->pushButton_23->hide();	//网格加密
@@ -1607,7 +1607,7 @@ void MainWindow::formSolver_select(const QString& application)
 	}
 }
 
-void MainWindow::formRun_run()
+void ThreeDimensionalComputation::formRun_run()
 {
 	if (GlobalData::getInstance().getCaseData()->casePath.empty())
 	{
@@ -1712,7 +1712,7 @@ void MainWindow::formRun_run()
 	}
 }
 
-void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void ThreeDimensionalComputation::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	//获取案例路径
 	QString casePath = GlobalData::getInstance().getCaseData()->casePath.c_str();
@@ -1762,7 +1762,7 @@ void MainWindow::onProcessDecomposeParFinished(int exitCode, QProcess::ExitStatu
 	processRun.start();
 }
 
-void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void ThreeDimensionalComputation::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
@@ -1793,7 +1793,7 @@ void MainWindow::onProcessRunFinished(int exitCode, QProcess::ExitStatus exitSta
 	}
 }
 
-void MainWindow::onProcessReconstructParFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void ThreeDimensionalComputation::onProcessReconstructParFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
@@ -1806,7 +1806,7 @@ void MainWindow::onProcessReconstructParFinished(int exitCode, QProcess::ExitSta
 	formPostprocessing->updateForm();
 }
 
-void MainWindow::formRun_stopRun()
+void ThreeDimensionalComputation::formRun_stopRun()
 {
 	QThread::msleep(500);
 	formRun->ui->pushButton_2->hide();
@@ -1827,7 +1827,7 @@ void MainWindow::formRun_stopRun()
 	}
 }
 
-void MainWindow::formPostprocessing_apply(std::vector<QListView*> listViewBoundaries)
+void ThreeDimensionalComputation::formPostprocessing_apply(std::vector<QListView*> listViewBoundaries)
 {
 	// 移除所有已添加的演员
 	render->RemoveAllViewProps();
@@ -1876,13 +1876,13 @@ void MainWindow::formPostprocessing_apply(std::vector<QListView*> listViewBounda
 	renderWindow->Render();
 }
 
-void MainWindow::formPostprocessing_firstFrame()
+void ThreeDimensionalComputation::formPostprocessing_firstFrame()
 {
 	formPostprocessing->ui->comboBox->setCurrentIndex(0);
 	formPostprocessing->on_pushButton_2_clicked();
 }
 
-void MainWindow::formPostprocessing_previousFrame()
+void ThreeDimensionalComputation::formPostprocessing_previousFrame()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index > 0) {
@@ -1891,17 +1891,17 @@ void MainWindow::formPostprocessing_previousFrame()
 	}
 }
 
-void MainWindow::formPostprocessing_reverse()
+void ThreeDimensionalComputation::formPostprocessing_reverse()
 {
 	reverseTimer->start(100);
 }
 
-void MainWindow::formPostprocessing_play()
+void ThreeDimensionalComputation::formPostprocessing_play()
 {
 	playTimer->start(100);
 }
 
-void MainWindow::formPostprocessing_nextFrame()
+void ThreeDimensionalComputation::formPostprocessing_nextFrame()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
@@ -1910,39 +1910,39 @@ void MainWindow::formPostprocessing_nextFrame()
 	}
 }
 
-void MainWindow::formPostprocessing_lastFrame()
+void ThreeDimensionalComputation::formPostprocessing_lastFrame()
 {
 	formPostprocessing->ui->comboBox->setCurrentIndex(formPostprocessing->ui->comboBox->count() - 1);
 	formPostprocessing->on_pushButton_2_clicked();
 }
 
-void MainWindow::formPostprocessing_loopPlay()
+void ThreeDimensionalComputation::formPostprocessing_loopPlay()
 {
 	loopPlayTimer->start(100);
 }
 
-void MainWindow::formPostprocessing_playPause()
+void ThreeDimensionalComputation::formPostprocessing_playPause()
 {
 	playTimer->stop();
 	formPostprocessing->pushButtonPlayTimerPause->hide();
 	formPostprocessing->ui->pushButton_6->show();
 }
 
-void MainWindow::formPostprocessing_reversePause()
+void ThreeDimensionalComputation::formPostprocessing_reversePause()
 {
 	reverseTimer->stop();
 	formPostprocessing->pushButtonReverseTimerPause->hide();
 	formPostprocessing->ui->pushButton_5->show();
 }
 
-void MainWindow::formPostprocessing_loopPlayPause()
+void ThreeDimensionalComputation::formPostprocessing_loopPlayPause()
 {
 	loopPlayTimer->stop();
 	formPostprocessing->pushButtonLoopPlayTimerPause->hide();
 	formPostprocessing->ui->pushButton_9->show();
 }
 
-void MainWindow::formPostprocessing_loadData()
+void ThreeDimensionalComputation::formPostprocessing_loadData()
 {
 	QString caseFilePath;
 	QFileDialog dialog(this, tr(""), "", tr("TRF 文件 (*.trf);;"));
@@ -1961,7 +1961,7 @@ void MainWindow::formPostprocessing_loadData()
 	}
 }
 
-void MainWindow::formPostprocessing_updateFormFinished()
+void ThreeDimensionalComputation::formPostprocessing_updateFormFinished()
 {
 	//切换到后处理子页面
 	if (lastClickedButton != ui->pushButton_17) {
@@ -1975,7 +1975,7 @@ void MainWindow::formPostprocessing_updateFormFinished()
 	handleAction8Triggered();
 }
 
-void MainWindow::formModelClip_checkBoxToggle()
+void ThreeDimensionalComputation::formModelClip_checkBoxToggle()
 {
 	//如果没有可见演员则直接返回
 	if (render->GetActors()->GetNumberOfItems() == 0) {
@@ -1993,7 +1993,7 @@ void MainWindow::formModelClip_checkBoxToggle()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_lineEditsChanged()
+void ThreeDimensionalComputation::formModelClip_lineEditsChanged()
 {
 	double origin[3];
 	double normal[3];
@@ -2008,7 +2008,7 @@ void MainWindow::formModelClip_lineEditsChanged()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_xPositive()
+void ThreeDimensionalComputation::formModelClip_xPositive()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2018,7 +2018,7 @@ void MainWindow::formModelClip_xPositive()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_yPositive()
+void ThreeDimensionalComputation::formModelClip_yPositive()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2027,7 +2027,7 @@ void MainWindow::formModelClip_yPositive()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_zPositive()
+void ThreeDimensionalComputation::formModelClip_zPositive()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2036,7 +2036,7 @@ void MainWindow::formModelClip_zPositive()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_cameraDirection()
+void ThreeDimensionalComputation::formModelClip_cameraDirection()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2048,7 +2048,7 @@ void MainWindow::formModelClip_cameraDirection()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_alignView()
+void ThreeDimensionalComputation::formModelClip_alignView()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2080,7 +2080,7 @@ void MainWindow::formModelClip_alignView()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-void MainWindow::formModelClip_resetPlane()
+void ThreeDimensionalComputation::formModelClip_resetPlane()
 {
 	if (render->GetActors()->GetNumberOfItems() == 0) {
 		return;
@@ -2089,7 +2089,7 @@ void MainWindow::formModelClip_resetPlane()
 	// 重新创建平面选择器和表示对象
 	planeRepModelClip = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
 	planeWidgetModelClip = vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
-	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &MainWindow::updatePlaneRepModelClipValues);
+	planeRepModelClip->AddObserver(vtkCommand::ModifiedEvent, this, &ThreeDimensionalComputation::updatePlaneRepModelClipValues);
 	formModelClip->ui->checkBox->setChecked(true);
 
 	// 设置平面选择器的放置因子
@@ -2139,7 +2139,7 @@ void MainWindow::formModelClip_resetPlane()
 	ui->openGLWidget->renderWindow()->Render();
 }
 
-std::vector<vtkSmartPointer<vtkActor>> MainWindow::createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside)
+std::vector<vtkSmartPointer<vtkActor>> ThreeDimensionalComputation::createSlicedActorFromRenderer(double origin[3], double normal[3], bool keepInside)
 {
 	// 保存切分后的各个模型
 	std::vector<vtkSmartPointer<vtkActor>> slicedActors;
@@ -2270,7 +2270,7 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createSlicedActorFromRenderer
 	return slicedActors;
 }
 
-void MainWindow::formModelClip_apply()
+void ThreeDimensionalComputation::formModelClip_apply()
 {
 	// 获取平面选择器的原点和法向量
 	double origin[3];
@@ -2311,7 +2311,7 @@ void MainWindow::formModelClip_apply()
 	}
 }
 
-void MainWindow::dialogResultMerge_interrupt()
+void ThreeDimensionalComputation::dialogResultMerge_interrupt()
 {
 	if (processReconstructPar.state() == QProcess::Running) {
 		processReconstructPar.kill();
@@ -2319,7 +2319,7 @@ void MainWindow::dialogResultMerge_interrupt()
 	dialogResultMerge->hide();
 }
 
-void MainWindow::onButtonClicked()
+void ThreeDimensionalComputation::onButtonClicked()
 {
 	QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
 	if (clickedButton) {
@@ -2351,7 +2351,7 @@ void MainWindow::onButtonClicked()
 	}
 }
 
-void MainWindow::onProcessRunOutput()
+void ThreeDimensionalComputation::onProcessRunOutput()
 {
 	while (processRun.canReadLine()) {
 		QByteArray output = processRun.readLine();
@@ -2374,7 +2374,7 @@ void MainWindow::onProcessRunOutput()
 	}
 }
 
-void MainWindow::onProcessDecomposeParOutput()
+void ThreeDimensionalComputation::onProcessDecomposeParOutput()
 {
 	while (processDecomposePar.canReadLine()) {
 		QByteArray output = processDecomposePar.readLine();
@@ -2386,7 +2386,7 @@ void MainWindow::onProcessDecomposeParOutput()
 	}
 }
 
-void MainWindow::onProcessReconstructParOutput()
+void ThreeDimensionalComputation::onProcessReconstructParOutput()
 {
 
 	while (processReconstructPar.canReadLine()) {
@@ -2404,7 +2404,7 @@ void MainWindow::onProcessReconstructParOutput()
 	}
 }
 
-void MainWindow::parseOutput(const QString& output)
+void ThreeDimensionalComputation::parseOutput(const QString& output)
 {
 	QRegExp regex("Solving for (\\w+), Initial residual = ([\\d\\.eE\\-]+), Final residual = ([\\d\\.eE\\-]+)");
 	if (output.startsWith("Time = ")) {
@@ -2451,7 +2451,7 @@ void MainWindow::parseOutput(const QString& output)
 	}
 }
 
-std::vector<vtkSmartPointer<vtkActor>> MainWindow::createNephogramPatchActor(
+std::vector<vtkSmartPointer<vtkActor>> ThreeDimensionalComputation::createNephogramPatchActor(
 	const std::string& casePath,
 	double timeValue,
 	const std::string& fieldName,
@@ -2560,7 +2560,7 @@ std::vector<vtkSmartPointer<vtkActor>> MainWindow::createNephogramPatchActor(
 	return actorList;
 }
 
-vtkSmartPointer<vtkScalarBarActor> MainWindow::createScalarBarActor(const std::pair<double, double>& range)
+vtkSmartPointer<vtkScalarBarActor> ThreeDimensionalComputation::createScalarBarActor(const std::pair<double, double>& range)
 {
 	// 创建颜色传输函数
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
@@ -2598,7 +2598,7 @@ vtkSmartPointer<vtkScalarBarActor> MainWindow::createScalarBarActor(const std::p
 	return scalarBar;
 }
 
-void MainWindow::updateChart()
+void ThreeDimensionalComputation::updateChart()
 {
 	chart->axisX()->setTitleText("迭代次数");
 	chart->axisX()->setRange(axisMinX, axisMaxX - 1);
@@ -2621,7 +2621,7 @@ void MainWindow::updateChart()
 	chart->update();
 }
 
-void MainWindow::onPlayTimerTimeout()
+void ThreeDimensionalComputation::onPlayTimerTimeout()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
@@ -2637,7 +2637,7 @@ void MainWindow::onPlayTimerTimeout()
 	}
 }
 
-void MainWindow::onReverseTimerTimeout()
+void ThreeDimensionalComputation::onReverseTimerTimeout()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index > 0) {
@@ -2653,7 +2653,7 @@ void MainWindow::onReverseTimerTimeout()
 	}
 }
 
-void MainWindow::onLoopPlayTimerTimeout()
+void ThreeDimensionalComputation::onLoopPlayTimerTimeout()
 {
 	int index = formPostprocessing->ui->comboBox->currentIndex();
 	if (index < formPostprocessing->ui->comboBox->count() - 1) {
@@ -2668,7 +2668,7 @@ void MainWindow::onLoopPlayTimerTimeout()
 	formPostprocessing->ui->pushButton_9->hide();
 }
 
-void MainWindow::handleAction1Triggered()
+void ThreeDimensionalComputation::handleAction1Triggered()
 {
 	ui->textBrowser->setVisible(!ui->textBrowser->isVisible());
 }

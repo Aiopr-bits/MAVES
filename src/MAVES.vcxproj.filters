@@ -23,13 +23,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="WorkSpaceWindow.ui">
+    <QtUic Include="CurvePlotting.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="WorkSpaceWindow.h">
+    <QtMoc Include="CurvePlotting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="WorkSpaceWindow.cpp">
+    <ClCompile Include="CurvePlotting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <QtUic Include="FormMesh.ui">
@@ -118,7 +118,7 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainWindow.cpp">
+    <ClCompile Include="ThreeDimensionalComputation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FormMesh.cpp">
@@ -195,7 +195,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MainWindow.h">
+    <QtMoc Include="ThreeDimensionalComputation.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FormMesh.h">
@@ -278,7 +278,7 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainWindow.ui">
+    <QtUic Include="ThreeDimensionalComputation.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

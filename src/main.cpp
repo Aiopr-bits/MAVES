@@ -5,8 +5,8 @@
 | Email: mailzengzhiyong@gamil.com                                            |
 \*---------------------------------------------------------------------------*/
 
-#include "MainWindow.h"
-#include "WorkSpaceWindow.h"
+#include "ThreeDimensionalComputation.h"
+#include "CurvePlotting.h"
 #include <QtWidgets/QApplication>
 #include <cstdlib>
 #include <string>
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     vtkObject::GlobalWarningDisplayOff();
 
     QApplication a(argc, argv);
-    WorkSpaceWindow w;
+    CurvePlotting w;
     w.show();
     return a.exec();
 }

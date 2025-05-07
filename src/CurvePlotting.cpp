@@ -5,15 +5,15 @@
 | Email: mailzengzhiyong@gamil.com                                            |
 \*---------------------------------------------------------------------------*/
 
-#include "WorkSpaceWindow.h"
+#include "CurvePlotting.h"
 #include <QScreen>
 #include <QStandardItemModel>
 #include <QMessageBox>
 
-WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
+CurvePlotting::CurvePlotting(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::WorkSpaceWindowClass())
-	, mainWindow(this)
+    , ui(new Ui::CurvePlottingClass())
+	, threeDimensionalComputation(this)
 {
     ui->setupUi(this);
     this->setWindowState(Qt::WindowMaximized);
@@ -48,15 +48,15 @@ WorkSpaceWindow::WorkSpaceWindow(QWidget *parent)
             ui->treeView->expand(index);
         });
 
-    connect(ui->pushButton_3, &CustomDoubleClickPushButton::doubleClicked, this, &WorkSpaceWindow::on_PushButton_3_DoubleClicked);
+    connect(ui->pushButton_3, &CustomDoubleClickPushButton::doubleClicked, this, &CurvePlotting::on_PushButton_3_DoubleClicked);
 }
 
-WorkSpaceWindow::~WorkSpaceWindow()
+CurvePlotting::~CurvePlotting()
 {
     delete ui;
 }
 
-void WorkSpaceWindow::resizeEvent(QResizeEvent* event)
+void CurvePlotting::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
     QSize buttonSize = ui->pushButton_3->size();
@@ -66,8 +66,8 @@ void WorkSpaceWindow::resizeEvent(QResizeEvent* event)
     ui->pushButton_3->setIconSize(iconSize);
 }
 
-void WorkSpaceWindow::on_PushButton_3_DoubleClicked()
+void CurvePlotting::on_PushButton_3_DoubleClicked()
 {
-	mainWindow.show();
+    threeDimensionalComputation.show();
 	this->hide(); 
 }

@@ -8,20 +8,20 @@
 #pragma once
 #pragma execution_character_set("utf-8")
 #include <QtWidgets/QMainWindow>
-#include "ui_WorkSpaceWindow.h"
-#include "MainWindow.h"
+#include "ui_CurvePlotting.h"
+#include "ThreeDimensionalComputation.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class WorkSpaceWindowClass; };
+namespace Ui { class CurvePlottingClass; };
 QT_END_NAMESPACE
 
-class WorkSpaceWindow : public QMainWindow
+class CurvePlotting : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    WorkSpaceWindow(QWidget *parent = nullptr);
-    ~WorkSpaceWindow();
+    CurvePlotting(QWidget *parent = nullptr);
+    ~CurvePlotting();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -30,6 +30,6 @@ private slots:
     void on_PushButton_3_DoubleClicked();
 
 private:
-    Ui::WorkSpaceWindowClass *ui;
-	MainWindow mainWindow;
+    Ui::CurvePlottingClass *ui;
+    ThreeDimensionalComputation threeDimensionalComputation;
 };

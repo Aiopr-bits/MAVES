@@ -13,7 +13,7 @@
 #include <QLineSeries>
 #include <QValueAxis>
 QT_CHARTS_USE_NAMESPACE
-#include "ui_MainWindow.h"
+#include "ui_ThreeDimensionalComputation.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <vtkSmartPointer.h>
@@ -143,16 +143,16 @@ QT_CHARTS_USE_NAMESPACE
 #endif
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindowClass; };
+namespace Ui { class ThreeDimensionalComputationClass; };
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class ThreeDimensionalComputation : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = nullptr);
-	~MainWindow();
+	ThreeDimensionalComputation(QWidget *parent = nullptr);
+	~ThreeDimensionalComputation();
 
 	void addCoordinateAxes();									    													//添加左下角三维坐标轴
 
@@ -274,7 +274,7 @@ signals:
 	void panelPushButtonClicked(string text);																			//控制面板按钮点击
 
 public:
-	Ui::MainWindowClass *ui;
+	Ui::ThreeDimensionalComputationClass *ui;
 	QTimer* playTimer;
 	QTimer* reverseTimer;
 	QTimer* loopPlayTimer;
