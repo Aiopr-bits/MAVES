@@ -278,6 +278,18 @@ void MainWindow::on_PushButton_17_clicked()
 
 void MainWindow::on_PushButton_4_clicked()
 {
+	MainWindowSetting* mainWindowSetting = new MainWindowSetting(); 
+
+	// 设置窗口为模态对话框
+	mainWindowSetting->setWindowModality(Qt::ApplicationModal);
+
+	// 将窗口移动到当前窗口的中心
+	int x = this->x() + (this->width() - mainWindowSetting->width()) / 2;
+	int y = this->y() + (this->height() - mainWindowSetting->height()) / 2;
+	mainWindowSetting->move(x, y);
+
+	// 显示窗口
+	mainWindowSetting->show();
 }
 
 bool MainWindow::eventFilter(QObject* watched, QEvent* event)

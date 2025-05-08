@@ -119,6 +119,9 @@
     <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="MainWindowSetting.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThreeDimensionalComputation.cpp">
@@ -197,6 +200,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindowSetting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -283,6 +289,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="MainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MainWindowSetting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

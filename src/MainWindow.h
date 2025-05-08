@@ -16,6 +16,7 @@
 #include "CurvePlotting.h"
 #include <QDesktopServices>
 #include <QUrl>
+#include "MainWindowSetting.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };
