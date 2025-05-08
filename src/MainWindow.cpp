@@ -90,7 +90,7 @@ void MainWindow::on_PushButton_13_clicked()
 
 void MainWindow::on_PushButton_14_clicked()
 {
-	ThreeDimensionalComputation* threeDimensionalComputation = new ThreeDimensionalComputation(this);
+	ThreeDimensionalComputation* threeDimensionalComputation = new ThreeDimensionalComputation();
 	threeDimensionalComputation->show();
 }
 
@@ -104,4 +104,6 @@ void MainWindow::on_PushButton_16_clicked()
 
 void MainWindow::on_PushButton_17_clicked()
 {
+	ThreeDimensionalComputation* threeDimensionalComputation = new ThreeDimensionalComputation();
+	threeDimensionalComputation->show();
 }
