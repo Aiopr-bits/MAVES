@@ -17,6 +17,26 @@ MainWindow::MainWindow(QWidget *parent)
 	//禁用窗口拉伸
 	this->setFixedSize(windowWidth, windowHeight);
 
+	// 设置背景图
+	this->setStyleSheet(
+		"QMainWindow {"
+		"    background-image: url(../res/BackgroundImage1);"
+		"    background-position: center;"
+		"}"
+	);
+
+	//让界面上的所有的widget都设置为半透明
+	for (int i = 0; i < ui->centralWidget->children().size(); ++i)
+	{
+		QWidget* widget = qobject_cast<QWidget*>(ui->centralWidget->children().at(i));
+		if (widget && widget != ui->centralWidget)
+		{
+			QGraphicsOpacityEffect* effect = new QGraphicsOpacityEffect(this);
+			effect->setOpacity(0.9);
+			widget->setGraphicsEffect(effect);
+		}
+	}
+
 	connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_PushButton_clicked);
 	connect(ui->pushButton_2, &QPushButton::toggled, this, &MainWindow::on_PushButton_2_Toggled);
 	connect(ui->pushButton_6, &QPushButton::toggled, this, &MainWindow::on_PushButton_6_Toggled);
@@ -35,6 +55,22 @@ MainWindow::MainWindow(QWidget *parent)
 
 	on_PushButton_2_Toggled(false);
 	on_PushButton_6_Toggled(false);
+
+	ui->pushButton->installEventFilter(this); 
+	ui->pushButton_2->installEventFilter(this);
+	ui->pushButton_6->installEventFilter(this);
+	ui->pushButton_9->installEventFilter(this);
+	ui->pushButton_3->installEventFilter(this);
+	ui->pushButton_8->installEventFilter(this);
+	ui->pushButton_7->installEventFilter(this);
+	ui->pushButton_10->installEventFilter(this);
+	ui->pushButton_11->installEventFilter(this);
+	ui->pushButton_12->installEventFilter(this);
+	ui->pushButton_13->installEventFilter(this);
+	ui->pushButton_14->installEventFilter(this);
+	ui->pushButton_15->installEventFilter(this);
+	ui->pushButton_16->installEventFilter(this);
+	ui->pushButton_17->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -107,3 +143,70 @@ void MainWindow::on_PushButton_17_clicked()
 	ThreeDimensionalComputation* threeDimensionalComputation = new ThreeDimensionalComputation();
 	threeDimensionalComputation->show();
 }
+
+bool MainWindow::eventFilter(QObject* watched, QEvent* event)
+{
+	// 用于保存每个按钮的初始大小，防止反复进入离开时累积误差
+	static QMap<QPushButton*, QSize> originalSizes;
+
+	QPushButton* button = qobject_cast<QPushButton*>(watched);
+	if (!button)
+		return QMainWindow::eventFilter(watched, event);
+
+	// 如果还没记录过该按钮的原始大小，则进行记录
+	if (!originalSizes.contains(button))
+		originalSizes[button] = button->size();
+
+	// 读取按钮的原始大小
+	QSize oriSize = originalSizes[button];
+
+	if (event->type() == QEvent::Enter)
+	{
+		// 放大后的目标大小
+		QSize endSize(int(oriSize.width() * 1.1),
+			int(oriSize.height() * 1.1));
+
+		// 同时动画修改 minimumSize & maximumSize
+		QPropertyAnimation* animMin = new QPropertyAnimation(button, "minimumSize");
+		animMin->setDuration(200);
+		animMin->setStartValue(oriSize);
+		animMin->setEndValue(endSize);
+		animMin->setEasingCurve(QEasingCurve::OutQuad);
+		animMin->start(QAbstractAnimation::DeleteWhenStopped);
+
+		QPropertyAnimation* animMax = new QPropertyAnimation(button, "maximumSize");
+		animMax->setDuration(200);
+		animMax->setStartValue(oriSize);
+		animMax->setEndValue(endSize);
+		animMax->setEasingCurve(QEasingCurve::OutQuad);
+		animMax->start(QAbstractAnimation::DeleteWhenStopped);
+
+		return true;
+	}
+	else if (event->type() == QEvent::Leave)
+	{
+		// 缩回至原始大小
+		QSize startSize = button->size();
+		QSize endSize = oriSize; // 恢复到原始大小
+
+		QPropertyAnimation* animMin = new QPropertyAnimation(button, "minimumSize");
+		animMin->setDuration(200);
+		animMin->setStartValue(startSize);
+		animMin->setEndValue(endSize);
+		animMin->setEasingCurve(QEasingCurve::OutQuad);
+		animMin->start(QAbstractAnimation::DeleteWhenStopped);
+
+		QPropertyAnimation* animMax = new QPropertyAnimation(button, "maximumSize");
+		animMax->setDuration(200);
+		animMax->setStartValue(startSize);
+		animMax->setEndValue(endSize);
+		animMax->setEasingCurve(QEasingCurve::OutQuad);
+		animMax->start(QAbstractAnimation::DeleteWhenStopped);
+
+		return true;
+	}
+
+	return QMainWindow::eventFilter(watched, event);
+}
+
+
