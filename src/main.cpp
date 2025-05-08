@@ -6,7 +6,7 @@
 \*---------------------------------------------------------------------------*/
 
 #include "ThreeDimensionalComputation.h"
-#include "CurvePlotting.h"
+#include "MainWindow.h"
 #include <QtWidgets/QApplication>
 #include <cstdlib>
 #include <string>
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     vtkObject::GlobalWarningDisplayOff();
 
     QApplication a(argc, argv);
-    CurvePlotting w;
+    MainWindow w;
     w.show();
     return a.exec();
 }

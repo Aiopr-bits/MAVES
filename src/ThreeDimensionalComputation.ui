@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MAVES</string>
+   <string>三维计算模块</string>
   </property>
   <property name="windowIcon">
    <iconset>

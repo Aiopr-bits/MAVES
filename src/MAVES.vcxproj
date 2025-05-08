@@ -132,6 +132,7 @@
     <QtUic Include="FormThermoListWidget.ui" />
     <QtUic Include="FormTransportProperties.ui" />
     <QtUic Include="FormTurbulence.ui" />
+    <QtUic Include="MainWindow.ui" />
     <QtUic Include="ThreeDimensionalComputation.ui" />
     <QtUic Include="CurvePlotting.ui" />
     <QtMoc Include="CurvePlotting.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="FormTransportProperties.cpp" />
     <ClCompile Include="FormTurbulence.cpp" />
     <ClCompile Include="GlobalData.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="ThreeDimensionalComputation.cpp" />
     <ClCompile Include="CurvePlotting.cpp" />
     <ClCompile Include="main.cpp">
@@ -190,6 +192,7 @@
     <QtMoc Include="FormInitialConditionsTabWidget.h" />
     <QtMoc Include="FormCellZonesTabWidget.h" />
     <QtMoc Include="FormOperatingConditions.h" />
+    <QtMoc Include="MainWindow.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="FormPostprocessing.h" />
     <QtMoc Include="FormRun.h" />
