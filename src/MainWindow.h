@@ -6,6 +6,7 @@
 #include <QGraphicsOpacityEffect>
 #include "ThreeDimensionalComputation.h"
 #include <QPropertyAnimation>
+#include "CurvePlotting.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };
@@ -35,6 +36,7 @@ public slots:
 	void on_PushButton_15_clicked();							//传热机理模块 - 内外流场插值
 	void on_PushButton_16_clicked();							//CFD仿真预计模块 - 内外流场插值
 	void on_PushButton_17_clicked();							//CFD仿真预计模块 - 三维计算模块
+	void on_PushButton_4_clicked();								//设置
 
 protected:
 	bool eventFilter(QObject* watched, QEvent* event) override;

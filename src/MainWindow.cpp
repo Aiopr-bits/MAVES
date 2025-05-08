@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
 			widget->setGraphicsEffect(effect);
 		}
 	}
+	QGraphicsOpacityEffect* effect = new QGraphicsOpacityEffect(this);
+	effect->setOpacity(0.8);
+	ui->pushButton_4->setGraphicsEffect(effect);
 
 	connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_PushButton_clicked);
 	connect(ui->pushButton_2, &QPushButton::toggled, this, &MainWindow::on_PushButton_2_Toggled);
@@ -52,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->pushButton_15, &QPushButton::clicked, this, &MainWindow::on_PushButton_15_clicked);
 	connect(ui->pushButton_16, &QPushButton::clicked, this, &MainWindow::on_PushButton_16_clicked);
 	connect(ui->pushButton_17, &QPushButton::clicked, this, &MainWindow::on_PushButton_17_clicked);
+	connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_PushButton_4_clicked);
 
 	on_PushButton_2_Toggled(false);
 	on_PushButton_6_Toggled(false);
@@ -71,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->pushButton_15->installEventFilter(this);
 	ui->pushButton_16->installEventFilter(this);
 	ui->pushButton_17->installEventFilter(this);
+	ui->pushButton_4->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -118,11 +123,20 @@ void MainWindow::on_PushButton_11_clicked()
 
 void MainWindow::on_PushButton_12_clicked()
 {
+	CurvePlotting* curvePlotting = new CurvePlotting();
+	curvePlotting->show();
 }
 
 void MainWindow::on_PushButton_13_clicked()
 {
+	QString program = "../Subroutine/SY_1D_Heatload/SY_1D_Q.exe";
+	QFileInfo fileInfo(program);
+	QString workingDirectory = fileInfo.absolutePath();
+	QProcess* process = new QProcess(this);
+	process->setWorkingDirectory(workingDirectory);
+	process->start(program);
 }
+
 
 void MainWindow::on_PushButton_14_clicked()
 {
@@ -132,16 +146,32 @@ void MainWindow::on_PushButton_14_clicked()
 
 void MainWindow::on_PushButton_15_clicked()
 {
+	QString program = "../Subroutine/SY_3dHeatLoad/SY_GUI_3dHeatLoad.exe";
+	QFileInfo fileInfo(program);
+	QString workingDirectory = fileInfo.absolutePath();
+	QProcess* process = new QProcess(this);
+	process->setWorkingDirectory(workingDirectory);
+	process->start(program);
 }
 
 void MainWindow::on_PushButton_16_clicked()
 {
+	QString program = "../Subroutine/SY_3dHeatLoad/SY_GUI_3dHeatLoad.exe";
+	QFileInfo fileInfo(program);
+	QString workingDirectory = fileInfo.absolutePath();
+	QProcess* process = new QProcess(this);
+	process->setWorkingDirectory(workingDirectory);
+	process->start(program);
 }
 
 void MainWindow::on_PushButton_17_clicked()
 {
 	ThreeDimensionalComputation* threeDimensionalComputation = new ThreeDimensionalComputation();
 	threeDimensionalComputation->show();
+}
+
+void MainWindow::on_PushButton_4_clicked()
+{
 }
 
 bool MainWindow::eventFilter(QObject* watched, QEvent* event)

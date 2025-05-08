@@ -1,0 +1,71 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+pOut            1e5;
+pAll            1.15e5;
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform $pOut;
+
+boundaryField
+{
+    inlet
+    {
+        type            zeroGradient;
+		//type    totalPressure;
+		//p0      uniform $pOut; // 总压值，单位Pa
+		//gamma   1.4; // 比热比，对于空气可以取1.4
+		//value   $internalField;
+    }
+
+    outlet
+    {
+        //type            freestreamPressure;
+        //freestreamValue uniform $pOut;
+		//type            waveTransmissive;
+        //field           p;
+        //psi             thermo_psi;
+        //gamma           1.4;
+        //fieldInf        1;
+        //lInf            3;
+        //value           uniform $pOut;
+		
+		type            fixedValue;
+        value           uniform $pOut;
+    }
+
+    wall
+    {
+        type            zeroGradient;
+    }
+
+    //symm
+    //{
+    //    type            symmetry;        
+    //}
+
+    
+    j20
+    {
+        type            zeroGradient;
+    }
+
+    //#includeEtc "caseDicts/setConstraintTypes"
+}
+
+
+// ************************************************************************* //

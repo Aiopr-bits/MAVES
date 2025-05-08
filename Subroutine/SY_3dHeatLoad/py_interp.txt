@@ -1,0 +1,2 @@
+C:\Python313
+C:\OpenFoam12qwe

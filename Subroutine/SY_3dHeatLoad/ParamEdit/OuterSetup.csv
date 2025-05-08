@@ -1,0 +1,3 @@
+*外流场参数设置
+a.入口速度,b.入口温度,c.出口温度,d.压力出口(atm),e.收敛参数,a)SIMPLE算法设置,i.i.nNonOrthogonalCorrectors,ii.residualControl,iii.pMinFactor,iv.pMaxFactor,b)relaxationFactors参数设置,i.Fields,i)P,ii)U,iii)E,iv)K,v)Epsilon,vi)Rho,ii.equations
+100,300,270,0.8, , ,1,2,3,4, , ,210,170,1,2,0.1,0.2,1

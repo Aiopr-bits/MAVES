@@ -1,0 +1,14 @@
+# Solver information
+# Time        	p_rgh_solver  	p_rgh_initial 	p_rgh_final   	p_rgh_iters   	p_rgh_converged
+1             	GAMG	1.000000e+00	8.357160e-03	7	true
+2             	GAMG	2.127120e-01	9.165600e-04	3	true
+3             	GAMG	1.932720e-01	1.107020e-03	3	true
+4             	GAMG	1.416000e-01	5.557360e-04	3	true
+5             	GAMG	9.013670e-02	4.059200e-04	3	true
+6             	GAMG	6.971780e-02	4.332040e-04	3	true
+7             	GAMG	5.792400e-02	3.915490e-04	3	true
+8             	GAMG	4.840540e-02	3.526540e-04	3	true
+9             	GAMG	4.014370e-02	3.053240e-04	3	true
+10            	GAMG	3.484310e-02	2.620950e-04	3	true
+11            	GAMG	3.234800e-02	2.251270e-04	3	true
+12            	GAMG	3.122630e-02	1.952640e-04	3	true
