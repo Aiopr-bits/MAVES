@@ -1,5 +1,12 @@
-﻿#pragma once
+﻿/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
 
+#pragma once
+#pragma execution_character_set("utf-8")
 #include <QMainWindow>
 #include "ui_MainWindow.h"
 #include <QDesktopWidget>
@@ -7,6 +14,8 @@
 #include "ThreeDimensionalComputation.h"
 #include <QPropertyAnimation>
 #include "CurvePlotting.h"
+#include <QDesktopServices>
+#include <QUrl>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowClass; };
@@ -19,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
+	void subroutine(QString path);								//调用子程序
 
 public slots:
 	void on_PushButton_clicked();								//综合管理软件

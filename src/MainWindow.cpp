@@ -1,4 +1,11 @@
-﻿#include "MainWindow.h"
+﻿/*--------------------------------*- C++ -*----------------------------------*\
+| MAVES：Multi-source Adaptability Verification and Evaluation Software       |
+| Author: Zhiyong Zeng                                                        |
+| Date: December 01, 2024                                                     |
+| Email: mailzengzhiyong@gamil.com                                            |
+\*---------------------------------------------------------------------------*/
+
+#include "MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -83,9 +90,54 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
+void MainWindow::subroutine(QString path)
+{
+	if (path.startsWith("http"))
+	{
+		QUrl url(path);
+		QDesktopServices::openUrl(url);
+	}
+	else if (path.endsWith(".exe"))
+	{
+		QFileInfo fileInfo(path);
+		QString workingDirectory = fileInfo.absolutePath();
+		QProcess* process = new QProcess(this);
+		process->setWorkingDirectory(workingDirectory);
+		process->start(path);
+	}
+}
+
 void MainWindow::on_PushButton_clicked()
 {
+	QString filePath = "../config/MainWindow";
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QMessageBox::critical(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	QTextStream in(&file);
+	while (!in.atEnd())
+	{
+		QString line = in.readLine();
+
+		if (line.startsWith("ZongHeGuanLiRuanJian"))
+		{
+			int colonIndex = line.indexOf(':');
+			if (colonIndex != -1)
+			{
+				QString result = line.mid(colonIndex + 1).trimmed();
+				subroutine(result);
+				return;
+			}
+		}
+	}
+
+	QMessageBox::warning(this, "提示", "请先配置“综合管理软件”路径");
 }
+
 
 void MainWindow::on_PushButton_2_Toggled(bool checked)
 {
@@ -115,10 +167,64 @@ void MainWindow::on_PushButton_7_clicked()
 
 void MainWindow::on_PushButton_10_clicked()
 {
+	QString filePath = "../config/MainWindow";
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QMessageBox::critical(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	QTextStream in(&file);
+	while (!in.atEnd())
+	{
+		QString line = in.readLine();
+
+		if (line.startsWith("ZhiShiTuPu"))
+		{
+			int colonIndex = line.indexOf(':');
+			if (colonIndex != -1)
+			{
+				QString result = line.mid(colonIndex + 1).trimmed();
+				subroutine(result);
+				return;
+			}
+		}
+	}
+
+	QMessageBox::warning(this, "提示", "请先配置“知识图谱”路径");
 }
 
 void MainWindow::on_PushButton_11_clicked()
 {
+	QString filePath = "../config/MainWindow";
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QMessageBox::critical(this, "错误", "无法打开文件: " + filePath);
+		return;
+	}
+
+	QTextStream in(&file);
+	while (!in.atEnd())
+	{
+		QString line = in.readLine();
+
+		if (line.startsWith("TMAX3D"))
+		{
+			int colonIndex = line.indexOf(':');
+			if (colonIndex != -1)
+			{
+				QString result = line.mid(colonIndex + 1).trimmed();
+				subroutine(result);
+				return;
+			}
+		}
+	}
+
+	QMessageBox::warning(this, "提示", "请先配置“TMAX3D”路径");
 }
 
 void MainWindow::on_PushButton_12_clicked()
