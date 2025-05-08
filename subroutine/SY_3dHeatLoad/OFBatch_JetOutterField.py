@@ -56,10 +56,11 @@ except FileNotFoundError:
 
 src = "Automated\\Sim_OutterField\\Jet_rhosimple"
 
-ClearFolder(dst)
+
 ClearFolder('Automated\\Sim_OutterField\\Jet_rhosimple\\constant\\polyMesh')
 print('clear')
 copytree(fn_polymesh,'Automated\\Sim_OutterField\\Jet_rhosimple\\constant\\polyMesh')
+ClearFolder(dst)
 
 print(v0_min,v0_max,npts)
 
