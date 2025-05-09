@@ -6,7 +6,8 @@ FoamFile
 	location	"constant";
 	object	regionProperties;
 }
-regions	(
+regions	
+(
 	fluid	(air)
 	solid	(cpu)
 );
