@@ -17,7 +17,7 @@ class MainWindowSetting : public QWidget
 public:
 	MainWindowSetting(QWidget *parent = nullptr);
 	~MainWindowSetting();
-
+	
 	void readConfig();
 	void writeConfig();
 

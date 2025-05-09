@@ -103,7 +103,7 @@ void MainWindow::subroutine(QString path)
 		QString workingDirectory = fileInfo.absolutePath();
 		QProcess* process = new QProcess(this);
 		process->setWorkingDirectory(workingDirectory);
-		process->start(path);
+		process->start("\"" + path + "\"");
 	}
 }
 
